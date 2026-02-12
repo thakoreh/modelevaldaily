@@ -1,0 +1,137 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+		<style>
+			.hero {
+				display: grid;
+				gap: 1.5rem;
+				grid-template-columns: 1.2fr 0.8fr;
+				align-items: center;
+				margin-bottom: 2rem;
+			}
+			.hero-card {
+				background: white;
+				border-radius: 16px;
+				padding: 1.5rem;
+				box-shadow: var(--box-shadow);
+			}
+			.hero h1 {
+				font-size: 3rem;
+				margin-bottom: 0.5rem;
+			}
+			.hero p {
+				margin-bottom: 1rem;
+			}
+			.badges {
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+			}
+			.badge {
+				font-size: 0.85rem;
+				padding: 0.35rem 0.75rem;
+				border-radius: 999px;
+				background: rgba(var(--gray-light), 0.8);
+				color: rgb(var(--gray-dark));
+			}
+			.cta {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.6rem 1.1rem;
+				border-radius: 10px;
+				background: var(--accent);
+				color: white;
+				text-decoration: none;
+				font-weight: 700;
+			}
+			.cta.secondary {
+				background: transparent;
+				color: var(--accent);
+				border: 2px solid var(--accent);
+			}
+			.grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.25rem;
+			}
+			.card {
+				background: white;
+				border-radius: 14px;
+				padding: 1.25rem;
+				box-shadow: var(--box-shadow);
+			}
+			.card h3 {
+				margin-bottom: 0.5rem;
+			}
+			@media (max-width: 960px) {
+				.hero {
+					grid-template-columns: 1fr;
+				}
+				.grid {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<div>
+					<h1>ModelEval Daily</h1>
+					<p>
+						Daily, repeatable evaluations of the top AI models across coding, reasoning, and product
+						workflows. Transparent prompts, public scorecards, and real tasks.
+					</p>
+					<div class="badges">
+						<span class="badge">Daily scorecards</span>
+						<span class="badge">Real-world tasks</span>
+						<span class="badge">Open methodology</span>
+					</div>
+					<div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+						<a class="cta" href="/blog">See latest evals</a>
+						<a class="cta secondary" href="/about">Methodology</a>
+					</div>
+				</div>
+				<div class="hero-card">
+					<h3>What we publish</h3>
+					<ul>
+						<li>Model head-to-heads (coding + reasoning + tool use)</li>
+						<li>Scorecards with reproducible prompts</li>
+						<li>Weekly trend insights for builders</li>
+					</ul>
+					<hr />
+					<h3>Why it matters</h3>
+					<p>
+						Most benchmarks ignore workflows. We test models like real engineers do.
+					</p>
+				</div>
+			</section>
+
+			<section class="grid">
+				<div class="card">
+					<h3>Daily eval posts</h3>
+					<p>Short, high-signal results you can scan in 60 seconds.</p>
+				</div>
+				<div class="card">
+					<h3>Open scorecards</h3>
+					<p>All prompts and grading rubrics are public and reusable.</p>
+				</div>
+				<div class="card">
+					<h3>Actionable takeaways</h3>
+					<p>Decide which model to ship this week, not last quarter.</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>

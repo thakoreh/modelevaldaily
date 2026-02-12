@@ -1,0 +1,42 @@
+---
+import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
+import Layout from '../layouts/BlogPost.astro';
+---
+
+<Layout
+	title="Methodology"
+	description="How we run daily model evals and keep results honest."
+	pubDate={new Date('February 12 2026')}
+	heroImage={AboutHeroImage}
+>
+	<p>
+		ModelEval Daily publishes lightweight, repeatable evaluations across coding, reasoning, and
+		workflow tasks. We focus on practical outcomes: can the model ship features, debug reliably, and
+		deliver usable output under time pressure?
+	</p>
+
+	<h2>Principles</h2>
+	<ul>
+		<li><strong>Transparent prompts.</strong> Every eval includes the exact prompt and rubric.</li>
+		<li><strong>Real tasks.</strong> No synthetic toy problems.</li>
+		<li><strong>Repeatable.</strong> Same inputs, same scoring, clear deltas over time.</li>
+	</ul>
+
+	<h2>Eval categories</h2>
+	<ul>
+		<li><strong>Coding:</strong> small feature builds, bug fixes, refactors.</li>
+		<li><strong>Reasoning:</strong> tradeoffs, debugging diagnosis, system design.</li>
+		<li><strong>Tool use:</strong> multi-step tasks using CLI, docs, APIs.</li>
+	</ul>
+
+	<h2>Scoring rubric</h2>
+	<p>
+		Each task is scored on <strong>Correctness</strong>, <strong>Speed-to-usable output</strong>, and
+		<strong>Clarity</strong>. The weighted total rolls into the daily scorecard.
+	</p>
+
+	<h2>How to contribute</h2>
+	<p>
+		Suggest tasks, submit eval ideas, or request a model head-to-head. We’ll add it to the queue.
+	</p>
+</Layout>
