@@ -2,4 +2,4 @@
 // You can import this data from anywhere in your site by using the `import` keyword.
 
 export const SITE_TITLE = 'ModelEval Daily';
-export const SITE_DESCRIPTION = 'Daily, repeatable AI model evals with transparent methodology and real-world tasks.';
+export const SITE_DESCRIPTION = 'Impartial daily model scorecards for performance, cost, and latency across real-world tasks.';
