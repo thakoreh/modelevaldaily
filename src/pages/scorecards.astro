@@ -16,10 +16,13 @@ const latest = posts[0];
 const recent = posts.slice(0, 12);
 
 // Count posts by category
-const codingCount = posts.filter(p => p.id.includes('coding') || p.id.includes('scorecard')).length;
-const reasoningCount = posts.filter(p => p.id.includes('reasoning') || p.id.includes('scorecard')).length;
-const toolUseCount = posts.filter(p => p.id.includes('tool-use') || p.id.includes('scorecard')).length;
+const codingPosts = posts.filter(p => p.id.includes('coding') || p.id.includes('scorecard'));
+const reasoningPosts = posts.filter(p => p.id.includes('reasoning') || p.id.includes('scorecard'));
+const toolUsePosts = posts.filter(p => p.id.includes('tool-use') || p.id.includes('scorecard'));
 const costCount = posts.filter(p => p.id.includes('pricing') || p.id.includes('cheap') || p.id.includes('cost')).length;
+const codingCount = codingPosts.length;
+const reasoningCount = reasoningPosts.length;
+const toolUseCount = toolUsePosts.length;
 
 const taxonomy = [
 	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount },
