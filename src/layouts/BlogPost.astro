@@ -9,11 +9,13 @@ import Header from '../components/Header.astro';
 type Props = CollectionEntry<'blog'>['data'];
 
 const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+
+const pageTitle = title.includes('AIModelBenchmarks.com') ? title : `${title} | AIModelBenchmarks.com`;
 ---
 
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} />
+		<BaseHead title={pageTitle} description={description} />
 		<style>
 			main {
 				width: calc(100% - 2em);
