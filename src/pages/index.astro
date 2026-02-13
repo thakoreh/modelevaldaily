@@ -11,6 +11,7 @@ const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const latest = posts[0];
+const recent = posts.slice(0, 3);
 ---
 
 <!doctype html>
@@ -81,9 +82,15 @@ const latest = posts[0];
 				border-radius: 14px;
 				padding: 1.25rem;
 				border: 1px solid rgba(var(--border), 0.7);
+				box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+				transition: transform 0.2s ease, border-color 0.2s ease;
 			}
 			.card h3 {
 				margin-bottom: 0.5rem;
+			}
+			.card:hover {
+				transform: translateY(-3px);
+				border-color: rgba(var(--accent), 0.6);
 			}
 			.section {
 				margin: 2.5rem 0;
@@ -117,12 +124,53 @@ const latest = posts[0];
 				color: rgb(var(--text-muted));
 				font-weight: 600;
 			}
+			.panel-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.25rem;
+			}
+			.panel {
+				background: rgba(var(--border), 0.2);
+				border: 1px solid rgba(var(--border), 0.6);
+				border-radius: 16px;
+				padding: 1.5rem;
+			}
+			.panel strong {
+				display: block;
+				font-size: 1.05rem;
+			}
+			.panel span {
+				color: rgb(var(--text-muted));
+			}
+			.latest-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.25rem;
+			}
+			.latest-card {
+				background: rgba(var(--border), 0.18);
+				border: 1px solid rgba(var(--border), 0.6);
+				border-radius: 14px;
+				padding: 1.25rem;
+				text-decoration: none;
+				color: inherit;
+				transition: transform 0.2s ease, border-color 0.2s ease;
+			}
+			.latest-card:hover {
+				transform: translateY(-3px);
+				border-color: rgba(var(--accent), 0.6);
+			}
+			.latest-card img {
+				border-radius: 10px;
+			}
 			@media (max-width: 960px) {
 				.hero {
 					grid-template-columns: 1fr;
 				}
 				.grid,
-				.kpi-row {
+				.kpi-row,
+				.panel-grid,
+				.latest-grid {
 					grid-template-columns: 1fr;
 				}
 			}
@@ -133,19 +181,20 @@ const latest = posts[0];
 		<main>
 			<section class="hero">
 				<div>
-					<h1>Know which model wins today.</h1>
+					<p class="meta">AIModelBenchmarks.com · Updated daily 6am ET</p>
+					<h1>Pick the right model with operator‑grade scorecards.</h1>
 					<p>
-						AI Model Benchmarks publishes impartial scorecards across real‑world tasks —
-						performance, cost, and latency in one place.
+						We run real tasks — bug fixes, decision calls, and doc‑driven workflows — and
+						score models on performance, cost, latency, and reliability.
 					</p>
-					<p class="meta">Updated daily at 6am ET · <strong>4 models</strong> tested</p>
 					<div class="badges">
 						<span class="badge">Daily scorecards</span>
 						<span class="badge">Transparent rubrics</span>
+						<span class="badge">Failure cases</span>
 						<span class="badge">Cost + latency tracked</span>
 					</div>
 					<div style="margin-top: 1.25rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
-						<a class="cta" href="/scorecards">View today’s scorecard</a>
+						<a class="cta" href="/scorecards">See today’s scorecards</a>
 						<a class="cta secondary" href="/about">Methodology</a>
 					</div>
 				</div>
@@ -162,10 +211,12 @@ const latest = posts[0];
 							</p>
 						</a>
 						<hr />
-						<h3>Why it matters</h3>
-						<p>
-							Most benchmarks ignore workflows. We test models the way real engineers do.
-						</p>
+						<h3>What’s inside</h3>
+						<ul style="margin: 0.5rem 0 0; padding-left: 1rem;">
+							<li>Task prompt + rubric</li>
+							<li>Model scores + winner</li>
+							<li>Operator takeaways</li>
+						</ul>
 					</div>
 				)}
 			</section>
@@ -186,19 +237,34 @@ const latest = posts[0];
 			</section>
 
 			<section class="section">
-				<h2>What you get</h2>
-				<div class="grid">
-					<div class="card">
-						<h3>Daily scorecards</h3>
-						<p>Scan results in 60 seconds and ship the right model this week.</p>
+				<h2>Recent scorecards</h2>
+				<div class="latest-grid">
+					{recent.map((post) => (
+						<a class="latest-card" href={`/blog/${post.id}/`}>
+							{post.data.heroImage && (
+								<Image width={720} height={360} src={post.data.heroImage} alt="" />
+							)}
+							<h3 style="margin: 0.75rem 0 0.35rem;">{post.data.title}</h3>
+							<p class="meta"><FormattedDate date={post.data.pubDate} /></p>
+						</a>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
+				<h2>Why operators trust this</h2>
+				<div class="panel-grid">
+					<div class="panel">
+						<strong>Real tasks, not toy prompts</strong>
+						<span>Bug fixes, build‑vs‑buy calls, docs‑driven workflows.</span>
 					</div>
-					<div class="card">
-						<h3>Failure cases</h3>
-						<p>We include the miss and the fix so you can audit risk fast.</p>
+					<div class="panel">
+						<strong>Rubrics you can audit</strong>
+						<span>We publish the scoring criteria and failure cases.</span>
 					</div>
-					<div class="card">
-						<h3>Operator takeaways</h3>
-						<p>Clear recommendations based on how teams actually build.</p>
+					<div class="panel">
+						<strong>Actionable recommendations</strong>
+						<span>Pick a model for the job with a clear rationale.</span>
 					</div>
 				</div>
 			</section>
@@ -234,8 +300,8 @@ const latest = posts[0];
 			</section>
 
 			<section class="section hero-card">
-				<h2>Get today’s winner</h2>
-				<p>Start with the daily scorecard, then drill into task‑level breakdowns.</p>
+				<h2>Start with today’s winner</h2>
+				<p>Go straight to the daily scorecard, then drill into task‑level breakdowns.</p>
 				<a class="cta" href="/scorecards">Go to scorecards</a>
 			</section>
 		</main>
