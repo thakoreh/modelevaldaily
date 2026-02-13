@@ -7,9 +7,11 @@ import FormattedDate from '../../components/FormattedDate.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog')).sort(
+const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
+// Exclude templates from public lists
+const posts = allPosts.filter(p => !p.id.includes('template'));
 const featured = posts[0];
 const remaining = posts.slice(1);
 ---
