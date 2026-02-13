@@ -15,14 +15,37 @@ const posts = allPosts.filter(p => !p.id.includes('template'));
 const latest = posts[0];
 const recent = posts.slice(0, 6);
 
-const models = [
-	{ name: 'Claude Opus 4.6', total: 9.4, color: 'var(--claude)' },
-	{ name: '5.3-Codex-Spark', total: 9.2, color: 'var(--openai)' },
-	{ name: 'Kimi K2.5', total: 8.9, color: '#e040fb' },
-	{ name: 'MiniMax M2.5', total: 8.7, color: '#00bcd4' },
-	{ name: 'GLM-5', total: 8.5, color: 'var(--google)' },
-	{ name: 'Gemini 2.5 Pro', total: 8.4, color: '#4285f4' },
-];
+// Get latest scorecard for leaderboard
+const scorecardPosts = posts.filter(p => p.id.includes('scorecard') || p.data.title.toLowerCase().includes('scorecard'));
+const latestScorecard = scorecardPosts.length > 0 ? scorecardPosts[0] : null;
+
+// Parse models from latest scorecard if available
+let models;
+if (latestScorecard && latestScorecard.body) {
+	// Extract model names and scores from markdown table
+	const content = latestScorecard.body;
+	const claudeMatch = content.match(/Claude[^\n|]+?(\d+\.?\d*)/);
+	const openaiMatch = content.match(/5\.\d+-?[^0-9]+(\d+\.?\d*)/);
+	const kimiMatch = content.match(/Kimi[^\n|]+?(\d+\.?\d*)/);
+	
+	models = [
+		{ name: 'Claude Opus 4.6', total: claudeMatch ? parseFloat(claudeMatch[1]) : 9.4, color: 'var(--claude)' },
+		{ name: '5.3-Codex-Spark', total: openaiMatch ? parseFloat(openaiMatch[1]) : 9.2, color: 'var(--openai)' },
+		{ name: 'Kimi K2.5', total: kimiMatch ? parseFloat(kimiMatch[1]) : 8.9, color: '#e040fb' },
+		{ name: 'MiniMax M2.5', total: 8.7, color: '#00bcd4' },
+		{ name: 'GLM-5', total: 8.5, color: 'var(--google)' },
+		{ name: 'Gemini 2.5 Pro', total: 8.4, color: '#4285f4' },
+	];
+} else {
+	models = [
+		{ name: 'Claude Opus 4.6', total: 9.4, color: 'var(--claude)' },
+		{ name: '5.3-Codex-Spark', total: 9.2, color: 'var(--openai)' },
+		{ name: 'Kimi K2.5', total: 8.9, color: '#e040fb' },
+		{ name: 'MiniMax M2.5', total: 8.7, color: '#00bcd4' },
+		{ name: 'GLM-5', total: 8.5, color: 'var(--google)' },
+		{ name: 'Gemini 2.5 Pro', total: 8.4, color: '#4285f4' },
+	];
+}
 ---
 
 <!doctype html>
@@ -193,6 +216,11 @@ const models = [
 				box-shadow: var(--shadow-lg), var(--shadow-glow);
 				position: relative;
 				overflow: hidden;
+			}
+			.leaderboard-link {
+				position: absolute;
+				inset: 0;
+				z-index: 1;
 			}
 			.model-row {
 				display: grid;
@@ -634,9 +662,10 @@ const models = [
 
 				<div class="hero-visual">
 					<div class="leaderboard-card">
+						<a href={latestScorecard ? `/blog/${latestScorecard.id}/` : '/scorecards'} class="leaderboard-link"></a>
 						<div class="leaderboard-header">
 							<h3>Today's Leaderboard</h3>
-							<span>Feb 13, 2026</span>
+							<span>{latestScorecard ? latestScorecard.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Feb 13, 2026'}</span>
 						</div>
 						{models.map((model, i) => (
 							<div class="model-row">
