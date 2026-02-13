@@ -12,6 +12,15 @@ const posts = (await getCollection('blog')).sort(
 );
 const latest = posts[0];
 const highlights = posts.slice(1, 5);
+const taxonomy = [
+	{ title: 'Coding', description: 'Bug fixes, refactors, API patches, diffs.' },
+	{ title: 'Reasoning', description: 'Decisions, tradeoffs, leadership calls.' },
+	{ title: 'Tool‑use', description: 'Docs, CLI flows, integrations.' },
+	{ title: 'RAG/Research', description: 'Retrieval, synthesis, audit trails.' },
+	{ title: 'Agents', description: 'Multi‑step plans, tool reliability.' },
+	{ title: 'Latency/Cost', description: 'Speed, spend, and throughput tradeoffs.' },
+];
+const filters = ['All', 'Coding', 'Reasoning', 'Tool‑use', 'RAG/Research', 'Agents'];
 ---
 
 <!doctype html>
@@ -37,6 +46,19 @@ const highlights = posts.slice(1, 5);
 			}
 			.hero p {
 				color: rgb(var(--text-muted));
+			}
+			.filters {
+				display: flex;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+				margin: 1rem 0 2rem;
+			}
+			.filter {
+				border: 1px solid rgba(var(--border), 0.6);
+				border-radius: 999px;
+				padding: 0.35rem 0.9rem;
+				background: rgba(var(--border), 0.3);
+				font-size: 0.9rem;
 			}
 			.grid {
 				display: grid;
@@ -74,11 +96,29 @@ const highlights = posts.slice(1, 5);
 			.card a:hover .date {
 				color: var(--accent);
 			}
+			.taxonomy {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1rem;
+				margin: 2rem 0;
+			}
+			.taxonomy-card {
+				background: rgba(var(--border), 0.2);
+				border: 1px solid rgba(var(--border), 0.5);
+				border-radius: 12px;
+				padding: 1rem;
+			}
+			.section {
+				margin: 2.5rem 0;
+			}
 			@media (max-width: 960px) {
 				.hero {
 					grid-template-columns: 1fr;
 				}
 				.grid {
+					grid-template-columns: 1fr;
+				}
+				.taxonomy {
 					grid-template-columns: 1fr;
 				}
 			}
@@ -92,6 +132,12 @@ const highlights = posts.slice(1, 5);
 					<h1>Daily AI model scorecards</h1>
 					<p>Browse today’s winner, task leaders, and latency/cost tradeoffs.</p>
 					<p><strong>Updated daily at 6am ET.</strong></p>
+					<div class="filters">
+						{filters.map((filter) => (
+							<span class="filter">{filter}</span>
+						))}
+					</div>
+					<p class="meta">Filters are taxonomy anchors. Interactive filtering is coming.</p>
 				</div>
 				{latest && (
 					<div class="hero-card">
@@ -109,7 +155,20 @@ const highlights = posts.slice(1, 5);
 				)}
 			</section>
 
-			<section>
+			<section class="section">
+				<h2>Scorecard taxonomy</h2>
+				<p>We group evals by the skill you actually buy: code, reasoning, tool use, retrieval, and agent reliability.</p>
+				<div class="taxonomy">
+					{taxonomy.map((item) => (
+						<div class="taxonomy-card">
+							<strong>{item.title}</strong>
+							<p>{item.description}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
 				<h2>Recent scorecards</h2>
 				{highlights.length === 0 ? (
 					<p>No past scorecards yet. Check back tomorrow.</p>
