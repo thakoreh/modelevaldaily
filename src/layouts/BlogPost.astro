@@ -112,7 +112,14 @@ const pageTitle = title.includes('AIModelBenchmarks.com')
 			<a class="back-link" href="/blog">&larr; Back to all evals</a>
 			<article>
 				<div class="hero-image">
-					{heroImage && <Image width={1020} height={510} src={heroImage} alt={title} />}
+					{heroImage && (
+					// Support both imported images and string paths
+					typeof heroImage === 'string' ? (
+						<img src={heroImage} alt={title} width={1020} height={510} loading="lazy" />
+					) : (
+						<Image width={1020} height={510} src={heroImage} alt={title} />
+					)
+				)}
 				</div>
 				<div class="prose">
 					<div class="title-block">
