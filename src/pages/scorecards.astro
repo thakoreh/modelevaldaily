@@ -20,7 +20,14 @@ const taxonomy = [
 	{ title: 'Agents', description: 'Multi‑step plans, tool reliability.' },
 	{ title: 'Latency/Cost', description: 'Speed, spend, and throughput tradeoffs.' },
 ];
-const filters = ['All', 'Coding', 'Reasoning', 'Tool‑use', 'RAG/Research', 'Agents'];
+const filters = [
+	{ label: 'All', href: '#recent' },
+	{ label: 'Coding', href: '#coding' },
+	{ label: 'Reasoning', href: '#reasoning' },
+	{ label: 'Tool‑use', href: '#tool-use' },
+	{ label: 'RAG/Research', href: '#rag' },
+	{ label: 'Agents', href: '#agents' },
+];
 ---
 
 <!doctype html>
@@ -59,6 +66,12 @@ const filters = ['All', 'Coding', 'Reasoning', 'Tool‑use', 'RAG/Research', 'Ag
 				padding: 0.35rem 0.9rem;
 				background: rgba(var(--border), 0.3);
 				font-size: 0.9rem;
+				text-decoration: none;
+				color: rgb(var(--text));
+			}
+			.filter:hover {
+				border-color: rgba(var(--accent), 0.6);
+				color: var(--accent);
 			}
 			.grid {
 				display: grid;
@@ -134,10 +147,10 @@ const filters = ['All', 'Coding', 'Reasoning', 'Tool‑use', 'RAG/Research', 'Ag
 					<p><strong>Updated daily at 6am ET.</strong></p>
 					<div class="filters">
 						{filters.map((filter) => (
-							<span class="filter">{filter}</span>
+							<a class="filter" href={filter.href}>{filter.label}</a>
 						))}
 					</div>
-					<p class="meta">Filters are taxonomy anchors. Interactive filtering is coming.</p>
+					<p class="meta">Filters link to scorecard types. Interactive filtering is coming.</p>
 				</div>
 				{latest && (
 					<div class="hero-card">
@@ -168,8 +181,56 @@ const filters = ['All', 'Coding', 'Reasoning', 'Tool‑use', 'RAG/Research', 'Ag
 				</div>
 			</section>
 
-			<section class="section">
-				<h2>Recent scorecards</h2>
+			<section class="section" id="coding">
+				<h2>Coding scorecards</h2>
+				<p>Bug fixes, diffs, refactors, and API patches.</p>
+				{highlights.length === 0 ? (
+					<p>No past scorecards yet. Check back tomorrow.</p>
+				) : (
+					<ul class="grid">
+						{highlights.map((post) => (
+							<li class="card">
+								<a href={`/blog/${post.id}/`}>
+									{post.data.heroImage && (
+										<Image width={720} height={360} src={post.data.heroImage} alt="" />
+									)}
+									<h4 class="title">{post.data.title}</h4>
+									<p class="date">
+										<FormattedDate date={post.data.pubDate} />
+									</p>
+								</a>
+							</li>
+						))}
+					</ul>
+				)}
+			</section>
+
+			<section class="section" id="reasoning">
+				<h2>Reasoning scorecards</h2>
+				<p>Decision quality under pressure, tradeoffs, and strategy calls.</p>
+				<p class="meta">More reasoning scorecards landing this week.</p>
+			</section>
+
+			<section class="section" id="tool-use">
+				<h2>Tool‑use scorecards</h2>
+				<p>Docs‑driven tasks, CLI accuracy, and security hygiene.</p>
+				<p class="meta">More tool‑use scorecards landing this week.</p>
+			</section>
+
+			<section class="section" id="rag">
+				<h2>RAG/Research scorecards</h2>
+				<p>Retrieval, synthesis quality, and citation accuracy.</p>
+				<p class="meta">RAG scorecards are coming soon.</p>
+			</section>
+
+			<section class="section" id="agents">
+				<h2>Agent reliability scorecards</h2>
+				<p>Multi‑step task success, tool failures, and recovery behavior.</p>
+				<p class="meta">Agent scorecards are coming soon.</p>
+			</section>
+
+			<section class="section" id="recent">
+				<h2>All recent scorecards</h2>
 				{highlights.length === 0 ? (
 					<p>No past scorecards yet. Check back tomorrow.</p>
 				) : (
