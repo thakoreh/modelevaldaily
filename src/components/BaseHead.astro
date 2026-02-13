@@ -65,6 +65,11 @@ const jsonLd = isArticle
 			publisher: {
 				'@type': 'Organization',
 				name: 'AIModelBenchmarks.com',
+				url: SITE_URL,
+				logo: {
+					'@type': 'ImageObject',
+					url: `${SITE_URL}/favicon.svg`,
+				},
 			},
 		};
 ---
@@ -72,8 +77,20 @@ const jsonLd = isArticle
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+<!-- Favicons -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" sizes="any" />
+<link rel="apple-touch-icon" href="/favicon.svg" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="AIModelBench" />
+
+<!-- PWA Manifest -->
+<link rel="manifest" href="/manifest.json" />
+<meta name="mobile-web-app-capable" content="yes" />
+
 <link rel="sitemap" href="/sitemap.xml" />
 <link
 	rel="alternate"
@@ -82,8 +99,10 @@ const jsonLd = isArticle
 	href={new URL('rss.xml', Astro.site)}
 />
 <meta name="generator" content={Astro.generator} />
-<meta name="theme-color" content="#0a0b0f" />
+<meta name="theme-color" content="#6366f1" />
 <meta name="color-scheme" content="dark" />
+<meta name="msapplication-TileColor" content="#6366f1" />
+<meta name="msapplication-tap-highlight" content="no" />
 
 <!-- Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-Q8QWX0SCLG"></script>

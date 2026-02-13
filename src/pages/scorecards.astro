@@ -20,8 +20,8 @@ const codingPosts = posts.filter(p => p.id.includes('coding') || p.id.includes('
 const reasoningPosts = posts.filter(p => p.id.includes('reasoning') || p.id.includes('scorecard'));
 const toolUsePosts = posts.filter(p => p.id.includes('tool-use') || p.id.includes('scorecard'));
 const costCount = posts.filter(p => p.id.includes('pricing') || p.id.includes('cheap') || p.id.includes('cost')).length;
-const ragPosts = posts.filter(p => p.id.includes('rag') || p.id.includes('retrieval') || p.id.includes('research'));
-const agentPosts = posts.filter(p => p.id.includes('agent') || p.id.includes('speed-test'));
+const ragPosts = posts.filter(p => p.id.includes('rag') || p.id.includes('retrieval') || p.id.includes('research') || p.data.tags?.includes('rag') || p.data.tags?.includes('retrieval'));
+const agentPosts = posts.filter(p => p.id.includes('agent') || p.id.includes('speed-test') || p.data.tags?.includes('agent') || p.data.tags?.includes('agents'));
 const codingCount = codingPosts.length;
 const reasoningCount = reasoningPosts.length;
 const toolUseCount = toolUsePosts.length;
@@ -470,9 +470,30 @@ const filters = [
 				<div class="section-header">
 					<h2>RAG / Research Scorecards</h2>
 				</div>
+				<p class="section-desc">Retrieval accuracy, synthesis quality, and citation reliability.</p>
+				{ragPosts.length > 0 ? (
+				<ul class="post-grid">
+					{ragPosts.slice(0, 6).map((post) => (
+						<li class="post-card" data-category="rag">
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="post-card-img">
+										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+									</div>
+								)}
+								<div class="post-card-info">
+									<h4>{post.data.title}</h4>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
+				) : (
 				<div class="coming-soon">
 					<p>RAG and research scorecards are launching soon. Subscribe to get notified.</p>
 				</div>
+				)}
 			</section>
 
 			<!-- Agents -->
@@ -480,9 +501,30 @@ const filters = [
 				<div class="section-header">
 					<h2>Agent Reliability Scorecards</h2>
 				</div>
+				<p class="section-desc">Multi-step task success, tool failures, and recovery behavior.</p>
+				{agentPosts.length > 0 ? (
+				<ul class="post-grid">
+					{agentPosts.slice(0, 6).map((post) => (
+						<li class="post-card" data-category="agents">
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="post-card-img">
+										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+									</div>
+								)}
+								<div class="post-card-info">
+									<h4>{post.data.title}</h4>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
+				) : (
 				<div class="coming-soon">
 					<p>Agent reliability scorecards are launching soon. Multi-step task success, tool failures, and recovery behavior.</p>
 				</div>
+				)}
 			</section>
 
 			<!-- All -->

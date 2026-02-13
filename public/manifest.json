@@ -1,0 +1,17 @@
+{
+	"name": "AI Model Benchmarks - Daily LLM Evaluation & Comparison",
+	"short_name": "AIModelBench",
+	"description": "Compare AI models with real benchmarks. Daily updated LLM evaluation scores for GPT-4, Claude, Gemini, Llama and more.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#0a0b0f",
+	"theme_color": "#6366f1",
+	"icons": [
+		{
+			"src": "/favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	]
+}
