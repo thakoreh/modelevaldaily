@@ -20,16 +20,20 @@ const codingPosts = posts.filter(p => p.id.includes('coding') || p.id.includes('
 const reasoningPosts = posts.filter(p => p.id.includes('reasoning') || p.id.includes('scorecard'));
 const toolUsePosts = posts.filter(p => p.id.includes('tool-use') || p.id.includes('scorecard'));
 const costCount = posts.filter(p => p.id.includes('pricing') || p.id.includes('cheap') || p.id.includes('cost')).length;
+const ragPosts = posts.filter(p => p.id.includes('rag') || p.id.includes('retrieval') || p.id.includes('research'));
+const agentPosts = posts.filter(p => p.id.includes('agent') || p.id.includes('speed-test'));
 const codingCount = codingPosts.length;
 const reasoningCount = reasoningPosts.length;
 const toolUseCount = toolUsePosts.length;
+const ragCount = ragPosts.length;
+const agentCount = agentPosts.length;
 
 const taxonomy = [
 	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount },
 	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount },
 	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUseCount },
-	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: 0 },
-	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: 0 },
+	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: ragCount },
+	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: agentCount },
 	{ title: 'Latency & Cost', emoji: '&#9889;', description: 'Speed, spend, and throughput tradeoffs.', href: '#cost', count: costCount },
 ];
 
