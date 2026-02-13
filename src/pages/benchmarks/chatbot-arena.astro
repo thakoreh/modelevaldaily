@@ -1,0 +1,818 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const faqs = [
+	{
+		question: 'What is Chatbot Arena?',
+		answer: 'Chatbot Arena is a crowdsourced benchmark run by LMSYS (Large Model Systems Organization). Users chat anonymously with two AI models side-by-side and vote for which response they prefer. These votes are converted into Elo ratings, creating a leaderboard based on actual human preferences rather than automated tests.',
+	},
+	{
+		question: 'What is Elo in Chatbot Arena?',
+		answer: 'Elo is a rating system originally developed for chess. In Chatbot Arena, each model starts at 1000 Elo. When users vote, the winning model gains points and the losing model loses points. The amount depends on the expected outcome—beating a higher-rated model earns more points. A 100-point difference means the higher-rated model is expected to win about 64% of matchups.',
+	},
+	{
+		question: 'Is Chatbot Arena reliable?',
+		answer: 'Chatbot Arena is one of the most respected benchmarks because it reflects real human preferences rather than synthetic tests. However, it has limitations: voters may prefer confident-sounding but wrong answers, and the voting population may not represent your specific users. Use it as one signal among many.',
+	},
+	{
+		question: 'How many votes does Chatbot Arena collect?',
+		answer: 'As of 2026, Chatbot Arena has collected over 2 million human votes. This large sample size makes the Elo ratings statistically meaningful. Models need hundreds of votes before their ratings stabilize; newer models may have more uncertain rankings.',
+	},
+	{
+		question: 'What is the difference between Chatbot Arena and other benchmarks?',
+		answer: 'Unlike MMLU (knowledge testing) or SWE-bench (coding tasks), Chatbot Arena measures how much humans prefer one model\'s responses over another\'s. It captures qualities hard to automate: helpfulness, tone, creativity, and overall conversation quality. Think of it as a "taste test" for AI models.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: faq.answer,
+		},
+	})),
+};
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: 'What is Chatbot Arena? Understanding Elo Ratings for AI Models',
+	description: 'A complete guide to Chatbot Arena, the crowdsourced benchmark that ranks AI models based on human preference votes.',
+	author: {
+		'@type': 'Organization',
+		name: 'AIModelBenchmarks.com',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'AIModelBenchmarks.com',
+	},
+	datePublished: '2026-02-13',
+	dateModified: '2026-02-13',
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`What is Chatbot Arena? Elo Ratings Explained | ${SITE_TITLE}`}
+			description="Chatbot Arena ranks AI models using human preference votes. Learn how Elo ratings work, see current top performers, and understand when to use it for model selection."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero-section {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+			.hero-bg {
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+			.hero-content {
+				position: relative;
+				text-align: center;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.breadcrumb {
+				display: flex;
+				gap: 0.5rem;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: var(--space-lg);
+				font-size: var(--font-sm);
+			}
+			.breadcrumb a {
+				color: var(--text-tertiary);
+				text-decoration: none;
+			}
+			.breadcrumb a:hover {
+				color: var(--accent-light);
+			}
+			.breadcrumb span {
+				color: var(--text-tertiary);
+			}
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				padding: 0.35rem 0.85rem;
+				background: rgba(34, 197, 94, 0.15);
+				border: 1px solid rgba(34, 197, 94, 0.3);
+				border-radius: var(--radius-full);
+				font-size: var(--font-xs);
+				color: #4ade80;
+				margin-bottom: var(--space-md);
+			}
+			.hero-title {
+				font-size: clamp(2rem, 4vw, 3rem);
+				line-height: 1.15;
+				margin-bottom: var(--space-md);
+				letter-spacing: -0.03em;
+				background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.hero-desc {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				line-height: 1.7;
+			}
+
+			.content-section {
+				padding: var(--space-2xl) 0;
+			}
+			.article-content {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.article-content h2 {
+				font-size: var(--font-xl);
+				margin-top: var(--space-2xl);
+				margin-bottom: var(--space-md);
+				padding-top: var(--space-lg);
+				border-top: 1px solid var(--border-secondary);
+			}
+			.article-content h2:first-child {
+				border-top: none;
+				padding-top: 0;
+				margin-top: 0;
+			}
+			.article-content h3 {
+				font-size: var(--font-lg);
+				margin-top: var(--space-xl);
+				margin-bottom: var(--space-sm);
+			}
+			.article-content p {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: var(--space-md);
+			}
+			.article-content ul, .article-content ol {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: var(--space-md);
+				padding-left: 1.5rem;
+			}
+			.article-content li {
+				margin-bottom: 0.5rem;
+			}
+			.article-content strong {
+				color: var(--text-primary);
+			}
+			.article-content a {
+				color: var(--accent-light);
+				text-decoration: underline;
+				text-underline-offset: 2px;
+			}
+			.article-content a:hover {
+				color: var(--accent);
+			}
+
+			.info-box {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin: var(--space-xl) 0;
+			}
+			.info-box-title {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-weight: 600;
+				margin-bottom: var(--space-sm);
+				color: var(--text-primary);
+			}
+			.info-box p {
+				margin: 0;
+				font-size: var(--font-sm);
+			}
+			.info-box.highlight {
+				border-color: rgba(34, 197, 94, 0.4);
+				background: rgba(34, 197, 94, 0.05);
+			}
+
+			.elo-explanation {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-xl);
+				margin: var(--space-xl) 0;
+			}
+			.elo-explanation h4 {
+				font-size: var(--font-base);
+				margin-bottom: var(--space-md);
+				color: var(--text-primary);
+			}
+			.elo-scale {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+				gap: var(--space-sm);
+			}
+			.elo-level {
+				padding: var(--space-md);
+				background: var(--bg-tertiary);
+				border-radius: var(--radius-sm);
+				text-align: center;
+			}
+			.elo-level .range {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				color: var(--text-primary);
+				margin-bottom: 0.25rem;
+			}
+			.elo-level .label {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.leaderboard-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: var(--space-lg) 0;
+				font-size: var(--font-sm);
+			}
+			.leaderboard-table th,
+			.leaderboard-table td {
+				padding: 0.75rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+			.leaderboard-table th {
+				font-weight: 600;
+				color: var(--text-secondary);
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+			.leaderboard-table td {
+				color: var(--text-secondary);
+			}
+			.leaderboard-table tr:hover td {
+				background: var(--bg-tertiary);
+			}
+			.rank-1 { color: var(--success) !important; font-weight: 600; }
+			.rank-2 { color: var(--accent-light) !important; }
+			.rank-3 { color: var(--warning) !important; }
+
+			.battle-visual {
+				background: var(--bg-tertiary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-xl);
+				margin: var(--space-xl) 0;
+				text-align: center;
+			}
+			.battle-visual-title {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin-bottom: var(--space-md);
+			}
+			.battle-models {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: var(--space-lg);
+				flex-wrap: wrap;
+			}
+			.battle-model {
+				padding: var(--space-md) var(--space-lg);
+				background: var(--bg-card);
+				border: 1px solid var(--border-secondary);
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				color: var(--text-primary);
+			}
+			.battle-vs {
+				font-size: var(--font-lg);
+				color: var(--text-tertiary);
+				font-weight: 700;
+			}
+			.battle-result {
+				margin-top: var(--space-lg);
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+			}
+
+			.faq-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+				background: var(--bg-secondary);
+			}
+			.faq-list {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.section-title {
+				font-size: var(--font-xl);
+				text-align: center;
+				margin-bottom: var(--space-xl);
+			}
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				margin-bottom: var(--space-md);
+				overflow: hidden;
+			}
+			.faq-item:hover {
+				border-color: var(--border-accent);
+			}
+			.faq-question {
+				padding: var(--space-lg);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				gap: var(--space-md);
+			}
+			.faq-question h3 {
+				font-size: var(--font-base);
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0;
+				line-height: 1.4;
+			}
+			.faq-toggle {
+				flex-shrink: 0;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: var(--radius-sm);
+				background: var(--bg-tertiary);
+				color: var(--text-tertiary);
+				font-size: 1.1rem;
+				transition: all var(--transition-fast);
+			}
+			.faq-item.open .faq-toggle {
+				background: var(--accent);
+				color: white;
+				transform: rotate(45deg);
+			}
+			.faq-answer {
+				display: none;
+				padding: 0 var(--space-lg) var(--space-lg);
+			}
+			.faq-item.open .faq-answer {
+				display: block;
+			}
+			.faq-answer p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				line-height: 1.75;
+				margin: 0;
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+			}
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 480px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.related-links {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: var(--space-md);
+				margin-top: var(--space-xl);
+			}
+			.related-link {
+				display: block;
+				padding: var(--space-lg);
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+			.related-link:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+			.related-link h4 {
+				font-size: var(--font-base);
+				color: var(--text-primary);
+				margin-bottom: 0.25rem;
+			}
+			.related-link p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin: 0;
+			}
+
+			@media (max-width: 600px) {
+				.hero-section {
+					padding: var(--space-xl) 0;
+				}
+				.hero-title {
+					font-size: 1.5rem;
+				}
+				.hero-desc {
+					font-size: var(--font-base);
+				}
+				.faq-question {
+					padding: var(--space-md);
+				}
+				.faq-answer {
+					padding: 0 var(--space-md) var(--space-md);
+				}
+				.cta-card {
+					padding: var(--space-xl);
+				}
+				.leaderboard-table {
+					font-size: var(--font-xs);
+				}
+				.leaderboard-table th,
+				.leaderboard-table td {
+					padding: 0.5rem 0.5rem;
+				}
+				.elo-scale {
+					grid-template-columns: repeat(2, 1fr);
+				}
+				.battle-models {
+					flex-direction: column;
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="hero-section">
+			<div class="hero-bg"></div>
+			<div class="hero-content container">
+				<nav class="breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<a href="/benchmarks">Benchmarks</a>
+					<span>/</span>
+					<span>Chatbot Arena</span>
+				</nav>
+				<div class="hero-badge">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+						<circle cx="9" cy="7" r="4"/>
+						<path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+						<path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+					</svg>
+					Human Preference Benchmark
+				</div>
+				<h1 class="hero-title">What is Chatbot Arena?</h1>
+				<p class="hero-desc">
+					Chatbot Arena is a crowdsourced platform where humans vote on AI model responses in blind comparisons. 
+					These votes generate Elo ratings that rank models by actual user preference—the "taste test" of AI benchmarks.
+				</p>
+			</div>
+		</section>
+
+		<main>
+			<section class="content-section">
+				<div class="container">
+					<article class="article-content">
+						<h2>What Does Chatbot Arena Measure?</h2>
+						<p>
+							Unlike benchmarks that test specific capabilities (coding, knowledge, math), Chatbot Arena measures 
+							<strong>overall human preference</strong>. When people use AI models in real conversations, which responses do they prefer?
+						</p>
+						<p>
+							This captures qualities that automated tests miss:
+						</p>
+						<ul>
+							<li><strong>Helpfulness:</strong> Does the response actually solve the user's problem?</li>
+							<li><strong>Tone:</strong> Is the model pleasant to interact with?</li>
+							<li><strong>Clarity:</strong> Is the response easy to understand?</li>
+							<li><strong>Creativity:</strong> Does the model produce interesting, engaging content?</li>
+							<li><strong>Safety:</strong> Does the model avoid harmful or inappropriate content?</li>
+						</ul>
+
+						<div class="info-box highlight">
+							<div class="info-box-title">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<circle cx="12" cy="12" r="10"/>
+									<path d="M12 16v-4M12 8h.01"/>
+								</svg>
+								Key Insight
+							</div>
+							<p>
+								Chatbot Arena answers a simple but crucial question: "Which model would users rather talk to?" 
+								This is often more relevant to real-world deployment than scores on academic benchmarks.
+							</p>
+						</div>
+
+						<h2>How Chatbot Arena Works</h2>
+						<p>
+							Chatbot Arena is run by LMSYS (Large Model Systems Organization), a research group. Here's the methodology:
+						</p>
+						<ol>
+							<li><strong>Anonymous Battle:</strong> A user submits a prompt. Two randomly-selected models (labeled only as "Model A" and "Model B") each generate a response.</li>
+							<li><strong>Blind Vote:</strong> The user compares both responses without knowing which models produced them. They vote for the better response (or declare a tie).</li>
+							<li><strong>Identity Reveal:</strong> After voting, the model identities are revealed.</li>
+							<li><strong>Elo Update:</strong> The voting result updates each model's Elo rating.</li>
+						</ol>
+
+						<div class="battle-visual">
+							<div class="battle-visual-title">Example Battle</div>
+							<div class="battle-models">
+								<div class="battle-model">Model A</div>
+								<div class="battle-vs">VS</div>
+								<div class="battle-model">Model B</div>
+							</div>
+							<div class="battle-result">User votes for Model A → Model A gains Elo points, Model B loses points</div>
+						</div>
+
+						<h3>Understanding Elo Ratings</h3>
+						<p>
+							Elo (developed for chess) converts head-to-head results into a single rating number:
+						</p>
+						<ul>
+							<li><strong>Starting point:</strong> All models begin at 1000 Elo</li>
+							<li><strong>Point exchanges:</strong> When you win, you gain points; when you lose, you lose points</li>
+							<li><strong>Expected outcomes:</strong> Beating a higher-rated model earns more points than beating a lower-rated one</li>
+							<li><strong>Probability:</strong> A 100-point difference means the higher-rated model wins ~64% of the time</li>
+						</ul>
+
+						<div class="elo-explanation">
+							<h4>Elo Rating Scale for AI Models</h4>
+							<div class="elo-scale">
+								<div class="elo-level">
+									<div class="range">1400+</div>
+									<div class="label">Top-tier</div>
+								</div>
+								<div class="elo-level">
+									<div class="range">1300-1400</div>
+									<div class="label">Strong</div>
+								</div>
+								<div class="elo-level">
+									<div class="range">1200-1300</div>
+									<div class="label">Competitive</div>
+								</div>
+								<div class="elo-level">
+									<div class="range">1100-1200</div>
+									<div class="label">Developing</div>
+								</div>
+							</div>
+						</div>
+
+						<h2>Current Chatbot Arena Leaderboard (2026)</h2>
+						<p>
+							Here are representative Elo ratings from leading models. Rankings shift as new models release and 
+							games are played—check the <a href="https://lmarena.ai" target="_blank" rel="noopener">official Arena</a> 
+							or our <a href="/scorecards">daily scorecards</a> for current standings.
+						</p>
+						
+						<table class="leaderboard-table">
+							<thead>
+								<tr>
+									<th>Rank</th>
+									<th>Model</th>
+									<th>Elo Rating</th>
+									<th>95% CI</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="rank-1">1</td>
+									<td class="rank-1">Claude Opus 4.6</td>
+									<td class="rank-1">~1430</td>
+									<td>+5 / -5</td>
+								</tr>
+								<tr>
+									<td class="rank-2">2</td>
+									<td class="rank-2">Gemini 2.5 Pro</td>
+									<td class="rank-2">~1410</td>
+									<td>+6 / -6</td>
+								</tr>
+								<tr>
+									<td class="rank-3">3</td>
+									<td class="rank-3">5.3-Codex-Spark</td>
+									<td class="rank-3">~1395</td>
+									<td>+5 / -5</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>GLM-5</td>
+									<td>~1360</td>
+									<td>+7 / -7</td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td>Kimi K2.5</td>
+									<td>~1345</td>
+									<td>+8 / -8</td>
+								</tr>
+								<tr>
+									<td>6</td>
+									<td>MiniMax M2.5</td>
+									<td>~1320</td>
+									<td>+9 / -9</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p>
+							<em>Ratings are approximate and based on publicly available data. Confidence intervals (CI) indicate uncertainty—narrower is better.</em>
+						</p>
+
+						<h2>Limitations and Criticisms</h2>
+						<p>
+							Chatbot Arena is widely respected, but has important limitations:
+						</p>
+						<ul>
+							<li><strong>Voter bias:</strong> Users may prefer confident, verbose, or friendly responses even when they're wrong. Style can overshadow substance.</li>
+							<li><strong>Population skew:</strong> Voters are mostly AI enthusiasts, researchers, and developers. They may not represent your actual users.</li>
+							<li><strong>Prompt distribution:</strong> The types of questions asked may not match your use case. Coding questions, creative writing, and math each favor different models.</li>
+							<li><strong>Gaming risk:</strong> Model developers could theoretically submit favorable prompts or votes, though LMSYS has safeguards.</li>
+							<li><strong>New model volatility:</strong> Newer models have fewer votes, making their ratings less stable.</li>
+						</ul>
+
+						<div class="info-box">
+							<div class="info-box-title">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+									<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+								</svg>
+								Caution
+							</div>
+							<p>
+								A model with higher Elo might lose to a lower-rated model on your specific tasks. Elo measures 
+								average preference across many users and prompts—your mileage may vary.
+							</p>
+						</div>
+
+						<h3>Category-Specific Leaderboards</h3>
+						<p>
+							Chatbot Arena now offers category-specific rankings, which are more useful than overall Elo for specific use cases:
+						</p>
+						<ul>
+							<li><strong>Coding:</strong> Which model writes the best code?</li>
+							<li><strong>Math:</strong> Which model handles mathematical reasoning best?</li>
+							<li><strong>Creative writing:</strong> Which model produces the best stories and content?</li>
+							<li><strong>Hard prompts:</strong> Which model handles complex, challenging questions?</li>
+						</ul>
+
+						<h2>When to Use Chatbot Arena for Model Selection</h2>
+						<p>
+							Chatbot Arena is most useful when:
+						</p>
+						<ul>
+							<li>You're building a general-purpose chatbot or assistant</li>
+							<li>User satisfaction and conversation quality are primary metrics</li>
+							<li>You want to compare models across a wide range of interactions</li>
+							<li>You care about subjective qualities like tone and creativity</li>
+						</ul>
+						<p>
+							It's less useful when:
+						</p>
+						<ul>
+							<li>You have specific, narrow tasks (use <a href="/benchmarks/swe-bench">SWE-bench</a> for coding)</li>
+							<li>You need objective correctness measures (use <a href="/benchmarks/mmlu">MMLU</a> for knowledge)</li>
+							<li>Your users differ significantly from typical Arena voters</li>
+							<li>You need to evaluate cost, latency, or reliability</li>
+						</ul>
+						<p>
+							For a complete picture, combine Chatbot Arena Elo with our <a href="/scorecards">daily operational benchmarks</a> 
+							that measure real task performance, cost, and speed.
+						</p>
+
+						<h2>Related Benchmarks</h2>
+						<div class="related-links">
+							<a href="/benchmarks/swe-bench" class="related-link">
+								<h4>SWE-bench</h4>
+								<p>Tests AI models on real software engineering tasks</p>
+							</a>
+							<a href="/benchmarks/mmlu" class="related-link">
+								<h4>MMLU Benchmark</h4>
+								<p>Tests broad knowledge across 57 academic subjects</p>
+							</a>
+							<a href="/compare" class="related-link">
+								<h4>Model Comparison</h4>
+								<p>Compare models side-by-side on multiple metrics</p>
+							</a>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<section class="faq-section">
+				<div class="container">
+					<h2 class="section-title">Frequently Asked Questions</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<div class="faq-item">
+								<div class="faq-question">
+									<h3>{faq.question}</h3>
+									<span class="faq-toggle">+</span>
+								</div>
+								<div class="faq-answer">
+									<p>{faq.answer}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="cta-section">
+				<div class="container">
+					<div class="cta-card">
+						<h2>Go Beyond Elo Ratings</h2>
+						<p>Human preference matters, but so does task performance. Our daily scorecards test models on coding, reasoning, and real workflows—with cost and latency data.</p>
+						<a class="btn btn-primary" href="/scorecards">
+							View Latest Scorecards
+							<span class="btn-arrow">&rarr;</span>
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+
+		<script>
+			document.querySelectorAll('.faq-question').forEach((question) => {
+				question.addEventListener('click', () => {
+					const item = question.parentElement;
+					item.classList.toggle('open');
+				});
+			});
+		</script>
+	</body>
+</html>

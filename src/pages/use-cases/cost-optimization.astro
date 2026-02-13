@@ -1,0 +1,363 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const costModels = [
+	{ rank: 1, name: 'GLM-5', provider: 'Zhipu AI', inputPrice: 0.5, outputPrice: 0.5, overall: 8.5, color: '#f43f5e', context: '128K', costPer1MTasks: '~$0.80', highlights: ['Ultra-low pricing', 'Enterprise ready', 'Good Chinese support'] },
+	{ rank: 2, name: 'DeepSeek V3', provider: 'DeepSeek', inputPrice: 0.27, outputPrice: 1.1, overall: 8.7, color: '#8b5cf6', context: '64K', costPer1MTasks: '~$0.95', highlights: ['Best value performance', 'Strong coding', 'Fast responses'] },
+	{ rank: 3, name: 'MiniMax M2.5', provider: 'MiniMax', inputPrice: 0.5, outputPrice: 2, overall: 8.3, color: '#00bcd4', context: '245K', costPer1MTasks: '~$1.50', highlights: ['Low cost', 'Multimodal support', 'Fast inference'] },
+	{ rank: 4, name: 'Kimi K2.5', provider: 'Moonshot', inputPrice: 2, outputPrice: 10, overall: 8.9, color: '#e040fb', context: '200K', costPer1MTasks: '~$5.00', highlights: ['Great value', 'Strong reasoning', 'Large context'] },
+	{ rank: 5, name: 'Gemini 2.5 Pro', provider: 'Google', inputPrice: 7, outputPrice: 21, overall: 8.4, color: '#4285f4', context: '1M', costPer1MTasks: '~$12.00', highlights: ['Prompt caching', 'Massive context', 'Good value'] },
+	{ rank: 6, name: 'Claude Opus 4.6', provider: 'Anthropic', inputPrice: 15, outputPrice: 75, overall: 9.4, color: 'var(--claude)', context: '200K', costPer1MTasks: '~$45.00', highlights: ['Best quality', 'Prompt caching', 'Complex tasks'] },
+];
+
+const costScenarios = [
+	{ scenario: 'Simple classification', tokensPerTask: 500, glm5: '$0.0003', deepseek: '$0.0003', minimax: '$0.0004', claude: '$0.02' },
+	{ scenario: 'Short code generation', tokensPerTask: 2000, glm5: '$0.001', deepseek: '$0.001', minimax: '$0.002', claude: '$0.09' },
+	{ scenario: 'Long document analysis', tokensPerTask: 10000, glm5: '$0.005', deepseek: '$0.006', minimax: '$0.01', claude: '$0.45' },
+	{ scenario: 'Complex multi-turn chat', tokensPerTask: 50000, glm5: '$0.03', deepseek: '$0.03', minimax: '$0.05', claude: '$2.25' },
+];
+
+const decisionGuide = [
+	{ scenario: 'High-volume production API', pick: 'DeepSeek V3', reason: 'Best balance of low cost and strong performance. $0.27/$1.10 per million tokens with 8.7/10 quality.' },
+	{ scenario: 'Enterprise on a budget', pick: 'GLM-5', reason: 'Lowest pricing at $0.50/$0.50 with solid 8.5/10 performance. Enterprise features included.' },
+	{ scenario: 'Need quality + reasonable cost', pick: 'Kimi K2.5', reason: '8.9/10 overall score at $2/$10 per million. Best quality-per-dollar for most workloads.' },
+	{ scenario: 'Long context + caching', pick: 'Gemini 2.5 Pro', reason: 'Prompt caching can reduce costs 50-90% on repeated contexts. 1M context for large documents.' },
+	{ scenario: 'Quality matters more than cost', pick: 'Claude Opus 4.6', reason: 'Best quality at 9.4/10. Use for critical tasks where accuracy justifies the premium.' },
+];
+
+const savingsTips = [
+	{ tip: 'Use prompt caching', description: 'Claude and Gemini offer caching that reduces costs 50-90% on repeated system prompts and context.', impact: 'Up to 90% savings' },
+	{ tip: 'Right-size your model', description: 'Use cheaper models for simple tasks. Reserve Claude/GPT-4 for complex reasoning and coding.', impact: '60-80% savings' },
+	{ tip: 'Optimize token usage', description: 'Shorter prompts, structured output, and removing unnecessary context reduces costs significantly.', impact: '30-50% savings' },
+	{ tip: 'Batch similar requests', description: 'Combine similar tasks into single API calls to reduce overhead and improve efficiency.', impact: '20-40% savings' },
+	{ tip: 'Monitor and retry smarter', description: 'Track failure rates by model. Sometimes a more expensive model that works first try is cheaper.', impact: '10-30% savings' },
+];
+
+const faqs = [
+	{ q: 'What is the cheapest LLM API in 2026?', a: 'GLM-5 offers the lowest pricing at $0.50 per million tokens for both input and output. DeepSeek V3 is close at $0.27/$1.10 with slightly better performance. Both are dramatically cheaper than Claude ($15/$75) or GPT-4 ($10/$30).' },
+	{ q: 'How do I calculate my AI API costs?', a: 'Cost = (input tokens × input price + output tokens × output price) / 1,000,000. Track your average tokens per task, multiply by your volume, and compare across models. Our cost scenarios table shows real examples.' },
+	{ q: 'Is it worth paying more for a better model?', a: 'Sometimes yes. If a cheaper model requires 3 retries or produces unusable output, a more expensive model that works first try can be cheaper overall. Track success rates and retries, not just token costs.' },
+	{ q: 'What is prompt caching and how much does it save?', a: 'Prompt caching stores processed prompt prefixes so repeated context doesn\'t need reprocessing. Claude and Gemini offer this. Savings range from 50-90% when your requests share common system prompts or documentation.' },
+	{ q: 'Should I use different models for different tasks?', a: 'Yes. Route simple classification to GLM-5 or MiniMax, standard coding to DeepSeek, and complex architecture decisions to Claude. This "model routing" approach typically saves 40-60% vs using one premium model for everything.' },
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.q,
+		acceptedAnswer: { '@type': 'Answer', text: faq.a },
+	})),
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Cheapest LLM API — Reduce AI Costs & Optimize Spending | ${SITE_TITLE}`}
+			description="Find the cheapest LLM APIs and learn how to reduce AI costs. Compare GLM-5, DeepSeek, MiniMax and more. Cost analysis, prompt caching tips, and model routing strategies."
+		/>
+		<style>
+			main { width: 100%; max-width: 100%; padding: 0; }
+			.container { max-width: var(--container-xl); margin: 0 auto; padding: 0 1.5rem; }
+
+			.hero-section {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+			.hero-bg { position: absolute; inset: 0; background: var(--gradient-hero); pointer-events: none; }
+			.hero-mesh { position: absolute; inset: 0; background: var(--gradient-mesh); opacity: 0.5; pointer-events: none; }
+			.hero-content { position: relative; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: var(--space-2xl); align-items: center; }
+			.hero-text h1 { font-size: clamp(2rem, 3.5vw, 2.75rem); margin-bottom: var(--space-sm); line-height: 1.15; }
+			.hero-text > p { color: var(--text-secondary); font-size: var(--font-lg); margin-bottom: var(--space-lg); max-width: 520px; }
+			.hero-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: var(--space-lg); }
+			.hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+			.btn {
+				display: inline-flex; align-items: center; gap: 0.5rem;
+				padding: 0.7rem 1.4rem; border-radius: var(--radius-md);
+				font-weight: 600; font-size: var(--font-sm);
+				text-decoration: none; transition: all var(--transition-fast);
+				cursor: pointer; border: none;
+			}
+			.btn-primary { background: var(--gradient-primary); color: white; box-shadow: 0 0 24px rgba(99, 102, 241, 0.3); }
+			.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(99, 102, 241, 0.5); color: white; }
+			.btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-primary); }
+			.btn-secondary:hover { background: var(--bg-elevated); border-color: var(--border-accent); color: var(--text-primary); }
+			.btn-arrow { transition: transform var(--transition-fast); }
+			.btn:hover .btn-arrow { transform: translateX(3px); }
+
+			.price-card {
+				background: var(--bg-card); border: 1px solid var(--border-primary);
+				border-radius: var(--radius-xl); padding: var(--space-lg);
+				box-shadow: var(--shadow-lg), var(--shadow-glow); position: relative; overflow: hidden;
+			}
+			.price-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #22c55e, #10b981); opacity: 0.6; }
+			.price-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--space-md); }
+			.price-header h3 { font-size: var(--font-base); margin: 0; }
+			.price-header span { font-size: var(--font-xs); color: var(--text-tertiary); }
+			.price-row { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid var(--border-secondary); }
+			.price-row:last-of-type { border-bottom: none; }
+			.price-model { display: flex; align-items: center; gap: 0.5rem; }
+			.price-dot { width: 8px; height: 8px; border-radius: 50%; }
+			.price-value { font-family: ui-monospace, monospace; font-weight: 700; color: var(--success); }
+
+			.section { max-width: var(--container-xl); margin: 0 auto; padding: var(--space-2xl) 1.5rem; }
+			.section-header { margin-bottom: var(--space-lg); }
+			.section-header h2 { margin-bottom: 0.35rem; }
+			.section-header p { color: var(--text-tertiary); font-size: var(--font-base); }
+
+			.table-wrapper { overflow-x: auto; border-radius: var(--radius-xl); border: 1px solid var(--border-primary); background: var(--bg-card); }
+			table { width: 100%; border-collapse: collapse; min-width: 800px; }
+			th { background: var(--bg-tertiary); color: var(--text-secondary); font-weight: 600; font-size: var(--font-xs); text-transform: uppercase; letter-spacing: 0.05em; padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid var(--border-primary); }
+			td { padding: 0.75rem 1rem; border-bottom: 1px solid var(--border-secondary); vertical-align: top; }
+			tr:last-child td { border-bottom: none; }
+			tr:hover td { background: var(--bg-elevated); }
+			.model-cell { display: flex; align-items: center; gap: 0.6rem; }
+			.model-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+			.price-highlight { color: var(--success); font-weight: 700; }
+
+			.decision-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
+			.decision-card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: var(--space-lg); transition: all var(--transition-base); }
+			.decision-card:hover { border-color: var(--border-accent); transform: translateY(-2px); }
+			.decision-card h4 { font-size: var(--font-sm); color: var(--text-tertiary); margin-bottom: 0.25rem; font-weight: 500; }
+			.decision-card .pick { font-size: var(--font-lg); font-weight: 700; color: var(--success); margin-bottom: 0.5rem; }
+			.decision-card p { font-size: var(--font-sm); color: var(--text-secondary); margin: 0; line-height: 1.5; }
+
+			.tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-md); }
+			.tip-card { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); padding: var(--space-lg); transition: all var(--transition-base); }
+			.tip-card:hover { border-color: var(--border-accent); }
+			.tip-card h4 { font-size: var(--font-base); margin-bottom: 0.5rem; }
+			.tip-card p { font-size: var(--font-sm); color: var(--text-tertiary); margin-bottom: 0.5rem; line-height: 1.5; }
+			.tip-impact { display: inline-block; font-size: var(--font-xs); font-weight: 600; padding: 0.25rem 0.6rem; background: rgba(34, 197, 94, 0.1); color: var(--success); border-radius: var(--radius-sm); }
+
+			.faq-list { max-width: 800px; margin: 0 auto; }
+			.faq-item { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: var(--radius-lg); margin-bottom: var(--space-md); overflow: hidden; }
+			.faq-item:hover { border-color: var(--border-accent); }
+			.faq-question { padding: var(--space-lg); cursor: pointer; display: flex; justify-content: space-between; align-items: flex-start; gap: var(--space-md); }
+			.faq-question h3 { font-size: var(--font-base); font-weight: 600; margin: 0; line-height: 1.4; }
+			.faq-toggle { flex-shrink: 0; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; border-radius: var(--radius-sm); background: var(--bg-tertiary); color: var(--text-tertiary); font-size: 1rem; transition: all var(--transition-fast); }
+			.faq-item.open .faq-toggle { background: var(--success); color: white; transform: rotate(45deg); }
+			.faq-answer { display: none; padding: 0 var(--space-lg) var(--space-lg); }
+			.faq-item.open .faq-answer { display: block; }
+			.faq-answer p { font-size: var(--font-sm); color: var(--text-secondary); line-height: 1.7; margin: 0; }
+
+			.cta-section { padding: var(--space-2xl) 0 var(--space-3xl); }
+			.cta-card { background: var(--bg-card); border: 1px solid var(--border-accent); border-radius: var(--radius-xl); padding: var(--space-2xl); text-align: center; position: relative; overflow: hidden; }
+			.cta-card::before { content: ''; position: absolute; inset: 0; background: var(--gradient-card); pointer-events: none; }
+			.cta-card h2 { position: relative; margin-bottom: var(--space-sm); }
+			.cta-card p { position: relative; color: var(--text-secondary); margin-bottom: var(--space-lg); max-width: 500px; margin-left: auto; margin-right: auto; }
+			.cta-card .btn { position: relative; }
+
+			@media (max-width: 960px) {
+				.hero-content { grid-template-columns: 1fr; gap: var(--space-xl); }
+				.decision-grid { grid-template-columns: 1fr; }
+				.tips-grid { grid-template-columns: 1fr; }
+			}
+			@media (max-width: 600px) {
+				.hero-section { padding: var(--space-xl) 0; }
+				.hero-text h1 { font-size: 1.5rem; }
+				.hero-text > p { font-size: var(--font-base); }
+				.hero-actions { flex-direction: column; }
+				.hero-actions .btn { width: 100%; justify-content: center; }
+				.section { padding: var(--space-lg) 1rem; }
+				.cta-card { padding: var(--space-lg); }
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="hero-section">
+			<div class="hero-bg"></div>
+			<div class="hero-mesh"></div>
+			<div class="hero-content container">
+				<div class="hero-text">
+					<h1>Cheapest LLM APIs & Cost Optimization Guide</h1>
+					<p>Find the most cost-effective AI models for your workload. Compare pricing, calculate real costs, and learn strategies to reduce your AI spend by up to 90%.</p>
+					<div class="hero-badges">
+						<span class="badge badge-success">Cost analysis</span>
+						<span class="badge">Pricing comparison</span>
+						<span class="badge badge-accent">Savings tips</span>
+					</div>
+					<div class="hero-actions">
+						<a class="btn btn-primary" href="#pricing">Compare pricing <span class="btn-arrow">&rarr;</span></a>
+						<a class="btn btn-secondary" href="#tips">Cost saving tips</a>
+					</div>
+				</div>
+				<div class="price-card">
+					<div class="price-header">
+						<h3>Lowest Priced Models</h3>
+						<span>$/M tokens</span>
+					</div>
+					{costModels.slice(0, 5).map((model) => (
+						<div class="price-row">
+							<div class="price-model">
+								<div class="price-dot" style={`background: ${model.color}`}></div>
+								<span>{model.name}</span>
+							</div>
+							<div class="price-value">${model.inputPrice}/${model.outputPrice}</div>
+						</div>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<main>
+			<section class="section" id="pricing">
+				<div class="section-header">
+					<h2>LLM Pricing Comparison</h2>
+					<p>Input/output pricing per million tokens, performance scores, and estimated cost per 1M tasks.</p>
+				</div>
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>Model</th>
+								<th>Input Price</th>
+								<th>Output Price</th>
+								<th>Overall Score</th>
+								<th>Context</th>
+								<th>Est. Cost/1M Tasks</th>
+								<th>Key Strengths</th>
+							</tr>
+						</thead>
+						<tbody>
+							{costModels.map((model) => (
+								<tr>
+									<td>
+										<div class="model-cell">
+											<div class="model-dot" style={`background: ${model.color}`}></div>
+											<div>
+												<div style="font-weight: 600;">{model.name}</div>
+												<div style="font-size: var(--font-xs); color: var(--text-tertiary);">{model.provider}</div>
+											</div>
+										</div>
+									</td>
+									<td class="price-highlight">${model.inputPrice}</td>
+									<td class="price-highlight">${model.outputPrice}</td>
+									<td><strong>{model.overall}/10</strong></td>
+									<td>{model.context}</td>
+									<td style="font-family: ui-monospace, monospace;">{model.costPer1MTasks}</td>
+									<td style="font-size: var(--font-sm); color: var(--text-secondary);">{model.highlights.join(' • ')}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Real Cost Scenarios</h2>
+					<p>Estimated cost per task at different complexity levels.</p>
+				</div>
+				<div class="table-wrapper">
+					<table>
+						<thead>
+							<tr>
+								<th>Scenario</th>
+								<th>Tokens/Task</th>
+								<th>GLM-5</th>
+								<th>DeepSeek</th>
+								<th>MiniMax</th>
+								<th>Claude</th>
+							</tr>
+						</thead>
+						<tbody>
+							{costScenarios.map((s) => (
+								<tr>
+									<td><strong>{s.scenario}</strong></td>
+									<td style="font-family: ui-monospace, monospace; color: var(--text-tertiary);">{s.tokensPerTask.toLocaleString()}</td>
+									<td class="price-highlight">{s.glm5}</td>
+									<td class="price-highlight">{s.deepseek}</td>
+									<td>{s.minimax}</td>
+									<td style="color: var(--text-tertiary);">{s.claude}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section" id="tips">
+				<div class="section-header">
+					<h2>Cost Saving Strategies</h2>
+					<p>Proven tactics to reduce your AI API spend.</p>
+				</div>
+				<div class="tips-grid">
+					{savingsTips.map((item) => (
+						<div class="tip-card">
+							<h4>{item.tip}</h4>
+							<p>{item.description}</p>
+							<span class="tip-impact">{item.impact}</span>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>When to Use Which Model</h2>
+					<p>Decision guide for balancing cost vs quality.</p>
+				</div>
+				<div class="decision-grid">
+					{decisionGuide.map((item) => (
+						<div class="decision-card">
+							<h4>{item.scenario}</h4>
+							<div class="pick">{item.pick}</div>
+							<p>{item.reason}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Frequently Asked Questions</h2>
+				</div>
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<div class="faq-item">
+							<div class="faq-question">
+								<h3>{faq.q}</h3>
+								<span class="faq-toggle">+</span>
+							</div>
+							<div class="faq-answer">
+								<p>{faq.a}</p>
+							</div>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="cta-section container">
+				<div class="cta-card">
+					<h2>See Full Model Scorecards</h2>
+					<p>Get detailed performance benchmarks, failure cases, and cost analysis for every model we test daily.</p>
+					<a class="btn btn-primary" href="/scorecards">View scorecards <span class="btn-arrow">&rarr;</span></a>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+
+		<script>
+			document.querySelectorAll('.faq-question').forEach((q) => {
+				q.addEventListener('click', () => {
+					const item = q.parentElement;
+					const wasOpen = item.classList.contains('open');
+					document.querySelectorAll('.faq-item').forEach((i) => i.classList.remove('open'));
+					if (!wasOpen) item.classList.add('open');
+				});
+			});
+		</script>
+	</body>
+</html>

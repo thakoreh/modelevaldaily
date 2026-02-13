@@ -1,0 +1,1008 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const lastUpdated = 'February 13, 2026';
+
+const deepseekModel = {
+	name: 'DeepSeek V3',
+	provider: 'DeepSeek',
+	color: '#8b5cf6',
+	pricing: { input: 0.27, output: 1.1 },
+	contextWindow: '64K',
+	scores: { coding: 8.9, reasoning: 8.5, toolUse: 8.2, speed: 9.0 },
+};
+
+const claudeModel = {
+	name: 'Claude Opus 4.6',
+	provider: 'Anthropic',
+	color: '#d97706',
+	pricing: { input: 15, output: 75 },
+	contextWindow: '200K',
+	scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.3, speed: 7.5 },
+};
+
+const gptModel = {
+	name: 'GPT-5.2',
+	provider: 'OpenAI',
+	color: '#10b981',
+	pricing: { input: 10, output: 30 },
+	contextWindow: '128K',
+	scores: { coding: 9.2, reasoning: 9.0, toolUse: 9.1, speed: 8.5 },
+};
+
+const codingCategories = [
+	{ name: 'Code Generation', deepseek: 8.8, claude: 9.5, winner: 'claude', note: 'Claude produces more maintainable, well-structured code' },
+	{ name: 'Code Review', deepseek: 8.5, claude: 9.3, winner: 'claude', note: 'Claude catches more subtle issues and provides deeper analysis' },
+	{ name: 'Debugging', deepseek: 8.7, claude: 9.2, winner: 'claude', note: 'Claude better at complex multi-file debugging scenarios' },
+	{ name: 'Refactoring', deepseek: 8.6, claude: 9.6, winner: 'claude', note: 'Claude maintains consistency across large refactors' },
+	{ name: 'Algorithm Design', deepseek: 8.9, claude: 9.3, winner: 'claude', note: 'Claude provides more optimized solutions with better explanations' },
+	{ name: 'Quick Prototyping', deepseek: 9.1, claude: 8.8, winner: 'deepseek', note: 'DeepSeek faster for rapid iteration and simple tasks' },
+	{ name: 'Script Writing', deepseek: 9.0, claude: 9.0, winner: 'tie', note: 'Both excellent for automation and utility scripts' },
+	{ name: 'Web Development', deepseek: 8.7, claude: 9.2, winner: 'claude', note: 'Claude better at complex frontend architecture' },
+];
+
+const pricingComparison = [
+	{ name: 'Input Cost (per 1M tokens)', deepseek: '$0.27', claude: '$15', ratio: '55x cheaper' },
+	{ name: 'Output Cost (per 1M tokens)', deepseek: '$1.10', claude: '$75', ratio: '68x cheaper' },
+	{ name: 'Typical Small Task (~5K tokens)', deepseek: '$0.006', claude: '$0.45', ratio: '75x cheaper' },
+	{ name: 'Typical Medium Task (~50K tokens)', deepseek: '$0.06', claude: '$4.50', ratio: '75x cheaper' },
+	{ name: 'Large Codebase Analysis (~200K)', deepseek: 'N/A (64K limit)', claude: '$18.00', ratio: 'Claude only' },
+	{ name: 'Monthly High Volume (100M tokens)', deepseek: '$137', claude: '$7,500', ratio: '55x cheaper' },
+];
+
+const useCases = [
+	{ title: 'Startup on a Budget', pick: 'DeepSeek', reason: 'At $0.27/$1.10 per million tokens, DeepSeek offers incredible value for cost-conscious startups', alt: 'Claude for investor-facing quality' },
+	{ title: 'Enterprise Production', pick: 'Claude', reason: 'Higher reliability scores and enterprise support make Claude safer for production workloads', alt: 'DeepSeek for non-critical paths' },
+	{ title: 'High-Volume Processing', pick: 'DeepSeek', reason: 'Process 100M tokens for $137 vs $7,500 with Claude — ideal for data pipelines and batch jobs', alt: 'Claude when quality is critical' },
+	{ title: 'Complex Architecture', pick: 'Claude', reason: '200K context window and 9.6 refactoring score perfect for large-scale system design', alt: 'DeepSeek for smaller modules' },
+	{ title: 'CI/CD Automation', pick: 'DeepSeek', reason: 'Fast responses and low cost make DeepSeek ideal for automated code generation in pipelines', alt: 'Claude for critical deployments' },
+	{ title: 'Research & Analysis', pick: 'Claude', reason: 'Superior reasoning (9.4 vs 8.5) and larger context for comprehensive research tasks', alt: 'DeepSeek for initial exploration' },
+];
+
+const faqs = [
+	{ q: 'Is DeepSeek as good as Claude for coding?', a: 'DeepSeek V3 achieves an 8.9 coding score vs Claude\'s 9.5, making it competitive for most tasks. Claude excels at complex refactoring and architecture, while DeepSeek is excellent for rapid prototyping and high-volume code generation at a fraction of the cost.' },
+	{ q: 'How much cheaper is DeepSeek than Claude?', a: 'DeepSeek V3 is approximately 55-68x cheaper than Claude Opus 4.6. Input tokens cost $0.27/M vs $15/M, and output tokens cost $1.10/M vs $75/M. This makes DeepSeek the most cost-effective option for high-volume applications.' },
+	{ q: 'Does DeepSeek support the same context length as Claude?', a: 'No, DeepSeek V3 has a 64K token context window compared to Claude\'s 200K. For tasks requiring analysis of large codebases or long documents, Claude\'s larger context is necessary.' },
+	{ q: 'Is DeepSeek faster than Claude?', a: 'Yes, DeepSeek V3 scores 9.0 for speed vs Claude\'s 7.5. For latency-sensitive applications or high-throughput scenarios, DeepSeek provides faster response times.' },
+	{ q: 'Can DeepSeek replace Claude for production use?', a: 'It depends on your requirements. DeepSeek is suitable for non-critical workloads, high-volume processing, and prototyping. For enterprise production systems requiring maximum reliability, Claude\'s higher scores in tool-use (9.3 vs 8.2) and reasoning (9.4 vs 8.5) may be worth the premium.' },
+	{ q: 'How does DeepSeek compare to GPT?', a: 'DeepSeek V3 (coding: 8.9) is competitive with GPT-5.2 (coding: 9.2) while being 37x cheaper on input tokens and 27x cheaper on output tokens. GPT has a larger 128K context window vs DeepSeek\'s 64K.' },
+	{ q: 'What is DeepSeek best used for?', a: 'DeepSeek excels at high-volume code generation, rapid prototyping, CI/CD automation, batch processing, and any scenario where cost efficiency is more important than maximum quality. It\'s ideal for startups, side projects, and experimentation.' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`DeepSeek vs Claude (2026) — Cost & Performance Comparison | ${SITE_TITLE}`}
+			description="DeepSeek V3 vs Claude Opus 4.6: Compare coding performance, pricing (55x cheaper), context windows, and speed. Find the best model for your budget and use case."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.page-hero {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+
+			.page-hero::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+
+			.hero-inner {
+				position: relative;
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.hero-text h1 {
+				font-size: clamp(2rem, 3.5vw, 2.75rem);
+				margin-bottom: var(--space-sm);
+			}
+
+			.hero-text > p {
+				color: var(--text-secondary);
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-lg);
+				max-width: 700px;
+			}
+
+			.hero-meta {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				padding: 0.35rem 0.75rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-full);
+			}
+
+			.hero-badge .count {
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+
+			.hero-highlight {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				font-size: var(--font-sm);
+				color: #8b5cf6;
+				padding: 0.35rem 0.75rem;
+				background: rgba(139, 92, 246, 0.1);
+				border: 1px solid rgba(139, 92, 246, 0.3);
+				border-radius: var(--radius-full);
+				font-weight: 600;
+			}
+
+			.section {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.section-header {
+				margin-bottom: var(--space-lg);
+			}
+
+			.section-header h2 {
+				margin-bottom: 0.35rem;
+			}
+
+			.section-header p {
+				color: var(--text-tertiary);
+				font-size: var(--font-base);
+			}
+
+			.quick-compare {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+
+			.model-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-xl);
+				padding: var(--space-xl);
+				position: relative;
+				overflow: hidden;
+			}
+
+			.model-card.value-pick::before {
+				content: 'Best Value';
+				position: absolute;
+				top: 0;
+				right: 0;
+				background: linear-gradient(135deg, #8b5cf6, #6366f1);
+				color: white;
+				font-size: var(--font-xs);
+				font-weight: 600;
+				padding: 0.35rem 0.75rem;
+				border-radius: 0 var(--radius-lg) 0 var(--radius-md);
+			}
+
+			.model-card.quality-pick::before {
+				content: 'Best Quality';
+				position: absolute;
+				top: 0;
+				right: 0;
+				background: linear-gradient(135deg, #d97706, #f59e0b);
+				color: white;
+				font-size: var(--font-xs);
+				font-weight: 600;
+				padding: 0.35rem 0.75rem;
+				border-radius: 0 var(--radius-lg) 0 var(--radius-md);
+			}
+
+			.model-card-header {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				margin-bottom: var(--space-md);
+			}
+
+			.model-dot {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+			}
+
+			.model-name {
+				font-size: var(--font-xl);
+				font-weight: 700;
+			}
+
+			.model-provider {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+			}
+
+			.model-stats {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--space-md);
+			}
+
+			.stat-item {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+			}
+
+			.stat-label {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.stat-value {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				font-family: ui-monospace, monospace;
+			}
+
+			.stat-value.highlight {
+				color: #8b5cf6;
+			}
+
+			.stat-value.claude-highlight {
+				color: #d97706;
+			}
+
+			.compare-table-wrapper {
+				overflow-x: auto;
+				border-radius: var(--radius-xl);
+				border: 1px solid var(--border-primary);
+				background: var(--bg-card);
+				margin-bottom: var(--space-xl);
+			}
+
+			.compare-table {
+				width: 100%;
+				border-collapse: collapse;
+				min-width: 700px;
+			}
+
+			.compare-table th {
+				background: var(--bg-tertiary);
+				color: var(--text-secondary);
+				font-weight: 600;
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				padding: 0.85rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-primary);
+			}
+
+			.compare-table td {
+				padding: 0.85rem 1rem;
+				border-bottom: 1px solid var(--border-secondary);
+				vertical-align: middle;
+			}
+
+			.compare-table tr:last-child td {
+				border-bottom: none;
+			}
+
+			.compare-table tr:hover td {
+				background: var(--bg-elevated);
+			}
+
+			.category-name {
+				font-weight: 600;
+				color: var(--text-primary);
+			}
+
+			.score-bar-container {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.score-bar {
+				flex: 1;
+				height: 6px;
+				background: var(--bg-tertiary);
+				border-radius: 3px;
+				overflow: hidden;
+				min-width: 60px;
+			}
+
+			.score-fill {
+				height: 100%;
+				border-radius: 3px;
+			}
+
+			.score-num {
+				font-weight: 600;
+				font-size: var(--font-sm);
+				width: 28px;
+				text-align: right;
+			}
+
+			.winner-badge {
+				font-size: var(--font-xs);
+				padding: 0.15rem 0.5rem;
+				border-radius: var(--radius-sm);
+				font-weight: 600;
+			}
+
+			.winner-badge.deepseek {
+				background: rgba(139, 92, 246, 0.15);
+				color: #8b5cf6;
+			}
+
+			.winner-badge.claude {
+				background: rgba(217, 119, 6, 0.15);
+				color: #d97706;
+			}
+
+			.winner-badge.tie {
+				background: var(--bg-tertiary);
+				color: var(--text-tertiary);
+			}
+
+			.note-text {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				line-height: 1.4;
+			}
+
+			.price-highlight {
+				color: #8b5cf6;
+				font-weight: 700;
+			}
+
+			.use-case-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--space-md);
+			}
+
+			.use-case-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				transition: all var(--transition-base);
+			}
+
+			.use-case-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+
+			.use-case-card h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-pick {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-pick.deepseek { color: #8b5cf6; }
+			.use-case-pick.claude { color: #d97706; }
+
+			.use-case-reason {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin-bottom: 0.5rem;
+				line-height: 1.5;
+			}
+
+			.use-case-alt {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.use-case-alt span {
+				color: var(--text-secondary);
+			}
+
+			.faq-section {
+				max-width: var(--container-lg);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.faq-list {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-md);
+			}
+
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+			}
+
+			.faq-item h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.5rem;
+				color: var(--text-primary);
+			}
+
+			.faq-item p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.6;
+				margin: 0;
+			}
+
+			.related-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-top: var(--space-lg);
+			}
+
+			.related-link {
+				font-size: var(--font-sm);
+				padding: 0.5rem 1rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-md);
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+
+			.related-link:hover {
+				background: var(--bg-elevated);
+				border-color: var(--border-accent);
+				color: var(--accent-light);
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0;
+			}
+
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 500px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.savings-box {
+				background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(99, 102, 241, 0.05));
+				border: 1px solid rgba(139, 92, 246, 0.2);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+
+			.savings-box h3 {
+				font-size: var(--font-base);
+				margin-bottom: var(--space-sm);
+				color: #8b5cf6;
+			}
+
+			.savings-box p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.7;
+				margin: 0;
+			}
+
+			.savings-box strong {
+				color: #8b5cf6;
+			}
+
+			.three-way-compare {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-md);
+				margin-bottom: var(--space-xl);
+			}
+
+			.mini-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-md);
+				text-align: center;
+			}
+
+			.mini-card-header {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 0.5rem;
+				margin-bottom: var(--space-sm);
+			}
+
+			.mini-card .name {
+				font-weight: 700;
+				font-size: var(--font-sm);
+			}
+
+			.mini-card .price {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				font-family: ui-monospace, monospace;
+			}
+
+			@media (max-width: 960px) {
+				.quick-compare {
+					grid-template-columns: 1fr;
+				}
+				.use-case-grid {
+					grid-template-columns: 1fr;
+				}
+				.three-way-compare {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			@media (max-width: 600px) {
+				.page-hero {
+					padding: var(--space-xl) 0;
+				}
+				.section {
+					padding: var(--space-lg) 1rem;
+				}
+				.model-stats {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			"mainEntity": faqs.map(faq => ({
+				"@type": "Question",
+				"name": faq.q,
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": faq.a
+				}
+			}))
+		})} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="page-hero">
+			<div class="hero-inner">
+				<div class="hero-text">
+					<h1>DeepSeek vs Claude: Cost vs Quality Trade-off</h1>
+					<p>DeepSeek V3 offers comparable coding performance at 55x lower cost. Compare benchmarks, pricing, and use cases to decide between budget-friendly DeepSeek and premium Claude for your development workflow.</p>
+					<div class="hero-meta">
+						<span class="hero-badge">Last updated <span class="count">{lastUpdated}</span></span>
+						<span class="hero-highlight">55x cheaper</span>
+						<span class="hero-badge">8 coding categories</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<main>
+			<section class="section">
+				<div class="section-header">
+					<h2>Quick Comparison</h2>
+					<p>At-a-glance comparison of key metrics</p>
+				</div>
+
+				<div class="quick-compare">
+					<div class="model-card value-pick">
+						<div class="model-card-header">
+							<div class="model-dot" style={`background: ${deepseekModel.color}`}></div>
+							<div>
+								<div class="model-name">{deepseekModel.name}</div>
+								<div class="model-provider">{deepseekModel.provider}</div>
+							</div>
+						</div>
+						<div class="model-stats">
+							<div class="stat-item">
+								<span class="stat-label">Coding Score</span>
+								<span class="stat-value">{deepseekModel.scores.coding}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Reasoning Score</span>
+								<span class="stat-value">{deepseekModel.scores.reasoning}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Pricing</span>
+								<span class="stat-value highlight">${deepseekModel.pricing.input}/${deepseekModel.pricing.output}</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Context Window</span>
+								<span class="stat-value">{deepseekModel.contextWindow}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="model-card quality-pick">
+						<div class="model-card-header">
+							<div class="model-dot" style={`background: ${claudeModel.color}`}></div>
+							<div>
+								<div class="model-name">{claudeModel.name}</div>
+								<div class="model-provider">{claudeModel.provider}</div>
+							</div>
+						</div>
+						<div class="model-stats">
+							<div class="stat-item">
+								<span class="stat-label">Coding Score</span>
+								<span class="stat-value claude-highlight">{claudeModel.scores.coding}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Reasoning Score</span>
+								<span class="stat-value claude-highlight">{claudeModel.scores.reasoning}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Pricing</span>
+								<span class="stat-value">${claudeModel.pricing.input}/${claudeModel.pricing.output}</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Context Window</span>
+								<span class="stat-value">{claudeModel.contextWindow}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="savings-box">
+					<h3>Cost Savings Summary</h3>
+					<p>DeepSeek V3 costs <strong>$0.27 per million input tokens</strong> vs Claude's <strong>$15</strong> — a <strong>55x reduction</strong>. For a startup processing 50 million tokens monthly, that's <strong>$137 with DeepSeek vs $7,500 with Claude</strong>. The quality gap (8.9 vs 9.5 coding score) may be acceptable for many use cases.</p>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Three-Way Comparison</h2>
+					<p>DeepSeek vs Claude vs GPT pricing overview</p>
+				</div>
+
+				<div class="three-way-compare">
+					<div class="mini-card">
+						<div class="mini-card-header">
+							<div class="model-dot" style={`background: ${deepseekModel.color}`}></div>
+							<span class="name">DeepSeek V3</span>
+						</div>
+						<div class="price" style="color: #8b5cf6;">$0.27 / $1.10</div>
+						<div style="font-size: var(--font-xs); color: var(--text-tertiary); margin-top: 0.25rem;">per 1M tokens (in/out)</div>
+					</div>
+					<div class="mini-card">
+						<div class="mini-card-header">
+							<div class="model-dot" style={`background: ${claudeModel.color}`}></div>
+							<span class="name">Claude Opus 4.6</span>
+						</div>
+						<div class="price">$15 / $75</div>
+						<div style="font-size: var(--font-xs); color: var(--text-tertiary); margin-top: 0.25rem;">per 1M tokens (in/out)</div>
+					</div>
+					<div class="mini-card">
+						<div class="mini-card-header">
+							<div class="model-dot" style={`background: ${gptModel.color}`}></div>
+							<span class="name">GPT-5.2</span>
+						</div>
+						<div class="price">$10 / $30</div>
+						<div style="font-size: var(--font-xs); color: var(--text-tertiary); margin-top: 0.25rem;">per 1M tokens (in/out)</div>
+					</div>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Coding Performance Breakdown</h2>
+					<p>Detailed comparison across 8 coding categories</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Category</th>
+								<th>DeepSeek</th>
+								<th>Claude</th>
+								<th>Winner</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							{codingCategories.map((cat) => (
+								<tr>
+									<td class="category-name">{cat.name}</td>
+									<td>
+										<div class="score-bar-container">
+											<div class="score-bar">
+												<div class="score-fill" style={`width: ${cat.deepseek * 10}%; background: ${deepseekModel.color}`}></div>
+											</div>
+											<span class="score-num">{cat.deepseek}</span>
+										</div>
+									</td>
+									<td>
+										<div class="score-bar-container">
+											<div class="score-bar">
+												<div class="score-fill" style={`width: ${cat.claude * 10}%; background: ${claudeModel.color}`}></div>
+											</div>
+											<span class="score-num">{cat.claude}</span>
+										</div>
+									</td>
+									<td>
+										<span class={`winner-badge ${cat.winner}`}>
+											{cat.winner === 'deepseek' ? 'DeepSeek' : cat.winner === 'claude' ? 'Claude' : 'Tie'}
+										</span>
+									</td>
+									<td class="note-text">{cat.note}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Detailed Pricing Comparison</h2>
+					<p>Cost analysis for different usage scenarios</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Scenario</th>
+								<th>DeepSeek V3</th>
+								<th>Claude Opus 4.6</th>
+								<th>Savings</th>
+							</tr>
+						</thead>
+						<tbody>
+							{pricingComparison.map((row) => (
+								<tr>
+									<td class="category-name">{row.name}</td>
+									<td><span class="price-highlight">{row.deepseek}</span></td>
+									<td>{row.claude}</td>
+									<td class="note-text">{row.ratio}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Speed & Other Metrics</h2>
+					<p>Performance beyond coding ability</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Metric</th>
+								<th>DeepSeek V3</th>
+								<th>Claude Opus 4.6</th>
+								<th>Winner</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="category-name">Speed Score</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${deepseekModel.scores.speed * 10}%; background: ${deepseekModel.color}`}></div>
+										</div>
+										<span class="score-num">{deepseekModel.scores.speed}</span>
+									</div>
+								</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${claudeModel.scores.speed * 10}%; background: ${claudeModel.color}`}></div>
+										</div>
+										<span class="score-num">{claudeModel.scores.speed}</span>
+									</div>
+								</td>
+								<td><span class="winner-badge deepseek">DeepSeek</span></td>
+							</tr>
+							<tr>
+								<td class="category-name">Tool-Use Score</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${deepseekModel.scores.toolUse * 10}%; background: ${deepseekModel.color}`}></div>
+										</div>
+										<span class="score-num">{deepseekModel.scores.toolUse}</span>
+									</div>
+								</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${claudeModel.scores.toolUse * 10}%; background: ${claudeModel.color}`}></div>
+										</div>
+										<span class="score-num">{claudeModel.scores.toolUse}</span>
+									</div>
+								</td>
+								<td><span class="winner-badge claude">Claude</span></td>
+							</tr>
+							<tr>
+								<td class="category-name">Reasoning Score</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${deepseekModel.scores.reasoning * 10}%; background: ${deepseekModel.color}`}></div>
+										</div>
+										<span class="score-num">{deepseekModel.scores.reasoning}</span>
+									</div>
+								</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${claudeModel.scores.reasoning * 10}%; background: ${claudeModel.color}`}></div>
+										</div>
+										<span class="score-num">{claudeModel.scores.reasoning}</span>
+									</div>
+								</td>
+								<td><span class="winner-badge claude">Claude</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Use Case Recommendations</h2>
+					<p>Which model to choose for specific scenarios</p>
+				</div>
+
+				<div class="use-case-grid">
+					{useCases.map((uc) => (
+						<div class="use-case-card">
+							<h3>{uc.title}</h3>
+							<div class={`use-case-pick ${uc.pick.toLowerCase()}`}>{uc.pick}</div>
+							<p class="use-case-reason">{uc.reason}</p>
+							<p class="use-case-alt">Alternative: <span>{uc.alt}</span></p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="faq-section">
+				<div class="section-header">
+					<h2>Frequently Asked Questions</h2>
+					<p>Common questions about DeepSeek vs Claude</p>
+				</div>
+
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<div class="faq-item">
+							<h3>{faq.q}</h3>
+							<p>{faq.a}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Related Comparisons</h2>
+					<p>Explore other model comparisons</p>
+				</div>
+
+				<div class="related-links">
+					<a href="/compare/claude-vs-gpt" class="related-link">Claude vs GPT</a>
+					<a href="/compare/open-source-vs-closed" class="related-link">Open Source vs Closed Models</a>
+					<a href="/compare" class="related-link">All Model Comparisons</a>
+					<a href="/scorecards" class="related-link">Daily Scorecards</a>
+					<a href="/blog/deepseek-v3" class="related-link">DeepSeek V3 Deep Dive</a>
+					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.6 Deep Dive</a>
+				</div>
+			</section>
+
+			<section class="cta-section container">
+				<div class="cta-card">
+					<h2>See Live Benchmark Results</h2>
+					<p>View daily scorecards with task-level breakdowns for DeepSeek, Claude, and other leading models.</p>
+					<a class="btn btn-primary" href="/scorecards">
+						View Daily Scorecards
+						<span class="btn-arrow">&rarr;</span>
+					</a>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>

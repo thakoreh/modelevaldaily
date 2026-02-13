@@ -1,0 +1,687 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const faqs = [
+	{
+		question: 'What is SWE-bench?',
+		answer: 'SWE-bench (Software Engineering Benchmark) is a dataset that tests AI models on real software engineering tasks. It contains actual bug reports and feature requests from popular open-source Python projects, along with the code changes that human developers made to fix them. Models must understand the problem, navigate a codebase, and generate correct patches.',
+	},
+	{
+		question: 'What does a good SWE-bench score look like?',
+		answer: 'SWE-bench is intentionally difficult. As of early 2026, the best models score around 50-65% on SWE-bench Verified (a cleaner subset). Scores above 40% are considered strong. The full SWE-bench dataset is even harder, with top models typically scoring 30-45%. Any score above 50% represents genuinely useful software engineering capability.',
+	},
+	{
+		question: 'How is SWE-bench different from other coding benchmarks?',
+		answer: 'Unlike benchmarks that test isolated functions or algorithmic puzzles, SWE-bench requires models to work with real codebases spanning thousands of lines, understand issue descriptions written by humans, and produce patches that pass existing test suites. It tests practical software engineering, not just code generation.',
+	},
+	{
+		question: 'Should I use SWE-bench scores to choose a coding assistant?',
+		answer: 'SWE-bench is one useful signal, but it has limitations. It only tests Python, focuses on bug fixes rather than feature development, and may not reflect your specific use cases. Use it alongside other benchmarks and, ideally, test models on your own codebase before committing.',
+	},
+	{
+		question: 'What is SWE-bench Verified?',
+		answer: 'SWE-bench Verified is a curated subset of 500 tasks from the original SWE-bench dataset. Human annotators reviewed each task to ensure the test suite is reliable and the task is solvable. Many leaderboard rankings now use this subset because it provides more consistent, fair comparisons between models.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: faq.answer,
+		},
+	})),
+};
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: 'What is SWE-bench? A Complete Guide to the AI Coding Benchmark',
+	description: 'Understanding SWE-bench, the benchmark that tests AI models on real software engineering tasks from GitHub issues.',
+	author: {
+		'@type': 'Organization',
+		name: 'AIModelBenchmarks.com',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'AIModelBenchmarks.com',
+	},
+	datePublished: '2026-02-13',
+	dateModified: '2026-02-13',
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`What is SWE-bench? The AI Coding Benchmark Explained | ${SITE_TITLE}`}
+			description="SWE-bench tests AI models on real GitHub issues. Learn how this benchmark works, see current top performers, and understand when to use it for model selection."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero-section {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+			.hero-bg {
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+			.hero-content {
+				position: relative;
+				text-align: center;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.breadcrumb {
+				display: flex;
+				gap: 0.5rem;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: var(--space-lg);
+				font-size: var(--font-sm);
+			}
+			.breadcrumb a {
+				color: var(--text-tertiary);
+				text-decoration: none;
+			}
+			.breadcrumb a:hover {
+				color: var(--accent-light);
+			}
+			.breadcrumb span {
+				color: var(--text-tertiary);
+			}
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				padding: 0.35rem 0.85rem;
+				background: rgba(99, 102, 241, 0.15);
+				border: 1px solid rgba(99, 102, 241, 0.3);
+				border-radius: var(--radius-full);
+				font-size: var(--font-xs);
+				color: var(--accent-light);
+				margin-bottom: var(--space-md);
+			}
+			.hero-title {
+				font-size: clamp(2rem, 4vw, 3rem);
+				line-height: 1.15;
+				margin-bottom: var(--space-md);
+				letter-spacing: -0.03em;
+				background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.hero-desc {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				line-height: 1.7;
+			}
+
+			.content-section {
+				padding: var(--space-2xl) 0;
+			}
+			.article-content {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.article-content h2 {
+				font-size: var(--font-xl);
+				margin-top: var(--space-2xl);
+				margin-bottom: var(--space-md);
+				padding-top: var(--space-lg);
+				border-top: 1px solid var(--border-secondary);
+			}
+			.article-content h2:first-child {
+				border-top: none;
+				padding-top: 0;
+				margin-top: 0;
+			}
+			.article-content h3 {
+				font-size: var(--font-lg);
+				margin-top: var(--space-xl);
+				margin-bottom: var(--space-sm);
+			}
+			.article-content p {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: var(--space-md);
+			}
+			.article-content ul, .article-content ol {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: var(--space-md);
+				padding-left: 1.5rem;
+			}
+			.article-content li {
+				margin-bottom: 0.5rem;
+			}
+			.article-content strong {
+				color: var(--text-primary);
+			}
+			.article-content a {
+				color: var(--accent-light);
+				text-decoration: underline;
+				text-underline-offset: 2px;
+			}
+			.article-content a:hover {
+				color: var(--accent);
+			}
+
+			.info-box {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin: var(--space-xl) 0;
+			}
+			.info-box-title {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-weight: 600;
+				margin-bottom: var(--space-sm);
+				color: var(--text-primary);
+			}
+			.info-box p {
+				margin: 0;
+				font-size: var(--font-sm);
+			}
+			.info-box.highlight {
+				border-color: var(--border-accent);
+				background: rgba(99, 102, 241, 0.05);
+			}
+
+			.leaderboard-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: var(--space-lg) 0;
+				font-size: var(--font-sm);
+			}
+			.leaderboard-table th,
+			.leaderboard-table td {
+				padding: 0.75rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+			.leaderboard-table th {
+				font-weight: 600;
+				color: var(--text-secondary);
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+			.leaderboard-table td {
+				color: var(--text-secondary);
+			}
+			.leaderboard-table tr:hover td {
+				background: var(--bg-tertiary);
+			}
+			.rank-1 { color: var(--success) !important; font-weight: 600; }
+			.rank-2 { color: var(--accent-light) !important; }
+			.rank-3 { color: var(--warning) !important; }
+
+			.faq-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+				background: var(--bg-secondary);
+			}
+			.faq-list {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.section-title {
+				font-size: var(--font-xl);
+				text-align: center;
+				margin-bottom: var(--space-xl);
+			}
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				margin-bottom: var(--space-md);
+				overflow: hidden;
+			}
+			.faq-item:hover {
+				border-color: var(--border-accent);
+			}
+			.faq-question {
+				padding: var(--space-lg);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				gap: var(--space-md);
+			}
+			.faq-question h3 {
+				font-size: var(--font-base);
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0;
+				line-height: 1.4;
+			}
+			.faq-toggle {
+				flex-shrink: 0;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: var(--radius-sm);
+				background: var(--bg-tertiary);
+				color: var(--text-tertiary);
+				font-size: 1.1rem;
+				transition: all var(--transition-fast);
+			}
+			.faq-item.open .faq-toggle {
+				background: var(--accent);
+				color: white;
+				transform: rotate(45deg);
+			}
+			.faq-answer {
+				display: none;
+				padding: 0 var(--space-lg) var(--space-lg);
+			}
+			.faq-item.open .faq-answer {
+				display: block;
+			}
+			.faq-answer p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				line-height: 1.75;
+				margin: 0;
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+			}
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 480px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.related-links {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: var(--space-md);
+				margin-top: var(--space-xl);
+			}
+			.related-link {
+				display: block;
+				padding: var(--space-lg);
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+			.related-link:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+			.related-link h4 {
+				font-size: var(--font-base);
+				color: var(--text-primary);
+				margin-bottom: 0.25rem;
+			}
+			.related-link p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin: 0;
+			}
+
+			@media (max-width: 600px) {
+				.hero-section {
+					padding: var(--space-xl) 0;
+				}
+				.hero-title {
+					font-size: 1.5rem;
+				}
+				.hero-desc {
+					font-size: var(--font-base);
+				}
+				.faq-question {
+					padding: var(--space-md);
+				}
+				.faq-answer {
+					padding: 0 var(--space-md) var(--space-md);
+				}
+				.cta-card {
+					padding: var(--space-xl);
+				}
+				.leaderboard-table {
+					font-size: var(--font-xs);
+				}
+				.leaderboard-table th,
+				.leaderboard-table td {
+					padding: 0.5rem 0.5rem;
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="hero-section">
+			<div class="hero-bg"></div>
+			<div class="hero-content container">
+				<nav class="breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<a href="/benchmarks">Benchmarks</a>
+					<span>/</span>
+					<span>SWE-bench</span>
+				</nav>
+				<div class="hero-badge">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M12 20V10M18 20V4M6 20v-4"/>
+					</svg>
+					Coding Benchmark
+				</div>
+				<h1 class="hero-title">What is SWE-bench?</h1>
+				<p class="hero-desc">
+					SWE-bench is the definitive benchmark for testing AI models on real software engineering tasks. 
+					It uses actual GitHub issues to measure whether models can understand bugs, navigate codebases, and write working patches.
+				</p>
+			</div>
+		</section>
+
+		<main>
+			<section class="content-section">
+				<div class="container">
+					<article class="article-content">
+						<h2>What Does SWE-bench Measure?</h2>
+						<p>
+							SWE-bench evaluates an AI model's ability to perform <strong>real software engineering work</strong>. 
+							Unlike coding challenges that test algorithms in isolation, SWE-bench asks models to solve actual problems 
+							from real open-source projects.
+						</p>
+						<p>
+							Each task in SWE-bench comes from a real GitHub issue in popular Python repositories like Django, 
+							Flask, NumPy, and Scikit-learn. The model receives:
+						</p>
+						<ul>
+							<li>The original issue description (bug report or feature request)</li>
+							<li>The complete codebase at the version where the issue occurred</li>
+							<li>Any relevant context from the repository</li>
+						</ul>
+						<p>
+							The model must then generate a code patch that fixes the issue and <strong>passes the project's existing test suite</strong>. 
+							This is exactly what human software engineers do every day.
+						</p>
+
+						<div class="info-box highlight">
+							<div class="info-box-title">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<circle cx="12" cy="12" r="10"/>
+									<path d="M12 16v-4M12 8h.01"/>
+								</svg>
+								Key Insight
+							</div>
+							<p>
+								SWE-bench is intentionally difficult. Even the best AI models in 2026 struggle to solve more than 
+								half of the tasks. This isn't a flaw—it reflects the genuine complexity of software engineering.
+							</p>
+						</div>
+
+						<h2>How SWE-bench Works</h2>
+						<p>
+							The benchmark was created by researchers at Princeton and Salesforce. Here's the methodology:
+						</p>
+						<ol>
+							<li><strong>Issue Collection:</strong> Pull requests from 12 popular Python repositories were analyzed to find those that fixed bugs or added features in response to GitHub issues.</li>
+							<li><strong>Task Creation:</strong> Each task includes the issue text, the codebase state before the fix, and the test cases that verify the fix works.</li>
+							<li><strong>Model Evaluation:</strong> The model is given the issue and codebase, then must generate a patch. The patch is applied and tests are run.</li>
+							<li><strong>Scoring:</strong> A task is only marked correct if <em>all</em> relevant tests pass. Partial credit is not given.</li>
+						</ol>
+
+						<h3>The SWE-bench Dataset Sizes</h3>
+						<ul>
+							<li><strong>SWE-bench (Full):</strong> 2,294 tasks from 12 repositories. The original, complete dataset.</li>
+							<li><strong>SWE-bench Verified:</strong> 500 tasks manually reviewed to ensure reliability. This is now the preferred subset for fair comparisons.</li>
+						</ul>
+
+						<h2>Current SWE-bench Leaderboard (2026)</h2>
+						<p>
+							Here are representative scores from leading models on SWE-bench Verified. Note that rankings change 
+							frequently as models are updated—check our <a href="/scorecards">daily scorecards</a> for current standings.
+						</p>
+						
+						<table class="leaderboard-table">
+							<thead>
+								<tr>
+									<th>Rank</th>
+									<th>Model</th>
+									<th>SWE-bench Verified</th>
+									<th>Notes</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="rank-1">1</td>
+									<td class="rank-1">Claude Opus 4.6</td>
+									<td class="rank-1">~65%</td>
+									<td>Strong at understanding context</td>
+								</tr>
+								<tr>
+									<td class="rank-2">2</td>
+									<td class="rank-2">5.3-Codex-Spark</td>
+									<td class="rank-2">~60%</td>
+									<td>Excellent at code generation</td>
+								</tr>
+								<tr>
+									<td class="rank-3">3</td>
+									<td class="rank-3">Gemini 2.5 Pro</td>
+									<td class="rank-3">~55%</td>
+									<td>Good reasoning capabilities</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>GLM-5</td>
+									<td>~48%</td>
+									<td>Competitive at lower cost</td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td>Kimi K2.5</td>
+									<td>~45%</td>
+									<td>Strong value proposition</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p>
+							<em>Percentages are approximate and based on publicly available benchmarks. Actual performance varies by evaluation method.</em>
+						</p>
+
+						<h2>Limitations and Criticisms</h2>
+						<p>
+							SWE-bench is valuable, but it's not a complete picture of coding ability. Important limitations:
+						</p>
+						<ul>
+							<li><strong>Python only:</strong> All tasks are in Python. Performance may not transfer to other languages.</li>
+							<li><strong>Bug-fix focus:</strong> Most tasks are bug fixes, not feature development or architecture work.</li>
+							<li><strong>Test coverage:</strong> Some tasks have incomplete test suites, meaning a model might "pass" without truly solving the problem.</li>
+							<li><strong>Context length:</strong> Models with larger context windows may have advantages that don't reflect real ability.</li>
+							<li><strong>Contamination risk:</strong> Some models may have seen the test data during training, inflating scores.</li>
+						</ul>
+
+						<div class="info-box">
+							<div class="info-box-title">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+									<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+								</svg>
+								Caution
+							</div>
+							<p>
+								Don't rely solely on SWE-bench for model selection. A model with a 45% score might be better for your 
+								specific use case than one with 55%, depending on your tech stack, task types, and budget.
+							</p>
+						</div>
+
+						<h2>When to Use SWE-bench for Model Selection</h2>
+						<p>
+							SWE-bench is most useful when:
+						</p>
+						<ul>
+							<li>You're building a coding assistant that works with existing codebases</li>
+							<li>You need models that can understand natural language bug reports</li>
+							<li>Your team works primarily in Python</li>
+							<li>You want a rough comparison of coding capabilities between models</li>
+						</ul>
+						<p>
+							It's less useful when:
+						</p>
+						<ul>
+							<li>You need models for greenfield development (new projects from scratch)</li>
+							<li>Your work involves languages other than Python</li>
+							<li>You're focused on code explanation or documentation rather than patches</li>
+							<li>You need to compare models on speed, cost, or reliability</li>
+						</ul>
+						<p>
+							For a more complete picture, combine SWE-bench with <a href="/benchmarks/mmlu">MMLU</a> (reasoning), 
+							<a href="/benchmarks/chatbot-arena">Chatbot Arena</a> (human preference), and our own 
+							<a href="/scorecards">daily operational benchmarks</a>.
+						</p>
+
+						<h2>Related Benchmarks</h2>
+						<div class="related-links">
+							<a href="/benchmarks/mmlu" class="related-link">
+								<h4>MMLU Benchmark</h4>
+								<p>Tests broad knowledge and reasoning across 57 subjects</p>
+							</a>
+							<a href="/benchmarks/chatbot-arena" class="related-link">
+								<h4>Chatbot Arena</h4>
+								<p>Human preference rankings from blind comparisons</p>
+							</a>
+							<a href="/compare" class="related-link">
+								<h4>Model Comparison</h4>
+								<p>Compare models side-by-side on multiple metrics</p>
+							</a>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<section class="faq-section">
+				<div class="container">
+					<h2 class="section-title">Frequently Asked Questions</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<div class="faq-item">
+								<div class="faq-question">
+									<h3>{faq.question}</h3>
+									<span class="faq-toggle">+</span>
+								</div>
+								<div class="faq-answer">
+									<p>{faq.answer}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="cta-section">
+				<div class="container">
+					<div class="cta-card">
+						<h2>See How Models Perform Today</h2>
+						<p>Our daily scorecards test models on real tasks, not just benchmarks. Get current rankings for coding, reasoning, and tool use.</p>
+						<a class="btn btn-primary" href="/scorecards">
+							View Latest Scorecards
+							<span class="btn-arrow">&rarr;</span>
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+
+		<script>
+			document.querySelectorAll('.faq-question').forEach((question) => {
+				question.addEventListener('click', () => {
+					const item = question.parentElement;
+					item.classList.toggle('open');
+				});
+			});
+		</script>
+	</body>
+</html>

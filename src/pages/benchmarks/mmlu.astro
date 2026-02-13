@@ -1,0 +1,741 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const faqs = [
+	{
+		question: 'What does MMLU stand for?',
+		answer: 'MMLU stands for Massive Multitask Language Understanding. The name reflects its design: a massive dataset covering many different subjects, testing whether language models can understand and reason across diverse domains.',
+	},
+	{
+		question: 'What is a good MMLU score?',
+		answer: 'Context matters. Human expert performance varies by subject but averages around 89.8% on MMLU. The best AI models now exceed 90% on the benchmark, though this may partly reflect test data appearing in training data. A score above 80% is strong; above 85% is competitive among leading models.',
+	},
+	{
+		question: 'Is MMLU still relevant in 2026?',
+		answer: 'Yes, but with caveats. Many top models now score similarly high, reducing MMLU\'s ability to distinguish between them. However, it remains useful for evaluating new models, tracking progress over time, and assessing broad knowledge. Most evaluators now use MMLU alongside other benchmarks like MMLU-Pro (harder version) and GPQA.',
+	},
+	{
+		question: 'Why do some models score higher on MMLU than others?',
+		answer: 'Several factors influence MMLU scores: training data (some models may have seen test questions), model size (larger models tend to score higher), and training methodology (models trained on academic text often perform better). This is why comparing raw scores can be misleading.',
+	},
+	{
+		question: 'How is MMLU different from other benchmarks?',
+		answer: 'Unlike SWE-bench (coding) or Chatbot Arena (human preference), MMLU tests knowledge retention and reasoning in a multiple-choice format. It doesn\'t require models to write code or engage in conversation—it measures whether models "know" facts and can apply reasoning to select correct answers.',
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: faq.answer,
+		},
+	})),
+};
+
+const articleSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'Article',
+	headline: 'What is MMLU? Understanding the AI Knowledge Benchmark',
+	description: 'A complete guide to MMLU, the benchmark that tests AI models on 57 academic subjects from elementary to professional level.',
+	author: {
+		'@type': 'Organization',
+		name: 'AIModelBenchmarks.com',
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: 'AIModelBenchmarks.com',
+	},
+	datePublished: '2026-02-13',
+	dateModified: '2026-02-13',
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`What is MMLU? The AI Knowledge Benchmark Explained | ${SITE_TITLE}`}
+			description="MMLU tests AI models across 57 academic subjects. Learn how this benchmark works, see current top performers, and understand when to use it for model selection."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero-section {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+			.hero-bg {
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+			.hero-content {
+				position: relative;
+				text-align: center;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.breadcrumb {
+				display: flex;
+				gap: 0.5rem;
+				align-items: center;
+				justify-content: center;
+				margin-bottom: var(--space-lg);
+				font-size: var(--font-sm);
+			}
+			.breadcrumb a {
+				color: var(--text-tertiary);
+				text-decoration: none;
+			}
+			.breadcrumb a:hover {
+				color: var(--accent-light);
+			}
+			.breadcrumb span {
+				color: var(--text-tertiary);
+			}
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				padding: 0.35rem 0.85rem;
+				background: rgba(168, 85, 247, 0.15);
+				border: 1px solid rgba(168, 85, 247, 0.3);
+				border-radius: var(--radius-full);
+				font-size: var(--font-xs);
+				color: #c084fc;
+				margin-bottom: var(--space-md);
+			}
+			.hero-title {
+				font-size: clamp(2rem, 4vw, 3rem);
+				line-height: 1.15;
+				margin-bottom: var(--space-md);
+				letter-spacing: -0.03em;
+				background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.hero-desc {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				line-height: 1.7;
+			}
+
+			.content-section {
+				padding: var(--space-2xl) 0;
+			}
+			.article-content {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.article-content h2 {
+				font-size: var(--font-xl);
+				margin-top: var(--space-2xl);
+				margin-bottom: var(--space-md);
+				padding-top: var(--space-lg);
+				border-top: 1px solid var(--border-secondary);
+			}
+			.article-content h2:first-child {
+				border-top: none;
+				padding-top: 0;
+				margin-top: 0;
+			}
+			.article-content h3 {
+				font-size: var(--font-lg);
+				margin-top: var(--space-xl);
+				margin-bottom: var(--space-sm);
+			}
+			.article-content p {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: var(--space-md);
+			}
+			.article-content ul, .article-content ol {
+				color: var(--text-secondary);
+				line-height: 1.8;
+				margin-bottom: var(--space-md);
+				padding-left: 1.5rem;
+			}
+			.article-content li {
+				margin-bottom: 0.5rem;
+			}
+			.article-content strong {
+				color: var(--text-primary);
+			}
+			.article-content a {
+				color: var(--accent-light);
+				text-decoration: underline;
+				text-underline-offset: 2px;
+			}
+			.article-content a:hover {
+				color: var(--accent);
+			}
+
+			.info-box {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin: var(--space-xl) 0;
+			}
+			.info-box-title {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-weight: 600;
+				margin-bottom: var(--space-sm);
+				color: var(--text-primary);
+			}
+			.info-box p {
+				margin: 0;
+				font-size: var(--font-sm);
+			}
+			.info-box.highlight {
+				border-color: rgba(168, 85, 247, 0.4);
+				background: rgba(168, 85, 247, 0.05);
+			}
+
+			.subjects-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+				gap: 0.5rem;
+				margin: var(--space-lg) 0;
+			}
+			.subject-tag {
+				padding: 0.5rem 0.75rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-secondary);
+				border-radius: var(--radius-sm);
+				font-size: var(--font-xs);
+				color: var(--text-secondary);
+				text-align: center;
+			}
+
+			.leaderboard-table {
+				width: 100%;
+				border-collapse: collapse;
+				margin: var(--space-lg) 0;
+				font-size: var(--font-sm);
+			}
+			.leaderboard-table th,
+			.leaderboard-table td {
+				padding: 0.75rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+			.leaderboard-table th {
+				font-weight: 600;
+				color: var(--text-secondary);
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+			.leaderboard-table td {
+				color: var(--text-secondary);
+			}
+			.leaderboard-table tr:hover td {
+				background: var(--bg-tertiary);
+			}
+			.rank-1 { color: var(--success) !important; font-weight: 600; }
+			.rank-2 { color: var(--accent-light) !important; }
+			.rank-3 { color: var(--warning) !important; }
+
+			.faq-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+				background: var(--bg-secondary);
+			}
+			.faq-list {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.section-title {
+				font-size: var(--font-xl);
+				text-align: center;
+				margin-bottom: var(--space-xl);
+			}
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				margin-bottom: var(--space-md);
+				overflow: hidden;
+			}
+			.faq-item:hover {
+				border-color: var(--border-accent);
+			}
+			.faq-question {
+				padding: var(--space-lg);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				gap: var(--space-md);
+			}
+			.faq-question h3 {
+				font-size: var(--font-base);
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0;
+				line-height: 1.4;
+			}
+			.faq-toggle {
+				flex-shrink: 0;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: var(--radius-sm);
+				background: var(--bg-tertiary);
+				color: var(--text-tertiary);
+				font-size: 1.1rem;
+				transition: all var(--transition-fast);
+			}
+			.faq-item.open .faq-toggle {
+				background: var(--accent);
+				color: white;
+				transform: rotate(45deg);
+			}
+			.faq-answer {
+				display: none;
+				padding: 0 var(--space-lg) var(--space-lg);
+			}
+			.faq-item.open .faq-answer {
+				display: block;
+			}
+			.faq-answer p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				line-height: 1.75;
+				margin: 0;
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+			}
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 480px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.related-links {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+				gap: var(--space-md);
+				margin-top: var(--space-xl);
+			}
+			.related-link {
+				display: block;
+				padding: var(--space-lg);
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+			.related-link:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+			.related-link h4 {
+				font-size: var(--font-base);
+				color: var(--text-primary);
+				margin-bottom: 0.25rem;
+			}
+			.related-link p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin: 0;
+			}
+
+			@media (max-width: 600px) {
+				.hero-section {
+					padding: var(--space-xl) 0;
+				}
+				.hero-title {
+					font-size: 1.5rem;
+				}
+				.hero-desc {
+					font-size: var(--font-base);
+				}
+				.faq-question {
+					padding: var(--space-md);
+				}
+				.faq-answer {
+					padding: 0 var(--space-md) var(--space-md);
+				}
+				.cta-card {
+					padding: var(--space-xl);
+				}
+				.leaderboard-table {
+					font-size: var(--font-xs);
+				}
+				.leaderboard-table th,
+				.leaderboard-table td {
+					padding: 0.5rem 0.5rem;
+				}
+				.subjects-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+		<script type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="hero-section">
+			<div class="hero-bg"></div>
+			<div class="hero-content container">
+				<nav class="breadcrumb">
+					<a href="/">Home</a>
+					<span>/</span>
+					<a href="/benchmarks">Benchmarks</a>
+					<span>/</span>
+					<span>MMLU</span>
+				</nav>
+				<div class="hero-badge">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+						<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+						<path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+					</svg>
+					Knowledge Benchmark
+				</div>
+				<h1 class="hero-title">What is MMLU?</h1>
+				<p class="hero-desc">
+					MMLU (Massive Multitask Language Understanding) is one of the most widely-used benchmarks for evaluating 
+					AI models. It tests knowledge and reasoning across 57 diverse academic subjects, from elementary math to professional law.
+				</p>
+			</div>
+		</section>
+
+		<main>
+			<section class="content-section">
+				<div class="container">
+					<article class="article-content">
+						<h2>What Does MMLU Measure?</h2>
+						<p>
+							MMLU tests whether AI models have <strong>broad knowledge</strong> and can <strong>apply reasoning</strong> 
+							across many domains. Think of it as a comprehensive standardized test covering subjects from high school 
+							through graduate-level expertise.
+						</p>
+						<p>
+							The benchmark consists of nearly 16,000 multiple-choice questions across 57 subjects, organized into four categories:
+						</p>
+						<ul>
+							<li><strong>STEM:</strong> Physics, chemistry, biology, computer science, mathematics</li>
+							<li><strong>Humanities:</strong> History, philosophy, world religions, moral scenarios</li>
+							<li><strong>Social Sciences:</strong> Economics, psychology, sociology, political science</li>
+							<li><strong>Other:</strong> Professional fields like law, business, and medicine</li>
+						</ul>
+
+						<div class="info-box highlight">
+							<div class="info-box-title">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<circle cx="12" cy="12" r="10"/>
+									<path d="M12 16v-4M12 8h.01"/>
+								</svg>
+								Key Insight
+							</div>
+							<p>
+								MMLU doesn't just test memorization. Many questions require multi-step reasoning, applying concepts 
+								to new situations, or combining knowledge from different areas. A model that simply memorized facts 
+								would struggle to score well.
+							</p>
+						</div>
+
+						<h3>Sample Subjects in MMLU</h3>
+						<div class="subjects-grid">
+							<div class="subject-tag">Abstract Algebra</div>
+							<div class="subject-tag">Anatomy</div>
+							<div class="subject-tag">Business Ethics</div>
+							<div class="subject-tag">College Chemistry</div>
+							<div class="subject-tag">Computer Security</div>
+							<div class="subject-tag">Econometrics</div>
+							<div class="subject-tag">Electrical Engineering</div>
+							<div class="subject-tag">Formal Logic</div>
+							<div class="subject-tag">Global Facts</div>
+							<div class="subject-tag">High School Physics</div>
+							<div class="subject-tag">International Law</div>
+							<div class="subject-tag">Jurisprudence</div>
+							<div class="subject-tag">Machine Learning</div>
+							<div class="subject-tag">Medical Genetics</div>
+							<div class="subject-tag">Philosophy</div>
+							<div class="subject-tag">Professional Accounting</div>
+						</div>
+						<p><em>Plus 41 more subjects covering the full range of academic knowledge.</em></p>
+
+						<h2>How MMLU Works</h2>
+						<p>
+							The benchmark was introduced in 2021 by researchers at UC Berkeley and others. Here's the methodology:
+						</p>
+						<ol>
+							<li><strong>Question Format:</strong> Each question is multiple-choice with 4 possible answers. Models must select the correct option.</li>
+							<li><strong>Difficulty Levels:</strong> Questions range from elementary (e.g., "High School Mathematics") to professional (e.g., "Professional Law").</li>
+							<li><strong>Scoring:</strong> Models are scored on accuracy—what percentage of questions they answer correctly, averaged across all subjects.</li>
+							<li><strong>Evaluation:</strong> Models typically answer questions using few-shot prompting (seeing a few examples before answering).</li>
+						</ol>
+
+						<h3>5-Shot Evaluation</h3>
+						<p>
+							Most MMLU evaluations use "5-shot" prompting: the model sees 5 example questions with answers before 
+							answer each test question. This gives the model context about the format and difficulty level without 
+							providing specific knowledge about the test content.
+						</p>
+
+						<h2>Current MMLU Leaderboard (2026)</h2>
+						<p>
+							Here are representative scores from leading models. Note that MMLU scores have become compressed at the top, 
+							with many models scoring above 85%. Check our <a href="/scorecards">daily scorecards</a> for current standings.
+						</p>
+						
+						<table class="leaderboard-table">
+							<thead>
+								<tr>
+									<th>Rank</th>
+									<th>Model</th>
+									<th>MMLU Score</th>
+									<th>Notes</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td class="rank-1">1</td>
+									<td class="rank-1">Claude Opus 4.6</td>
+									<td class="rank-1">~92%</td>
+									<td>Strong across all categories</td>
+								</tr>
+								<tr>
+									<td class="rank-2">2</td>
+									<td class="rank-2">Gemini 2.5 Pro</td>
+									<td class="rank-2">~91%</td>
+									<td>Excellent at STEM subjects</td>
+								</tr>
+								<tr>
+									<td class="rank-3">3</td>
+									<td class="rank-3">5.3-Codex-Spark</td>
+									<td class="rank-3">~90%</td>
+									<td>Balanced performance</td>
+								</tr>
+								<tr>
+									<td>4</td>
+									<td>GLM-5</td>
+									<td>~87%</td>
+									<td>Competitive knowledge base</td>
+								</tr>
+								<tr>
+									<td>5</td>
+									<td>Kimi K2.5</td>
+									<td>~85%</td>
+									<td>Strong value for cost</td>
+								</tr>
+								<tr>
+									<td>-</td>
+									<td>Human Expert (avg)</td>
+									<td>~89.8%</td>
+									<td>Reference point</td>
+								</tr>
+							</tbody>
+						</table>
+
+						<p>
+							<em>Percentages are approximate. Some models may have benefited from test data appearing in training corpora.</em>
+						</p>
+
+						<h2>Limitations and Criticisms</h2>
+						<p>
+							MMLU has been influential, but it has significant limitations:
+						</p>
+						<ul>
+							<li><strong>Data contamination:</strong> Many models may have seen MMLU questions during training, inflating scores. Some estimates suggest contamination affects 10-20% of questions.</li>
+							<li><strong>Multiple-choice format:</strong> Real-world tasks rarely involve selecting from 4 options. This format doesn't test generation ability.</li>
+							<li><strong>English-only:</strong> MMLU tests knowledge in English only and may not reflect capability in other languages.</li>
+							<li><strong>Score compression:</strong> Top models now cluster within a few percentage points, making differentiation harder.</li>
+							<li><strong>Static knowledge:</strong> The benchmark doesn't test current events or rapidly-changing fields.</li>
+						</ul>
+
+						<div class="info-box">
+							<div class="info-box-title">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+									<path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/>
+									<line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+								</svg>
+								Caution
+							</div>
+							<p>
+								A high MMLU score doesn't guarantee a model will perform well on your tasks. A model with 90% MMLU 
+								might struggle with creative writing, code debugging, or following complex instructions. Always test on your actual workload.
+							</p>
+						</div>
+
+						<h3>MMLU-Pro and Alternatives</h3>
+						<p>
+							To address some limitations, researchers have created harder variants:
+						</p>
+						<ul>
+							<li><strong>MMLU-Pro:</strong> More challenging questions, 10 options instead of 4, requiring deeper reasoning.</li>
+							<li><strong>GPQA:</strong> Graduate-level Google-proof questions that require expert-level reasoning.</li>
+							<li><strong>MMLU-Redux:</strong> A cleaned version with errors and ambiguities removed from the original.</li>
+						</ul>
+
+						<h2>When to Use MMLU for Model Selection</h2>
+						<p>
+							MMLU is most useful when:
+						</p>
+						<ul>
+							<li>You need a general-purpose model for diverse knowledge tasks</li>
+							<li>You're comparing models from different providers on a common metric</li>
+							<li>You want to evaluate new or less-known models</li>
+							<li>Your use case involves factual Q&A or knowledge retrieval</li>
+						</ul>
+						<p>
+							It's less useful when:
+						</p>
+						<ul>
+							<li>You need coding ability (use <a href="/benchmarks/swe-bench">SWE-bench</a> instead)</li>
+							<li>You care about conversational quality (use <a href="/benchmarks/chatbot-arena">Chatbot Arena</a>)</li>
+							<li>You're comparing among top-tier models (scores are too similar)</li>
+							<li>You need domain-specific expertise not covered by the 57 subjects</li>
+						</ul>
+						<p>
+							For comprehensive evaluation, combine MMLU with other benchmarks and our 
+							<a href="/scorecards">daily operational benchmarks</a> that test real-world task performance.
+						</p>
+
+						<h2>Related Benchmarks</h2>
+						<div class="related-links">
+							<a href="/benchmarks/swe-bench" class="related-link">
+								<h4>SWE-bench</h4>
+								<p>Tests AI models on real software engineering tasks</p>
+							</a>
+							<a href="/benchmarks/chatbot-arena" class="related-link">
+								<h4>Chatbot Arena</h4>
+								<p>Human preference rankings from blind comparisons</p>
+							</a>
+							<a href="/faq" class="related-link">
+								<h4>FAQ</h4>
+								<p>Common questions about AI model benchmarking</p>
+							</a>
+						</div>
+					</article>
+				</div>
+			</section>
+
+			<section class="faq-section">
+				<div class="container">
+					<h2 class="section-title">Frequently Asked Questions</h2>
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<div class="faq-item">
+								<div class="faq-question">
+									<h3>{faq.question}</h3>
+									<span class="faq-toggle">+</span>
+								</div>
+								<div class="faq-answer">
+									<p>{faq.answer}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="cta-section">
+				<div class="container">
+					<div class="cta-card">
+						<h2>See Real-World Model Performance</h2>
+						<p>MMLU tests knowledge, but what about actual tasks? Our daily scorecards evaluate models on coding, reasoning, and tool use.</p>
+						<a class="btn btn-primary" href="/scorecards">
+							View Latest Scorecards
+							<span class="btn-arrow">&rarr;</span>
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+
+		<script>
+			document.querySelectorAll('.faq-question').forEach((question) => {
+				question.addEventListener('click', () => {
+					const item = question.parentElement;
+					item.classList.toggle('open');
+				});
+			});
+		</script>
+	</body>
+</html>

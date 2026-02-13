@@ -1,0 +1,848 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const lastUpdated = 'February 13, 2026';
+
+const openSourceModels = [
+	{ name: 'DeepSeek V3', provider: 'DeepSeek', color: '#8b5cf6', pricing: { input: 0.27, output: 1.1 }, context: '64K', coding: 8.9, reasoning: 8.5, license: 'MIT-style' },
+	{ name: 'Llama 4 405B', provider: 'Meta', color: '#0088cc', pricing: { input: 0.80, output: 2.40 }, context: '128K', coding: 8.7, reasoning: 8.8, license: 'Llama 4' },
+	{ name: 'Qwen 2.5 Max', provider: 'Alibaba', color: '#ff6a00', pricing: { input: 0.35, output: 1.40 }, context: '128K', coding: 8.6, reasoning: 8.4, license: 'Apache 2.0' },
+	{ name: 'Mistral Large 3', provider: 'Mistral', color: '#ff7000', pricing: { input: 2.00, output: 6.00 }, context: '128K', coding: 8.5, reasoning: 8.6, license: 'Mistral' },
+	{ name: 'GLM-5', provider: 'Zhipu AI', color: '#f43f5e', pricing: { input: 0.50, output: 0.50 }, context: '128K', coding: 8.3, reasoning: 8.6, license: 'Custom' },
+];
+
+const closedModels = [
+	{ name: 'Claude Opus 4.6', provider: 'Anthropic', color: '#d97706', pricing: { input: 15, output: 75 }, context: '200K', coding: 9.5, reasoning: 9.4, license: 'Proprietary' },
+	{ name: 'GPT-5.2', provider: 'OpenAI', color: '#10b981', pricing: { input: 10, output: 30 }, context: '128K', coding: 9.2, reasoning: 9.0, license: 'Proprietary' },
+	{ name: 'Gemini 3 Pro', provider: 'Google', color: '#4285f4', pricing: { input: 7, output: 21 }, context: '1M', coding: 8.8, reasoning: 9.1, license: 'Proprietary' },
+	{ name: 'Grok 2', provider: 'xAI', color: '#1da1f2', pricing: { input: 5, output: 15 }, context: '128K', coding: 8.6, reasoning: 8.7, license: 'Proprietary' },
+];
+
+const comparisonFactors = [
+	{ factor: 'Coding Performance', openSource: '8.3-8.9', closed: '8.6-9.5', winner: 'Closed', note: 'Closed models lead by ~0.5 points on average' },
+	{ factor: 'Reasoning Ability', openSource: '8.4-8.8', closed: '8.7-9.4', winner: 'Closed', note: 'Claude leads significantly at 9.4' },
+	{ factor: 'Cost Efficiency', openSource: '$0.27-$2.00/M', closed: '$5-$15/M', winner: 'Open Source', note: 'Open source is 5-50x cheaper on average' },
+	{ factor: 'Context Window', openSource: '64K-128K', closed: '128K-1M', winner: 'Closed', note: 'Gemini offers 1M context window' },
+	{ factor: 'Self-Hosting', openSource: 'Yes', closed: 'No', winner: 'Open Source', note: 'Critical for data privacy requirements' },
+	{ factor: 'Fine-tuning', openSource: 'Full access', closed: 'Limited/API only', winner: 'Open Source', note: 'Open weights allow full customization' },
+	{ factor: 'Enterprise Support', openSource: 'Community/Vendor', closed: 'Dedicated SLAs', winner: 'Closed', note: 'Closed vendors offer guaranteed support' },
+	{ factor: 'Data Privacy', openSource: 'Full control', closed: 'Trust vendor', winner: 'Open Source', note: 'Self-hosting ensures data stays local' },
+	{ factor: 'Time to Market', openSource: 'Fast (self-host)', closed: 'Instant (API)', winner: 'Tie', note: 'Depends on infrastructure readiness' },
+	{ factor: 'Reliability', openSource: 'Self-managed', closed: '99.9% SLA', winner: 'Closed', note: 'Closed APIs have uptime guarantees' },
+];
+
+const useCases = [
+	{ title: 'Enterprise with Data Regulations', pick: 'Open Source', reason: 'Self-hosting ensures compliance with GDPR, HIPAA, and data residency requirements', alt: 'Closed with data processing agreements' },
+	{ title: 'Startup MVP Development', pick: 'Open Source', reason: 'DeepSeek at $0.27/M tokens vs Claude at $15/M — save $14,700 per million tokens', alt: 'Closed for faster time-to-market' },
+	{ title: 'Maximum Code Quality', pick: 'Closed', reason: 'Claude Opus 4.6 leads coding benchmarks at 9.5/10 with superior refactoring ability', alt: 'Llama 4 405B at 8.7 for cost savings' },
+	{ title: 'Long Context Analysis', pick: 'Closed', reason: 'Gemini 3 Pro offers 1M context window for analyzing entire codebases or documents', alt: 'Qwen 2.5 at 128K for most needs' },
+	{ title: 'Custom Fine-tuning', pick: 'Open Source', reason: 'Full model weights allow domain-specific fine-tuning for specialized applications', alt: 'Closed API fine-tuning where available' },
+	{ title: 'High-Volume Production', pick: 'Open Source', reason: 'DeepSeek or self-hosted Llama 4 can reduce costs by 90%+ at scale', alt: 'Closed for guaranteed uptime' },
+	{ title: 'Research & Experimentation', pick: 'Open Source', reason: 'Access to model weights enables research into model behavior, safety, and improvements', alt: 'Closed API for production experiments' },
+	{ title: 'Mission-Critical Systems', pick: 'Closed', reason: '99.9% uptime SLAs and dedicated enterprise support reduce operational risk', alt: 'Open source with redundancy' },
+];
+
+const topOpenSource = [
+	{ name: 'DeepSeek V3', best: 'Best value', why: '8.9 coding score at $0.27/M input — unmatched price/performance' },
+	{ name: 'Llama 4 405B', best: 'Best for self-hosting', why: 'True open weights with 8.7 coding and strong community support' },
+	{ name: 'Qwen 2.5 Max', best: 'Best multilingual', why: 'Excellent Chinese/English performance with Apache 2.0 license' },
+	{ name: 'GLM-5', best: 'Best Chinese market', why: 'Ultra-low cost at $0.50/$0.50 with strong Chinese support' },
+];
+
+const topClosed = [
+	{ name: 'Claude Opus 4.6', best: 'Best for coding', why: '9.5 coding score, 200K context, best for complex development' },
+	{ name: 'GPT-5.2', best: 'Best all-rounder', why: 'Balanced 9.2 coding, fast responses, excellent ecosystem' },
+	{ name: 'Gemini 3 Pro', best: 'Best for long context', why: '1M context window handles entire codebases and documents' },
+];
+
+const faqs = [
+	{ q: 'What is the best open source LLM for coding?', a: 'DeepSeek V3 currently leads open source models with an 8.9 coding score at just $0.27 per million input tokens. For self-hosting without API costs, Llama 4 405B offers the best combination of performance (8.7 coding) and true open weights with the Llama license.' },
+	{ q: 'Are open source models as good as closed models?', a: 'The gap has narrowed significantly. Open source models now achieve 8.3-8.9 coding scores vs 8.6-9.5 for closed models. For most applications, open source provides sufficient quality at 5-50x lower cost. Closed models still lead for maximum quality requirements.' },
+	{ q: 'What are the advantages of open source AI models?', a: 'Open source models offer: (1) 5-50x lower costs, (2) self-hosting for data privacy, (3) full fine-tuning control, (4) no vendor lock-in, (5) transparent model weights for research, and (6) compliance with data regulations like GDPR and HIPAA.' },
+	{ q: 'When should I choose closed models over open source?', a: 'Choose closed models when you need: (1) maximum coding quality (Claude at 9.5), (2) guaranteed 99.9% uptime SLAs, (3) very long context (Gemini\'s 1M), (4) instant API access without infrastructure, or (5) enterprise support with dedicated SLAs.' },
+	{ q: 'Can I self-host open source LLMs for free?', a: 'Yes, models like Llama 4 and Qwen can be self-hosted on your own GPU infrastructure with no per-token cost. However, you pay for compute (GPU rental ~$2-8/hour for inference), electricity, and engineering time. For high volume, self-hosting is usually cheaper than APIs.' },
+	{ q: 'What is the cheapest AI model for coding?', a: 'DeepSeek V3 at $0.27/$1.10 per million tokens is the cheapest capable coding model. GLM-5 at $0.50/$0.50 is even cheaper for output-heavy workloads. Self-hosted Llama 4 can be cheaper still at very high volumes.' },
+	{ q: 'Which open source model has the largest context window?', a: 'Llama 4 405B, Qwen 2.5 Max, and Mistral Large 3 all offer 128K token context windows. For longer context, you would need closed models like Gemini 3 Pro (1M) or Claude Opus 4.6 (200K).' },
+	{ q: 'Are open source models safe for enterprise use?', a: 'Open source models can be safer for enterprises with strict data requirements since you control where data goes. However, closed vendors often provide better security certifications (SOC 2, HIPAA BAA), red-teaming, and safety fine-tuning. Evaluate based on your specific compliance needs.' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Open Source vs Closed AI Models (2026) — Complete Comparison | ${SITE_TITLE}`}
+			description="Compare open source (DeepSeek, Llama, Qwen) vs closed (Claude, GPT, Gemini) AI models. Pricing, performance, self-hosting, and when to choose each for your use case."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.page-hero {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+
+			.page-hero::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+
+			.hero-inner {
+				position: relative;
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.hero-text h1 {
+				font-size: clamp(2rem, 3.5vw, 2.75rem);
+				margin-bottom: var(--space-sm);
+			}
+
+			.hero-text > p {
+				color: var(--text-secondary);
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-lg);
+				max-width: 750px;
+			}
+
+			.hero-meta {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				padding: 0.35rem 0.75rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-full);
+			}
+
+			.hero-badge .count {
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+
+			.section {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.section-header {
+				margin-bottom: var(--space-lg);
+			}
+
+			.section-header h2 {
+				margin-bottom: 0.35rem;
+			}
+
+			.section-header p {
+				color: var(--text-tertiary);
+				font-size: var(--font-base);
+			}
+
+			.two-column {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+
+			.column-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-xl);
+				padding: var(--space-xl);
+			}
+
+			.column-card h3 {
+				font-size: var(--font-xl);
+				margin-bottom: var(--space-md);
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.model-list {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-sm);
+			}
+
+			.model-row {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0.5rem 0;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+
+			.model-row:last-child {
+				border-bottom: none;
+			}
+
+			.model-info {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.model-dot {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+			}
+
+			.model-name {
+				font-weight: 600;
+				font-size: var(--font-sm);
+			}
+
+			.model-scores {
+				display: flex;
+				gap: 0.75rem;
+				font-size: var(--font-xs);
+				font-family: ui-monospace, monospace;
+			}
+
+			.score-tag {
+				padding: 0.15rem 0.4rem;
+				background: var(--bg-tertiary);
+				border-radius: var(--radius-sm);
+				color: var(--text-tertiary);
+			}
+
+			.compare-table-wrapper {
+				overflow-x: auto;
+				border-radius: var(--radius-xl);
+				border: 1px solid var(--border-primary);
+				background: var(--bg-card);
+				margin-bottom: var(--space-xl);
+			}
+
+			.compare-table {
+				width: 100%;
+				border-collapse: collapse;
+				min-width: 800px;
+			}
+
+			.compare-table th {
+				background: var(--bg-tertiary);
+				color: var(--text-secondary);
+				font-weight: 600;
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				padding: 0.85rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-primary);
+			}
+
+			.compare-table td {
+				padding: 0.85rem 1rem;
+				border-bottom: 1px solid var(--border-secondary);
+				vertical-align: middle;
+			}
+
+			.compare-table tr:last-child td {
+				border-bottom: none;
+			}
+
+			.compare-table tr:hover td {
+				background: var(--bg-elevated);
+			}
+
+			.factor-name {
+				font-weight: 600;
+				color: var(--text-primary);
+			}
+
+			.winner-badge {
+				font-size: var(--font-xs);
+				padding: 0.15rem 0.5rem;
+				border-radius: var(--radius-sm);
+				font-weight: 600;
+			}
+
+			.winner-badge.open {
+				background: rgba(139, 92, 246, 0.15);
+				color: #8b5cf6;
+			}
+
+			.winner-badge.closed {
+				background: rgba(217, 119, 6, 0.15);
+				color: #d97706;
+			}
+
+			.winner-badge.tie {
+				background: var(--bg-tertiary);
+				color: var(--text-tertiary);
+			}
+
+			.note-text {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				line-height: 1.4;
+			}
+
+			.use-case-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--space-md);
+			}
+
+			.use-case-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				transition: all var(--transition-base);
+			}
+
+			.use-case-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+
+			.use-case-card h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-pick {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-pick.open { color: #8b5cf6; }
+			.use-case-pick.closed { color: #d97706; }
+
+			.use-case-reason {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin-bottom: 0.5rem;
+				line-height: 1.5;
+			}
+
+			.use-case-alt {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.use-case-alt span {
+				color: var(--text-secondary);
+			}
+
+			.faq-section {
+				max-width: var(--container-lg);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.faq-list {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-md);
+			}
+
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+			}
+
+			.faq-item h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.5rem;
+				color: var(--text-primary);
+			}
+
+			.faq-item p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.6;
+				margin: 0;
+			}
+
+			.related-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-top: var(--space-lg);
+			}
+
+			.related-link {
+				font-size: var(--font-sm);
+				padding: 0.5rem 1rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-md);
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+
+			.related-link:hover {
+				background: var(--bg-elevated);
+				border-color: var(--border-accent);
+				color: var(--accent-light);
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0;
+			}
+
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 500px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.summary-box {
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+
+			.summary-box h3 {
+				font-size: var(--font-base);
+				margin-bottom: var(--space-sm);
+			}
+
+			.summary-box p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.7;
+				margin: 0;
+			}
+
+			.top-picks {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--space-md);
+				margin-bottom: var(--space-xl);
+			}
+
+			.pick-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-md);
+			}
+
+			.pick-card h4 {
+				font-size: var(--font-sm);
+				margin-bottom: var(--space-sm);
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.pick-card.open h4 { color: #8b5cf6; }
+			.pick-card.closed h4 { color: #d97706; }
+
+			.pick-item {
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				padding: 0.5rem 0;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+
+			.pick-item:last-child {
+				border-bottom: none;
+			}
+
+			.pick-item .name {
+				font-weight: 600;
+				font-size: var(--font-sm);
+			}
+
+			.pick-item .best {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.pick-item .why {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				text-align: right;
+				max-width: 180px;
+			}
+
+			@media (max-width: 960px) {
+				.two-column {
+					grid-template-columns: 1fr;
+				}
+				.use-case-grid {
+					grid-template-columns: 1fr;
+				}
+				.top-picks {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			@media (max-width: 600px) {
+				.page-hero {
+					padding: var(--space-xl) 0;
+				}
+				.section {
+					padding: var(--space-lg) 1rem;
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			"mainEntity": faqs.map(faq => ({
+				"@type": "Question",
+				"name": faq.q,
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": faq.a
+				}
+			}))
+		})} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="page-hero">
+			<div class="hero-inner">
+				<div class="hero-text">
+					<h1>Open Source vs Closed AI Models: 2026 Comparison</h1>
+					<p>Comprehensive comparison of open source (DeepSeek, Llama, Qwen) vs closed (Claude, GPT, Gemini) AI models. Analyze pricing, performance, self-hosting options, and find the best model for your use case.</p>
+					<div class="hero-meta">
+						<span class="hero-badge">Last updated <span class="count">{lastUpdated}</span></span>
+						<span class="hero-badge">5 open source models</span>
+						<span class="hero-badge">4 closed models</span>
+						<span class="hero-badge">10 comparison factors</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<main>
+			<section class="section">
+				<div class="section-header">
+					<h2>Model Overview</h2>
+					<p>Top models in each category</p>
+				</div>
+
+				<div class="two-column">
+					<div class="column-card">
+						<h3><span style="color: #8b5cf6;">Open Source</span> Models</h3>
+						<div class="model-list">
+							{openSourceModels.map((model) => (
+								<div class="model-row">
+									<div class="model-info">
+										<div class="model-dot" style={`background: ${model.color}`}></div>
+										<span class="model-name">{model.name}</span>
+									</div>
+									<div class="model-scores">
+										<span class="score-tag">Code: {model.coding}</span>
+										<span class="score-tag">${model.pricing.input}/M</span>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+
+					<div class="column-card">
+						<h3><span style="color: #d97706;">Closed</span> Models</h3>
+						<div class="model-list">
+							{closedModels.map((model) => (
+								<div class="model-row">
+									<div class="model-info">
+										<div class="model-dot" style={`background: ${model.color}`}></div>
+										<span class="model-name">{model.name}</span>
+									</div>
+									<div class="model-scores">
+										<span class="score-tag">Code: {model.coding}</span>
+										<span class="score-tag">${model.pricing.input}/M</span>
+									</div>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+
+				<div class="summary-box">
+					<h3>Quick Takeaway</h3>
+					<p><strong>Open source wins on cost:</strong> DeepSeek V3 at $0.27/M is 55x cheaper than Claude at $15/M. <strong>Closed wins on quality:</strong> Claude leads coding at 9.5 vs DeepSeek's 8.9. <strong>Open source wins on control:</strong> Self-host for data privacy and fine-tuning. <strong>Closed wins on convenience:</strong> Instant API access with uptime SLAs.</p>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Top Picks by Category</h2>
+					<p>Best models for specific needs</p>
+				</div>
+
+				<div class="top-picks">
+					<div class="pick-card open">
+						<h4>Top Open Source</h4>
+						{topOpenSource.map((pick) => (
+							<div class="pick-item">
+								<div>
+									<div class="name">{pick.name}</div>
+									<div class="best">{pick.best}</div>
+								</div>
+								<div class="why">{pick.why}</div>
+							</div>
+						))}
+					</div>
+
+					<div class="pick-card closed">
+						<h4>Top Closed</h4>
+						{topClosed.map((pick) => (
+							<div class="pick-item">
+								<div>
+									<div class="name">{pick.name}</div>
+									<div class="best">{pick.best}</div>
+								</div>
+								<div class="why">{pick.why}</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Factor-by-Factor Comparison</h2>
+					<p>How open source and closed models compare across key dimensions</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Factor</th>
+								<th>Open Source</th>
+								<th>Closed</th>
+								<th>Winner</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							{comparisonFactors.map((factor) => (
+								<tr>
+									<td class="factor-name">{factor.factor}</td>
+									<td>{factor.openSource}</td>
+									<td>{factor.closed}</td>
+									<td>
+										<span class={`winner-badge ${factor.winner.toLowerCase().replace(' ', '-')}`}>
+											{factor.winner}
+										</span>
+									</td>
+									<td class="note-text">{factor.note}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Pricing Comparison</h2>
+					<p>Cost analysis for different scales</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Model</th>
+								<th>Type</th>
+								<th>Input ($/M)</th>
+								<th>Output ($/M)</th>
+								<th>Coding Score</th>
+								<th>Value Rating</th>
+							</tr>
+						</thead>
+						<tbody>
+							{[...openSourceModels, ...closedModels].sort((a, b) => a.pricing.input - b.pricing.input).map((model) => {
+								const isOpen = openSourceModels.includes(model as any);
+								const valueRating = model.coding / model.pricing.input;
+								return (
+									<tr>
+										<td>
+											<div style="display: flex; align-items: center; gap: 0.5rem;">
+												<div class="model-dot" style={`background: ${model.color}`}></div>
+												<span class="factor-name">{model.name}</span>
+											</div>
+										</td>
+										<td>
+											<span class={`winner-badge ${isOpen ? 'open' : 'closed'}`}>
+												{isOpen ? 'Open' : 'Closed'}
+											</span>
+										</td>
+										<td style="font-family: ui-monospace, monospace;">${model.pricing.input}</td>
+										<td style="font-family: ui-monospace, monospace;">${model.pricing.output}</td>
+										<td style="font-family: ui-monospace, monospace;">{model.coding}</td>
+										<td style="font-family: ui-monospace, monospace; color: #8b5cf6;">{valueRating.toFixed(1)}</td>
+									</tr>
+								);
+							})}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Use Case Recommendations</h2>
+					<p>Which type to choose for specific scenarios</p>
+				</div>
+
+				<div class="use-case-grid">
+					{useCases.map((uc) => (
+						<div class="use-case-card">
+							<h3>{uc.title}</h3>
+							<div class={`use-case-pick ${uc.pick === 'Open Source' ? 'open' : 'closed'}`}>{uc.pick}</div>
+							<p class="use-case-reason">{uc.reason}</p>
+							<p class="use-case-alt">Alternative: <span>{uc.alt}</span></p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="faq-section">
+				<div class="section-header">
+					<h2>Frequently Asked Questions</h2>
+					<p>Common questions about open source vs closed models</p>
+				</div>
+
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<div class="faq-item">
+							<h3>{faq.q}</h3>
+							<p>{faq.a}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Related Comparisons</h2>
+					<p>Explore specific model comparisons</p>
+				</div>
+
+				<div class="related-links">
+					<a href="/compare/claude-vs-gpt" class="related-link">Claude vs GPT</a>
+					<a href="/compare/deepseek-vs-claude" class="related-link">DeepSeek vs Claude</a>
+					<a href="/compare" class="related-link">All Model Comparisons</a>
+					<a href="/scorecards" class="related-link">Daily Scorecards</a>
+					<a href="/blog/deepseek-v3" class="related-link">DeepSeek V3 Deep Dive</a>
+					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.6 Deep Dive</a>
+				</div>
+			</section>
+
+			<section class="cta-section container">
+				<div class="cta-card">
+					<h2>See Live Benchmark Results</h2>
+					<p>View daily scorecards with task-level breakdowns for all open source and closed models.</p>
+					<a class="btn btn-primary" href="/scorecards">
+						View Daily Scorecards
+						<span class="btn-arrow">&rarr;</span>
+					</a>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>

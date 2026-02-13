@@ -1,0 +1,883 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const lastUpdated = 'February 13, 2026';
+
+const claudeModel = {
+	name: 'Claude Opus 4.6',
+	provider: 'Anthropic',
+	color: '#d97706',
+	pricing: { input: 15, output: 75 },
+	contextWindow: '200K',
+	scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.3, speed: 7.5 },
+};
+
+const gptModel = {
+	name: 'GPT-5.2',
+	provider: 'OpenAI',
+	color: '#10b981',
+	pricing: { input: 10, output: 30 },
+	contextWindow: '128K',
+	scores: { coding: 9.2, reasoning: 9.0, toolUse: 9.1, speed: 8.5 },
+};
+
+const categories = [
+	{ name: 'Code Generation', claude: 9.5, gpt: 9.1, winner: 'claude', note: 'Claude excels at complex architecture and multi-file refactors' },
+	{ name: 'Code Review', claude: 9.3, gpt: 8.9, winner: 'claude', note: 'Claude catches more subtle bugs and provides detailed explanations' },
+	{ name: 'Debugging', claude: 9.2, gpt: 9.0, winner: 'claude', note: 'Both strong, Claude slightly better at root cause analysis' },
+	{ name: 'Refactoring', claude: 9.6, gpt: 8.8, winner: 'claude', note: 'Claude maintains code style consistency better across large refactors' },
+	{ name: 'Documentation', claude: 9.1, gpt: 9.3, winner: 'gpt', note: 'GPT produces more concise, convention-following docs' },
+	{ name: 'API Integration', claude: 9.0, gpt: 9.4, winner: 'gpt', note: 'GPT has broader knowledge of APIs and frameworks' },
+	{ name: 'Test Generation', claude: 8.9, gpt: 9.0, winner: 'gpt', note: 'GPT generates more varied edge cases' },
+	{ name: 'SQL & Data', claude: 9.3, gpt: 8.8, winner: 'claude', note: 'Claude better at complex joins and query optimization' },
+];
+
+const reasoningCategories = [
+	{ name: 'Logical Deduction', claude: 9.4, gpt: 9.0, winner: 'claude', note: 'Claude maintains coherence over longer reasoning chains' },
+	{ name: 'Math & Calculation', claude: 9.1, gpt: 9.2, winner: 'gpt', note: 'GPT slightly better at pure mathematical operations' },
+	{ name: 'Strategic Planning', claude: 9.5, gpt: 8.8, winner: 'claude', note: 'Claude excels at multi-step planning and tradeoff analysis' },
+	{ name: 'Creative Problem Solving', claude: 9.2, gpt: 9.1, winner: 'claude', note: 'Claude offers more diverse solution approaches' },
+	{ name: 'Context Integration', claude: 9.6, gpt: 8.5, winner: 'claude', note: 'Claude better at synthesizing information from long contexts' },
+];
+
+const useCases = [
+	{ title: 'Large Codebase Refactoring', pick: 'Claude', reason: '200K context + superior refactoring scores make Claude ideal for large-scale code changes', alt: 'GPT for smaller, faster iterations' },
+	{ title: 'API-First Development', pick: 'GPT', reason: 'Broader API knowledge and better documentation generation suit API development', alt: 'Claude for complex business logic' },
+	{ title: 'Production Bug Fixes', pick: 'Claude', reason: 'Better debugging and root cause analysis for critical production issues', alt: 'GPT when speed is critical' },
+	{ title: 'Prototyping & MVPs', pick: 'GPT', reason: 'Faster response times and lower cost ideal for rapid iteration', alt: 'Claude for higher code quality' },
+	{ title: 'Technical Documentation', pick: 'GPT', reason: 'Superior documentation generation following standard conventions', alt: 'Claude for complex system docs' },
+	{ title: 'Architecture Decisions', pick: 'Claude', reason: 'Higher reasoning scores and better tradeoff analysis for architectural choices', alt: 'GPT for standard patterns' },
+];
+
+const faqs = [
+	{ q: 'Is Claude better than GPT for coding?', a: 'Claude Opus 4.6 scores higher (9.5 vs 9.2) in our coding benchmarks, particularly excelling at complex refactoring, code review, and architecture decisions. However, GPT-5.2 is faster and more cost-effective for simpler coding tasks.' },
+	{ q: 'Which is cheaper: Claude or GPT?', a: 'GPT-5.2 is significantly cheaper at $10/$30 per million tokens (input/output) compared to Claude Opus 4.6 at $15/$75. For high-volume applications, GPT offers 60% savings on output tokens.' },
+	{ q: 'Does Claude or GPT have a larger context window?', a: 'Claude Opus 4.6 has a 200K token context window vs GPT-5.2\'s 128K tokens. This 56% larger context makes Claude better for analyzing entire codebases or long documents.' },
+	{ q: 'Which model is faster: Claude or GPT?', a: 'GPT-5.2 is generally faster with a speed score of 8.5 vs Claude\'s 7.5. For applications where latency is critical, GPT is the better choice.' },
+	{ q: 'Can I use Claude and GPT together?', a: 'Yes, many teams use Claude for complex tasks (refactoring, architecture) and GPT for high-volume, speed-sensitive operations. This hybrid approach optimizes both quality and cost.' },
+	{ q: 'Which model is better for beginners learning to code?', a: 'GPT-5.2 is often better for beginners due to faster responses and lower cost for experimentation. Claude excels when you need deeper explanations and more thorough code review.' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Claude vs GPT for Coding (2026) — Complete Comparison | ${SITE_TITLE}`}
+			description="Claude Opus 4.6 vs GPT-5.2: Compare coding performance, reasoning, pricing, and speed. Find which AI model is best for your development workflow with detailed benchmarks."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.page-hero {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+
+			.page-hero::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+
+			.hero-inner {
+				position: relative;
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.hero-text h1 {
+				font-size: clamp(2rem, 3.5vw, 2.75rem);
+				margin-bottom: var(--space-sm);
+			}
+
+			.hero-text > p {
+				color: var(--text-secondary);
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-lg);
+				max-width: 700px;
+			}
+
+			.hero-meta {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				padding: 0.35rem 0.75rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-full);
+			}
+
+			.hero-badge .count {
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+
+			.section {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.section-header {
+				margin-bottom: var(--space-lg);
+			}
+
+			.section-header h2 {
+				margin-bottom: 0.35rem;
+			}
+
+			.section-header p {
+				color: var(--text-tertiary);
+				font-size: var(--font-base);
+			}
+
+			.quick-compare {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+
+			.model-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-xl);
+				padding: var(--space-xl);
+				position: relative;
+				overflow: hidden;
+			}
+
+			.model-card.winner {
+				border-color: var(--border-accent);
+			}
+
+			.model-card.winner::before {
+				content: 'Best for Coding';
+				position: absolute;
+				top: 0;
+				right: 0;
+				background: var(--gradient-primary);
+				color: white;
+				font-size: var(--font-xs);
+				font-weight: 600;
+				padding: 0.35rem 0.75rem;
+				border-radius: 0 var(--radius-lg) 0 var(--radius-md);
+			}
+
+			.model-card-header {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				margin-bottom: var(--space-md);
+			}
+
+			.model-dot {
+				width: 12px;
+				height: 12px;
+				border-radius: 50%;
+			}
+
+			.model-name {
+				font-size: var(--font-xl);
+				font-weight: 700;
+			}
+
+			.model-provider {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+			}
+
+			.model-stats {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--space-md);
+			}
+
+			.stat-item {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+			}
+
+			.stat-label {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.stat-value {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				font-family: ui-monospace, monospace;
+			}
+
+			.stat-value.highlight {
+				color: var(--accent-light);
+			}
+
+			.compare-table-wrapper {
+				overflow-x: auto;
+				border-radius: var(--radius-xl);
+				border: 1px solid var(--border-primary);
+				background: var(--bg-card);
+				margin-bottom: var(--space-xl);
+			}
+
+			.compare-table {
+				width: 100%;
+				border-collapse: collapse;
+				min-width: 700px;
+			}
+
+			.compare-table th {
+				background: var(--bg-tertiary);
+				color: var(--text-secondary);
+				font-weight: 600;
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				padding: 0.85rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-primary);
+			}
+
+			.compare-table td {
+				padding: 0.85rem 1rem;
+				border-bottom: 1px solid var(--border-secondary);
+				vertical-align: middle;
+			}
+
+			.compare-table tr:last-child td {
+				border-bottom: none;
+			}
+
+			.compare-table tr:hover td {
+				background: var(--bg-elevated);
+			}
+
+			.category-name {
+				font-weight: 600;
+				color: var(--text-primary);
+			}
+
+			.score-bar-container {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+
+			.score-bar {
+				flex: 1;
+				height: 6px;
+				background: var(--bg-tertiary);
+				border-radius: 3px;
+				overflow: hidden;
+				min-width: 60px;
+			}
+
+			.score-fill {
+				height: 100%;
+				border-radius: 3px;
+			}
+
+			.score-num {
+				font-weight: 600;
+				font-size: var(--font-sm);
+				width: 28px;
+				text-align: right;
+			}
+
+			.winner-badge {
+				font-size: var(--font-xs);
+				padding: 0.15rem 0.5rem;
+				border-radius: var(--radius-sm);
+				font-weight: 600;
+			}
+
+			.winner-badge.claude {
+				background: rgba(217, 119, 6, 0.15);
+				color: #d97706;
+			}
+
+			.winner-badge.gpt {
+				background: rgba(16, 185, 129, 0.15);
+				color: #10b981;
+			}
+
+			.note-text {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				line-height: 1.4;
+			}
+
+			.use-case-grid {
+				display: grid;
+				grid-template-columns: repeat(2, 1fr);
+				gap: var(--space-md);
+			}
+
+			.use-case-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				transition: all var(--transition-base);
+			}
+
+			.use-case-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+
+			.use-case-card h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-pick {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-pick.claude { color: #d97706; }
+			.use-case-pick.gpt { color: #10b981; }
+
+			.use-case-reason {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin-bottom: 0.5rem;
+				line-height: 1.5;
+			}
+
+			.use-case-alt {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.use-case-alt span {
+				color: var(--text-secondary);
+			}
+
+			.faq-section {
+				max-width: var(--container-lg);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.faq-list {
+				display: flex;
+				flex-direction: column;
+				gap: var(--space-md);
+			}
+
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+			}
+
+			.faq-item h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.5rem;
+				color: var(--text-primary);
+			}
+
+			.faq-item p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.6;
+				margin: 0;
+			}
+
+			.related-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				margin-top: var(--space-lg);
+			}
+
+			.related-link {
+				font-size: var(--font-sm);
+				padding: 0.5rem 1rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-md);
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+
+			.related-link:hover {
+				background: var(--bg-elevated);
+				border-color: var(--border-accent);
+				color: var(--accent-light);
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0;
+			}
+
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 500px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.summary-box {
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+
+			.summary-box h3 {
+				font-size: var(--font-base);
+				margin-bottom: var(--space-sm);
+			}
+
+			.summary-box p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.7;
+				margin: 0;
+			}
+
+			@media (max-width: 960px) {
+				.quick-compare {
+					grid-template-columns: 1fr;
+				}
+				.use-case-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			@media (max-width: 600px) {
+				.page-hero {
+					padding: var(--space-xl) 0;
+				}
+				.section {
+					padding: var(--space-lg) 1rem;
+				}
+				.model-stats {
+					grid-template-columns: 1fr;
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "FAQPage",
+			"mainEntity": faqs.map(faq => ({
+				"@type": "Question",
+				"name": faq.q,
+				"acceptedAnswer": {
+					"@type": "Answer",
+					"text": faq.a
+				}
+			}))
+		})} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="page-hero">
+			<div class="hero-inner">
+				<div class="hero-text">
+					<h1>Claude vs GPT for Coding: Complete 2026 Comparison</h1>
+					<p>Comprehensive comparison of Claude Opus 4.6 and GPT-5.2 for software development. Benchmark scores, pricing analysis, and use case recommendations to help you choose the right AI assistant for your coding workflow.</p>
+					<div class="hero-meta">
+						<span class="hero-badge">Last updated <span class="count">{lastUpdated}</span></span>
+						<span class="hero-badge">8 coding categories</span>
+						<span class="hero-badge">6 use cases</span>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<main>
+			<section class="section">
+				<div class="section-header">
+					<h2>Quick Comparison</h2>
+					<p>At-a-glance comparison of key metrics</p>
+				</div>
+
+				<div class="quick-compare">
+					<div class="model-card winner">
+						<div class="model-card-header">
+							<div class="model-dot" style={`background: ${claudeModel.color}`}></div>
+							<div>
+								<div class="model-name">{claudeModel.name}</div>
+								<div class="model-provider">{claudeModel.provider}</div>
+							</div>
+						</div>
+						<div class="model-stats">
+							<div class="stat-item">
+								<span class="stat-label">Coding Score</span>
+								<span class="stat-value highlight">{claudeModel.scores.coding}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Reasoning Score</span>
+								<span class="stat-value">{claudeModel.scores.reasoning}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Pricing</span>
+								<span class="stat-value">${claudeModel.pricing.input}/${claudeModel.pricing.output}</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Context Window</span>
+								<span class="stat-value">{claudeModel.contextWindow}</span>
+							</div>
+						</div>
+					</div>
+
+					<div class="model-card">
+						<div class="model-card-header">
+							<div class="model-dot" style={`background: ${gptModel.color}`}></div>
+							<div>
+								<div class="model-name">{gptModel.name}</div>
+								<div class="model-provider">{gptModel.provider}</div>
+							</div>
+						</div>
+						<div class="model-stats">
+							<div class="stat-item">
+								<span class="stat-label">Coding Score</span>
+								<span class="stat-value">{gptModel.scores.coding}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Reasoning Score</span>
+								<span class="stat-value">{gptModel.scores.reasoning}/10</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Pricing</span>
+								<span class="stat-value">${gptModel.pricing.input}/${gptModel.pricing.output}</span>
+							</div>
+							<div class="stat-item">
+								<span class="stat-label">Context Window</span>
+								<span class="stat-value">{gptModel.contextWindow}</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="summary-box">
+					<h3>Verdict</h3>
+					<p><strong>Choose Claude Opus 4.6</strong> for complex coding tasks, large refactors, and architecture decisions where quality matters more than speed. <strong>Choose GPT-5.2</strong> for high-volume coding tasks, rapid prototyping, and when cost efficiency is important. Both models excel at different aspects of software development.</p>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Coding Performance Breakdown</h2>
+					<p>Detailed comparison across 8 coding categories</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Category</th>
+								<th>Claude</th>
+								<th>GPT</th>
+								<th>Winner</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							{categories.map((cat) => (
+								<tr>
+									<td class="category-name">{cat.name}</td>
+									<td>
+										<div class="score-bar-container">
+											<div class="score-bar">
+												<div class="score-fill" style={`width: ${cat.claude * 10}%; background: ${claudeModel.color}`}></div>
+											</div>
+											<span class="score-num">{cat.claude}</span>
+										</div>
+									</td>
+									<td>
+										<div class="score-bar-container">
+											<div class="score-bar">
+												<div class="score-fill" style={`width: ${cat.gpt * 10}%; background: ${gptModel.color}`}></div>
+											</div>
+											<span class="score-num">{cat.gpt}</span>
+										</div>
+									</td>
+									<td>
+										<span class={`winner-badge ${cat.winner}`}>
+											{cat.winner === 'claude' ? 'Claude' : 'GPT'}
+										</span>
+									</td>
+									<td class="note-text">{cat.note}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Reasoning & Analysis</h2>
+					<p>Performance on logical and analytical tasks</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Category</th>
+								<th>Claude</th>
+								<th>GPT</th>
+								<th>Winner</th>
+								<th>Notes</th>
+							</tr>
+						</thead>
+						<tbody>
+							{reasoningCategories.map((cat) => (
+								<tr>
+									<td class="category-name">{cat.name}</td>
+									<td>
+										<div class="score-bar-container">
+											<div class="score-bar">
+												<div class="score-fill" style={`width: ${cat.claude * 10}%; background: ${claudeModel.color}`}></div>
+											</div>
+											<span class="score-num">{cat.claude}</span>
+										</div>
+									</td>
+									<td>
+										<div class="score-bar-container">
+											<div class="score-bar">
+												<div class="score-fill" style={`width: ${cat.gpt * 10}%; background: ${gptModel.color}`}></div>
+											</div>
+											<span class="score-num">{cat.gpt}</span>
+										</div>
+									</td>
+									<td>
+										<span class={`winner-badge ${cat.winner}`}>
+											{cat.winner === 'claude' ? 'Claude' : 'GPT'}
+										</span>
+									</td>
+									<td class="note-text">{cat.note}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Speed & Pricing Comparison</h2>
+					<p>Response latency and cost analysis</p>
+				</div>
+
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Metric</th>
+								<th>Claude Opus 4.6</th>
+								<th>GPT-5.2</th>
+								<th>Difference</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td class="category-name">Input Price (per 1M tokens)</td>
+								<td><span class="score-num">${claudeModel.pricing.input}</span></td>
+								<td><span class="score-num">${gptModel.pricing.input}</span></td>
+								<td class="note-text">GPT is 33% cheaper</td>
+							</tr>
+							<tr>
+								<td class="category-name">Output Price (per 1M tokens)</td>
+								<td><span class="score-num">${claudeModel.pricing.output}</span></td>
+								<td><span class="score-num">${gptModel.pricing.output}</span></td>
+								<td class="note-text">GPT is 60% cheaper</td>
+							</tr>
+							<tr>
+								<td class="category-name">Speed Score</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${claudeModel.scores.speed * 10}%; background: ${claudeModel.color}`}></div>
+										</div>
+										<span class="score-num">{claudeModel.scores.speed}</span>
+									</div>
+								</td>
+								<td>
+									<div class="score-bar-container">
+										<div class="score-bar">
+											<div class="score-fill" style={`width: ${gptModel.scores.speed * 10}%; background: ${gptModel.color}`}></div>
+										</div>
+										<span class="score-num">{gptModel.scores.speed}</span>
+									</div>
+								</td>
+								<td class="note-text">GPT is ~13% faster</td>
+							</tr>
+							<tr>
+								<td class="category-name">Context Window</td>
+								<td><span class="score-num">{claudeModel.contextWindow}</span></td>
+								<td><span class="score-num">{gptModel.contextWindow}</span></td>
+								<td class="note-text">Claude has 56% more context</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Use Case Recommendations</h2>
+					<p>Which model to choose for specific scenarios</p>
+				</div>
+
+				<div class="use-case-grid">
+					{useCases.map((uc) => (
+						<div class="use-case-card">
+							<h3>{uc.title}</h3>
+							<div class={`use-case-pick ${uc.pick.toLowerCase()}`}>{uc.pick}</div>
+							<p class="use-case-reason">{uc.reason}</p>
+							<p class="use-case-alt">Alternative: <span>{uc.alt}</span></p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="faq-section">
+				<div class="section-header">
+					<h2>Frequently Asked Questions</h2>
+					<p>Common questions about Claude vs GPT for coding</p>
+				</div>
+
+				<div class="faq-list">
+					{faqs.map((faq) => (
+						<div class="faq-item">
+							<h3>{faq.q}</h3>
+							<p>{faq.a}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="section-header">
+					<h2>Related Comparisons</h2>
+					<p>Explore other model comparisons</p>
+				</div>
+
+				<div class="related-links">
+					<a href="/compare/deepseek-vs-claude" class="related-link">DeepSeek vs Claude</a>
+					<a href="/compare/open-source-vs-closed" class="related-link">Open Source vs Closed Models</a>
+					<a href="/compare" class="related-link">All Model Comparisons</a>
+					<a href="/scorecards" class="related-link">Daily Scorecards</a>
+					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.6 Deep Dive</a>
+					<a href="/blog/gpt-5-2" class="related-link">GPT-5.2 Deep Dive</a>
+				</div>
+			</section>
+
+			<section class="cta-section container">
+				<div class="cta-card">
+					<h2>See Live Benchmark Results</h2>
+					<p>View daily scorecards with task-level breakdowns for Claude, GPT, and other leading models.</p>
+					<a class="btn btn-primary" href="/scorecards">
+						View Daily Scorecards
+						<span class="btn-arrow">&rarr;</span>
+					</a>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>
