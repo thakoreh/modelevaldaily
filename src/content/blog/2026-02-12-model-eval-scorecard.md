@@ -1,5 +1,5 @@
 ---
-title: 'Daily Model Eval Scorecard — 2026-02-12'
+title: 'Daily Model Scorecard — 2026-02-12'
 description: 'Head‑to‑head results across coding, reasoning, and tool‑use tasks with reproducible prompts.'
 pubDate: '2026-02-12'
 heroImage: '../../assets/blog-placeholder-1.jpg'
