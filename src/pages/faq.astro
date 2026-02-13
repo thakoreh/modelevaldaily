@@ -1,0 +1,385 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE, SITE_URL } from '../consts';
+
+const faqs = [
+	{
+		id: 'what-is-benchmarking',
+		question: 'What is AI model benchmarking?',
+		answer: `AI model benchmarking is the systematic evaluation of language models across standardized tasks. At AIModelBenchmarks.com, we test models on real engineering work: coding tasks, reasoning challenges, and tool-use workflows. Unlike synthetic benchmarks that test isolated capabilities, our approach measures how models perform on actual work that developers and operators do daily. We score models on correctness, speed-to-usable-output, and clarity, then aggregate results into daily scorecards that account for cost and latency.`,
+	},
+	{
+		id: 'best-coding-model-2026',
+		question: 'Which AI model is best for coding in 2026?',
+		answer: `The answer depends on your specific needs, but based on our daily benchmarks, Claude Opus 4.6 and 5.3-Codex-Spark consistently lead in coding tasks. Claude excels at understanding complex codebases and producing clean, well-documented code. 5.3-Codex-Spark is strong at rapid prototyping and API integration. For budget-conscious teams, GLM-5 and Kimi K2.5 offer competitive coding performance at lower cost. We recommend checking our daily scorecards since rankings shift as models improve and new versions release.`,
+	},
+	{
+		id: 'cheapest-api',
+		question: 'What is the cheapest AI model API?',
+		answer: `Cost varies by use case, but generally: Kimi K2.5, MiniMax M2.5, and GLM-5 offer the lowest per-token pricing among production-ready models. However, the "cheapest" model for your workflow depends on task complexity. A more expensive model that solves problems in one shot often costs less than a cheaper model requiring multiple retries. Our scorecards track cost-per-task, not just token price, giving you a more accurate picture of real-world expenses. Also consider prompt caching (where available) to reduce costs on repeated contexts.`,
+	},
+	{
+		id: 'benchmark-accuracy',
+		question: 'How accurate are AI model benchmarks?',
+		answer: `Benchmark accuracy depends entirely on methodology. Many benchmarks suffer from contamination (test data leaking into training data), narrow task selection, or subjective scoring. At AIModelBenchmarks.com, we prioritize reproducibility: every eval includes the exact prompt, scoring rubric, and failure cases. We use blind scoring to eliminate bias. No benchmark is perfect, but transparent methodologies let you audit results and understand limitations. We recommend using multiple benchmarks and, critically, testing models on your own actual workloads before committing.`,
+	},
+	{
+		id: 'swe-bench',
+		question: 'What is SWE-bench?',
+		answer: `SWE-bench is a benchmark dataset that tests AI models on real GitHub issues from popular Python repositories. Models must understand bug reports, navigate codebases, and generate patches that pass test suites. It's one of the most rigorous evaluations of software engineering capability because it uses authentic problems, not synthetic exercises. SWE-bench scores are widely cited, but they only capture one dimension of model capability. Our daily scorecards complement SWE-bench by testing a broader range of tasks including reasoning, tool use, and documentation-driven workflows.`,
+	},
+	{
+		id: 'claude-vs-gpt',
+		question: 'How do I choose between Claude and GPT?',
+		answer: `Claude (Anthropic) and GPT (OpenAI) are both excellent, with different strengths. Claude tends to excel at nuanced reasoning, following complex instructions, and producing well-structured output with fewer hallucinations. GPT models often have better tool integration, larger context windows in some variants, and more extensive ecosystem support. For coding specifically, both are competitive; check our daily scorecards for current rankings. Consider: your existing toolchain, data residency requirements, cost sensitivity, and which model performs better on tasks similar to yours. The best approach is often to test both on your actual workload.`,
+	},
+	{
+		id: 'best-reasoning-model',
+		question: 'What is the best AI model for reasoning?',
+		answer: `Based on our benchmarks, Claude Opus 4.6 currently leads in reasoning tasks, particularly for build-vs-buy decisions, debugging diagnosis, and system design tradeoffs. Kimi K2.5 and GLM-5 also perform strongly on reasoning at lower price points. Reasoning quality varies significantly by task type: some models excel at logical deduction but struggle with creative problem-solving, while others handle ambiguity well but fail on strict constraint satisfaction. Our scorecards break down reasoning performance by category so you can match model strengths to your specific reasoning needs.`,
+	},
+	{
+		id: 'open-vs-closed',
+		question: 'Can open-source models compete with closed models?',
+		answer: `The gap is closing rapidly. Open-source models like Llama, Mistral, and DeepSeek now approach or match closed models on many benchmarks. The tradeoffs: closed models (Claude, GPT, Gemini) still generally lead on cutting-edge capabilities, complex reasoning, and reliability guarantees. Open-source models offer data privacy, deployment flexibility, no vendor lock-in, and often lower cost at scale. For many production workloads, top open-source models are now viable alternatives. We're adding more open-source models to our daily benchmarks as they reach production readiness.`,
+	},
+	{
+		id: 'prompt-caching',
+		question: 'What is prompt caching and how does it save money?',
+		answer: `Prompt caching allows API providers to store and reuse processed prompt prefixes, avoiding redundant computation on repeated contexts. If your requests include long system prompts, documentation, or codebases that don't change between calls, prompt caching can reduce costs by 50-90% and improve latency. Claude and Gemini currently offer prompt caching. The key is structuring prompts so the cacheable portion (static context) comes before the dynamic portion (your specific query). Our scorecards note when caching significantly impacts cost-per-task for common workflows.`,
+	},
+	{
+		id: 're-evaluate-frequency',
+		question: 'How often should I re-evaluate my AI model choice?',
+		answer: `At minimum, quarterly. The AI landscape changes fast: new model versions release weekly, pricing shifts frequently, and capabilities evolve rapidly. If you're running production workloads, we recommend checking monthly scorecards to spot significant changes. Red flags that warrant immediate re-evaluation: your model's performance degrading, a competitor releasing a major update, your costs increasing unexpectedly, or your use case expanding to new task types. Subscribe to our daily scorecards to stay informed without constant manual checking.`,
+	},
+];
+
+const faqSchema = {
+	'@context': 'https://schema.org',
+	'@type': 'FAQPage',
+	mainEntity: faqs.map((faq) => ({
+		'@type': 'Question',
+		name: faq.question,
+		acceptedAnswer: {
+			'@type': 'Answer',
+			text: faq.answer,
+		},
+	})),
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`FAQ — AI Model Benchmark Questions Answered | ${SITE_TITLE}`}
+			description="Frequently asked questions about AI model benchmarking, coding models, API costs, SWE-bench, Claude vs GPT, and how to choose the right model for your needs."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.hero-section {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+			.hero-bg {
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+			.hero-content {
+				position: relative;
+				text-align: center;
+				max-width: 720px;
+				margin: 0 auto;
+			}
+			.hero-title {
+				font-size: clamp(2rem, 4vw, 3rem);
+				line-height: 1.15;
+				margin-bottom: var(--space-md);
+				letter-spacing: -0.03em;
+				background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.75) 100%);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.hero-desc {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				line-height: 1.7;
+			}
+
+			.jump-links {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.5rem;
+				justify-content: center;
+				margin-top: var(--space-xl);
+			}
+			.jump-link {
+				display: inline-flex;
+				align-items: center;
+				padding: 0.4rem 0.85rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-full);
+				font-size: var(--font-xs);
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+			.jump-link:hover {
+				background: var(--bg-elevated);
+				border-color: var(--border-accent);
+				color: var(--accent-light);
+			}
+
+			.faq-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+			}
+			.faq-list {
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			.faq-item {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				margin-bottom: var(--space-md);
+				overflow: hidden;
+				transition: border-color var(--transition-fast);
+			}
+			.faq-item:hover {
+				border-color: var(--border-accent);
+			}
+			.faq-question {
+				padding: var(--space-lg);
+				cursor: pointer;
+				display: flex;
+				justify-content: space-between;
+				align-items: flex-start;
+				gap: var(--space-md);
+			}
+			.faq-question h3 {
+				font-size: var(--font-base);
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0;
+				line-height: 1.4;
+			}
+			.faq-toggle {
+				flex-shrink: 0;
+				width: 24px;
+				height: 24px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: var(--radius-sm);
+				background: var(--bg-tertiary);
+				color: var(--text-tertiary);
+				font-size: 1.1rem;
+				transition: all var(--transition-fast);
+			}
+			.faq-item.open .faq-toggle {
+				background: var(--accent);
+				color: white;
+				transform: rotate(45deg);
+			}
+			.faq-answer {
+				display: none;
+				padding: 0 var(--space-lg) var(--space-lg);
+			}
+			.faq-item.open .faq-answer {
+				display: block;
+			}
+			.faq-answer p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				line-height: 1.75;
+				margin: 0;
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0 var(--space-3xl);
+			}
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 480px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			@media (max-width: 600px) {
+				.hero-section {
+					padding: var(--space-xl) 0;
+				}
+				.hero-title {
+					font-size: 1.5rem;
+				}
+				.hero-desc {
+					font-size: var(--font-base);
+				}
+				.jump-links {
+					gap: 0.35rem;
+				}
+				.jump-link {
+					font-size: 0.7rem;
+					padding: 0.3rem 0.65rem;
+				}
+				.faq-question {
+					padding: var(--space-md);
+				}
+				.faq-answer {
+					padding: 0 var(--space-md) var(--space-md);
+				}
+				.cta-card {
+					padding: var(--space-xl);
+				}
+			}
+		</style>
+		<script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+	</head>
+	<body>
+		<Header />
+
+		<section class="hero-section">
+			<div class="hero-bg"></div>
+			<div class="hero-content container">
+				<h1 class="hero-title">Frequently Asked Questions</h1>
+				<p class="hero-desc">
+					Everything you need to know about AI model benchmarking, choosing the right model, and understanding our evaluation methodology.
+				</p>
+				<div class="jump-links">
+					{faqs.map((faq) => (
+						<a href={`#${faq.id}`} class="jump-link">{faq.question.replace('?', '')}</a>
+					))}
+				</div>
+			</div>
+		</section>
+
+		<main>
+			<section class="faq-section">
+				<div class="container">
+					<div class="faq-list">
+						{faqs.map((faq) => (
+							<div class="faq-item" id={faq.id}>
+								<div class="faq-question">
+									<h3>{faq.question}</h3>
+									<span class="faq-toggle">+</span>
+								</div>
+								<div class="faq-answer">
+									<p>{faq.answer}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="cta-section">
+				<div class="container">
+					<div class="cta-card">
+						<h2>Still have questions?</h2>
+						<p>Check our daily scorecards for the latest model rankings, or reach out on X with your specific question.</p>
+						<a class="btn btn-primary" href="/scorecards">
+							View today's scorecards
+							<span class="btn-arrow">&rarr;</span>
+						</a>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+
+		<script>
+			document.querySelectorAll('.faq-question').forEach((question) => {
+				question.addEventListener('click', () => {
+					const item = question.parentElement;
+					const wasOpen = item.classList.contains('open');
+					document.querySelectorAll('.faq-item').forEach((i) => i.classList.remove('open'));
+					if (!wasOpen) {
+						item.classList.add('open');
+					}
+				});
+			});
+
+			if (window.location.hash) {
+				const target = document.querySelector(window.location.hash);
+				if (target) {
+					setTimeout(() => {
+						target.classList.add('open');
+						target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+					}, 100);
+				}
+			}
+		</script>
+	</body>
+</html>

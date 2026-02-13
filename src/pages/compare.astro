@@ -1,0 +1,782 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+
+const models = [
+	{
+		name: 'Claude Opus 4.6',
+		provider: 'Anthropic',
+		color: '#d97706',
+		pricing: { input: 15, output: 75 },
+		contextWindow: '200K',
+		bestFor: ['Complex coding', 'Long-horizon tasks', 'Nuanced reasoning'],
+		scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.3 },
+		strengths: ['Best at following complex instructions', 'Excellent at code architecture', 'Strong tool-use reliability'],
+		blogSlug: 'claude-opus-4-6',
+	},
+	{
+		name: 'GPT-5.2',
+		provider: 'OpenAI',
+		color: '#10b981',
+		pricing: { input: 10, output: 30 },
+		contextWindow: '128K',
+		bestFor: ['Fast coding', 'General purpose', 'API integrations'],
+		scores: { coding: 9.2, reasoning: 9.0, toolUse: 9.1 },
+		strengths: ['Speed + quality balance', 'Excellent documentation', 'Wide tool ecosystem'],
+		blogSlug: 'gpt-5-2',
+	},
+	{
+		name: 'Gemini 3 Pro',
+		provider: 'Google',
+		color: '#4285f4',
+		pricing: { input: 7, output: 21 },
+		contextWindow: '1M',
+		bestFor: ['Long context', 'Multimodal tasks', 'Research'],
+		scores: { coding: 8.8, reasoning: 9.1, toolUse: 8.5 },
+		strengths: ['Massive context window', 'Strong multimodal', 'Good cost/value'],
+		blogSlug: 'gemini-3-pro',
+	},
+	{
+		name: 'DeepSeek V3',
+		provider: 'DeepSeek',
+		color: '#8b5cf6',
+		pricing: { input: 0.27, output: 1.1 },
+		contextWindow: '64K',
+		bestFor: ['Cost-sensitive apps', 'High volume', ' prototyping'],
+		scores: { coding: 8.9, reasoning: 8.5, toolUse: 8.2 },
+		strengths: ['Best price/performance', 'Strong coding ability', 'Fast responses'],
+		blogSlug: 'deepseek-v3',
+	},
+	{
+		name: 'Kimi K2.5',
+		provider: 'Moonshot',
+		color: '#e040fb',
+		pricing: { input: 2, output: 10 },
+		contextWindow: '200K',
+		bestFor: ['Chinese + English', 'Long documents', 'Reasoning'],
+		scores: { coding: 8.7, reasoning: 9.2, toolUse: 8.6 },
+		strengths: ['Excellent bilingual', 'Strong logical reasoning', 'Good context handling'],
+		blogSlug: 'kimi-k2-5',
+	},
+	{
+		name: 'MiniMax M2.5',
+		provider: 'MiniMax',
+		color: '#00bcd4',
+		pricing: { input: 0.5, output: 2 },
+		contextWindow: '245K',
+		bestFor: ['Budget production', 'Voice/multimodal', 'Fast iteration'],
+		scores: { coding: 8.5, reasoning: 8.3, toolUse: 8.8 },
+		strengths: ['Very low cost', 'Good multimodal support', 'Fast inference'],
+		blogSlug: 'minimax-m2-5',
+	},
+	{
+		name: 'GLM-5',
+		provider: 'Zhipu AI',
+		color: '#f43f5e',
+		pricing: { input: 0.5, output: 0.5 },
+		contextWindow: '128K',
+		bestFor: ['Chinese market', 'Enterprise apps', 'Cost optimization'],
+		scores: { coding: 8.3, reasoning: 8.6, toolUse: 8.4 },
+		strengths: ['Ultra-low cost', 'Strong Chinese support', 'Enterprise ready'],
+		blogSlug: 'glm-5',
+	},
+];
+
+const useCases = [
+	{
+		title: 'Best for Coding',
+		emoji: '&#128187;',
+		pick: 'Claude Opus 4.6',
+		reason: 'Highest coding score (9.5) with excellent architecture decisions and complex refactors.',
+		alternative: 'GPT-5.2 for speed',
+	},
+	{
+		title: 'Best on a Budget',
+		emoji: '&#128176;',
+		pick: 'DeepSeek V3',
+		reason: 'Unbeatable pricing at $0.27/$1.10 per million tokens while maintaining strong performance.',
+		alternative: 'GLM-5 for ultra-low cost',
+	},
+	{
+		title: 'Best for Long Context',
+		emoji: '&#128218;',
+		pick: 'Gemini 3 Pro',
+		reason: '1M token context window handles entire codebases and long documents effortlessly.',
+		alternative: 'Kimi K2.5 for 200K',
+	},
+	{
+		title: 'Best for Reasoning',
+		emoji: '&#129504;',
+		pick: 'Claude Opus 4.6',
+		reason: 'Top reasoning score (9.4) excels at tradeoff analysis and strategic decisions.',
+		alternative: 'Kimi K2.5 at 9.2',
+	},
+	{
+		title: 'Best All-Rounder',
+		emoji: '&#127942;',
+		pick: 'GPT-5.2',
+		reason: 'Balanced scores across all categories with excellent docs and ecosystem.',
+		alternative: 'Claude for quality',
+	},
+	{
+		title: 'Best for Tool-Use',
+		emoji: '&#128295;',
+		pick: 'Claude Opus 4.6',
+		reason: 'Most reliable tool calling with strong guardrails and error recovery.',
+		alternative: 'MiniMax for speed',
+	},
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`AI Model Comparison — Claude vs GPT vs Gemini vs DeepSeek | ${SITE_TITLE}`}
+			description="Compare AI models side-by-side: pricing, context windows, performance scores, and best use cases. Find the right model for coding, reasoning, and tool-use tasks."
+		/>
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.page-hero {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
+			}
+
+			.page-hero::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+
+			.hero-inner {
+				position: relative;
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+
+			.hero-text h1 {
+				font-size: clamp(2rem, 3.5vw, 2.75rem);
+				margin-bottom: var(--space-sm);
+			}
+
+			.hero-text > p {
+				color: var(--text-secondary);
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-lg);
+				max-width: 600px;
+			}
+
+			.hero-meta {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+
+			.hero-badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				padding: 0.35rem 0.75rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-full);
+			}
+
+			.hero-badge .count {
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+
+			.section {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: var(--space-2xl) 1.5rem;
+			}
+
+			.section-header {
+				margin-bottom: var(--space-lg);
+			}
+
+			.section-header h2 {
+				margin-bottom: 0.35rem;
+			}
+
+			.section-header p {
+				color: var(--text-tertiary);
+				font-size: var(--font-base);
+			}
+
+			.compare-table-wrapper {
+				overflow-x: auto;
+				border-radius: var(--radius-xl);
+				border: 1px solid var(--border-primary);
+				background: var(--bg-card);
+			}
+
+			.compare-table {
+				width: 100%;
+				border-collapse: collapse;
+				min-width: 900px;
+			}
+
+			.compare-table th {
+				background: var(--bg-tertiary);
+				color: var(--text-secondary);
+				font-weight: 600;
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				padding: 0.85rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-primary);
+				white-space: nowrap;
+				position: sticky;
+				top: 0;
+			}
+
+			.compare-table td {
+				padding: 0.85rem 1rem;
+				border-bottom: 1px solid var(--border-secondary);
+				vertical-align: top;
+			}
+
+			.compare-table tr:last-child td {
+				border-bottom: none;
+			}
+
+			.compare-table tr:hover td {
+				background: var(--bg-elevated);
+			}
+
+			.model-cell {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+			}
+
+			.model-dot {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				flex-shrink: 0;
+			}
+
+			.model-name {
+				font-weight: 600;
+				color: var(--text-primary);
+				font-size: var(--font-sm);
+			}
+
+			.model-provider {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.price-cell {
+				font-family: ui-monospace, monospace;
+				font-size: var(--font-sm);
+			}
+
+			.price-cell .input {
+				color: var(--text-secondary);
+			}
+
+			.price-cell .sep {
+				color: var(--text-tertiary);
+				margin: 0 0.25rem;
+			}
+
+			.price-cell .output {
+				color: var(--text-tertiary);
+			}
+
+			.context-cell {
+				font-family: ui-monospace, monospace;
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+			}
+
+			.score-cell {
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+			}
+
+			.score-row {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+				font-size: var(--font-xs);
+			}
+
+			.score-label {
+				color: var(--text-tertiary);
+				width: 50px;
+			}
+
+			.score-bar {
+				flex: 1;
+				height: 4px;
+				background: var(--bg-tertiary);
+				border-radius: 2px;
+				overflow: hidden;
+				min-width: 40px;
+			}
+
+			.score-fill {
+				height: 100%;
+				border-radius: 2px;
+			}
+
+			.score-value {
+				font-weight: 600;
+				color: var(--text-primary);
+				width: 28px;
+				text-align: right;
+			}
+
+			.best-for-cell {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 0.35rem;
+			}
+
+			.best-for-tag {
+				font-size: var(--font-xs);
+				padding: 0.2rem 0.5rem;
+				background: var(--bg-tertiary);
+				border-radius: var(--radius-sm);
+				color: var(--text-secondary);
+			}
+
+			.use-case-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-md);
+			}
+
+			.use-case-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				transition: all var(--transition-base);
+			}
+
+			.use-case-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+
+			.use-case-emoji {
+				font-size: 1.5rem;
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-card h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.25rem;
+			}
+
+			.use-case-pick {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				color: var(--accent-light);
+				margin-bottom: 0.5rem;
+			}
+
+			.use-case-reason {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin-bottom: 0.5rem;
+				line-height: 1.5;
+			}
+
+			.use-case-alt {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.use-case-alt span {
+				color: var(--text-secondary);
+			}
+
+			.strengths-cell ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+				display: flex;
+				flex-direction: column;
+				gap: 0.25rem;
+			}
+
+			.strengths-cell li {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				padding-left: 0.85rem;
+				position: relative;
+			}
+
+			.strengths-cell li::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 6px;
+				width: 4px;
+				height: 4px;
+				border-radius: 50%;
+				background: var(--accent);
+			}
+
+			.cta-section {
+				padding: var(--space-2xl) 0;
+			}
+
+			.cta-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				position: relative;
+				overflow: hidden;
+			}
+
+			.cta-card::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-card);
+				pointer-events: none;
+			}
+
+			.cta-card h2 {
+				position: relative;
+				margin-bottom: var(--space-sm);
+			}
+
+			.cta-card p {
+				position: relative;
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+				max-width: 500px;
+				margin-left: auto;
+				margin-right: auto;
+			}
+
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				padding: 0.7rem 1.4rem;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+				font-size: var(--font-sm);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+				cursor: pointer;
+				border: none;
+				position: relative;
+			}
+
+			.btn-primary {
+				background: var(--gradient-primary);
+				color: white;
+				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+			}
+
+			.btn-primary:hover {
+				transform: translateY(-2px);
+				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
+				color: white;
+			}
+
+			.btn-secondary {
+				background: var(--bg-tertiary);
+				color: var(--text-primary);
+				border: 1px solid var(--border-primary);
+				margin-left: 0.5rem;
+			}
+
+			.btn-secondary:hover {
+				background: var(--bg-elevated);
+				border-color: var(--border-accent);
+				color: var(--text-primary);
+			}
+
+			.btn-arrow {
+				transition: transform var(--transition-fast);
+			}
+
+			.btn:hover .btn-arrow {
+				transform: translateX(3px);
+			}
+
+			.quick-links {
+				display: flex;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+				margin-top: var(--space-lg);
+			}
+
+			.quick-link {
+				font-size: var(--font-sm);
+				padding: 0.35rem 0.75rem;
+				background: var(--bg-tertiary);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-sm);
+				color: var(--text-secondary);
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+
+			.quick-link:hover {
+				background: var(--bg-elevated);
+				border-color: var(--border-accent);
+				color: var(--accent-light);
+			}
+
+			@media (max-width: 960px) {
+				.use-case-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+
+			@media (max-width: 600px) {
+				.page-hero {
+					padding: var(--space-xl) 0;
+				}
+
+				.hero-text h1 {
+					font-size: 1.5rem;
+				}
+
+				.hero-text > p {
+					font-size: var(--font-base);
+				}
+
+				.section {
+					padding: var(--space-lg) 1rem;
+				}
+
+				.use-case-grid {
+					grid-template-columns: 1fr;
+				}
+
+				.use-case-card {
+					padding: var(--space-md);
+				}
+
+				.cta-card {
+					padding: var(--space-lg);
+				}
+
+				.cta-card h2 {
+					font-size: var(--font-xl);
+				}
+
+				.quick-links {
+					justify-content: center;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+
+		<section class="page-hero">
+			<div class="hero-inner">
+				<div class="hero-text">
+					<h1>AI Model Comparison</h1>
+					<p>Compare leading AI models side-by-side. Pricing, context windows, performance scores, and best use cases — all in one place.</p>
+					<div class="hero-meta">
+						<span class="hero-badge"><span class="count">{models.length}</span> models compared</span>
+						<span class="hero-badge">Updated <span class="count">Feb 12, 2026</span></span>
+					</div>
+					<div class="quick-links">
+						<a href="#pricing" class="quick-link">Pricing</a>
+						<a href="#performance" class="quick-link">Performance</a>
+						<a href="#recommendations" class="quick-link">Quick Picks</a>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<main>
+			<section class="section" id="pricing">
+				<div class="section-header">
+					<h2>Quick Reference: Pricing & Context</h2>
+					<p>Input/output pricing per million tokens and context window sizes.</p>
+				</div>
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Model</th>
+								<th>Pricing ($/M tokens)</th>
+								<th>Context</th>
+								<th>Best For</th>
+							</tr>
+						</thead>
+						<tbody>
+							{models.map((model) => (
+								<tr>
+									<td>
+										<div class="model-cell">
+											<div class="model-dot" style={`background: ${model.color}`}></div>
+											<div>
+												<div class="model-name">{model.name}</div>
+												<div class="model-provider">{model.provider}</div>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="price-cell">
+											<span class="input">${model.pricing.input}</span>
+											<span class="sep">/</span>
+											<span class="output">${model.pricing.output}</span>
+										</div>
+									</td>
+									<td>
+										<span class="context-cell">{model.contextWindow}</span>
+									</td>
+									<td>
+										<div class="best-for-cell">
+											{model.bestFor.map((tag) => (
+												<span class="best-for-tag">{tag}</span>
+											))}
+										</div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section" id="performance">
+				<div class="section-header">
+					<h2>Performance Scores</h2>
+					<p>Benchmarks across coding, reasoning, and tool-use tasks (scale: 1-10).</p>
+				</div>
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Model</th>
+								<th>Coding</th>
+								<th>Reasoning</th>
+								<th>Tool-use</th>
+								<th>Key Strengths</th>
+							</tr>
+						</thead>
+						<tbody>
+							{models.map((model) => (
+								<tr>
+									<td>
+										<div class="model-cell">
+											<div class="model-dot" style={`background: ${model.color}`}></div>
+											<div>
+												<div class="model-name">{model.name}</div>
+												<div class="model-provider">{model.provider}</div>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="score-cell">
+											<div class="score-row">
+												<div class="score-bar">
+													<div class="score-fill" style={`width: ${model.scores.coding * 10}%; background: ${model.color}`}></div>
+												</div>
+												<span class="score-value">{model.scores.coding}</span>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="score-cell">
+											<div class="score-row">
+												<div class="score-bar">
+													<div class="score-fill" style={`width: ${model.scores.reasoning * 10}%; background: ${model.color}`}></div>
+												</div>
+												<span class="score-value">{model.scores.reasoning}</span>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="score-cell">
+											<div class="score-row">
+												<div class="score-bar">
+													<div class="score-fill" style={`width: ${model.scores.toolUse * 10}%; background: ${model.color}`}></div>
+												</div>
+												<span class="score-value">{model.scores.toolUse}</span>
+											</div>
+										</div>
+									</td>
+									<td class="strengths-cell">
+										<ul>
+											{model.strengths.map((s) => (
+												<li>{s}</li>
+											))}
+										</ul>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="section" id="recommendations">
+				<div class="section-header">
+					<h2>Quick Pick Recommendations</h2>
+					<p>Not sure which model? Here's our picks by use case.</p>
+				</div>
+				<div class="use-case-grid">
+					{useCases.map((uc) => (
+						<div class="use-case-card">
+							<span class="use-case-emoji" set:html={uc.emoji} />
+							<h3>{uc.title}</h3>
+							<div class="use-case-pick">{uc.pick}</div>
+							<p class="use-case-reason">{uc.reason}</p>
+							<p class="use-case-alt">Alternative: <span>{uc.alternative}</span></p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			<section class="cta-section container">
+				<div class="cta-card">
+					<h2>Dive Deeper into Model Performance</h2>
+					<p>See detailed daily scorecards with task-level breakdowns, failure cases, and cost analysis.</p>
+					<a class="btn btn-primary" href="/scorecards">
+						View Daily Scorecards
+						<span class="btn-arrow">&rarr;</span>
+					</a>
+					<a class="btn btn-secondary" href="/about">Our Methodology</a>
+				</div>
+			</section>
+		</main>
+
+		<Footer />
+	</body>
+</html>

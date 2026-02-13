@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # open code
 .opencode.json
+opencode.json
