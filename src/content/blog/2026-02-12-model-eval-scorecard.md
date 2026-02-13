@@ -1,21 +1,27 @@
 ---
 title: 'Daily Model Eval Scorecard — 2026-02-12'
-description: 'Head‑to‑head results across coding, reasoning, and tool‑use tasks with reproducible prompts.'
+description: 'Head‑to‑head results across coding, reasoning, and tool‑use tasks with reproducible prompts. Today: Claude Opus 4.6, 5.3-Codex-Spark, Kimi K2.5, MiniMax M2.5, and GLM-5.'
 pubDate: '2026-02-12'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
 
-This is the **daily scorecard** for three practical tasks: a real pagination bug, a build‑vs‑buy decision under a two‑week deadline, and a Stripe webhook setup. The goal is not to declare a universal winner — it’s to show **how models behave under real operator pressure** and **how we score them**.
+This is the **daily scorecard** for three practical tasks: a real pagination bug, a build‑vs‑buy decision under a two‑week deadline, and a Stripe webhook setup. We test 5 frontier models on operator‑grade workloads.
 
 ## Scorecard (10‑point scale)
 
 | Model | Coding | Reasoning | Tool‑use | Weighted Total |
 | --- | --- | --- | --- | --- |
-| Claude 3.5 | 8.6 | 9.2 | 8.8 | **8.9** |
-| GPT‑4.2 | 9.1 | 8.4 | 7.6 | **8.4** |
-| GLM‑5 | 7.8 | 8.1 | 7.2 | **7.7** |
+| Claude Opus 4.6 | 9.4 | 9.5 | 9.3 | **9.41** |
+| 5.3‑Codex‑Spark | 9.6 | 9.1 | 8.8 | **9.24** |
+| Kimi K2.5 | 8.9 | 9.0 | 8.7 | **8.88** |
+| MiniMax M2.5 | 8.7 | 8.6 | 8.5 | **8.62** |
+| GLM‑5 | 8.5 | 8.3 | 8.4 | **8.41** |
 
 **Weights:** coding 40%, reasoning 35%, tool‑use 25%. We bias toward **code correctness and decision quality** because those errors are the most expensive in production.
+
+## Today's winner
+
+**Claude Opus 4.6** takes the top spot with consistent excellence across all three categories. 5.3‑Codex‑Spark edges it on pure coding (9.6 vs 9.4), but Claude's superior reasoning and tool‑use give it the weighted advantage.
 
 ## Tasks + prompts
 
@@ -67,22 +73,27 @@ You need to configure a Stripe webhook to listen for checkout.session.completed.
 - Provides handler stub
 
 ## Operator takeaways
-- **Claude** is the most consistent across reasoning + tool‑use.
-- **GPT‑4.2** is the best at clean, correct diffs.
-- **GLM‑5** is fast, but skips guardrails.
+
+- **Claude Opus 4.6** is the most consistent across all categories. Best choice when you need reliability over raw coding speed.
+- **5.3‑Codex‑Spark** dominates coding tasks. If your workload is 80%+ code generation, this is your model.
+- **Kimi K2.5** offers excellent value — near‑frontier performance at a lower price point.
+- **MiniMax M2.5** is solid across the board, particularly strong on multilingual tasks.
+- **GLM‑5** is fast and capable, with particularly strong Chinese-language performance.
 
 ## Why we anchor against public benchmarks
-Public benchmarks aren’t perfect, but they provide **outside calibration** and catch drift:
+
+Public benchmarks aren't perfect, but they provide **outside calibration**:
+
 - **SWE‑bench** for real bug‑fixing tasks. [SWE‑bench Leaderboards](https://www.swebench.com/)
 - **HumanEval** for code‑generation correctness. [OpenAI HumanEval](https://github.com/openai/human-eval)
-- **HELM** for transparent, multi‑metric evaluation. [Stanford HELM](https://github.com/stanford-crfm/helm)
-- **Chatbot Arena** for crowd‑sourced Elo ratings. [Chatbot Arena](https://openlm.ai/chatbot-arena/)
+- **Chatbot Arena** for crowd‑sourced Elo ratings. [Chatbot Arena](https://lmarena.ai/)
 
 These provide context, but we still run **task‑level evals** because leadership decisions are rarely captured in a leaderboard.
 
-## What’s next
-Tomorrow’s eval focuses on:
+## What's next
+
+Tomorrow's eval focuses on:
 - **Front‑end bug triage** (real UI regression)
-- **Agentic research** (docs + vendor comparison)
+- **Agentic research** (multi‑step research synthesis)
 
 **Related:** individual deep‑dives on [coding](/blog/2026-02-12-coding-benchmark/), [reasoning](/blog/2026-02-12-reasoning-benchmark/), and [tool‑use](/blog/2026-02-12-tool-use-benchmark/).

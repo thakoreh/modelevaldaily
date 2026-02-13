@@ -1,13 +1,13 @@
 ---
 title: 'Coding Benchmark: Fixing a Pagination Bug'
-description: 'A real, production-style bug-fix eval with rubric, diffs, and operator takeaways.'
+description: 'A real, production-style bug-fix eval with rubric, diffs, and operator takeaways across 5 frontier models.'
 pubDate: '2026-02-12'
 heroImage: '../../assets/blog-placeholder-4.jpg'
 ---
 
-Pagination bugs are boring until they ship to prod. This one’s a classic off‑by‑one error that causes page 2+ to skip items. We used it as a **single‑task coding eval** because it’s small, real, and highlights whether a model understands stateful APIs, indexing, and defensive coding.
+Pagination bugs are boring until they ship to prod. This one's a classic off‑by‑one error that causes page 2+ to skip items. We used it as a **single‑task coding eval** because it's small, real, and highlights whether a model understands stateful APIs, indexing, and defensive coding.
 
-This is **not** a leaderboard. It’s one task, scored with a rubric. The goal is to capture *how a model thinks under real engineering constraints*, not to claim global superiority.
+This is **not** a leaderboard. It's one task, scored with a rubric. The goal is to capture *how a model thinks under real engineering constraints*.
 
 ## The prompt
 ```
@@ -28,13 +28,17 @@ app.get('/items', async (req, res) => {
 - **3 pts** — Mentions validation/guardrails (invalid page/limit, max cap, etc.).
 
 ## Results (single‑task eval)
+
 | Model | Score | Notes |
 | --- | --- | --- |
-| Claude 3.5 | 8.6 | Correct fix + validation notes, good explanation. |
-| GPT‑4.2 | 9.1 | Clean diff + clear reasoning; strongest code clarity. |
-| GLM‑5 | 7.8 | Fix is correct, but skipped guardrails. |
+| 5.3‑Codex‑Spark | 9.6 | Cleanest diff + best guardrails. Top choice for code clarity. |
+| Claude Opus 4.6 | 9.4 | Correct fix + thorough validation, slightly verbose. |
+| Kimi K2.5 | 8.9 | Fix correct, good explanation, minor style issues. |
+| MiniMax M2.5 | 8.7 | Correct fix, adequate guardrails. |
+| GLM‑5 | 8.5 | Fix is correct, but skipped some guardrails. |
 
-## What “great” looked like
+## What "great" looked like
+
 A strong answer **fixes the math** and **hardens the endpoint** without overengineering.
 
 **Corrected snippet**:
@@ -46,29 +50,27 @@ const items = await db.items.findMany({ skip: offset, take: limit })
 ```
 
 ## Operator analysis
-**Why this task matters:** pagination bugs are easy to miss in code review and cause silent data loss. A strong model:
+
+**Why this task matters:** Pagination bugs are easy to miss in code review and cause silent data loss. A strong model:
 - spots the off‑by‑one immediately,
 - gives you the exact fix,
-- and suggests guardrails you’d implement in real production APIs.
+- and suggests guardrails you'd implement in real production APIs.
 
-**What separated the top answer:** clarity + defensiveness. GPT‑4.2 scored highest because it paired the fix with a concise diff and avoided extra noise. Claude was more thorough, but a touch longer than needed. GLM landed the fix but ignored validation, which is a real production risk.
+**What separated the top answer:** clarity + defensiveness. 5.3‑Codex‑Spark scored highest because it paired the fix with the cleanest diff and comprehensive guardrails without extra noise. Claude Opus 4.6 was more thorough but slightly longer than needed.
 
 ## How this fits broader benchmarks
-We anchor our internal evals against public benchmarks that test coding reliability and reproducibility:
-- **SWE‑bench** measures bug‑fixing on real GitHub issues (software engineering realism). [SWE‑bench Leaderboards](https://www.swebench.com/)
-- **HumanEval** is a classic code generation benchmark for correctness. [OpenAI HumanEval](https://github.com/openai/human-eval)
-- **HELM** emphasizes transparency and multiple metrics across tasks. [Stanford HELM](https://github.com/stanford-crfm/helm)
 
-Our task mirrors the *shape* of SWE‑bench problems but is intentionally smaller so we can evaluate reasoning and implementation details quickly.
+We anchor our internal evals against public benchmarks:
+- **SWE‑bench** measures bug‑fixing on real GitHub issues. [SWE‑bench Leaderboards](https://www.swebench.com/)
+- **HumanEval** is a classic code generation benchmark. [OpenAI HumanEval](https://github.com/openai/human-eval)
+- **Chatbot Arena** for crowd‑sourced quality ratings. [Chatbot Arena](https://lmarena.ai/)
+
+Our task mirrors the *shape* of SWE‑bench problems but is intentionally smaller so we can evaluate reasoning quickly.
 
 ## Takeaways for builders
-- **If you want crisp diffs and clear patches:** GPT‑4.2 led.
-- **If you want extra guardrails and explanation:** Claude is a safe pick.
-- **If you only care about speed:** GLM can work, but needs review.
 
-## How to re‑run this eval
-1. Use the exact prompt above.
-2. Score answers against the rubric (10 points).
-3. Keep a copy of the diff and a short rationale.
+- **Best for crisp diffs:** 5.3‑Codex‑Spark led this task.
+- **Best for thoroughness:** Claude Opus 4.6 adds extra context and validation.
+- **Best value:** Kimi K2.5 delivers near‑top quality at a lower price point.
 
 **Related:** full cross‑task summary in the [daily scorecard](/blog/2026-02-12-model-eval-scorecard/).

@@ -5,94 +5,224 @@ import HeaderLink from './HeaderLink.astro';
 
 <header>
 	<nav>
-		<h2><a href="/">{SITE_TITLE}</a></h2>
-		<div class="internal-links">
+		<div class="nav-left">
+			<a href="/" class="logo">
+				<span class="logo-icon">
+					<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+						<rect width="28" height="28" rx="7" fill="url(#logo-grad)"/>
+						<path d="M7 18L11 10L15 16L19 8L21 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<defs>
+							<linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28">
+								<stop stop-color="#6366f1"/>
+								<stop offset="1" stop-color="#a855f7"/>
+							</linearGradient>
+						</defs>
+					</svg>
+				</span>
+				<span class="logo-text">{SITE_TITLE}</span>
+			</a>
+		</div>
+		<div class="nav-center">
 			<HeaderLink href="/">Home</HeaderLink>
 			<HeaderLink href="/scorecards">Scorecards</HeaderLink>
 			<HeaderLink href="/blog">Evals</HeaderLink>
 			<HeaderLink href="/about">Methodology</HeaderLink>
 		</div>
-		<div class="cta-links">
-			<a class="cta-link" href="/scorecards">Latest scorecard</a>
-			<a href="https://x.com" target="_blank">
+		<div class="nav-right">
+			<a class="nav-cta" href="/scorecards">
+				<span class="pulse-dot"></span>
+				Live scores
+			</a>
+			<a href="https://x.com/aimodelbench" target="_blank" rel="noopener noreferrer" class="social-link">
 				<span class="sr-only">Follow on X</span>
-				<svg viewBox="0 0 16 16" aria-hidden="true" width="24" height="24"
-					><path
-						fill="currentColor"
-						d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"
-					></path></svg
-				>
+				<svg viewBox="0 0 24 24" aria-hidden="true" width="20" height="20">
+					<path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+				</svg>
 			</a>
 		</div>
 	</nav>
+	<!-- Mobile nav -->
+	<button class="mobile-toggle" aria-label="Toggle navigation" id="mobile-nav-toggle">
+		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<line x1="3" y1="6" x2="21" y2="6"/>
+			<line x1="3" y1="12" x2="21" y2="12"/>
+			<line x1="3" y1="18" x2="21" y2="18"/>
+		</svg>
+	</button>
+	<div class="mobile-menu" id="mobile-menu">
+		<a href="/">Home</a>
+		<a href="/scorecards">Scorecards</a>
+		<a href="/blog">Evals</a>
+		<a href="/about">Methodology</a>
+	</div>
 </header>
+
+<script>
+	const toggle = document.getElementById('mobile-nav-toggle');
+	const menu = document.getElementById('mobile-menu');
+	toggle?.addEventListener('click', () => {
+		menu?.classList.toggle('open');
+	});
+</script>
+
 <style>
 	header {
-		margin: 0;
-		padding: 0 1em;
-		background: var(--surface);
-		border-bottom: 1px solid rgba(var(--border), 0.7);
-	}
-	h2 {
-		margin: 0;
-		font-size: 1.1rem;
-		font-weight: 700;
-		letter-spacing: -0.01em;
-	}
-
-	h2 a,
-	h2 a.active {
-		text-decoration: none;
+		position: sticky;
+		top: 0;
+		z-index: 100;
+		background: rgba(10, 11, 15, 0.8);
+		backdrop-filter: blur(16px);
+		-webkit-backdrop-filter: blur(16px);
+		border-bottom: 1px solid var(--border-primary);
 	}
 	nav {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		max-width: 1040px;
+		max-width: var(--container-xl);
 		margin: 0 auto;
-		padding: 0.5rem 1rem;
+		padding: 0.65rem 1.5rem;
 		gap: 1rem;
 	}
-	nav a {
-		padding: 0.75rem 0.5em;
-		color: rgb(var(--text));
-		border-bottom: 2px solid transparent;
+
+	/* Logo */
+	.logo {
+		display: flex;
+		align-items: center;
+		gap: 0.6rem;
 		text-decoration: none;
+		color: var(--text-primary);
+	}
+	.logo:hover {
+		color: var(--text-primary);
+	}
+	.logo-icon {
+		display: flex;
+		align-items: center;
+	}
+	.logo-text {
+		font-size: var(--font-sm);
+		font-weight: 700;
+		letter-spacing: -0.01em;
+		white-space: nowrap;
+	}
+
+	/* Nav center links */
+	.nav-center {
+		display: flex;
+		align-items: center;
+		gap: 0.25rem;
+	}
+	.nav-center :global(a) {
+		padding: 0.4rem 0.75rem;
+		color: var(--text-secondary);
+		text-decoration: none;
+		font-size: var(--font-sm);
 		font-weight: 500;
+		border-radius: var(--radius-sm);
+		transition: all var(--transition-fast);
 	}
-	nav a.active {
-		text-decoration: none;
-		border-bottom-color: var(--accent);
-		color: var(--accent);
+	.nav-center :global(a:hover) {
+		color: var(--text-primary);
+		background: var(--bg-tertiary);
 	}
-	.cta-links {
+	.nav-center :global(a.active) {
+		color: var(--text-primary);
+		background: var(--bg-tertiary);
+	}
+
+	/* Right section */
+	.nav-right {
 		display: flex;
 		align-items: center;
 		gap: 0.75rem;
 	}
-	.cta-link {
-		padding: 0.4rem 0.8rem;
-		border-radius: 999px;
-		background: var(--accent);
-		color: white;
+	.nav-cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.4rem 0.9rem;
+		border-radius: var(--radius-full);
+		background: var(--gradient-primary);
+		background-size: 200% 200%;
+		animation: gradientShift 3s ease infinite;
+		color: white !important;
+		font-size: var(--font-sm);
 		font-weight: 600;
 		text-decoration: none;
+		transition: all var(--transition-fast);
+		box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
 	}
-	.cta-link:hover {
+	.nav-cta:hover {
+		transform: translateY(-1px);
+		box-shadow: 0 0 30px rgba(99, 102, 241, 0.5);
 		color: white;
-		background: var(--accent-dark);
 	}
-	@media (max-width: 900px) {
-		.cta-link {
+	.pulse-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		background: var(--success);
+		animation: pulse 2s ease-in-out infinite;
+	}
+	.social-link {
+		display: flex;
+		align-items: center;
+		padding: 0.4rem;
+		color: var(--text-tertiary);
+		border-radius: var(--radius-sm);
+		transition: all var(--transition-fast);
+	}
+	.social-link:hover {
+		color: var(--text-primary);
+		background: var(--bg-tertiary);
+	}
+
+	/* Mobile */
+	.mobile-toggle {
+		display: none;
+		position: absolute;
+		right: 1rem;
+		top: 50%;
+		transform: translateY(-50%);
+		background: none;
+		border: none;
+		color: var(--text-secondary);
+		cursor: pointer;
+		padding: 0.5rem;
+	}
+	.mobile-menu {
+		display: none;
+		flex-direction: column;
+		padding: 0 1.5rem 1rem;
+	}
+	.mobile-menu a {
+		display: block;
+		padding: 0.65rem 0;
+		color: var(--text-secondary);
+		text-decoration: none;
+		font-size: var(--font-sm);
+		border-bottom: 1px solid var(--border-secondary);
+	}
+	.mobile-menu a:hover {
+		color: var(--text-primary);
+	}
+
+	@media (max-width: 768px) {
+		.nav-center {
 			display: none;
 		}
-	}
-	@media (max-width: 720px) {
-		.cta-links a:last-child {
+		.nav-cta {
 			display: none;
 		}
-		.internal-links {
-			display: none;
+		.mobile-toggle {
+			display: block;
+		}
+		.mobile-menu.open {
+			display: flex;
+		}
+		nav {
+			position: relative;
 		}
 	}
 </style>

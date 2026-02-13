@@ -4,8 +4,8 @@ import Layout from '../layouts/BlogPost.astro';
 ---
 
 <Layout
-	title="Methodology"
-	description="How we run daily model evals and keep results honest."
+	title="Methodology — How We Benchmark AI Models"
+	description="How AIModelBenchmarks.com runs daily model evaluations. Our transparent methodology: real tasks, public rubrics, and reproducible results."
 	pubDate={new Date('February 12 2026')}
 	heroImage={AboutHeroImage}
 >
@@ -15,28 +15,52 @@ import Layout from '../layouts/BlogPost.astro';
 		deliver usable output under time pressure?
 	</p>
 
-	<h2>Principles</h2>
+	<h2>Our Principles</h2>
 	<ul>
-		<li><strong>Transparent prompts.</strong> Every eval includes the exact prompt and rubric.</li>
-		<li><strong>Real tasks.</strong> No synthetic toy problems.</li>
-		<li><strong>Repeatable.</strong> Same inputs, same scoring, clear deltas over time.</li>
+		<li><strong>Transparent prompts.</strong> Every eval includes the exact prompt and rubric. You can rerun any test yourself.</li>
+		<li><strong>Real tasks, not toy problems.</strong> We test what engineering teams actually do: fix bugs, make architecture decisions, wire up APIs.</li>
+		<li><strong>Reproducible.</strong> Same inputs, same scoring, clear deltas over time. No hidden grading or subjective rankings.</li>
+		<li><strong>Operator-first.</strong> We track cost, latency, and reliability -- the metrics that matter when you're running AI in production.</li>
 	</ul>
 
-	<h2>Eval categories</h2>
+	<h2>Eval Categories</h2>
 	<ul>
-		<li><strong>Coding:</strong> small feature builds, bug fixes, refactors.</li>
-		<li><strong>Reasoning:</strong> tradeoffs, debugging diagnosis, system design.</li>
-		<li><strong>Tool use:</strong> multi-step tasks using CLI, docs, APIs.</li>
+		<li><strong>Coding:</strong> Small feature builds, bug fixes, refactors, API patches. Scored on correctness, code quality, and diff cleanliness.</li>
+		<li><strong>Reasoning:</strong> Build-vs-buy decisions, debugging diagnosis, system design tradeoffs. Scored on constraint coverage, decision clarity, and actionability.</li>
+		<li><strong>Tool use:</strong> Multi-step tasks using CLI tools, official documentation, and third-party APIs. Scored on doc-faithfulness, verification steps, and security hygiene.</li>
+		<li><strong>RAG / Research:</strong> (Coming soon) Retrieval quality, synthesis accuracy, and citation faithfulness.</li>
+		<li><strong>Agents:</strong> (Coming soon) Multi-step task completion, tool failure recovery, and plan coherence.</li>
 	</ul>
 
-	<h2>Scoring rubric</h2>
+	<h2>Scoring Rubric</h2>
 	<p>
-		Each task is scored on <strong>Correctness</strong>, <strong>Speed-to-usable output</strong>, and
-		<strong>Clarity</strong>. The weighted total rolls into the daily scorecard.
+		Each task is scored out of 10 on three dimensions:
+	</p>
+	<ul>
+		<li><strong>Correctness (4 pts):</strong> Does the output solve the problem? Are there bugs, hallucinations, or missing requirements?</li>
+		<li><strong>Speed-to-usable output (3 pts):</strong> How quickly does the model produce something an engineer can actually use?</li>
+		<li><strong>Clarity (3 pts):</strong> Is the output well-structured, documented, and easy to review?</li>
+	</ul>
+	<p>
+		The weighted total rolls into the daily scorecard. We weight coding at 40%, reasoning at 35%, and tool-use at 25%.
 	</p>
 
-	<h2>How to contribute</h2>
+	<h2>How We Run Evals</h2>
+	<ol>
+		<li><strong>Task selection:</strong> We pick a real-world task from our backlog (contributed by engineers, PMs, and our team).</li>
+		<li><strong>Prompt design:</strong> We write a clear, constrained prompt with explicit success criteria.</li>
+		<li><strong>Model execution:</strong> We run the same prompt against every model under test (currently Claude Opus 4.6, 5.3-Codex-Spark, Kimi K2.5, MiniMax M2.5, GLM-5, and Gemini 2.5 Pro).</li>
+		<li><strong>Blind scoring:</strong> Outputs are scored against the rubric without knowing which model produced them.</li>
+		<li><strong>Publication:</strong> The full scorecard -- prompt, rubric, scores, and analysis -- is published daily.</li>
+	</ol>
+
+	<h2>Models We Track</h2>
 	<p>
-		Suggest tasks, submit eval ideas, or request a model head-to-head. We’ll add it to the queue.
+		We currently evaluate <strong>Claude Opus 4.6 (Anthropic)</strong>, <strong>5.3-Codex-Spark (OpenAI)</strong>, <strong>Kimi K2.5 (Moonshot)</strong>, <strong>MiniMax M2.5</strong>, <strong>GLM-5 (Zhipu)</strong>, and <strong>Gemini 2.5 Pro (Google)</strong>. We plan to add Llama, Mistral, and DeepSeek models as they reach production readiness.
+	</p>
+
+	<h2>How to Contribute</h2>
+	<p>
+		Suggest tasks, submit eval ideas, or request a model head-to-head. We'll add it to the queue. Reach out on <a href="https://x.com/aimodelbench">X @aimodelbench</a> or open an issue on our GitHub.
 	</p>
 </Layout>

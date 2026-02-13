@@ -5,27 +5,29 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_TITLE } from '../consts';
 
 const posts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 const latest = posts[0];
-const highlights = posts.slice(1, 5);
+const allPosts = posts.slice(0, 12);
+
 const taxonomy = [
-	{ title: 'Coding', description: 'Bug fixes, refactors, API patches, diffs.' },
-	{ title: 'Reasoning', description: 'Decisions, tradeoffs, leadership calls.' },
-	{ title: 'Tool‑use', description: 'Docs, CLI flows, integrations.' },
-	{ title: 'RAG/Research', description: 'Retrieval, synthesis, audit trails.' },
-	{ title: 'Agents', description: 'Multi‑step plans, tool reliability.' },
-	{ title: 'Latency/Cost', description: 'Speed, spend, and throughput tradeoffs.' },
+	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: posts.length },
+	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: posts.length },
+	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: posts.length },
+	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: 0 },
+	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: 0 },
+	{ title: 'Latency & Cost', emoji: '&#9889;', description: 'Speed, spend, and throughput tradeoffs.', href: '#cost', count: 0 },
 ];
+
 const filters = [
-	{ label: 'All', href: '#recent' },
+	{ label: 'All', href: '#all-scorecards', active: true },
 	{ label: 'Coding', href: '#coding' },
 	{ label: 'Reasoning', href: '#reasoning' },
-	{ label: 'Tool‑use', href: '#tool-use' },
-	{ label: 'RAG/Research', href: '#rag' },
+	{ label: 'Tool-use', href: '#tool-use' },
+	{ label: 'RAG / Research', href: '#rag' },
 	{ label: 'Agents', href: '#agents' },
 ];
 ---
@@ -33,105 +35,286 @@ const filters = [
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${SITE_TITLE} | Scorecards`} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title={`AI Model Scorecards — Daily Benchmarks | ${SITE_TITLE}`}
+			description="Browse daily AI model scorecards across coding, reasoning, tool-use, and more. Compare Claude, GPT, and other models on real-world tasks."
+		/>
 		<style>
-			main {
-				width: 1040px;
+			/* Hero */
+			.page-hero {
+				position: relative;
+				padding: var(--space-3xl) 0 var(--space-2xl);
+				overflow: hidden;
 			}
-			.hero {
+			.page-hero::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+			.hero-inner {
+				position: relative;
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
 				display: grid;
 				grid-template-columns: 1.2fr 0.8fr;
-				gap: 1.5rem;
-				margin-bottom: 2rem;
+				gap: var(--space-2xl);
+				align-items: start;
 			}
-			.hero-card {
-				background: var(--surface);
-				border-radius: 16px;
-				padding: 1.5rem;
-				box-shadow: var(--box-shadow);
-				border: 1px solid rgba(var(--border), 0.7);
+			.hero-text h1 {
+				font-size: clamp(2rem, 3.5vw, 2.75rem);
+				margin-bottom: var(--space-sm);
 			}
-			.hero p {
-				color: rgb(var(--text-muted));
+			.hero-text > p {
+				color: var(--text-secondary);
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-lg);
 			}
-			.filters {
+			.hero-meta {
 				display: flex;
+				align-items: center;
 				gap: 0.5rem;
-				flex-wrap: wrap;
-				margin: 1rem 0 2rem;
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
 			}
-			.filter {
-				border: 1px solid rgba(var(--border), 0.6);
-				border-radius: 999px;
-				padding: 0.35rem 0.9rem;
-				background: rgba(var(--border), 0.3);
-				font-size: 0.9rem;
+			.hero-meta .live {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				color: var(--success);
+				font-weight: 600;
+			}
+			.hero-meta .live::before {
+				content: '';
+				width: 6px;
+				height: 6px;
+				border-radius: 50%;
+				background: var(--success);
+				animation: pulse 2s infinite;
+			}
+
+			/* Latest card in hero */
+			.latest-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-xl);
+				overflow: hidden;
+				box-shadow: var(--shadow-lg);
+				transition: all var(--transition-base);
+			}
+			.latest-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+			.latest-card a {
 				text-decoration: none;
-				color: rgb(var(--text));
+				color: inherit;
 			}
-			.filter:hover {
-				border-color: rgba(var(--accent), 0.6);
-				color: var(--accent);
+			.latest-card-body {
+				padding: var(--space-lg);
 			}
-			.grid {
+			.latest-card-label {
+				font-size: var(--font-xs);
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.06em;
+				color: var(--accent-light);
+				margin-bottom: 0.35rem;
+			}
+			.latest-card-title {
+				font-size: var(--font-lg);
+				font-weight: 600;
+				color: var(--text-primary);
+				margin: 0 0 0.25rem;
+				line-height: 1.3;
+			}
+			.latest-card-date {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+			.latest-card img {
+				border-radius: 0;
+			}
+
+			/* Filters */
+			.filter-bar {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: var(--space-lg) 1.5rem;
+				display: flex;
+				gap: 0.4rem;
+				flex-wrap: wrap;
+			}
+			.filter-pill {
+				padding: 0.4rem 1rem;
+				border-radius: var(--radius-full);
+				border: 1px solid var(--border-primary);
+				background: transparent;
+				color: var(--text-secondary);
+				font-size: var(--font-sm);
+				font-weight: 500;
+				text-decoration: none;
+				transition: all var(--transition-fast);
+			}
+			.filter-pill:hover, .filter-pill.active {
+				background: var(--accent);
+				color: white;
+				border-color: var(--accent);
+			}
+
+			/* Taxonomy grid */
+			.taxonomy-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-md);
+			}
+			.taxonomy-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				text-decoration: none;
+				color: inherit;
+				transition: all var(--transition-base);
+			}
+			.taxonomy-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+			}
+			.taxonomy-emoji {
+				font-size: 1.5rem;
+				margin-bottom: 0.5rem;
+				display: block;
+			}
+			.taxonomy-card h3 {
+				font-size: var(--font-base);
+				margin-bottom: 0.25rem;
+			}
+			.taxonomy-card p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin: 0;
+			}
+			.taxonomy-count {
+				display: inline-block;
+				margin-top: 0.5rem;
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			/* Section */
+			.section {
+				max-width: var(--container-xl);
+				margin: var(--space-3xl) auto;
+				padding: 0 1.5rem;
+			}
+			.section-header {
+				display: flex;
+				justify-content: space-between;
+				align-items: baseline;
+				margin-bottom: var(--space-lg);
+			}
+			.section-header h2 {
+				margin: 0;
+			}
+			.section-header a {
+				font-size: var(--font-sm);
+				color: var(--accent-light);
+			}
+			.section-desc {
+				color: var(--text-tertiary);
+				font-size: var(--font-sm);
+				margin-bottom: var(--space-lg);
+			}
+
+			/* Post grid */
+			.post-grid {
 				display: grid;
 				grid-template-columns: repeat(2, 1fr);
-				gap: 1.5rem;
-				list-style-type: none;
+				gap: var(--space-lg);
+				list-style: none;
 				margin: 0;
 				padding: 0;
 			}
-			.card {
-				background: var(--surface);
-				border: 1px solid rgba(var(--border), 0.7);
-				padding: 1rem;
-				border-radius: 12px;
+			.post-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				overflow: hidden;
+				transition: all var(--transition-base);
 			}
-			.title {
-				margin: 0 0 0.25rem 0;
-				color: rgb(var(--text));
-				line-height: 1.2;
-				font-size: 1.25rem;
+			.post-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-3px);
+				box-shadow: var(--shadow-md);
 			}
-			.date {
-				margin: 0;
-				color: rgb(var(--text-muted));
-			}
-			.card img {
-				border-radius: 12px;
-				margin-bottom: 0.75rem;
-			}
-			.card a {
-				display: block;
+			.post-card a {
+				display: flex;
+				gap: var(--space-md);
 				text-decoration: none;
+				color: inherit;
+				padding: var(--space-md);
 			}
-			.card a:hover h4,
-			.card a:hover .date {
-				color: var(--accent);
+			.post-card-img {
+				width: 140px;
+				flex-shrink: 0;
+				border-radius: var(--radius-md);
+				overflow: hidden;
 			}
-			.taxonomy {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: 1rem;
-				margin: 2rem 0;
+			.post-card-img img {
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				border-radius: var(--radius-md);
 			}
-			.taxonomy-card {
-				background: rgba(var(--border), 0.2);
-				border: 1px solid rgba(var(--border), 0.5);
-				border-radius: 12px;
-				padding: 1rem;
+			.post-card-info {
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
 			}
-			.section {
-				margin: 2.5rem 0;
+			.post-card-info h4 {
+				font-size: var(--font-base);
+				color: var(--text-primary);
+				margin: 0 0 0.25rem;
+				line-height: 1.3;
+				transition: color var(--transition-fast);
 			}
+			.post-card:hover h4 {
+				color: var(--accent-light);
+			}
+			.post-card-info .date {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			/* Coming soon */
+			.coming-soon {
+				background: var(--bg-card);
+				border: 1px dashed var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-2xl);
+				text-align: center;
+				color: var(--text-tertiary);
+			}
+			.coming-soon p {
+				margin: 0;
+			}
+
 			@media (max-width: 960px) {
-				.hero {
+				.hero-inner {
 					grid-template-columns: 1fr;
 				}
-				.grid {
+				.taxonomy-grid {
+					grid-template-columns: 1fr 1fr;
+				}
+				.post-grid {
 					grid-template-columns: 1fr;
 				}
-				.taxonomy {
+			}
+			@media (max-width: 600px) {
+				.taxonomy-grid {
 					grid-template-columns: 1fr;
 				}
 			}
@@ -139,119 +322,180 @@ const filters = [
 	</head>
 	<body>
 		<Header />
-		<main>
-			<section class="hero">
-				<div>
-					<h1>Daily AI model scorecards</h1>
-					<p>Browse today’s winner, task leaders, and latency/cost tradeoffs.</p>
-					<p><strong>Updated daily at 6am ET.</strong></p>
-					<div class="filters">
-						{filters.map((filter) => (
-							<a class="filter" href={filter.href}>{filter.label}</a>
-						))}
+
+		<section class="page-hero">
+			<div class="hero-inner">
+				<div class="hero-text">
+					<h1>Daily AI Model Scorecards</h1>
+					<p>Browse today's winners, task leaders, and cost/latency tradeoffs across every model we test.</p>
+					<div class="hero-meta">
+						<span class="live">Live</span>
+						<span>Updated daily at 6am ET</span>
 					</div>
-					<p class="meta">Filters link to scorecard types. Interactive filtering is coming.</p>
 				</div>
 				{latest && (
-					<div class="hero-card">
-						<h3>Today’s scorecard</h3>
+					<div class="latest-card">
 						<a href={`/blog/${latest.id}/`}>
 							{latest.data.heroImage && (
-								<Image width={720} height={360} src={latest.data.heroImage} alt="" />
+								<Image width={720} height={360} src={latest.data.heroImage} alt={latest.data.title} />
 							)}
-							<h4 class="title">{latest.data.title}</h4>
-							<p class="date">
-								<FormattedDate date={latest.data.pubDate} />
-							</p>
+							<div class="latest-card-body">
+								<div class="latest-card-label">Today's scorecard</div>
+								<h3 class="latest-card-title">{latest.data.title}</h3>
+								<span class="latest-card-date"><FormattedDate date={latest.data.pubDate} /></span>
+							</div>
 						</a>
 					</div>
 				)}
-			</section>
+			</div>
+		</section>
 
+		<div class="filter-bar">
+			{filters.map((f) => (
+				<a class:list={['filter-pill', { active: f.active }]} href={f.href}>{f.label}</a>
+			))}
+		</div>
+
+		<main>
+			<!-- Taxonomy -->
 			<section class="section">
-				<h2>Scorecard taxonomy</h2>
-				<p>We group evals by the skill you actually buy: code, reasoning, tool use, retrieval, and agent reliability.</p>
-				<div class="taxonomy">
+				<div class="section-header">
+					<h2>Eval Categories</h2>
+				</div>
+				<div class="taxonomy-grid">
 					{taxonomy.map((item) => (
-						<div class="taxonomy-card">
-							<strong>{item.title}</strong>
+						<a class="taxonomy-card" href={item.href}>
+							<span class="taxonomy-emoji" set:html={item.emoji} />
+							<h3>{item.title}</h3>
 							<p>{item.description}</p>
-						</div>
+							<span class="taxonomy-count">{item.count > 0 ? `${item.count} scorecards` : 'Coming soon'}</span>
+						</a>
 					))}
 				</div>
 			</section>
 
+			<!-- Coding -->
 			<section class="section" id="coding">
-				<h2>Coding scorecards</h2>
-				<p>Bug fixes, diffs, refactors, and API patches.</p>
-				{highlights.length === 0 ? (
-					<p>No past scorecards yet. Check back tomorrow.</p>
-				) : (
-					<ul class="grid">
-						{highlights.map((post) => (
-							<li class="card">
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))}
-					</ul>
-				)}
+				<div class="section-header">
+					<h2>Coding Scorecards</h2>
+					<a href="/blog">View all &rarr;</a>
+				</div>
+				<p class="section-desc">Bug fixes, diffs, refactors, and API patches tested across leading models.</p>
+				<ul class="post-grid">
+					{allPosts.slice(0, 4).map((post) => (
+						<li class="post-card">
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="post-card-img">
+										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+									</div>
+								)}
+								<div class="post-card-info">
+									<h4>{post.data.title}</h4>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
 			</section>
 
+			<!-- Reasoning -->
 			<section class="section" id="reasoning">
-				<h2>Reasoning scorecards</h2>
-				<p>Decision quality under pressure, tradeoffs, and strategy calls.</p>
-				<p class="meta">More reasoning scorecards landing this week.</p>
+				<div class="section-header">
+					<h2>Reasoning Scorecards</h2>
+				</div>
+				<p class="section-desc">Decision quality under pressure, tradeoffs, and strategy calls.</p>
+				<ul class="post-grid">
+					{allPosts.slice(0, 2).map((post) => (
+						<li class="post-card">
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="post-card-img">
+										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+									</div>
+								)}
+								<div class="post-card-info">
+									<h4>{post.data.title}</h4>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
 			</section>
 
+			<!-- Tool-use -->
 			<section class="section" id="tool-use">
-				<h2>Tool‑use scorecards</h2>
-				<p>Docs‑driven tasks, CLI accuracy, and security hygiene.</p>
-				<p class="meta">More tool‑use scorecards landing this week.</p>
+				<div class="section-header">
+					<h2>Tool-use Scorecards</h2>
+				</div>
+				<p class="section-desc">Docs-driven tasks, CLI accuracy, and security hygiene.</p>
+				<ul class="post-grid">
+					{allPosts.slice(0, 2).map((post) => (
+						<li class="post-card">
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="post-card-img">
+										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+									</div>
+								)}
+								<div class="post-card-info">
+									<h4>{post.data.title}</h4>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
 			</section>
 
+			<!-- RAG -->
 			<section class="section" id="rag">
-				<h2>RAG/Research scorecards</h2>
-				<p>Retrieval, synthesis quality, and citation accuracy.</p>
-				<p class="meta">RAG scorecards are coming soon.</p>
+				<div class="section-header">
+					<h2>RAG / Research Scorecards</h2>
+				</div>
+				<div class="coming-soon">
+					<p>RAG and research scorecards are launching soon. Subscribe to get notified.</p>
+				</div>
 			</section>
 
+			<!-- Agents -->
 			<section class="section" id="agents">
-				<h2>Agent reliability scorecards</h2>
-				<p>Multi‑step task success, tool failures, and recovery behavior.</p>
-				<p class="meta">Agent scorecards are coming soon.</p>
+				<div class="section-header">
+					<h2>Agent Reliability Scorecards</h2>
+				</div>
+				<div class="coming-soon">
+					<p>Agent reliability scorecards are launching soon. Multi-step task success, tool failures, and recovery behavior.</p>
+				</div>
 			</section>
 
-			<section class="section" id="recent">
-				<h2>All recent scorecards</h2>
-				{highlights.length === 0 ? (
-					<p>No past scorecards yet. Check back tomorrow.</p>
-				) : (
-					<ul class="grid">
-						{highlights.map((post) => (
-							<li class="card">
-								<a href={`/blog/${post.id}/`}>
-									{post.data.heroImage && (
-										<Image width={720} height={360} src={post.data.heroImage} alt="" />
-									)}
-									<h4 class="title">{post.data.title}</h4>
-									<p class="date">
-										<FormattedDate date={post.data.pubDate} />
-									</p>
-								</a>
-							</li>
-						))}
-					</ul>
-				)}
+			<!-- All -->
+			<section class="section" id="all-scorecards">
+				<div class="section-header">
+					<h2>All Recent Scorecards</h2>
+					<a href="/blog">View all &rarr;</a>
+				</div>
+				<ul class="post-grid">
+					{allPosts.map((post) => (
+						<li class="post-card">
+							<a href={`/blog/${post.id}/`}>
+								{post.data.heroImage && (
+									<div class="post-card-img">
+										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+									</div>
+								)}
+								<div class="post-card-info">
+									<h4>{post.data.title}</h4>
+									<span class="date"><FormattedDate date={post.data.pubDate} /></span>
+								</div>
+							</a>
+						</li>
+					))}
+				</ul>
 			</section>
 		</main>
+
 		<Footer />
 	</body>
 </html>

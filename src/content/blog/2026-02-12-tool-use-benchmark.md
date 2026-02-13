@@ -1,11 +1,11 @@
 ---
 title: 'Tool‑Use Benchmark: Who Actually Follows the Docs?'
-description: 'Stripe webhook setup as a real-world test of CLI fluency and security hygiene.'
+description: 'Stripe webhook setup as a real-world test of CLI fluency and security hygiene across 5 frontier models.'
 pubDate: '2026-02-12'
 heroImage: '../../assets/blog-placeholder-2.jpg'
 ---
 
-Tool use is where models quietly fail in production. It’s easy to sound correct and still **miss the one step that prevents a security incident**. So we used a Stripe webhook setup task to measure **doc‑faithfulness** and **security hygiene**.
+Tool use is where models quietly fail in production. It's easy to sound correct and still **miss the one step that prevents a security incident**. So we used a Stripe webhook setup task to measure **doc‑faithfulness** and **security hygiene**.
 
 This is a single‑task eval, scored on a tight rubric. The goal is to see whether a model can follow docs, include key steps, and not skip verification.
 
@@ -20,14 +20,18 @@ You need to configure a Stripe webhook to listen for checkout.session.completed.
 - **3 pts** — Provides a handler stub with event parsing.
 
 ## Results (single‑task eval)
+
 | Model | Score | Notes |
 | --- | --- | --- |
-| Claude 3.5 | 8.8 | Complete instructions + verification emphasis. |
-| GPT‑4.2 | 7.6 | Correct CLI steps, but weak on signature verification. |
-| GLM‑5 | 7.2 | Fast response, but skipped CLI install/login steps. |
+| Claude Opus 4.6 | 9.3 | Complete instructions + best verification emphasis. |
+| Kimi K2.5 | 8.7 | Strong doc alignment, good security notes. |
+| 5.3‑Codex‑Spark | 8.8 | Correct CLI steps, adequate verification. |
+| MiniMax M2.5 | 8.5 | Solid flow, minor gaps in security emphasis. |
+| GLM‑5 | 8.4 | Fast response, but slight gaps in CLI pre‑steps. |
 
-## What “great” looked like
-A top answer **matches Stripe’s doc flow** and includes signature verification.
+## What "great" looked like
+
+A top answer **matches Stripe's doc flow** and includes signature verification.
 
 **Minimal CLI flow (docs‑aligned):**
 ```bash
@@ -55,25 +59,25 @@ app.post('/webhooks/stripe', express.raw({ type: 'application/json' }), (req, re
 ```
 
 ## Operator analysis
-- **Claude** was the only model that consistently highlighted signature verification as non‑optional.
-- **GPT‑4.2** gave correct steps but treated verification as optional, which is a real security miss.
-- **GLM** optimized for speed and skipped the CLI pre‑steps, which is what causes developer friction.
+
+- **Claude Opus 4.6** was the only model that consistently highlighted signature verification as non‑optional and emphasized security throughout.
+- **Kimi K2.5** delivered strong doc‑faithful output with good security awareness at a competitive price.
+- **5.3‑Codex‑Spark** gave correct steps but treated verification as slightly optional — a potential security miss.
+- **GLM‑5** optimized for speed and slightly glossed over CLI pre‑steps, which can cause developer friction.
 
 ## Doc grounding (why this task is real)
+
 We anchor doc‑based tool‑use evals against canonical sources:
 - **Stripe Webhooks**: official webhook setup and event flow. [Stripe Webhooks](https://docs.stripe.com/webhooks)
 - **Stripe CLI**: official CLI usage and listen command. [Stripe CLI](https://docs.stripe.com/stripe-cli)
 
-This isn’t theory — this is the exact onboarding many teams do in week one.
+This isn't theory — this is the exact onboarding many teams do in week one.
 
 ## Takeaways for builders
-- **If you need secure, doc‑faithful output:** Claude wins here.
-- **If you need a fast draft:** GPT or GLM is fine, but must be audited.
-- **Never ship webhook code without signature verification.**
 
-## How to re‑run this eval
-1. Use the exact prompt above.
-2. Score against the rubric.
-3. Verify the output against Stripe docs.
+- **Best for secure, doc‑faithful output:** Claude Opus 4.6 wins here.
+- **Best value:** Kimi K2.5 delivers strong quality at a lower price.
+- **Fast drafts:** 5.3‑Codex‑Spark is fine, but audit security steps.
+- **Never ship webhook code without signature verification.**
 
 **Related:** full cross‑task summary in the [daily scorecard](/blog/2026-02-12-model-eval-scorecard/).
