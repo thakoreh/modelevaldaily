@@ -15,10 +15,15 @@ const posts = allPosts.filter(p => !p.id.includes('template'));
 const latest = posts[0];
 const recent = posts.slice(0, 12);
 
+// Categorize posts by content type
+const codingPosts = posts.filter(p => p.id.includes('coding') || p.id.includes('scorecard'));
+const reasoningPosts = posts.filter(p => p.id.includes('reasoning') || p.id.includes('scorecard'));
+const toolUsePosts = posts.filter(p => p.id.includes('tool-use') || p.id.includes('scorecard'));
+
 const taxonomy = [
-	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: posts.length },
-	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: posts.length },
-	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: posts.length },
+	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingPosts.length },
+	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningPosts.length },
+	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUsePosts.length },
 	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: 0 },
 	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: 0 },
 	{ title: 'Latency & Cost', emoji: '&#9889;', description: 'Speed, spend, and throughput tradeoffs.', href: '#cost', count: 0 },
@@ -384,8 +389,8 @@ const filters = [
 				</div>
 				<p class="section-desc">Bug fixes, diffs, refactors, and API patches tested across leading models.</p>
 				<ul class="post-grid">
-					{recent.slice(0, 4).map((post) => (
-						<li class="post-card">
+					{codingPosts.slice(0, 6).map((post) => (
+						<li class="post-card" data-category="coding">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
@@ -409,8 +414,8 @@ const filters = [
 				</div>
 				<p class="section-desc">Decision quality under pressure, tradeoffs, and strategy calls.</p>
 				<ul class="post-grid">
-					{recent.slice(0, 2).map((post) => (
-						<li class="post-card">
+					{reasoningPosts.slice(0, 6).map((post) => (
+						<li class="post-card" data-category="reasoning">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
@@ -434,8 +439,8 @@ const filters = [
 				</div>
 				<p class="section-desc">Docs-driven tasks, CLI accuracy, and security hygiene.</p>
 				<ul class="post-grid">
-					{recent.slice(0, 2).map((post) => (
-						<li class="post-card">
+					{toolUsePosts.slice(0, 6).map((post) => (
+						<li class="post-card" data-category="tool-use">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
@@ -499,5 +504,54 @@ const filters = [
 		</main>
 
 		<Footer />
+		
+		<script>
+			// Filter functionality
+			document.addEventListener('DOMContentLoaded', () => {
+				const filterPills = document.querySelectorAll('.filter-pill');
+				const sections = document.querySelectorAll('.section[id]');
+				
+				filterPills.forEach(pill => {
+					pill.addEventListener('click', (e) => {
+						e.preventDefault();
+						const targetId = pill.getAttribute('href').substring(1);
+						
+						// Update active state
+						filterPills.forEach(p => p.classList.remove('active'));
+						pill.classList.add('active');
+						
+						// Show/hide sections based on filter
+						if (targetId === 'all-scorecards') {
+							sections.forEach(s => s.style.display = 'block');
+						} else {
+							sections.forEach(s => {
+								if (s.id === targetId || s.id === 'all-scorecards') {
+									s.style.display = 'block';
+								} else {
+									s.style.display = 'none';
+								}
+							});
+						}
+						
+						// Smooth scroll to section
+						if (targetId !== 'all-scorecards') {
+							const targetSection = document.getElementById(targetId);
+							if (targetSection) {
+								targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+							}
+						}
+					});
+				});
+				
+				// Handle anchor links on page load
+				if (window.location.hash) {
+					const targetId = window.location.hash.substring(1);
+					const targetPill = document.querySelector(`.filter-pill[href="#${targetId}"]`);
+					if (targetPill) {
+						targetPill.click();
+					}
+				}
+			});
+		</script>
 	</body>
 </html>
