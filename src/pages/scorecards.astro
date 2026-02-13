@@ -13,7 +13,7 @@ const allPosts = (await getCollection('blog')).sort(
 // Exclude templates from public lists
 const posts = allPosts.filter(p => !p.id.includes('template'));
 const latest = posts[0];
-const allPosts = posts.slice(0, 12);
+const recent = posts.slice(0, 12);
 
 const taxonomy = [
 	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: posts.length },
@@ -384,7 +384,7 @@ const filters = [
 				</div>
 				<p class="section-desc">Bug fixes, diffs, refactors, and API patches tested across leading models.</p>
 				<ul class="post-grid">
-					{allPosts.slice(0, 4).map((post) => (
+					{recent.slice(0, 4).map((post) => (
 						<li class="post-card">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
@@ -409,7 +409,7 @@ const filters = [
 				</div>
 				<p class="section-desc">Decision quality under pressure, tradeoffs, and strategy calls.</p>
 				<ul class="post-grid">
-					{allPosts.slice(0, 2).map((post) => (
+					{recent.slice(0, 2).map((post) => (
 						<li class="post-card">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
@@ -434,7 +434,7 @@ const filters = [
 				</div>
 				<p class="section-desc">Docs-driven tasks, CLI accuracy, and security hygiene.</p>
 				<ul class="post-grid">
-					{allPosts.slice(0, 2).map((post) => (
+					{recent.slice(0, 2).map((post) => (
 						<li class="post-card">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
@@ -479,7 +479,7 @@ const filters = [
 					<a href="/blog">View all &rarr;</a>
 				</div>
 				<ul class="post-grid">
-					{allPosts.map((post) => (
+					{recent.map((post) => (
 						<li class="post-card">
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
