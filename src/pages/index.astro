@@ -29,21 +29,19 @@ if (latestScorecard && latestScorecard.body) {
 	const kimiMatch = content.match(/Kimi[^\n|]+?(\d+\.?\d*)/);
 	
 	models = [
-		{ name: 'Claude Opus 4.6', total: claudeMatch ? parseFloat(claudeMatch[1]) : 9.4, color: 'var(--claude)' },
-		{ name: '5.3-Codex-Spark', total: openaiMatch ? parseFloat(openaiMatch[1]) : 9.2, color: 'var(--openai)' },
-		{ name: 'Kimi K2.5', total: kimiMatch ? parseFloat(kimiMatch[1]) : 8.9, color: '#e040fb' },
-		{ name: 'MiniMax M2.5', total: 8.7, color: '#00bcd4' },
-		{ name: 'GLM-5', total: 8.5, color: 'var(--google)' },
-		{ name: 'Gemini 2.5 Pro', total: 8.4, color: '#4285f4' },
+		{ name: 'Claude Opus 4.6', total: claudeMatch ? parseFloat(claudeMatch[1]) : 9.50, color: 'var(--claude)' },
+		{ name: 'GPT-5', total: openaiMatch ? parseFloat(openaiMatch[1]) : 9.30, color: 'var(--openai)' },
+		{ name: 'Gemini 2.5 Pro', total: 9.13, color: '#4285f4' },
+		{ name: 'Kimi K2.5', total: kimiMatch ? parseFloat(kimiMatch[1]) : 8.80, color: '#e040fb' },
+		{ name: 'DeepSeek R1', total: 8.73, color: '#00bcd4' },
 	];
 } else {
 	models = [
-		{ name: 'Claude Opus 4.6', total: 9.4, color: 'var(--claude)' },
-		{ name: '5.3-Codex-Spark', total: 9.2, color: 'var(--openai)' },
-		{ name: 'Kimi K2.5', total: 8.9, color: '#e040fb' },
-		{ name: 'MiniMax M2.5', total: 8.7, color: '#00bcd4' },
-		{ name: 'GLM-5', total: 8.5, color: 'var(--google)' },
-		{ name: 'Gemini 2.5 Pro', total: 8.4, color: '#4285f4' },
+		{ name: 'Claude Opus 4.6', total: 9.50, color: 'var(--claude)' },
+		{ name: 'GPT-5', total: 9.30, color: 'var(--openai)' },
+		{ name: 'Gemini 2.5 Pro', total: 9.13, color: '#4285f4' },
+		{ name: 'Kimi K2.5', total: 8.80, color: '#e040fb' },
+		{ name: 'DeepSeek R1', total: 8.73, color: '#00bcd4' },
 	];
 }
 ---
@@ -699,12 +697,12 @@ if (latestScorecard && latestScorecard.body) {
 				<div class="container">
 					<div class="stats-strip">
 						<div class="stat-card">
-							<div class="stat-number">6+</div>
+							<div class="stat-number">5</div>
 							<div class="stat-label">Models tested daily</div>
 						</div>
 						<div class="stat-card">
-							<div class="stat-number">17</div>
-							<div class="stat-label">Published scorecards</div>
+							<div class="stat-number">52+</div>
+							<div class="stat-label">Published articles</div>
 						</div>
 						<div class="stat-card">
 							<div class="stat-number">100%</div>
