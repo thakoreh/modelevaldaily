@@ -29,9 +29,9 @@ const ragCount = ragPosts.length;
 const agentCount = agentPosts.length;
 
 const taxonomy = [
-	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount },
-	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount },
-	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUseCount },
+	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount, winner: 'Claude Opus 4.6' },
+	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount, winner: 'Claude Opus 4.6' },
+	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUseCount, winner: 'Claude Opus 4.6' },
 	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: ragCount },
 	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: agentCount },
 	{ title: 'Latency & Cost', emoji: '&#9889;', description: 'Speed, spend, and throughput tradeoffs.', href: '#cost', count: costCount },
@@ -216,7 +216,18 @@ const filters = [
 				display: inline-block;
 				margin-top: 0.5rem;
 				font-size: var(--font-xs);
+				color: var(--accent-light);
+				font-weight: 500;
+			}
+			.taxonomy-count.empty {
 				color: var(--text-tertiary);
+			}
+			.taxonomy-winner {
+				display: block;
+				margin-top: 0.75rem;
+				font-size: var(--font-xs);
+				color: var(--success);
+				font-weight: 600;
 			}
 
 			/* Section */
@@ -303,6 +314,18 @@ const filters = [
 				font-size: var(--font-xs);
 				color: var(--text-tertiary);
 			}
+			.post-card-badge {
+				display: inline-block;
+				padding: 0.2rem 0.5rem;
+				margin-bottom: 0.35rem;
+				font-size: 0.65rem;
+				font-weight: 600;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				border-radius: var(--radius-sm);
+				background: rgba(99, 102, 241, 0.15);
+				color: var(--accent-light);
+			}
 
 			/* Coming soon */
 			.coming-soon {
@@ -383,7 +406,10 @@ const filters = [
 							<span class="taxonomy-emoji" set:html={item.emoji} />
 							<h3>{item.title}</h3>
 							<p>{item.description}</p>
-							<span class="taxonomy-count">{item.count > 0 ? `${item.count} scorecards` : 'Coming soon'}</span>
+							{item.winner && item.count > 0 && (
+								<span class="taxonomy-winner">Current leader: {item.winner}</span>
+							)}
+							<span class:list={['taxonomy-count', { empty: item.count === 0 }]}>{item.count > 0 ? `${item.count} evals` : 'Coming soon'}</span>
 						</a>
 					))}
 				</div>
