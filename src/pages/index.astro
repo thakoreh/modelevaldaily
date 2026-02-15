@@ -843,33 +843,19 @@ if (latestScorecard && latestScorecard.body) {
 						<p>Deep dives on model performance, comparisons, and engineering benchmarks.</p>
 					</div>
 					<div class="post-grid">
-						<a href="/blog/2026-02-13-claude-4-vs-gpt-5-vs-gemini/" class="post-card">
-							<div class="post-card-image">
-								<img src="/_astro/blog-placeholder-1.Bx0Zcyzv_Z1v5W1C.webp" alt="" loading="lazy" />
-							</div>
-							<div class="post-card-body">
-								<h3 class="post-card-title">Claude 4 vs GPT-5 vs Gemini 2.5</h3>
-								<p class="post-card-excerpt">Flagship model comparison on coding, reasoning, and cost.</p>
-							</div>
-						</a>
-						<a href="/blog/2026-02-13-deepseek-r1-vs-o3-mini/" class="post-card">
-							<div class="post-card-image">
-								<img src="/_astro/blog-placeholder-2.1WQRLJGH_2ml2Jq.webp" alt="" loading="lazy" />
-							</div>
-							<div class="post-card-body">
-								<h3 class="post-card-title">DeepSeek R1 vs o3-mini</h3>
-								<p class="post-card-excerpt">Open source reasoning showdown — is R1 for real?</p>
-							</div>
-						</a>
-						<a href="/blog/2026-02-13-rag-explained/" class="post-card">
-							<div class="post-card-image">
-								<img src="/_astro/blog-placeholder-3.ijrf8Ohr_Z1373cG.webp" alt="" loading="lazy" />
-							</div>
-							<div class="post-card-body">
-								<h3 class="post-card-title">What Is RAG?</h3>
-								<p class="post-card-excerpt">Retrieval-Augmented Generation explained.</p>
-							</div>
-						</a>
+						{recent.slice(0, 3).map((post) => (
+							<a href={`/blog/${post.id.replace(/\.md$/, '')}/`} class="post-card">
+								<div class="post-card-image">
+									{post.data.heroImage && (
+										<Image src={post.data.heroImage} alt="" loading="lazy" />
+									)}
+								</div>
+								<div class="post-card-body">
+									<h3 class="post-card-title">{post.data.title}</h3>
+									<p class="post-card-excerpt">{post.data.description}</p>
+								</div>
+							</a>
+						))}
 					</div>
 					<div style="text-align: center; margin-top: var(--space-xl);">
 						<a href="/blog" class="btn btn-secondary">View all articles</a>
