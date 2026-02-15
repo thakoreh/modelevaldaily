@@ -19,29 +19,35 @@ const recent = posts.slice(0, 6);
 const scorecardPosts = posts.filter(p => p.id.includes('scorecard') || p.data.title.toLowerCase().includes('scorecard'));
 const latestScorecard = scorecardPosts.length > 0 ? scorecardPosts[0] : null;
 
-// Parse models from latest scorecard if available
+// Parse models from latest scorecard markdown table
+// Format: | Model | Coding | Reasoning | Tool-use | Weighted Total |
+//         | Claude Opus 4.6 | 9.5 | 9.4 | 9.4 | **9.43** |
 let models;
 if (latestScorecard && latestScorecard.body) {
-	// Extract model names and scores from markdown table
 	const content = latestScorecard.body;
-	const claudeMatch = content.match(/Claude[^\n|]+?(\d+\.?\d*)/);
-	const openaiMatch = content.match(/5\.\d+-?[^0-9]+(\d+\.?\d*)/);
-	const kimiMatch = content.match(/Kimi[^\n|]+?(\d+\.?\d*)/);
+	
+	// Extract the weighted total from the last column (e.g., **9.43**)
+	const claudeMatch = content.match(/Claude Opus 4\.6[^\n]*?\*\*(\d+\.\d+)\*\*/);
+	const gpt5Match = content.match(/GPT-?5[^\n]*?\*\*(\d+\.\d+)\*\*/);
+	const geminiMatch = content.match(/Gemini 2\.5 Pro[^\n]*?\*\*(\d+\.\d+)\*\*/);
+	const kimiMatch = content.match(/Kimi K2\.5[^\n]*?\*\*(\d+\.\d+)\*\*/);
+	const deepseekMatch = content.match(/DeepSeek R1[^\n]*?\*\*(\d+\.\d+)\*\*/);
 	
 	models = [
-		{ name: 'Claude Opus 4.6', total: claudeMatch ? parseFloat(claudeMatch[1]) : 9.50, color: 'var(--claude)' },
-		{ name: 'GPT-5', total: openaiMatch ? parseFloat(openaiMatch[1]) : 9.30, color: 'var(--openai)' },
-		{ name: 'Gemini 2.5 Pro', total: 9.13, color: '#4285f4' },
-		{ name: 'Kimi K2.5', total: kimiMatch ? parseFloat(kimiMatch[1]) : 8.80, color: '#e040fb' },
-		{ name: 'DeepSeek R1', total: 8.73, color: '#00bcd4' },
+		{ name: 'Claude Opus 4.6', total: claudeMatch ? parseFloat(claudeMatch[1]) : 9.43, color: 'var(--claude)' },
+		{ name: 'GPT-5', total: gpt5Match ? parseFloat(gpt5Match[1]) : 9.35, color: 'var(--openai)' },
+		{ name: 'Gemini 2.5 Pro', total: geminiMatch ? parseFloat(geminiMatch[1]) : 9.04, color: '#4285f4' },
+		{ name: 'Kimi K2.5', total: kimiMatch ? parseFloat(kimiMatch[1]) : 8.78, color: '#e040fb' },
+		{ name: 'DeepSeek R1', total: deepseekMatch ? parseFloat(deepseekMatch[1]) : 8.71, color: '#00bcd4' },
 	];
 } else {
+	// Fallback: use actual latest known scores (Feb 15, 2026)
 	models = [
-		{ name: 'Claude Opus 4.6', total: 9.50, color: 'var(--claude)' },
-		{ name: 'GPT-5', total: 9.30, color: 'var(--openai)' },
-		{ name: 'Gemini 2.5 Pro', total: 9.13, color: '#4285f4' },
-		{ name: 'Kimi K2.5', total: 8.80, color: '#e040fb' },
-		{ name: 'DeepSeek R1', total: 8.73, color: '#00bcd4' },
+		{ name: 'Claude Opus 4.6', total: 9.43, color: 'var(--claude)' },
+		{ name: 'GPT-5', total: 9.35, color: 'var(--openai)' },
+		{ name: 'Gemini 2.5 Pro', total: 9.04, color: '#4285f4' },
+		{ name: 'Kimi K2.5', total: 8.78, color: '#e040fb' },
+		{ name: 'DeepSeek R1', total: 8.71, color: '#00bcd4' },
 	];
 }
 ---
