@@ -1,0 +1,444 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
+
+const providers = [...new Set(VERIFIED_MODELS.map(m => m.provider))];
+
+const modelsJsonLd = {
+	'@context': 'https://schema.org',
+	'@type': 'ItemList',
+	name: 'Top 25 AI Models - Leaderboard',
+	description: 'Comprehensive comparison of the top 25 AI language models ranked by coding, reasoning, and tool-use performance.',
+	numberOfItems: VERIFIED_MODELS.length,
+	itemListElement: VERIFIED_MODELS.map((model, index) => ({
+		'@type': 'ListItem',
+		position: index + 1,
+		item: {
+			'@type': 'Product',
+			name: model.name,
+			brand: {
+				'@type': 'Brand',
+				name: model.provider,
+			},
+			description: `${model.name} by ${model.provider}. Best for: ${model.bestFor.join(', ')}. ${model.strengths.join(' ')}`,
+			offers: {
+				'@type': 'AggregateOffer',
+				priceCurrency: 'USD',
+				lowPrice: model.pricing.input,
+				highPrice: model.pricing.output,
+				priceValidUntil: MODEL_DATA_VERIFIED_ON,
+			},
+		},
+	})),
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead
+			title={`Top 25 AI Models — Complete Leaderboard | ${SITE_TITLE}`}
+			description="Compare the top 25 AI models including GPT-5, Claude Opus 4.1, Gemini 2.5 Pro, and more. Real benchmarks for coding, reasoning, and tool-use tasks."
+		/>
+		<script type="application/ld+json" set:html={JSON.stringify(modelsJsonLd)} />
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero {
+				padding: var(--space-3xl) 0 var(--space-xl);
+				position: relative;
+			}
+			.hero::before {
+				content: '';
+				position: absolute;
+				inset: 0;
+				background: var(--gradient-hero);
+				pointer-events: none;
+			}
+			.hero-content {
+				position: relative;
+			}
+			.hero h1 {
+				font-size: clamp(2rem, 3.5vw, 2.75rem);
+				margin-bottom: var(--space-sm);
+			}
+			.hero p {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				margin-bottom: var(--space-md);
+				max-width: 700px;
+			}
+			.hero-meta {
+				display: flex;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+			.badge {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.35rem;
+				padding: 0.35rem 0.75rem;
+				border-radius: var(--radius-full);
+				font-size: var(--font-xs);
+				font-weight: 600;
+			}
+			.badge-success {
+				background: rgba(34, 197, 94, 0.1);
+				color: var(--success);
+				border: 1px solid rgba(34, 197, 94, 0.3);
+			}
+			.badge-accent {
+				background: rgba(99, 102, 241, 0.1);
+				color: var(--accent-light);
+				border: 1px solid var(--border-accent);
+			}
+
+			.filters {
+				display: flex;
+				gap: 0.5rem;
+				flex-wrap: wrap;
+				margin-bottom: var(--space-xl);
+			}
+			.filter-btn {
+				padding: 0.4rem 0.9rem;
+				border-radius: var(--radius-full);
+				border: 1px solid var(--border-primary);
+				background: transparent;
+				color: var(--text-secondary);
+				font-size: var(--font-sm);
+				font-weight: 500;
+				cursor: pointer;
+				transition: all var(--transition-fast);
+			}
+			.filter-btn:hover, .filter-btn.active {
+				background: var(--accent);
+				color: white;
+				border-color: var(--accent);
+			}
+
+			.models-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+				gap: var(--space-md);
+			}
+			.model-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				transition: all var(--transition-base);
+			}
+			.model-card:hover {
+				border-color: var(--border-accent);
+				transform: translateY(-2px);
+				box-shadow: var(--shadow-lg);
+			}
+			.model-header {
+				display: flex;
+				align-items: flex-start;
+				gap: var(--space-md);
+				margin-bottom: var(--space-md);
+			}
+			.model-rank {
+				width: 36px;
+				height: 36px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: var(--radius-md);
+				background: var(--bg-tertiary);
+				font-size: var(--font-sm);
+				font-weight: 700;
+				color: var(--text-secondary);
+				flex-shrink: 0;
+			}
+			.model-rank.gold {
+				background: rgba(245, 158, 11, 0.15);
+				color: var(--warning);
+			}
+			.model-rank.silver {
+				background: rgba(156, 163, 175, 0.15);
+				color: #9ca3af;
+			}
+			.model-rank.bronze {
+				background: rgba(180, 83, 9, 0.15);
+				color: #d97706;
+			}
+			.model-info {
+				flex: 1;
+				min-width: 0;
+			}
+			.model-name {
+				font-size: var(--font-lg);
+				font-weight: 600;
+				color: var(--text-primary);
+				margin-bottom: 0.15rem;
+			}
+			.model-provider {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+			}
+			.model-color {
+				width: 4px;
+				height: 100%;
+				min-height: 60px;
+				border-radius: 2px;
+				flex-shrink: 0;
+			}
+
+			.model-scores {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-sm);
+				margin-bottom: var(--space-md);
+			}
+			.score-item {
+				text-align: center;
+				padding: var(--space-sm);
+				background: var(--bg-tertiary);
+				border-radius: var(--radius-sm);
+			}
+			.score-value {
+				font-size: var(--font-lg);
+				font-weight: 700;
+				color: var(--text-primary);
+			}
+			.score-label {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+
+			.model-details {
+				display: flex;
+				flex-wrap: wrap;
+				gap: var(--space-sm);
+				margin-bottom: var(--space-md);
+			}
+			.detail-tag {
+				padding: 0.25rem 0.6rem;
+				background: var(--bg-tertiary);
+				border-radius: var(--radius-sm);
+				font-size: var(--font-xs);
+				color: var(--text-secondary);
+			}
+
+			.model-pricing {
+				display: flex;
+				gap: var(--space-lg);
+				padding-top: var(--space-sm);
+				border-top: 1px solid var(--border-secondary);
+			}
+			.price-item {
+				display: flex;
+				flex-direction: column;
+			}
+			.price-value {
+				font-size: var(--font-base);
+				font-weight: 600;
+				color: var(--text-primary);
+			}
+			.price-label {
+				font-size: var(--font-xs);
+				color: var(--text-tertiary);
+			}
+
+			.model-sources {
+				margin-top: var(--space-sm);
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+			}
+			.model-sources a {
+				font-size: var(--font-xs);
+				color: var(--accent-light);
+			}
+
+			.stats-bar {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: var(--space-md);
+				padding: var(--space-xl) 0;
+			}
+			.stat-item {
+				text-align: center;
+				padding: var(--space-lg);
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+			}
+			.stat-number {
+				font-size: var(--font-3xl);
+				font-weight: 700;
+				background: var(--gradient-primary);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			.stat-label {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				margin-top: 0.25rem;
+			}
+
+			@media (max-width: 768px) {
+				.models-grid {
+					grid-template-columns: 1fr;
+				}
+				.stats-bar {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<div class="container hero-content">
+					<h1>Top 25 AI Models — Complete Leaderboard</h1>
+					<p>
+						Compare the top 25 AI language models ranked by coding, reasoning, and tool-use benchmarks.
+						All pricing and specifications verified against official provider documentation.
+					</p>
+					<div class="hero-meta">
+						<span class="badge badge-success">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+								<polyline points="20 6 9 17 4 12"></polyline>
+							</svg>
+							Verified {MODEL_DATA_VERIFIED_ON}
+						</span>
+						<span class="badge badge-accent">{VERIFIED_MODELS.length} models tracked</span>
+						<span class="badge badge-accent">{providers.length} providers</span>
+					</div>
+				</div>
+			</section>
+
+			<section class="container">
+				<div class="stats-bar">
+					<div class="stat-item">
+						<div class="stat-number">{VERIFIED_MODELS.length}</div>
+						<div class="stat-label">Models Tracked</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">{providers.length}</div>
+						<div class="stat-label">AI Providers</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">{VERIFIED_MODELS.filter(m => m.pricing.input < 0.5).length}</div>
+						<div class="stat-label">Budget Options</div>
+					</div>
+					<div class="stat-item">
+						<div class="stat-number">{VERIFIED_MODELS.filter(m => m.contextWindow.includes('M') || m.contextWindow.includes('1M')).length}</div>
+						<div class="stat-label">Large Context</div>
+					</div>
+				</div>
+
+				<div class="filters">
+					<button class="filter-btn active" data-filter="all">All Models</button>
+					{providers.map(provider => (
+						<button class="filter-btn" data-filter={provider}>{provider}</button>
+					))}
+				</div>
+
+				<div class="models-grid">
+					{VERIFIED_MODELS.map((model, index) => {
+						const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
+						const weightedTotal = (model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25).toFixed(2);
+						return (
+							<div class="model-card" data-provider={model.provider}>
+								<div class="model-header">
+									<div class:list={['model-rank', rankClass]}>
+										{index + 1}
+									</div>
+									<div class="model-info">
+										<div class="model-name">{model.name}</div>
+										<div class="model-provider">{model.provider} • {model.contextWindow} context</div>
+									</div>
+									<div class="model-color" style={`background: ${model.color};`}></div>
+								</div>
+
+								<div class="model-scores">
+									<div class="score-item">
+										<div class="score-value">{model.scores.coding}</div>
+										<div class="score-label">Coding</div>
+									</div>
+									<div class="score-item">
+										<div class="score-value">{model.scores.reasoning}</div>
+										<div class="score-label">Reasoning</div>
+									</div>
+									<div class="score-item">
+										<div class="score-value">{model.scores.toolUse}</div>
+										<div class="score-label">Tool Use</div>
+									</div>
+								</div>
+
+								<div class="model-details">
+									{model.bestFor.slice(0, 3).map(use => (
+										<span class="detail-tag">{use}</span>
+									))}
+								</div>
+
+								<div class="model-pricing">
+									<div class="price-item">
+										<div class="price-value">${model.pricing.input}</div>
+										<div class="price-label">Input $/M tokens</div>
+									</div>
+									<div class="price-item">
+										<div class="price-value">${model.pricing.output}</div>
+										<div class="price-label">Output $/M tokens</div>
+									</div>
+									<div class="price-item">
+										<div class="price-value">{weightedTotal}</div>
+										<div class="price-label">Weighted Score</div>
+									</div>
+								</div>
+
+								<div class="model-sources">
+									{model.sources.map(source => (
+										<a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
+									))}
+								</div>
+							</div>
+						);
+					})}
+				</div>
+			</section>
+		</main>
+		<Footer />
+
+		<script>
+			const filterBtns = document.querySelectorAll('.filter-btn');
+			const modelCards = document.querySelectorAll('.model-card');
+
+			filterBtns.forEach(btn => {
+				btn.addEventListener('click', () => {
+					const filter = btn.getAttribute('data-filter');
+					
+					filterBtns.forEach(b => b.classList.remove('active'));
+					btn.classList.add('active');
+
+					modelCards.forEach(card => {
+						if (filter === 'all' || card.getAttribute('data-provider') === filter) {
+							card.style.display = 'block';
+						} else {
+							card.style.display = 'none';
+						}
+					});
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -9,8 +9,9 @@ export async function GET() {
 
 	const staticPages = [
 		{ path: '/', priority: '1.0', changefreq: 'daily', lastmod: '2026-02-16' },
+		{ path: '/models/', priority: '0.95', changefreq: 'daily', lastmod: '2026-02-16' },
 		{ path: '/scorecards/', priority: '0.9', changefreq: 'daily', lastmod: '2026-02-16' },
-		{ path: '/compare/', priority: '0.8', changefreq: 'weekly', lastmod: '2026-02-16' },
+		{ path: '/compare/', priority: '0.85', changefreq: 'weekly', lastmod: '2026-02-16' },
 		{ path: '/blog/', priority: '0.8', changefreq: 'daily', lastmod: '2026-02-16' },
 		{ path: '/model-data/', priority: '0.8', changefreq: 'weekly', lastmod: '2026-02-16' },
 		{ path: '/faq/', priority: '0.7', changefreq: 'weekly', lastmod: '2026-02-16' },
