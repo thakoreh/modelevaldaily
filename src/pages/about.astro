@@ -49,14 +49,17 @@ import Layout from '../layouts/BlogPost.astro';
 	<ol>
 		<li><strong>Task selection:</strong> We pick a real-world task from our backlog (contributed by engineers, PMs, and our team).</li>
 		<li><strong>Prompt design:</strong> We write a clear, constrained prompt with explicit success criteria.</li>
-		<li><strong>Model execution:</strong> We run the same prompt against every model under test (currently Claude Opus 4.6, 5.3-Codex-Spark, Kimi K2.5, MiniMax M2.5, GLM-5, and Gemini 2.5 Pro).</li>
+		<li><strong>Model execution:</strong> We run the same prompt against every model under test (currently GPT-5, Claude Opus 4.1, Gemini 2.5 Pro, DeepSeek-R1, and GLM-5).</li>
 		<li><strong>Blind scoring:</strong> Outputs are scored against the rubric without knowing which model produced them.</li>
 		<li><strong>Publication:</strong> The full scorecard -- prompt, rubric, scores, and analysis -- is published daily.</li>
 	</ol>
 
 	<h2>Models We Track</h2>
 	<p>
-		We currently evaluate <strong>Claude Opus 4.6 (Anthropic)</strong>, <strong>5.3-Codex-Spark (OpenAI)</strong>, <strong>Kimi K2.5 (Moonshot)</strong>, <strong>MiniMax M2.5</strong>, <strong>GLM-5 (Zhipu)</strong>, and <strong>Gemini 2.5 Pro (Google)</strong>. We plan to add Llama, Mistral, and DeepSeek models as they reach production readiness.
+		We currently evaluate <strong>GPT-5 (OpenAI)</strong>, <strong>Claude Opus 4.1 (Anthropic)</strong>,
+		<strong>Gemini 2.5 Pro (Google)</strong>, <strong>DeepSeek-R1 (DeepSeek)</strong>, and
+		<strong>GLM-5 (Zhipu)</strong>. Official model names and pricing references are documented on our
+		<a href="/model-data">Model Data Sources</a> page and were last verified on February 16, 2026.
 	</p>
 
 	<h2>How to Contribute</h2>

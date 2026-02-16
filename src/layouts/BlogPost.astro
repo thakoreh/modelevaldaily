@@ -8,11 +8,18 @@ import Header from '../components/Header.astro';
 
 type Props = CollectionEntry<'blog'>['data'];
 
-const { title, description, pubDate, updatedDate, heroImage } = Astro.props;
+const { title, description, pubDate, updatedDate, heroImage, noindex = false } = Astro.props as Props & {
+	noindex?: boolean;
+};
 
-const pageTitle = title.includes('AIModelBenchmarks.com')
+const titleWithSite = title.includes('AIModelBenchmarks.com')
 	? title
 	: `${title} | AIModelBenchmarks.com`;
+const pageTitle = titleWithSite.length <= 65
+	? titleWithSite
+	: title.length <= 65
+		? title
+		: `${title.slice(0, 62).trim()}...`;
 ---
 
 <html lang="en">
@@ -23,6 +30,7 @@ const pageTitle = title.includes('AIModelBenchmarks.com')
 			type="article"
 			publishDate={pubDate}
 			modifiedDate={updatedDate}
+			noindex={noindex}
 		/>
 		<style>
 			main {
@@ -102,6 +110,20 @@ const pageTitle = title.includes('AIModelBenchmarks.com')
 			}
 			.back-link:hover {
 				color: var(--accent-light);
+			}
+			.archive-note {
+				background: rgba(245, 158, 11, 0.08);
+				border: 1px solid rgba(245, 158, 11, 0.35);
+				border-radius: var(--radius-md);
+				padding: var(--space-lg);
+				margin-bottom: var(--space-xl);
+			}
+			.archive-note h2 {
+				font-size: var(--font-lg);
+				margin-top: 0;
+			}
+			.archive-note p {
+				margin-bottom: 0.75rem;
 			}
 		</style>
 	</head>

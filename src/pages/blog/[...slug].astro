@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
+import { getFactIssues } from '../../utils/fact-check';
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog');
@@ -12,9 +13,26 @@ export async function getStaticPaths() {
 type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
+const issues = getFactIssues(post.body ?? '');
+const isArchivedForReview = issues.length > 0;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data}>
-	<Content />
+<BlogPost {...post.data} noindex={isArchivedForReview}>
+	{isArchivedForReview ? (
+		<section class="archive-note">
+			<h2>Archived pending fact review</h2>
+			<p>
+				This page is temporarily removed from indexing because it includes model references that are not yet
+				verified against official provider documentation.
+			</p>
+			<p>Flagged terms: {Array.from(new Set(issues.map((issue) => issue.match))).join(', ')}</p>
+			<p>
+				For current, verified content, visit <a href="/model-data">Model Data Sources</a> and
+				<a href="/scorecards"> daily scorecards</a>.
+			</p>
+		</section>
+	) : (
+		<Content />
+	)}
 </BlogPost>

@@ -6,12 +6,13 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
+import { isFactCheckedPost } from '../utils/fact-check';
 
 const allPosts = (await getCollection('blog')).sort(
 	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
 );
 // Exclude templates from public lists
-const posts = allPosts.filter(p => !p.id.includes('template'));
+const posts = allPosts.filter((p) => !p.id.includes('template') && isFactCheckedPost(p));
 const latest = posts[0];
 const recent = posts.slice(0, 12);
 
@@ -30,7 +31,7 @@ const agentCount = agentPosts.length;
 
 const taxonomy = [
 	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount, winner: 'GPT-5' },
-	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount, winner: 'Claude Opus 4.7' },
+	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount, winner: 'Claude Opus 4.1' },
 	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUseCount, winner: 'GPT-5' },
 	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: ragCount },
 	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: agentCount },
@@ -365,10 +366,10 @@ const filters = [
 			<div class="hero-inner">
 				<div class="hero-text">
 					<h1>Daily AI Model Scorecards</h1>
-					<p>Browse today's winners, task leaders, and cost/latency tradeoffs across every model we test.</p>
+					<p>Browse today&apos;s winners, task leaders, and cost/latency tradeoffs across models with verified naming.</p>
 					<div class="hero-meta">
 						<span class="live">Live</span>
-						<span>Updated daily at 6am ET</span>
+						<span>Source log verified on Feb 16, 2026</span>
 					</div>
 				</div>
 				{latest && (

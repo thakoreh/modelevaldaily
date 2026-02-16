@@ -1,26 +1,20 @@
 import { getCollection } from 'astro:content';
+import { SITE_UPDATED } from '../consts';
+import { isFactCheckedPost } from '../utils/fact-check';
 
 export async function GET() {
-	const posts = await getCollection('blog');
+	const posts = (await getCollection('blog')).filter((post) => isFactCheckedPost(post));
 	const base = 'https://aimodelbenchmarks.com';
-	const now = new Date().toISOString().split('T')[0];
+	const defaultLastmod = SITE_UPDATED;
 
 	const staticPages = [
-		{ path: '/', priority: '1.0', changefreq: 'daily' },
-		{ path: '/scorecards/', priority: '0.9', changefreq: 'daily' },
-		{ path: '/compare/', priority: '0.9', changefreq: 'weekly' },
-		{ path: '/compare/claude-vs-gpt/', priority: '0.9', changefreq: 'weekly' },
-		{ path: '/compare/deepseek-vs-claude/', priority: '0.9', changefreq: 'weekly' },
-		{ path: '/compare/open-source-vs-closed/', priority: '0.9', changefreq: 'weekly' },
-		{ path: '/benchmarks/swe-bench/', priority: '0.8', changefreq: 'weekly' },
-		{ path: '/benchmarks/mmlu/', priority: '0.8', changefreq: 'weekly' },
-		{ path: '/benchmarks/chatbot-arena/', priority: '0.8', changefreq: 'weekly' },
-		{ path: '/use-cases/coding/', priority: '0.8', changefreq: 'weekly' },
-		{ path: '/use-cases/reasoning/', priority: '0.8', changefreq: 'weekly' },
-		{ path: '/use-cases/cost-optimization/', priority: '0.8', changefreq: 'weekly' },
-		{ path: '/blog/', priority: '0.8', changefreq: 'daily' },
-		{ path: '/faq/', priority: '0.7', changefreq: 'weekly' },
-		{ path: '/about/', priority: '0.6', changefreq: 'monthly' },
+		{ path: '/', priority: '1.0', changefreq: 'daily', lastmod: '2026-02-16' },
+		{ path: '/scorecards/', priority: '0.9', changefreq: 'daily', lastmod: '2026-02-16' },
+		{ path: '/compare/', priority: '0.8', changefreq: 'weekly', lastmod: '2026-02-16' },
+		{ path: '/blog/', priority: '0.8', changefreq: 'daily', lastmod: '2026-02-16' },
+		{ path: '/model-data/', priority: '0.8', changefreq: 'weekly', lastmod: '2026-02-16' },
+		{ path: '/faq/', priority: '0.7', changefreq: 'weekly', lastmod: '2026-02-16' },
+		{ path: '/about/', priority: '0.6', changefreq: 'monthly', lastmod: '2026-02-16' },
 	];
 
 	const blogUrls = posts
@@ -41,7 +35,7 @@ export async function GET() {
 	const staticUrls = staticPages
 		.map((page) => `  <url>
     <loc>${base}${page.path}</loc>
-    <lastmod>${now}</lastmod>
+    <lastmod>${page.lastmod ?? defaultLastmod}</lastmod>
     <changefreq>${page.changefreq}</changefreq>
     <priority>${page.priority}</priority>
   </url>`)

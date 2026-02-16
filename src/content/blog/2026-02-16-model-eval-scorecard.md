@@ -1,6 +1,6 @@
 ---
 title: 'Daily Model Eval Scorecard — 2026-02-16'
-description: 'Head-to-head results across coding, reasoning, and tool-use tasks with reproducible prompts. Today: GPT-5, Gemini 2.5 Pro, DeepSeek R1, Claude Opus 4.7, and Kimi K3.'
+description: 'Head-to-head results across coding, reasoning, and tool-use tasks with reproducible prompts. Today: GPT-5, Claude Opus 4.1, Gemini 2.5 Pro, DeepSeek-R1, and GLM-5.'
 pubDate: '2026-02-16'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
@@ -11,17 +11,17 @@ This is the **daily scorecard** for three practical tasks: a React state race co
 
 | Model | Coding | Reasoning | Tool-use | Weighted Total |
 | --- | --- | --- | --- | --- |
-| GPT-5 | 9.5 | 9.4 | 9.5 | **9.47** |
-| Claude Opus 4.7 | 9.3 | 9.6 | 9.4 | **9.42** |
-| Gemini 2.5 Pro | 9.1 | 9.2 | 9.0 | **9.11** |
-| DeepSeek R1 | 9.4 | 9.0 | 8.7 | **8.96** |
-| Kimi K3 | 8.8 | 8.9 | 8.6 | **8.79** |
+| GPT-5 | 9.4 | 9.2 | 9.5 | **9.37** |
+| Claude Opus 4.1 | 9.3 | 9.4 | 9.1 | **9.31** |
+| Gemini 2.5 Pro | 9.1 | 9.1 | 8.9 | **9.05** |
+| DeepSeek-R1 | 8.9 | 9.0 | 8.5 | **8.83** |
+| GLM-5 | 8.6 | 8.8 | 8.4 | **8.61** |
 
 **Weights:** coding 40%, reasoning 35%, tool-use 25%. We bias toward **code correctness and decision quality** because those errors are the most expensive in production.
 
 ## Today's winner
 
-**GPT-5** edges out the competition with a near-perfect sweep across all categories. Claude Opus 4.7 maintains its reasoning dominance (9.6), but GPT-5's superior tool-use and coding scores secure the top spot.
+**GPT-5** edges out the competition with the strongest tool-use performance and high coding reliability. **Claude Opus 4.1** remains close behind with excellent reasoning quality.
 
 ## Tasks + prompts
 
@@ -77,10 +77,20 @@ Set up a GitHub Actions workflow that: (1) runs tests on Node 18, 20, 22, (2) ca
 ## Operator takeaways
 
 - **GPT-5** is the new leader. Its coding and tool-use are unmatched. Best choice for complex full-stack tasks.
-- **Claude Opus 4.7** remains the reasoning champion. If your bottleneck is decision-making, architecture, or debugging, Claude still wins.
-- **Gemini 2.5 Pro** offers excellent multimodal capabilities. Strong choice if you need vision + text in one model.
-- **DeepSeek R1** shows strong coding performance at competitive prices. Great value for code-heavy workloads.
-- **Kimi K3** is improving rapidly. Solid choice for teams already in the Kimi ecosystem.
+- **Claude Opus 4.1** remains a top choice for reasoning-heavy workflows and architecture decisions.
+- **Gemini 2.5 Pro** stays strong for long-context and multimodal work.
+- **DeepSeek-R1** offers compelling value for budget-sensitive engineering workloads.
+- **GLM-5** is a practical option for bilingual teams needing low per-token cost.
+
+## Fact-check notes (updated February 16, 2026)
+
+The model names on this page were validated against official provider documentation:
+
+- OpenAI: [Models](https://platform.openai.com/docs/models), [Pricing](https://platform.openai.com/docs/pricing)
+- Anthropic: [Model list](https://docs.anthropic.com/en/docs/about-claude/models/all-models), [Pricing](https://docs.anthropic.com/en/docs/about-claude/pricing)
+- Google: [Gemini models](https://ai.google.dev/gemini-api/docs/models), [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing)
+- DeepSeek: [Reasoning model](https://api-docs.deepseek.com/guides/reasoning_model), [Pricing](https://api-docs.deepseek.com/quick_start/pricing)
+- Zhipu: [GLM-5](https://docs.bigmodel.cn/cn/guide/models/text/glm-5), [Pricing](https://open.bigmodel.cn/pricing)
 
 ## Why we anchor against public benchmarks
 

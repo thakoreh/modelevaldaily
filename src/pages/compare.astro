@@ -3,129 +3,52 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
+import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
 
-const models = [
-	{
-		name: 'GPT-5',
-		provider: 'OpenAI',
-		color: '#10b981',
-		pricing: { input: 10, output: 30 },
-		contextWindow: '128K',
-		bestFor: ['Coding', 'Tool integrations', 'Balanced performance'],
-		scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.5 },
-		strengths: ['Top coding and tool-use scores', 'Excellent documentation', 'Wide tool ecosystem'],
-		blogSlug: 'gpt-5',
-	},
-	{
-		name: 'Claude Opus 4.7',
-		provider: 'Anthropic',
-		color: '#d97706',
-		pricing: { input: 15, output: 75 },
-		contextWindow: '200K',
-		bestFor: ['Complex reasoning', 'Long-horizon tasks', 'Nuanced decisions'],
-		scores: { coding: 9.3, reasoning: 9.6, toolUse: 9.4 },
-		strengths: ['Best reasoning score (9.6)', 'Excellent at complex instructions', 'Strong tool-use reliability'],
-		blogSlug: 'claude-opus-4-7',
-	},
-	{
-		name: 'Gemini 2.5 Pro',
-		provider: 'Google',
-		color: '#4285f4',
-		pricing: { input: 7, output: 21 },
-		contextWindow: '1M',
-		bestFor: ['Long context', 'Multimodal tasks', 'Research'],
-		scores: { coding: 9.1, reasoning: 9.2, toolUse: 9.0 },
-		strengths: ['Massive context window', 'Strong multimodal', 'Good cost/value'],
-		blogSlug: 'gemini-2-5-pro',
-	},
-	{
-		name: 'DeepSeek R1',
-		provider: 'DeepSeek',
-		color: '#8b5cf6',
-		pricing: { input: 0.27, output: 1.1 },
-		contextWindow: '64K',
-		bestFor: ['Cost-sensitive apps', 'Strong coding', 'Prototyping'],
-		scores: { coding: 9.4, reasoning: 9.0, toolUse: 8.7 },
-		strengths: ['Best price/performance', 'Excellent coding (9.4)', 'Open weights'],
-		blogSlug: 'deepseek-r1',
-	},
-	{
-		name: 'Kimi K3',
-		provider: 'Moonshot',
-		color: '#e040fb',
-		pricing: { input: 2, output: 10 },
-		contextWindow: '200K',
-		bestFor: ['Chinese + English', 'Long documents', 'Reasoning'],
-		scores: { coding: 8.8, reasoning: 8.9, toolUse: 8.6 },
-		strengths: ['Excellent bilingual', 'Strong logical reasoning', 'Good context handling'],
-		blogSlug: 'kimi-k3',
-	},
-	{
-		name: 'MiniMax M2.5',
-		provider: 'MiniMax',
-		color: '#00bcd4',
-		pricing: { input: 0.5, output: 2 },
-		contextWindow: '245K',
-		bestFor: ['Budget production', 'Voice/multimodal', 'Fast iteration'],
-		scores: { coding: 8.5, reasoning: 8.3, toolUse: 8.8 },
-		strengths: ['Very low cost', 'Good multimodal support', 'Fast inference'],
-		blogSlug: 'minimax-m2-5',
-	},
-	{
-		name: 'GLM-5',
-		provider: 'Zhipu AI',
-		color: '#f43f5e',
-		pricing: { input: 0.5, output: 0.5 },
-		contextWindow: '128K',
-		bestFor: ['Chinese market', 'Enterprise apps', 'Cost optimization'],
-		scores: { coding: 8.3, reasoning: 8.6, toolUse: 8.4 },
-		strengths: ['Ultra-low cost', 'Strong Chinese support', 'Enterprise ready'],
-		blogSlug: 'glm-5',
-	},
-];
+const models = VERIFIED_MODELS;
 
 const useCases = [
 	{
 		title: 'Best for Coding',
 		emoji: '&#128187;',
 		pick: 'GPT-5',
-		reason: 'Top coding score (9.5) with excellent tool integration and balanced performance.',
-		alternative: 'DeepSeek R1 for budget coding',
+		reason: 'Consistently strong coding and tool-use performance in our task-level evals.',
+		alternative: 'Claude Opus 4.1 for code review quality',
 	},
 	{
 		title: 'Best on a Budget',
 		emoji: '&#128176;',
-		pick: 'DeepSeek R1',
-		reason: 'Unbeatable pricing at $0.27/$1.10 per million tokens with a 9.4 coding score.',
-		alternative: 'Kimi K3 for bilingual needs',
+		pick: 'DeepSeek-R1',
+		reason: 'Very strong reasoning with one of the lowest published API prices in this set.',
+		alternative: 'GLM-5 for bilingual enterprise workloads',
 	},
 	{
 		title: 'Best for Long Context',
 		emoji: '&#128218;',
 		pick: 'Gemini 2.5 Pro',
-		reason: '1M token context window handles entire codebases and long documents effortlessly.',
-		alternative: 'Claude Opus 4.7 for 200K',
+		reason: 'Up to 1M context window is ideal for long docs and codebase-level analysis.',
+		alternative: 'Claude Opus 4.1 for long-form reasoning',
 	},
 	{
 		title: 'Best for Reasoning',
 		emoji: '&#129504;',
-		pick: 'Claude Opus 4.7',
-		reason: 'Top reasoning score (9.6) excels at tradeoff analysis and strategic decisions.',
-		alternative: 'GPT-5 at 9.4',
+		pick: 'Claude Opus 4.1',
+		reason: 'Strong tradeoff analysis and robust responses on constrained decision tasks.',
+		alternative: 'GPT-5 for faster delivery + tools',
 	},
 	{
 		title: 'Best All-Rounder',
 		emoji: '&#127942;',
 		pick: 'GPT-5',
-		reason: 'Balanced scores across all categories (9.5/9.4/9.5) with excellent docs and ecosystem.',
-		alternative: 'Claude for quality',
+		reason: 'Balanced quality across coding, reasoning, and tool-use in our latest scorecards.',
+		alternative: 'Gemini 2.5 Pro for long-context workflows',
 	},
 	{
 		title: 'Best for Tool-Use',
 		emoji: '&#128295;',
 		pick: 'GPT-5',
-		reason: 'Top tool-use score (9.5) with reliable integrations and strong error recovery.',
-		alternative: 'Claude Opus 4.7 for complex flows',
+		reason: 'Reliable multi-step API and tooling behavior in operator-style tasks.',
+		alternative: 'Claude Opus 4.1 for instruction-heavy workflows',
 	},
 ];
 ---
@@ -134,8 +57,8 @@ const useCases = [
 <html lang="en">
 	<head>
 		<BaseHead
-			title={`AI Model Comparison — Claude vs GPT vs Gemini vs DeepSeek | ${SITE_TITLE}`}
-			description="Compare AI models side-by-side: pricing, context windows, performance scores, and best use cases. Find the right model for coding, reasoning, and tool-use tasks."
+			title={`AI Model Comparison & Pricing (2026) | ${SITE_TITLE}`}
+			description="Compare fact-checked AI models side-by-side. Pricing references are verified against official provider docs as of February 16, 2026."
 		/>
 		<style>
 			main {
@@ -448,6 +371,17 @@ const useCases = [
 				background: var(--accent);
 			}
 
+			.source-links {
+				display: flex;
+				flex-direction: column;
+				gap: 0.35rem;
+			}
+
+			.source-links a {
+				font-size: var(--font-sm);
+				color: var(--accent-light);
+			}
+
 			.cta-section {
 				padding: var(--space-2xl) 0;
 			}
@@ -608,18 +542,16 @@ const useCases = [
 			<div class="hero-inner">
 				<div class="hero-text">
 					<h1>AI Model Comparison</h1>
-					<p>Compare leading AI models side-by-side. Pricing, context windows, performance scores, and best use cases — all in one place.</p>
+					<p>Compare leading AI models side-by-side with provider-verified model names and pricing references.</p>
 					<div class="hero-meta">
 						<span class="hero-badge"><span class="count">{models.length}</span> models compared</span>
-						<span class="hero-badge">Updated <span class="count">Feb 12, 2026</span></span>
+						<span class="hero-badge">Verified <span class="count">{MODEL_DATA_VERIFIED_ON}</span></span>
 					</div>
 					<div class="quick-links">
 						<a href="#pricing" class="quick-link">Pricing</a>
 						<a href="#performance" class="quick-link">Performance</a>
 						<a href="#recommendations" class="quick-link">Quick Picks</a>
-						<a href="/compare/claude-vs-gpt/" class="quick-link">Claude vs GPT</a>
-						<a href="/compare/deepseek-vs-claude/" class="quick-link">DeepSeek vs Claude</a>
-						<a href="/compare/open-source-vs-closed/" class="quick-link">Open vs Closed</a>
+						<a href="#sources" class="quick-link">Sources</a>
 					</div>
 				</div>
 			</div>
@@ -629,7 +561,7 @@ const useCases = [
 			<section class="section" id="pricing">
 				<div class="section-header">
 					<h2>Quick Reference: Pricing & Context</h2>
-					<p>Input/output pricing per million tokens and context window sizes.</p>
+					<p>Input/output pricing per million tokens from provider docs. Notes are included where pricing tiers apply.</p>
 				</div>
 				<div class="compare-table-wrapper">
 					<table class="compare-table">
@@ -659,6 +591,9 @@ const useCases = [
 											<span class="sep">/</span>
 											<span class="output">${model.pricing.output}</span>
 										</div>
+										{model.pricing.notes && (
+											<div class="model-provider">{model.pricing.notes}</div>
+										)}
 									</td>
 									<td>
 										<span class="context-cell">{model.contextWindow}</span>
@@ -680,7 +615,7 @@ const useCases = [
 			<section class="section" id="performance">
 				<div class="section-header">
 					<h2>Performance Scores</h2>
-					<p>Benchmarks across coding, reasoning, and tool-use tasks (scale: 1-10).</p>
+					<p>Internal task-level evaluations across coding, reasoning, and tool-use (scale: 1-10).</p>
 				</div>
 				<div class="compare-table-wrapper">
 					<table class="compare-table">
@@ -764,6 +699,45 @@ const useCases = [
 							<p class="use-case-alt">Alternative: <span>{uc.alternative}</span></p>
 						</div>
 					))}
+				</div>
+			</section>
+
+			<section class="section" id="sources">
+				<div class="section-header">
+					<h2>Verification Sources</h2>
+					<p>Official model and pricing references checked on {MODEL_DATA_VERIFIED_ON}.</p>
+				</div>
+				<div class="compare-table-wrapper">
+					<table class="compare-table">
+						<thead>
+							<tr>
+								<th>Model</th>
+								<th>Official Sources</th>
+							</tr>
+						</thead>
+						<tbody>
+							{models.map((model) => (
+								<tr>
+									<td>
+										<div class="model-cell">
+											<div class="model-dot" style={`background: ${model.color}`}></div>
+											<div>
+												<div class="model-name">{model.name}</div>
+												<div class="model-provider">{model.provider}</div>
+											</div>
+										</div>
+									</td>
+									<td>
+										<div class="source-links">
+											{model.sources.map((source) => (
+												<a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
+											))}
+										</div>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 				</div>
 			</section>
 

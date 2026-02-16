@@ -28,6 +28,7 @@ import HeaderLink from './HeaderLink.astro';
 			<HeaderLink href="/scorecards">Scorecards</HeaderLink>
 			<HeaderLink href="/blog">Evals</HeaderLink>
 			<HeaderLink href="/about">Methodology</HeaderLink>
+			<HeaderLink href="/model-data">Sources</HeaderLink>
 			<HeaderLink href="/faq">FAQ</HeaderLink>
 		</div>
 		<div class="nav-right">
@@ -38,7 +39,13 @@ import HeaderLink from './HeaderLink.astro';
 		</div>
 	</nav>
 	<!-- Mobile nav -->
-	<button class="mobile-toggle" aria-label="Toggle navigation" id="mobile-nav-toggle">
+	<button
+		class="mobile-toggle"
+		aria-label="Toggle navigation"
+		aria-expanded="false"
+		aria-controls="mobile-menu"
+		id="mobile-nav-toggle"
+	>
 		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
 			<line x1="3" y1="6" x2="21" y2="6"/>
 			<line x1="3" y1="12" x2="21" y2="12"/>
@@ -51,6 +58,7 @@ import HeaderLink from './HeaderLink.astro';
 		<a href="/scorecards">Scorecards</a>
 		<a href="/blog">Evals</a>
 		<a href="/about">Methodology</a>
+		<a href="/model-data">Sources</a>
 		<a href="/faq">FAQ</a>
 	</div>
 </header>
@@ -58,8 +66,41 @@ import HeaderLink from './HeaderLink.astro';
 <script>
 	const toggle = document.getElementById('mobile-nav-toggle');
 	const menu = document.getElementById('mobile-menu');
-	toggle?.addEventListener('click', () => {
-		menu?.classList.toggle('open');
+	const links = menu?.querySelectorAll('a') ?? [];
+
+	const closeMenu = () => {
+		menu?.classList.remove('open');
+		toggle?.setAttribute('aria-expanded', 'false');
+	};
+
+	const openMenu = () => {
+		menu?.classList.add('open');
+		toggle?.setAttribute('aria-expanded', 'true');
+	};
+
+	toggle?.addEventListener('click', (event) => {
+		event.stopPropagation();
+		if (menu?.classList.contains('open')) {
+			closeMenu();
+		} else {
+			openMenu();
+		}
+	});
+
+	document.addEventListener('click', (event) => {
+		if (!menu?.classList.contains('open')) return;
+		const target = event.target;
+		if (!(target instanceof Node)) return;
+		if (menu?.contains(target) || toggle?.contains(target)) return;
+		closeMenu();
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') closeMenu();
+	});
+
+	links.forEach((link) => {
+		link.addEventListener('click', () => closeMenu());
 	});
 </script>
 

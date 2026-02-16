@@ -13,12 +13,12 @@ const faqs = [
 	{
 		id: 'best-coding-model-2026',
 		question: 'Which AI model is best for coding in 2026?',
-		answer: `The answer depends on your specific needs, but based on our daily benchmarks, Claude Opus 4.6 and 5.3-Codex-Spark consistently lead in coding tasks. Claude excels at understanding complex codebases and producing clean, well-documented code. 5.3-Codex-Spark is strong at rapid prototyping and API integration. For budget-conscious teams, GLM-5 and Kimi K2.5 offer competitive coding performance at lower cost. We recommend checking our daily scorecards since rankings shift as models improve and new versions release.`,
+		answer: `The answer depends on your workflow, but as of February 16, 2026 our top coding performers are GPT-5 and Claude Opus 4.1. GPT-5 is usually stronger for tool-heavy engineering flows, while Claude Opus 4.1 is strong for careful refactors and architecture reviews. For lower-cost usage, DeepSeek-R1 and GLM-5 often provide better price/performance. Rankings shift as providers ship updates, so we recommend checking current scorecards before committing.`,
 	},
 	{
 		id: 'cheapest-api',
 		question: 'What is the cheapest AI model API?',
-		answer: `Cost varies by use case, but generally: Kimi K2.5, MiniMax M2.5, and GLM-5 offer the lowest per-token pricing among production-ready models. However, the "cheapest" model for your workflow depends on task complexity. A more expensive model that solves problems in one shot often costs less than a cheaper model requiring multiple retries. Our scorecards track cost-per-task, not just token price, giving you a more accurate picture of real-world expenses. Also consider prompt caching (where available) to reduce costs on repeated contexts.`,
+		answer: `Cost varies by use case, but among models we currently fact-check, DeepSeek-R1 and GLM-5 are usually the lowest priced APIs. The real answer still depends on success rate: a cheaper model that needs retries can cost more than a premium model that succeeds on the first run. We track cost-per-task, not just token price, and keep a public source log on our Model Data page so pricing claims are auditable.`,
 	},
 	{
 		id: 'benchmark-accuracy',
@@ -38,7 +38,7 @@ const faqs = [
 	{
 		id: 'best-reasoning-model',
 		question: 'What is the best AI model for reasoning?',
-		answer: `Based on our benchmarks, Claude Opus 4.6 currently leads in reasoning tasks, particularly for build-vs-buy decisions, debugging diagnosis, and system design tradeoffs. Kimi K2.5 and GLM-5 also perform strongly on reasoning at lower price points. Reasoning quality varies significantly by task type: some models excel at logical deduction but struggle with creative problem-solving, while others handle ambiguity well but fail on strict constraint satisfaction. Our scorecards break down reasoning performance by category so you can match model strengths to your specific reasoning needs.`,
+		answer: `Based on our current scorecards, Claude Opus 4.1 and GPT-5 are both strong on reasoning, with Gemini 2.5 Pro also performing well when long context matters. Reasoning quality varies by task type: some models do better on strict constraint solving, others on ambiguous tradeoff analysis. Our scorecards break reasoning into categories so you can map strengths to your own decision workflows.`,
 	},
 	{
 		id: 'open-vs-closed',
@@ -75,7 +75,7 @@ const faqSchema = {
 <html lang="en">
 	<head>
 		<BaseHead
-			title={`FAQ — AI Model Benchmark Questions Answered | ${SITE_TITLE}`}
+			title={`AI Benchmark FAQ | ${SITE_TITLE}`}
 			description="Frequently asked questions about AI model benchmarking, coding models, API costs, SWE-bench, Claude vs GPT, and how to choose the right model for your needs."
 		/>
 		<style>

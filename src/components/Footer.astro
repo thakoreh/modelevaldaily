@@ -1,4 +1,6 @@
 ---
+import { VERIFIED_MODELS } from '../data/verified-models';
+
 const today = new Date();
 const categories = [
 	{ name: 'Coding Evals', href: '/scorecards#coding' },
@@ -10,17 +12,11 @@ const resources = [
 	{ name: 'All Scorecards', href: '/scorecards' },
 	{ name: 'Latest Evals', href: '/blog' },
 	{ name: 'Methodology', href: '/about' },
+	{ name: 'Model Data Sources', href: '/model-data' },
 	{ name: 'FAQ', href: '/faq' },
 	{ name: 'RSS Feed', href: '/rss.xml' },
 ];
-const models = [
-	'Claude Opus 4.6',
-	'5.3-Codex-Spark',
-	'Kimi K2.5',
-	'MiniMax M2.5',
-	'GLM-5',
-	'Gemini 2.5 Pro',
-];
+const models = VERIFIED_MODELS.map((model) => model.name);
 ---
 
 <footer>
@@ -77,7 +73,7 @@ const models = [
 		</div>
 		<div class="footer-bottom">
 			<p>&copy; {today.getFullYear()} AIModelBenchmarks.com</p>
-			<p class="footer-disclaimer">All trademarks belong to their respective owners. Benchmarks are for informational purposes only.</p>
+			<p class="footer-disclaimer">Model names and pricing are verified against provider docs on Feb 16, 2026. Benchmarks are for informational purposes only.</p>
 		</div>
 	</div>
 </footer>
