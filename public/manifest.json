@@ -1,7 +1,7 @@
 {
 	"name": "AI Model Benchmarks - Daily LLM Evaluation & Comparison",
 	"short_name": "AIModelBench",
-	"description": "Compare AI models with real benchmarks. Daily updated LLM evaluation scores for GPT-4, Claude, Gemini, Llama and more.",
+	"description": "Compare AI models with real benchmarks. Daily updated LLM evaluation scores for GPT-5, Claude Opus 4.6, Gemini 2.5 Pro and more.",
 	"start_url": "/",
 	"display": "standalone",
 	"background_color": "#0a0b0f",
