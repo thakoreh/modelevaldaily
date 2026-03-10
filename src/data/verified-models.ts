@@ -1,5 +1,7 @@
 export const MODEL_DATA_VERIFIED_ON = '2026-03-10';
 
+// Last force rebuild: 2026-03-10 04:00 UTC
+
 export interface VerifiedModel {
 	name: string;
 	provider: string;

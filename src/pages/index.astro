@@ -21,49 +21,12 @@ const recent = posts.slice(0, 6);
 const scorecardPosts = posts.filter(p => p.id.includes('scorecard') || p.data.title.toLowerCase().includes('scorecard'));
 const latestScorecard = scorecardPosts.length > 0 ? scorecardPosts[0] : null;
 
-// Parse models from latest scorecard markdown table
-// Format: | Model | Coding | Reasoning | Tool-use | Weighted Total |
-// Dynamically extract all models and sort by score
-let models;
-if (latestScorecard && latestScorecard.body) {
-	const content = latestScorecard.body;
-	
-	// Extract all model rows from the table (model name + weighted total)
-	const modelColors: Record<string, string> = {
-		'Claude': 'var(--claude)',
-		'GPT': 'var(--openai)',
-		'Gemini': '#4285f4',
-		'DeepSeek': '#00bcd4',
-		'GLM': '#f43f5e',
-	};
-	
-	// Match table rows with weighted totals
-	const rowRegex = /\|\s*([A-Za-z][^|]+?)\s*\|\s*[\d.]+\s*\|\s*[\d.]+\s*\|\s*[\d.]+\s*\|\s*\*\*(\d+\.\d+)\*\*\s*\|/g;
-	const found: { name: string; total: number; color: string }[] = [];
-	let match;
-	
-	while ((match = rowRegex.exec(content)) !== null) {
-		const name = match[1].trim();
-		const total = parseFloat(match[2]);
-		// Find matching color
-		const colorKey = Object.keys(modelColors).find(k => name.includes(k));
-		const color = colorKey ? modelColors[colorKey] : '#6366f1';
-		found.push({ name, total, color });
-	}
-	
-	// Sort by total descending and take top 5
-	models = found.sort((a, b) => b.total - a.total).slice(0, 5);
-} else {
-	// Fallback: use actual latest known scores
-	models = VERIFIED_MODELS
-		.map((model) => ({
-			name: model.name,
-			total: Number((model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25).toFixed(2)),
-			color: model.color,
-		}))
-		.sort((a, b) => b.total - a.total)
-		.slice(0, 5);
-}
+// Use verified models data directly (more reliable than parsing markdown)
+const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
+	name: model.name,
+	total: (model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25),
+	color: model.color
+}));
 ---
 
 <!doctype html>
