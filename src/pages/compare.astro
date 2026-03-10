@@ -11,44 +11,44 @@ const useCases = [
 	{
 		title: 'Best for Coding',
 		emoji: '&#128187;',
-		pick: 'GPT-5.2 (xhigh)',
-		reason: 'Top coding performance with excellent agentic capabilities and tool integration.',
-		alternative: 'Claude Opus 4.6 for code review quality',
+		pick: 'Kimi K2.5',
+		reason: 'Elite coding scores, strong multimodal workflows, and long-context support at a sane price.',
+		alternative: 'GPT-OSS-120B if you want strong local/self-hosted coding',
 	},
 	{
 		title: 'Best on a Budget',
 		emoji: '&#128176;',
-		pick: 'DeepSeek-R1',
-		reason: 'Very strong reasoning with one of the lowest published API prices in this set.',
-		alternative: 'Gemini 2.5 Flash-Lite for high-volume simple tasks',
+		pick: 'MiniMax M2.5',
+		reason: 'Best price/performance ratio in the current frontier set for real-world productivity.',
+		alternative: 'Grok 4.1 Fast for ultra-cheap long-context workloads',
 	},
 	{
 		title: 'Best for Long Context',
 		emoji: '&#128218;',
-		pick: 'Llama 4 Scout',
-		reason: 'Up to 10M context window - the largest available. Ideal for massive document processing.',
-		alternative: 'Gemini 2.5 Pro for 1M context with better reasoning',
+		pick: 'Grok 4.1 Fast',
+		reason: '2M context makes it the obvious pick for giant docs, repos, and agent memory workloads.',
+		alternative: 'Qwen 3 Max for multilingual enterprise context needs',
 	},
 	{
 		title: 'Best for Reasoning',
 		emoji: '&#129504;',
-		pick: 'Claude Opus 4.6 (Adaptive)',
-		reason: 'Highest intelligence model with exceptional reasoning depth and adaptive thinking.',
-		alternative: 'Claude Opus 4.5 for consistent long-context behavior',
+		pick: 'Kimi K2.5',
+		reason: 'Strong reasoning plus practical tool-use makes it one of the most useful frontier picks right now.',
+		alternative: 'Qwen 3 Max for bilingual enterprise reasoning',
 	},
 	{
 		title: 'Best All-Rounder',
 		emoji: '&#127942;',
-		pick: 'Claude Opus 4.6 (Adaptive)',
-		reason: 'Top-tier intelligence across coding, reasoning, and tool-use with adaptive thinking.',
-		alternative: 'GPT-5.2 (xhigh) for agentic tasks',
+		pick: 'Kimi K2.5',
+		reason: 'One of the best blends of coding, reasoning, tool-use, context, and pricing on the board.',
+		alternative: 'MiniMax M2.5 if cost matters more than absolute peak quality',
 	},
 	{
-		title: 'Best for Tool-Use',
-		emoji: '&#128295;',
-		pick: 'GPT-5.2 (xhigh)',
-		reason: 'Reliable multi-step API and tooling behavior in operator-style tasks.',
-		alternative: 'Claude Sonnet 4 for balanced tool use at lower cost',
+		title: 'Best for Local / Open Weights',
+		emoji: '&#128421;&#65039;',
+		pick: 'GPT-OSS-120B',
+		reason: 'Best open-weights option here if you care about privacy, self-hosting, and no per-token API bills.',
+		alternative: 'Llama 4 or Qwen3-Coder for lighter local deployments',
 	},
 ];
 ---
@@ -490,9 +490,43 @@ const useCases = [
 				color: var(--accent-light);
 			}
 
+			.decision-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-md);
+			}
+
+			.decision-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+			}
+
+			.decision-card h3 {
+				margin-bottom: 0.5rem;
+				font-size: var(--font-lg);
+			}
+
+			.decision-card p {
+				color: var(--text-secondary);
+				margin-bottom: var(--space-md);
+				font-size: var(--font-sm);
+			}
+
+			.decision-link {
+				font-size: var(--font-sm);
+				font-weight: 600;
+				color: var(--accent-light);
+				text-decoration: none;
+			}
+
 			@media (max-width: 960px) {
 				.use-case-grid {
 					grid-template-columns: repeat(2, 1fr);
+				}
+				.decision-grid {
+					grid-template-columns: 1fr;
 				}
 			}
 
@@ -699,6 +733,30 @@ const useCases = [
 							<p class="use-case-alt">Alternative: <span>{uc.alternative}</span></p>
 						</div>
 					))}
+				</div>
+			</section>
+
+			<section class="section" id="decision-guide">
+				<div class="section-header">
+					<h2>Need a Faster Decision?</h2>
+					<p>Most competitors win on discoverability because they guide the user to the next step immediately. This does that.</p>
+				</div>
+				<div class="decision-grid">
+					<div class="decision-card">
+						<h3>Choose an API model</h3>
+						<p>Use this if you care about fastest setup, no infrastructure, and provider-managed uptime.</p>
+						<a href="/models" class="decision-link">Browse ranked API models →</a>
+					</div>
+					<div class="decision-card">
+						<h3>Run models locally</h3>
+						<p>Use open-weights models if privacy, customization, or long-term cost control matters most.</p>
+						<a href="/local-models" class="decision-link">See local model guide →</a>
+					</div>
+					<div class="decision-card">
+						<h3>Understand open vs proprietary</h3>
+						<p>Still not sure? Start with the tradeoffs around privacy, cost, customization, and performance.</p>
+						<a href="/open-vs-proprietary" class="decision-link">Read the comparison →</a>
+					</div>
 				</div>
 			</section>
 

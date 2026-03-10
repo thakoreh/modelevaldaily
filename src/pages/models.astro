@@ -6,6 +6,11 @@ import { SITE_TITLE } from '../consts';
 import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
 
 const providers = [...new Set(VERIFIED_MODELS.map(m => m.provider))];
+const openWeightKeywords = ['open weights', 'self-hosted', 'self hosted', 'privacy', 'customization'];
+const openWeightModels = VERIFIED_MODELS.filter(model =>
+	model.bestFor.some(tag => openWeightKeywords.some(keyword => tag.toLowerCase().includes(keyword))) ||
+	model.strengths.some(tag => openWeightKeywords.some(keyword => tag.toLowerCase().includes(keyword)))
+);
 
 const modelsJsonLd = {
 	'@context': 'https://schema.org',
@@ -272,6 +277,32 @@ const modelsJsonLd = {
 				gap: var(--space-md);
 				padding: var(--space-xl) 0;
 			}
+			.insight-strip {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-md);
+				margin-bottom: var(--space-xl);
+			}
+			.insight-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+			}
+			.insight-card h2 {
+				font-size: var(--font-lg);
+				margin-bottom: 0.5rem;
+			}
+			.insight-card p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				margin-bottom: 0.75rem;
+			}
+			.insight-card a {
+				font-size: var(--font-sm);
+				font-weight: 600;
+				color: var(--accent-light);
+			}
 			.stat-item {
 				text-align: center;
 				padding: var(--space-lg);
@@ -299,6 +330,9 @@ const modelsJsonLd = {
 				}
 				.stats-bar {
 					grid-template-columns: repeat(2, 1fr);
+				}
+				.insight-strip {
+					grid-template-columns: 1fr;
 				}
 			}
 		</style>
@@ -351,6 +385,24 @@ const modelsJsonLd = {
 					{providers.map(provider => (
 						<button class="filter-btn" data-filter={provider}>{provider}</button>
 					))}
+				</div>
+
+				<div class="insight-strip">
+					<div class="insight-card">
+						<h2>Need the cheapest strong model?</h2>
+						<p>Start with MiniMax M2.5 or Grok 4.1 Fast if cost matters more than bragging rights.</p>
+						<a href="/compare#recommendations">See quick picks →</a>
+					</div>
+					<div class="insight-card">
+						<h2>Need self-hosted privacy?</h2>
+						<p>{openWeightModels.length} model{openWeightModels.length === 1 ? '' : 's'} in this leaderboard support open-weights / local-first workflows.</p>
+						<a href="/local-models">Explore local models →</a>
+					</div>
+					<div class="insight-card">
+						<h2>Want the full tradeoff?</h2>
+						<p>Compare open weights vs proprietary models before you commit to an API provider.</p>
+						<a href="/open-vs-proprietary">Read the guide →</a>
+					</div>
 				</div>
 
 				<div class="models-grid">
