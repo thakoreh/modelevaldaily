@@ -1,0 +1,538 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Open Weights vs Proprietary Models | AI Model Benchmarks" description="Compare open-weights vs proprietary AI models. Cost, privacy, performance, and when to use each type." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Hero -->
+			<section class="hero">
+				<div class="container">
+					<div class="hero-content">
+						<h1>Open Weights vs Proprietary: What's the Real Difference?</h1>
+						<p class="hero-subtitle">The gap between open and closed models has never been smaller. Here's how to choose the right approach for your needs.</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Key Differences -->
+			<section class="section">
+				<div class="container">
+					<h2>Key Differences at a Glance</h2>
+					
+					<div class="table-wrapper">
+						<table class="comparison-table">
+							<thead>
+								<tr>
+									<th>Factor</th>
+									<th>Open Weights</th>
+									<th>Proprietary</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><strong>Cost</strong></td>
+									<td>Free (self-hosted) or ~$0.10-1/M tokens via API</td>
+									<td>$1-25/M tokens (API only)</td>
+								</tr>
+								<tr>
+									<td><strong>Privacy</strong></td>
+									<td>Full control — data never leaves your infrastructure</td>
+									<td>Data sent to provider's servers</td>
+								</tr>
+								<tr>
+									<td><strong>Customization</strong></td>
+									<td>Fine-tune, modify, distill freely</td>
+									<td>Limited to provider's fine-tuning options</td>
+								</tr>
+								<tr>
+									<td><strong>Performance</strong></td>
+									<td>90-97% of frontier on most benchmarks</td>
+									<td>Best-in-class on most benchmarks</td>
+								</tr>
+								<tr>
+									<td><strong>Availability</strong></td>
+									<td>Run offline, no rate limits (self-hosted)</td>
+									<td>Dependent on provider uptime</td>
+								</tr>
+								<tr>
+									<td><strong>Setup Complexity</strong></td>
+									<td>Requires hardware + setup</td>
+									<td>API key and go</td>
+								</tr>
+								<tr>
+									<td><strong>Updates</strong></td>
+									<td>Manual — you control when to upgrade</td>
+									<td>Automatic — provider updates for you</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</section>
+
+			<!-- Performance Comparison -->
+			<section class="section section-alt">
+				<div class="container">
+					<h2>Performance: The Gap is Closing</h2>
+					<p class="section-subtitle">Open-weights models now achieve near-frontier performance on key benchmarks</p>
+					
+					<div class="benchmark-grid">
+						<div class="benchmark-card">
+							<h3>Coding (LiveCodeBench)</h3>
+							<div class="bar-container">
+								<div class="bar-label">GPT-5.4 (Proprietary)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-proprietary" style="width: 98%"></div>
+									<span class="bar-value">98%</span>
+								</div>
+							</div>
+							<div class="bar-container">
+								<div class="bar-label">GPT-OSS-120B (Open)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-open" style="width: 90%"></div>
+									<span class="bar-value">90%</span>
+								</div>
+							</div>
+							<div class="bar-container">
+								<div class="bar-label">Qwen3-Coder (Open)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-open" style="width: 92%"></div>
+									<span class="bar-value">92%</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="benchmark-card">
+							<h3>Math (AIME 2025)</h3>
+							<div class="bar-container">
+								<div class="bar-label">Claude Opus 4.6 (Proprietary)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-proprietary" style="width: 100%"></div>
+									<span class="bar-value">100%</span>
+								</div>
+							</div>
+							<div class="bar-container">
+								<div class="bar-label">GLM-5 (Open)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-open" style="width: 97%"></div>
+									<span class="bar-value">97%</span>
+								</div>
+							</div>
+							<div class="bar-container">
+								<div class="bar-label">DeepSeek V3.2 (Open)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-open" style="width: 94%"></div>
+									<span class="bar-value">94%</span>
+								</div>
+							</div>
+						</div>
+						
+						<div class="benchmark-card">
+							<h3>Reasoning (MMLU-Pro)</h3>
+							<div class="bar-container">
+								<div class="bar-label">GPT-5.4 (Proprietary)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-proprietary" style="width: 96%"></div>
+									<span class="bar-value">96%</span>
+								</div>
+							</div>
+							<div class="bar-container">
+								<div class="bar-label">Llama 4 405B (Open)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-open" style="width: 91%"></div>
+									<span class="bar-value">91%</span>
+								</div>
+							</div>
+							<div class="bar-container">
+								<div class="bar-label">Kimi K2.5 (Open)</div>
+								<div class="bar-wrapper">
+									<div class="bar bar-open" style="width: 93%"></div>
+									<span class="bar-value">93%</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					<p class="source-note">Sources: WhatLLM.org, ArtificialAnalysis.ai, model technical reports (February-March 2026)</p>
+				</div>
+			</section>
+
+			<!-- Decision Framework -->
+			<section class="section">
+				<div class="container">
+					<h2>When to Use Each</h2>
+					
+					<div class="decision-grid">
+						<div class="decision-card decision-open">
+							<h3>Choose Open Weights When:</h3>
+							<ul>
+								<li>✓ Privacy is non-negotiable (healthcare, finance, legal)</li>
+								<li>✓ You have predictable, high-volume workloads</li>
+								<li>✓ You need to fine-tune on proprietary data</li>
+								<li>✓ Offline/air-gapped operation is required</li>
+								<li>✓ You want to avoid vendor lock-in</li>
+								<li>✓ You have GPU infrastructure available</li>
+								<li>✓ Long-term cost optimization matters</li>
+							</ul>
+						</div>
+						
+						<div class="decision-card decision-proprietary">
+							<h3>Choose Proprietary When:</h3>
+							<ul>
+								<li>✓ You need absolute best performance</li>
+								<li>✓ Getting started fast matters more than cost</li>
+								<li>✓ You don't have GPU infrastructure</li>
+								<li>✓ Workloads are unpredictable/sporadic</li>
+								<li>✓ You need the latest model improvements automatically</li>
+								<li>✓ Complex multimodal tasks (video, advanced vision)</li>
+								<li>✓ You want managed tool integration</li>
+							</ul>
+						</div>
+					</div>
+
+					<div class="hybrid-box">
+						<h3>💡 The Hybrid Approach</h3>
+						<p>Many teams use both: proprietary APIs for prototyping and complex tasks, self-hosted open weights for production and high-volume workloads. This gives you the best of both worlds — frontier performance when you need it, cost control where it matters.</p>
+					</div>
+				</div>
+			</section>
+
+			<!-- Cost Analysis -->
+			<section class="section section-alt">
+				<div class="container">
+					<h2>Cost Analysis: API vs Self-Hosted</h2>
+					
+					<div class="cost-example">
+						<h3>Example: Processing 10M tokens/day</h3>
+						
+						<div class="cost-grid">
+							<div class="cost-card">
+								<h4>Proprietary API</h4>
+								<p class="cost-model">(GPT-5.4 @ $2.50/$15 per M)</p>
+								<div class="cost-breakdown">
+									<div class="cost-row">
+										<span>Input (10M × $2.50)</span>
+										<span>$25/day</span>
+									</div>
+									<div class="cost-row">
+										<span>Output (10M × $15)</span>
+										<span>$150/day</span>
+									</div>
+									<div class="cost-total">
+										<span>Total</span>
+										<span>$175/day</span>
+									</div>
+									<div class="cost-monthly">
+										<span>Monthly</span>
+										<span>~$5,250</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="cost-card">
+								<h4>Open Weights API</h4>
+								<p class="cost-model">(GLM-5 @ $0.50/$2 per M)</p>
+								<div class="cost-breakdown">
+									<div class="cost-row">
+										<span>Input (10M × $0.50)</span>
+										<span>$5/day</span>
+									</div>
+									<div class="cost-row">
+										<span>Output (10M × $2)</span>
+										<span>$20/day</span>
+									</div>
+									<div class="cost-total">
+										<span>Total</span>
+										<span>$25/day</span>
+									</div>
+									<div class="cost-monthly">
+										<span>Monthly</span>
+										<span>~$750</span>
+									</div>
+								</div>
+							</div>
+							
+							<div class="cost-card cost-winner">
+								<h4>Self-Hosted</h4>
+								<p class="cost-model">(GPT-OSS-120B on H100)</p>
+								<div class="cost-breakdown">
+									<div class="cost-row">
+										<span>H100 rental (~$2/hr × 24)</span>
+										<span>$48/day</span>
+									</div>
+									<div class="cost-row">
+										<span>Token costs</span>
+										<span>$0</span>
+									</div>
+									<div class="cost-total">
+										<span>Total</span>
+										<span>$48/day</span>
+									</div>
+									<div class="cost-monthly">
+										<span>Monthly</span>
+										<span>~$1,440</span>
+									</div>
+								</div>
+								<p class="cost-note">Self-hosting breaks even vs proprietary at ~3M tokens/day. At 50M+/day, savings are massive.</p>
+							</div>
+						</div>
+					</div>
+					
+					<a href="/cost-calculator" class="btn-primary">Calculate Your Costs →</a>
+				</div>
+			</section>
+
+			<!-- CTA -->
+			<section class="section">
+				<div class="container">
+					<div class="cta-box">
+						<h2>Ready to Go Local?</h2>
+						<p>Check out our guide to running frontier models on your own hardware.</p>
+						<a href="/local-models" class="btn-primary">Local Models Guide →</a>
+					</div>
+				</div>
+			</section>
+
+		</main>
+		<Footer />
+
+		<style>
+			.hero {
+				padding: var(--space-4xl) 0;
+				background: var(--gradient-hero);
+			}
+			.container {
+				max-width: var(--container-lg);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero-content {
+				text-align: center;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			h1 {
+				font-size: var(--font-3xl);
+				margin-bottom: var(--space-md);
+			}
+			.hero-subtitle {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+			}
+			.section {
+				padding: var(--space-3xl) 0;
+			}
+			.section-alt {
+				background: var(--bg-secondary);
+			}
+			h2 {
+				font-size: var(--font-2xl);
+				margin-bottom: var(--space-md);
+			}
+			.section-subtitle {
+				color: var(--text-secondary);
+				margin-bottom: var(--space-xl);
+			}
+			.table-wrapper {
+				overflow-x: auto;
+			}
+			.comparison-table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: var(--font-sm);
+			}
+			.comparison-table th, .comparison-table td {
+				padding: 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+			.comparison-table th {
+				font-weight: 600;
+				color: var(--text-secondary);
+				background: var(--bg-secondary);
+			}
+			.benchmark-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+				gap: var(--space-lg);
+			}
+			.benchmark-card {
+				background: var(--bg-primary);
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				border: 1px solid var(--border-primary);
+			}
+			.benchmark-card h3 {
+				margin-bottom: var(--space-md);
+				font-size: var(--font-base);
+			}
+			.bar-container {
+				margin-bottom: var(--space-sm);
+			}
+			.bar-label {
+				font-size: var(--font-xs);
+				color: var(--text-secondary);
+				margin-bottom: 0.25rem;
+			}
+			.bar-wrapper {
+				display: flex;
+				align-items: center;
+				gap: 0.5rem;
+			}
+			.bar {
+				height: 8px;
+				border-radius: 4px;
+				transition: width 0.5s ease;
+			}
+			.bar-proprietary {
+				background: linear-gradient(90deg, #6366f1, #a855f7);
+			}
+			.bar-open {
+				background: linear-gradient(90deg, #10b981, #059669);
+			}
+			.bar-value {
+				font-size: var(--font-xs);
+				font-weight: 600;
+				min-width: 40px;
+			}
+			.source-note {
+				font-size: var(--font-xs);
+				color: var(--text-muted);
+				margin-top: var(--space-lg);
+			}
+			.decision-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+				gap: var(--space-lg);
+			}
+			.decision-card {
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				border: 1px solid var(--border-primary);
+			}
+			.decision-open {
+				background: rgba(16, 185, 129, 0.05);
+				border-color: rgba(16, 185, 129, 0.2);
+			}
+			.decision-proprietary {
+				background: rgba(99, 102, 241, 0.05);
+				border-color: rgba(99, 102, 241, 0.2);
+			}
+			.decision-card h3 {
+				margin-bottom: var(--space-md);
+			}
+			.decision-card ul {
+				list-style: none;
+				padding: 0;
+			}
+			.decision-card li {
+				padding: 0.4rem 0;
+				font-size: var(--font-sm);
+			}
+			.hybrid-box {
+				background: var(--bg-secondary);
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				margin-top: var(--space-xl);
+				border-left: 3px solid var(--accent-light);
+			}
+			.hybrid-box h3 {
+				margin-bottom: var(--space-sm);
+			}
+			.hybrid-box p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+			}
+			.cost-example {
+				margin-bottom: var(--space-xl);
+			}
+			.cost-example h3 {
+				margin-bottom: var(--space-lg);
+			}
+			.cost-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+				gap: var(--space-md);
+			}
+			.cost-card {
+				background: var(--bg-primary);
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				border: 1px solid var(--border-primary);
+			}
+			.cost-winner {
+				border-color: var(--success);
+				background: rgba(16, 185, 129, 0.05);
+			}
+			.cost-card h4 {
+				margin-bottom: 0.25rem;
+			}
+			.cost-model {
+				font-size: var(--font-xs);
+				color: var(--text-muted);
+				margin-bottom: var(--space-md);
+			}
+			.cost-breakdown {
+				font-size: var(--font-sm);
+			}
+			.cost-row {
+				display: flex;
+				justify-content: space-between;
+				padding: 0.35rem 0;
+				color: var(--text-secondary);
+			}
+			.cost-total {
+				display: flex;
+				justify-content: space-between;
+				padding: 0.5rem 0;
+				border-top: 1px solid var(--border-secondary);
+				font-weight: 600;
+				margin-top: 0.5rem;
+			}
+			.cost-monthly {
+				display: flex;
+				justify-content: space-between;
+				padding: 0.5rem 0;
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+			.cost-note {
+				font-size: var(--font-xs);
+				color: var(--text-muted);
+				margin-top: var(--space-sm);
+				padding-top: var(--space-sm);
+				border-top: 1px solid var(--border-secondary);
+			}
+			.btn-primary {
+				display: inline-block;
+				padding: 0.75rem 1.5rem;
+				background: var(--gradient-primary);
+				color: white;
+				text-decoration: none;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+			}
+			.cta-box {
+				text-align: center;
+				padding: var(--space-2xl);
+				background: var(--bg-secondary);
+				border-radius: var(--radius-xl);
+			}
+			.cta-box h2 {
+				margin-bottom: var(--space-sm);
+			}
+			.cta-box p {
+				color: var(--text-secondary);
+				margin-bottom: var(--space-lg);
+			}
+		</style>
+	</body>
+</html>

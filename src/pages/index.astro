@@ -485,6 +485,44 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				margin-bottom: var(--space-lg);
 			}
 
+			/* ===== NEW PAGES SECTION ===== */
+			.new-pages-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+				gap: var(--space-lg);
+			}
+			.new-page-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-xl);
+				text-decoration: none;
+				color: inherit;
+				transition: all var(--transition-base);
+			}
+			.new-page-card:hover {
+				border-color: var(--accent);
+				transform: translateY(-4px);
+			}
+			.new-page-icon {
+				font-size: 2rem;
+				margin-bottom: var(--space-sm);
+			}
+			.new-page-card h3 {
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-sm);
+			}
+			.new-page-card p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				margin-bottom: var(--space-md);
+			}
+			.new-page-link {
+				font-size: var(--font-sm);
+				font-weight: 600;
+				color: var(--accent-light);
+			}
+
 			/* ===== CTA ===== */
 			.cta-section {
 				padding: var(--space-3xl) 0 var(--space-xl);
@@ -898,6 +936,30 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 					</div>
 					<div style="text-align: center; margin-top: var(--space-xl);">
 						<a href="/blog" class="btn btn-secondary">View all articles</a>
+					</div>
+				</div>
+			</section>
+
+			<!-- New: Open Weights & Local Models -->
+			<section class="section" style="background: var(--bg-secondary);">
+				<div class="container">
+					<div class="section-header">
+						<h2>New: Open Weights & Local Models</h2>
+						<p>Run frontier models on your own hardware — the performance gap has never been smaller.</p>
+					</div>
+					<div class="new-pages-grid">
+						<a href="/local-models" class="new-page-card">
+							<div class="new-page-icon">🖥️</div>
+							<h3>Local Models Guide</h3>
+							<p>Run GPT-OSS, Llama 4, and other open-weights models with Ollama, LM Studio, or vLLM.</p>
+							<span class="new-page-link">Setup Guide →</span>
+						</a>
+						<a href="/open-vs-proprietary" class="new-page-card">
+							<div class="new-page-icon">⚖️</div>
+							<h3>Open vs Proprietary</h3>
+							<p>Compare costs, privacy, performance, and learn when to use each type of model.</p>
+							<span class="new-page-link">Full Comparison →</span>
+						</a>
 					</div>
 				</div>
 			</section>

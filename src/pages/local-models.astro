@@ -1,0 +1,530 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title="Local Models — Run AI on Your Hardware | AI Model Benchmarks" description="Run frontier AI models locally with Ollama, LM Studio, vLLM. Hardware requirements, setup guides, and performance comparisons." />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<!-- Hero -->
+			<section class="hero">
+				<div class="container">
+					<div class="hero-content">
+						<h1>Run Frontier Models on Your Own Hardware</h1>
+						<p class="hero-subtitle">Open-weights models now match proprietary performance at 90-97% of frontier benchmarks. Here's how to run them locally.</p>
+						<div class="hero-cta">
+							<a href="#quick-start" class="btn-primary">Quick Start</a>
+							<a href="/open-vs-proprietary" class="btn-secondary">Open vs Proprietary →</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Quick Start -->
+			<section id="quick-start" class="section">
+				<div class="container">
+					<h2>Quick Start: 5 Minutes to Local AI</h2>
+					
+					<div class="tool-grid">
+						<div class="tool-card">
+							<h3>Ollama (Easiest)</h3>
+							<p>One-command install, pull models, start chatting.</p>
+							<code class="code-block">
+# Install (macOS/Linux)
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Run a frontier model
+ollama run llama4:8b
+
+# Or a coding specialist
+ollama run qwen3-coder:7b
+							</code>
+						</div>
+						
+						<div class="tool-card">
+							<h3>LM Studio (GUI)</h3>
+							<p>Desktop app with model browser and chat UI.</p>
+							<code class="code-block">
+# Download from lmstudio.ai
+# Then search & download models:
+# - llama-4-8b
+# - qwen3-coder-7b
+# - deepseek-v3
+							</code>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Model Comparison -->
+			<section class="section section-alt">
+				<div class="container">
+					<h2>Open Weights Model Comparison</h2>
+					<p class="section-subtitle">Top open-weights models ranked by performance</p>
+					
+					<div class="table-wrapper">
+						<table class="model-table">
+							<thead>
+								<tr>
+									<th>Model</th>
+									<th>Params</th>
+									<th>Context</th>
+									<th>Best For</th>
+									<th>Min GPU</th>
+									<th>Score</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><span class="model-name">GPT-OSS-120B</span><span class="badge badge-new">New</span></td>
+									<td>120B</td>
+									<td>128K</td>
+									<td>General, Coding, Reasoning</td>
+									<td>80GB</td>
+									<td><span class="score">9.2</span></td>
+								</tr>
+								<tr>
+									<td><span class="model-name">Llama 4 405B</span></td>
+									<td>405B</td>
+									<td>128K</td>
+									<td>Customization, Research</td>
+									<td>8×80GB</td>
+									<td><span class="score">9.1</span></td>
+								</tr>
+								<tr>
+									<td><span class="model-name">GLM-5</span></td>
+									<td>744B MoE</td>
+									<td>200K</td>
+									<td>Bilingual, Agents</td>
+									<td>80GB</td>
+									<td><span class="score">9.2</span></td>
+								</tr>
+								<tr>
+									<td><span class="model-name">Qwen3-Coder-Next</span></td>
+									<td>80B</td>
+									<td>128K</td>
+									<td>Coding</td>
+									<td>48GB</td>
+									<td><span class="score">9.3</span></td>
+								</tr>
+								<tr>
+									<td><span class="model-name">DeepSeek V3.2</span></td>
+									<td>37B</td>
+									<td>128K</td>
+									<td>Budget, High-volume</td>
+									<td>24GB</td>
+									<td><span class="score">8.9</span></td>
+								</tr>
+								<tr>
+									<td><span class="model-name">Llama 4 8B</span></td>
+									<td>8B</td>
+									<td>128K</td>
+									<td>Consumer GPUs</td>
+									<td>8GB</td>
+									<td><span class="score">8.5</span></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<p class="table-note">Scores are weighted averages of coding, reasoning, and tool-use benchmarks.</p>
+				</div>
+			</section>
+
+			<!-- Tools Comparison -->
+			<section class="section">
+				<div class="container">
+					<h2>Local LLM Tools Compared</h2>
+					
+					<div class="tools-comparison">
+						<div class="tool-item">
+							<h3>Ollama</h3>
+							<ul class="pros">
+								<li>+ Easiest setup</li>
+								<li>+ Large model library</li>
+								<li>+ Cross-platform</li>
+								<li>+ REST API built-in</li>
+							</ul>
+							<ul class="cons">
+								<li>- Less control over inference</li>
+								<li>- No GPU selection</li>
+							</ul>
+							<p class="verdict"><strong>Best for:</strong> Getting started fast</p>
+						</div>
+						
+						<div class="tool-item">
+							<h3>LM Studio</h3>
+							<ul class="pros">
+								<li>+ Beautiful GUI</li>
+								<li>+ Model browser</li>
+								<li>+ GPU selection</li>
+								<li>+ OpenAI-compatible server</li>
+							</ul>
+							<ul class="cons">
+								<li>- Desktop only</li>
+								<li>- No CLI</li>
+							</ul>
+							<p class="verdict"><strong>Best for:</strong> Non-developers, experimentation</p>
+						</div>
+						
+						<div class="tool-item">
+							<h3>vLLM</h3>
+							<ul class="pros">
+								<li>+ Highest throughput</li>
+								<li>+ Production-ready</li>
+								<li>+ Paged attention</li>
+								<li>+ Multi-GPU support</li>
+							</ul>
+							<ul class="cons">
+								<li>- Complex setup</li>
+								<li>- Requires Python</li>
+							</ul>
+							<p class="verdict"><strong>Best for:</strong> Production deployments</p>
+						</div>
+						
+						<div class="tool-item">
+							<h3>llama.cpp</h3>
+							<ul class="pros">
+								<li>+ Runs anywhere</li>
+								<li>+ Apple Silicon optimized</li>
+								<li>+ Minimal dependencies</li>
+								<li>+ Quantization support</li>
+							</ul>
+							<ul class="cons">
+								<li>- Manual model management</li>
+								<li>- CLI-focused</li>
+							</ul>
+							<p class="verdict"><strong>Best for:</strong> Maximum compatibility</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Hardware Guide -->
+			<section class="section section-alt">
+				<div class="container">
+					<h2>Hardware Requirements by Model Size</h2>
+					
+					<div class="hardware-grid">
+						<div class="hw-card">
+							<h3>8B Models</h3>
+							<p class="hw-gpu">8GB VRAM</p>
+							<ul>
+								<li>RTX 4070 / 3080</li>
+								<li>Apple M1/M2 16GB</li>
+								<li>RTX 3060 12GB</li>
+							</ul>
+							<p class="hw-examples">Llama 4 8B, Qwen3 7B</p>
+						</div>
+						
+						<div class="hw-card">
+							<h3>70B Models</h3>
+							<p class="hw-gpu">48GB VRAM</p>
+							<ul>
+								<li>RTX 6000 Ada</li>
+								<li>2× RTX 4090</li>
+								<li>RTX A6000</li>
+							</ul>
+							<p class="hw-examples">Llama 4 70B, Qwen3 72B</p>
+						</div>
+						
+						<div class="hw-card">
+							<h3>120B+ Models</h3>
+							<p class="hw-gpu">80GB VRAM</p>
+							<ul>
+								<li>H100 / H200</li>
+								<li>MI300X</li>
+								<li>RTX 6000 Ada (quantized)</li>
+							</ul>
+							<p class="hw-examples">GPT-OSS-120B, GLM-5</p>
+						</div>
+						
+						<div class="hw-card">
+							<h3>400B+ Models</h3>
+							<p class="hw-gpu">Multi-GPU</p>
+							<ul>
+								<li>8× H100</li>
+								<li>4× H200</li>
+								<li>Cloud inference</li>
+							</ul>
+							<p class="hw-examples">Llama 4 405B (full)</p>
+						</div>
+					</div>
+					
+					<div class="tip-box">
+						<strong>💡 Pro tip:</strong> Use quantized models (4-bit, 8-bit) to run larger models on consumer hardware. A 70B model fits in 24GB at 4-bit quantization with minimal quality loss.
+					</div>
+				</div>
+			</section>
+
+			<!-- Performance Section -->
+			<section class="section">
+				<div class="container">
+					<h2>Open Weights vs Proprietary: The Gap is Gone</h2>
+					
+					<div class="perf-stats">
+						<div class="stat">
+							<span class="stat-value">90%</span>
+							<span class="stat-label">LiveCodeBench score vs frontier</span>
+						</div>
+						<div class="stat">
+							<span class="stat-value">97%</span>
+							<span class="stat-label">AIME 2025 math benchmark</span>
+						</div>
+						<div class="stat">
+							<span class="stat-value">$0</span>
+							<span class="stat-label">Per-token cost (self-hosted)</span>
+						</div>
+					</div>
+					
+					<p class="perf-note">Source: WhatLLM.org February 2026 benchmarks. Open-weights models now routinely match or exceed proprietary models on coding and reasoning tasks.</p>
+					
+					<a href="/open-vs-proprietary" class="btn-primary">See Full Comparison →</a>
+				</div>
+			</section>
+
+		</main>
+		<Footer />
+
+		<style>
+			.hero {
+				padding: var(--space-4xl) 0;
+				background: var(--gradient-hero);
+			}
+			.container {
+				max-width: var(--container-lg);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero-content {
+				text-align: center;
+				max-width: 800px;
+				margin: 0 auto;
+			}
+			h1 {
+				font-size: var(--font-3xl);
+				margin-bottom: var(--space-md);
+			}
+			.hero-subtitle {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				margin-bottom: var(--space-xl);
+			}
+			.hero-cta {
+				display: flex;
+				gap: 1rem;
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			.btn-primary {
+				display: inline-block;
+				padding: 0.75rem 1.5rem;
+				background: var(--gradient-primary);
+				color: white;
+				text-decoration: none;
+				border-radius: var(--radius-md);
+				font-weight: 600;
+			}
+			.btn-secondary {
+				display: inline-block;
+				padding: 0.75rem 1.5rem;
+				background: var(--bg-tertiary);
+				color: var(--text-primary);
+				text-decoration: none;
+				border-radius: var(--radius-md);
+				font-weight: 500;
+			}
+			.section {
+				padding: var(--space-3xl) 0;
+			}
+			.section-alt {
+				background: var(--bg-secondary);
+			}
+			h2 {
+				font-size: var(--font-2xl);
+				margin-bottom: var(--space-md);
+			}
+			.section-subtitle {
+				color: var(--text-secondary);
+				margin-bottom: var(--space-xl);
+			}
+			.tool-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+				gap: var(--space-lg);
+			}
+			.tool-card {
+				background: var(--bg-secondary);
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				border: 1px solid var(--border-primary);
+			}
+			.tool-card h3 {
+				margin-bottom: var(--space-sm);
+			}
+			.code-block {
+				display: block;
+				background: var(--bg-primary);
+				padding: var(--space-md);
+				border-radius: var(--radius-md);
+				font-family: var(--font-mono);
+				font-size: var(--font-sm);
+				white-space: pre;
+				overflow-x: auto;
+				margin-top: var(--space-sm);
+			}
+			.table-wrapper {
+				overflow-x: auto;
+			}
+			.model-table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: var(--font-sm);
+			}
+			.model-table th, .model-table td {
+				padding: 0.75rem 1rem;
+				text-align: left;
+				border-bottom: 1px solid var(--border-secondary);
+			}
+			.model-table th {
+				font-weight: 600;
+				color: var(--text-secondary);
+			}
+			.model-name {
+				font-weight: 600;
+			}
+			.badge {
+				display: inline-block;
+				font-size: 0.65rem;
+				padding: 0.15rem 0.4rem;
+				border-radius: var(--radius-sm);
+				margin-left: 0.5rem;
+				text-transform: uppercase;
+				font-weight: 600;
+			}
+			.badge-new {
+				background: var(--success);
+				color: white;
+			}
+			.score {
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+			.table-note {
+				font-size: var(--font-xs);
+				color: var(--text-muted);
+				margin-top: var(--space-sm);
+			}
+			.tools-comparison {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: var(--space-lg);
+			}
+			.tool-item {
+				background: var(--bg-secondary);
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				border: 1px solid var(--border-primary);
+			}
+			.tool-item h3 {
+				margin-bottom: var(--space-sm);
+			}
+			.tool-item ul {
+				list-style: none;
+				padding: 0;
+				margin: var(--space-sm) 0;
+			}
+			.tool-item li {
+				padding: 0.25rem 0;
+				font-size: var(--font-sm);
+			}
+			.pros li {
+				color: var(--success);
+			}
+			.cons li {
+				color: var(--error);
+			}
+			.verdict {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				margin-top: var(--space-sm);
+				padding-top: var(--space-sm);
+				border-top: 1px solid var(--border-secondary);
+			}
+			.hardware-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+				gap: var(--space-md);
+			}
+			.hw-card {
+				background: var(--bg-primary);
+				padding: var(--space-lg);
+				border-radius: var(--radius-lg);
+				border: 1px solid var(--border-primary);
+			}
+			.hw-card h3 {
+				margin-bottom: var(--space-xs);
+			}
+			.hw-gpu {
+				font-size: var(--font-xl);
+				font-weight: 700;
+				color: var(--accent-light);
+				margin-bottom: var(--space-sm);
+			}
+			.hw-card ul {
+				list-style: none;
+				padding: 0;
+				margin: var(--space-sm) 0;
+			}
+			.hw-card li {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+				padding: 0.2rem 0;
+			}
+			.hw-examples {
+				font-size: var(--font-xs);
+				color: var(--text-muted);
+				margin-top: var(--space-sm);
+			}
+			.tip-box {
+				background: var(--bg-primary);
+				padding: var(--space-md);
+				border-radius: var(--radius-md);
+				border-left: 3px solid var(--accent-light);
+				margin-top: var(--space-xl);
+				font-size: var(--font-sm);
+			}
+			.perf-stats {
+				display: flex;
+				gap: var(--space-xl);
+				justify-content: center;
+				flex-wrap: wrap;
+				margin: var(--space-xl) 0;
+			}
+			.stat {
+				text-align: center;
+			}
+			.stat-value {
+				display: block;
+				font-size: var(--font-3xl);
+				font-weight: 700;
+				color: var(--accent-light);
+			}
+			.stat-label {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+			}
+			.perf-note {
+				font-size: var(--font-sm);
+				color: var(--text-muted);
+				text-align: center;
+				margin-bottom: var(--space-xl);
+			}
+		</style>
+	</body>
+</html>

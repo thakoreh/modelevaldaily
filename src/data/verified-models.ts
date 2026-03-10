@@ -1,6 +1,7 @@
 export const MODEL_DATA_VERIFIED_ON = '2026-03-10';
 
-// Last force rebuild: 2026-03-10 04:00 UTC
+// Last force rebuild: 2026-03-10 13:30 UTC
+// Added: Kimi K2.5, MiniMax M2.5, Grok 4.1 Fast, Qwen 3 Max, GPT-OSS-120B
 
 export interface VerifiedModel {
 	name: string;
@@ -176,6 +177,81 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'Mistral Models', url: 'https://mistral.ai/' },
 			{ label: 'Mistral Pricing', url: 'https://mistral.ai/pricing/' },
+		],
+	},
+	{
+		name: 'Kimi K2.5',
+		provider: 'Moonshot AI',
+		color: '#00d4aa',
+		releaseDate: '2026-02-11',
+		pricing: { input: 0.60, output: 2.50 },
+		contextWindow: '256K',
+		bestFor: ['Visual coding', 'Long context', 'Agent workflows'],
+		scores: { coding: 9.4, reasoning: 9.3, toolUse: 9.2 },
+		strengths: ['MoE architecture (1T params, 32B active)', 'Competitive pricing', 'Multimodal capabilities'],
+		sources: [
+			{ label: 'OpenRouter', url: 'https://openrouter.ai/moonshotai/kimi-k2.5' },
+			{ label: 'Moonshot Platform', url: 'https://platform.moonshot.ai/' },
+		],
+	},
+	{
+		name: 'MiniMax M2.5',
+		provider: 'MiniMax',
+		color: '#6366f1',
+		releaseDate: '2026-02-11',
+		pricing: { input: 0.30, output: 1.20 },
+		contextWindow: '196K',
+		bestFor: ['Real-world productivity', 'Cost-sensitive', 'High-volume'],
+		scores: { coding: 9.1, reasoning: 9.2, toolUse: 8.9 },
+		strengths: ['Best value frontier model', 'Excellent price/performance', '228B params'],
+		sources: [
+			{ label: 'OpenRouter', url: 'https://openrouter.ai/minimax/minimax-m2.5' },
+			{ label: 'Together AI', url: 'https://www.together.ai/models/minimax-m2-5' },
+		],
+	},
+	{
+		name: 'Grok 4.1 Fast',
+		provider: 'xAI',
+		color: '#1a1a1a',
+		releaseDate: '2026-02-15',
+		pricing: { input: 0.20, output: 0.50 },
+		contextWindow: '2M',
+		bestFor: ['Long context', 'Web search', 'X platform data'],
+		scores: { coding: 9.0, reasoning: 9.1, toolUse: 8.8 },
+		strengths: ['Largest context window (2M tokens)', 'Built-in web & X search', 'Aggressive pricing'],
+		sources: [
+			{ label: 'xAI Docs', url: 'https://docs.x.ai/' },
+			{ label: 'OpenRouter', url: 'https://openrouter.ai/x-ai/grok-4-fast' },
+		],
+	},
+	{
+		name: 'Qwen 3 Max',
+		provider: 'Alibaba',
+		color: '#ff6a00',
+		releaseDate: '2025-09-23',
+		pricing: { input: 1.20, output: 6.00 },
+		contextWindow: '262K',
+		bestFor: ['Multilingual', 'Enterprise', 'Chinese language'],
+		scores: { coding: 9.2, reasoning: 9.1, toolUse: 8.9 },
+		strengths: ['Strong bilingual (CN/EN)', 'Enterprise-ready', '50% batch discount'],
+		sources: [
+			{ label: 'Alibaba Cloud', url: 'https://www.alibabacloud.com/help/en/model-studio/models' },
+			{ label: 'Price Per Token', url: 'https://pricepertoken.com/pricing-page/model/qwen-qwen3-max' },
+		],
+	},
+	{
+		name: 'GPT-OSS-120B',
+		provider: 'OpenAI',
+		color: '#059669',
+		releaseDate: '2026-02-20',
+		pricing: { input: 0, output: 0, notes: 'Free — open weights, self-hosted' },
+		contextWindow: '128K',
+		bestFor: ['Self-hosted', 'Privacy', 'Customization'],
+		scores: { coding: 9.3, reasoning: 9.2, toolUse: 9.0 },
+		strengths: ['Open weights from OpenAI', 'Runs on single 80GB GPU', 'vLLM/Ollama compatible'],
+		sources: [
+			{ label: 'OpenAI Blog', url: 'https://openai.com/index/introducing-gpt-oss/' },
+			{ label: 'HuggingFace', url: 'https://huggingface.co/openai' },
 		],
 	},
 ];
