@@ -3,464 +3,341 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 
-const title = 'OpenClaw — Open-Source AI Agent Orchestration Platform';
-const description = 'The open-source alternative to LangChain and Vercel AI SDK. Build AI agents with multi-provider support, model routing, fallbacks, and skills. Works with GPT-5, Claude, Gemini, and 20+ providers.';
+const title = 'OpenClaw - Open-Source AI Agent Orchestration';
+const description = 'The open-source alternative to LangChain. Build AI agents with multi-provider support, model routing, fallbacks, and skills.';
 ---
 
+<!doctype html>
 <html lang="en">
-<head>
-	<BaseHead title={title} description={description} type="article" />
-</head>
-<body>
-	<Header />
-	<main>
-		<article class="openclaw-page">
-			<header>
-				<h1>OpenClaw</h1>
-				<p class="subtitle">Open-source AI agent orchestration — The alternative to LangChain and Vercel AI SDK.</p>
-				<p>Build agents that work with <strong>20+ providers</strong>, route intelligently, and never fail.</p>
-				<div class="links">
-					<a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">GitHub →</a>
-					<a href="https://docs.openclaw.ai" target="_blank" rel="noopener">Documentation →</a>
-					<a href="https://clawhub.com" target="_blank" rel="noopener">Skills Hub →</a>
-				</div>
-			</header>
-
-			<section>
-				<h2>Why OpenClaw?</h2>
-				<div class="grid">
-					<div class="card">
-						<h3>The Problem</h3>
-						<ul>
-							<li>Each AI provider has different APIs</li>
-							<li>Switching providers = rewriting code</li>
-							<li>API outages break your app</li>
-							<li>No standard way to build agents</li>
-							<li>LangChain is complex and heavy</li>
-						</ul>
+	<head>
+		<BaseHead title={title} description={description} />
+	</head>
+	<body>
+		<Header />
+		<main>
+			<div class="container">
+				<header class="page-header">
+					<h1>OpenClaw</h1>
+					<p class="subtitle">Open-source AI agent orchestration</p>
+					<p>Build agents that work with <strong>20+ providers</strong>, route intelligently, and never fail.</p>
+					<div class="links">
+						<a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener" class="btn-primary">GitHub</a>
+						<a href="https://docs.openclaw.ai" target="_blank" rel="noopener" class="btn-secondary">Documentation</a>
+						<a href="https://clawhub.com" target="_blank" rel="noopener" class="btn-secondary">Skills Hub</a>
 					</div>
-					<div class="card">
-						<h3>The Solution</h3>
-						<ul>
-							<li>✅ One API for 20+ providers</li>
-							<li>✅ Switch providers in 1 line</li>
-							<li>✅ Automatic fallbacks on failure</li>
-							<li>✅ Skills system for reusable agents</li>
-							<li>✅ Lightweight, TypeScript-first</li>
-						</ul>
+				</header>
+
+				<section class="section">
+					<h2>Why OpenClaw?</h2>
+					<div class="grid">
+						<div class="card">
+							<h3>The Problem</h3>
+							<ul>
+								<li>Each AI provider has different APIs</li>
+								<li>Switching providers means rewriting code</li>
+								<li>API outages break your app</li>
+								<li>No standard way to build agents</li>
+								<li>LangChain is complex and heavy</li>
+							</ul>
+						</div>
+						<div class="card">
+							<h3>The Solution</h3>
+							<ul>
+								<li>One API for 20+ providers</li>
+								<li>Switch providers in 1 line</li>
+								<li>Automatic fallbacks on failure</li>
+								<li>Skills system for reusable agents</li>
+								<li>Lightweight, TypeScript-first</li>
+							</ul>
+						</div>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			<section>
-				<h2>Supported Providers</h2>
-				<p>Works with all major AI providers. Route between them seamlessly.</p>
-				<div class="providers">
-					<div class="provider">
-						<span class="icon">🟢</span>
-						<h3>OpenAI</h3>
-						<p>GPT-5.4, GPT-5.3 Codex, GPT-5.2</p>
+				<section class="section">
+					<h2>Supported Providers</h2>
+					<p>Works with all major AI providers. Route between them seamlessly.</p>
+					<div class="providers">
+						<div class="provider">
+							<span class="icon">🟢</span>
+							<h3>OpenAI</h3>
+							<p>GPT-5.4, GPT-5.3 Codex</p>
+						</div>
+						<div class="provider">
+							<span class="icon">🟠</span>
+							<h3>Anthropic</h3>
+							<p>Claude Opus 4.6, Sonnet 4.6</p>
+						</div>
+						<div class="provider">
+							<span class="icon">🔵</span>
+							<h3>Google</h3>
+							<p>Gemini 3.1 Pro</p>
+						</div>
+						<div class="provider">
+							<span class="icon">🔴</span>
+							<h3>Zhipu AI</h3>
+							<p>GLM-5</p>
+						</div>
+						<div class="provider">
+							<span class="icon">🟣</span>
+							<h3>Meta</h3>
+							<p>Llama 4</p>
+						</div>
+						<div class="provider">
+							<span class="icon">🟡</span>
+							<h3>Mistral</h3>
+							<p>Mistral Large 3</p>
+						</div>
 					</div>
-					<div class="provider">
-						<span class="icon">🟠</span>
-						<h3>Anthropic</h3>
-						<p>Claude Opus 4.6, Sonnet 4.6</p>
+				</section>
+
+				<section class="section">
+					<h2>Key Features</h2>
+					
+					<div class="feature">
+						<h3>Multi-Provider Support</h3>
+						<p>Route requests across 20+ providers. GPT-5 for coding, Claude for reasoning, Gemini for long-context - all in one app.</p>
 					</div>
-					<div class="provider">
-						<span class="icon">🔵</span>
-						<h3>Google</h3>
-						<p>Gemini 3.1 Pro, Gemini 2.5 Flash</p>
+
+					<div class="feature">
+						<h3>Automatic Fallbacks</h3>
+						<p>If OpenAI goes down, automatically switch to Claude. If Claude hits rate limits, try Gemini. Keep your app running.</p>
 					</div>
-					<div class="provider">
-						<span class="icon">🔴</span>
-						<h3>Zhipu AI</h3>
-						<p>GLM-5, GLM-4.7 Flash</p>
+
+					<div class="feature">
+						<h3>Skills System</h3>
+						<p>Build reusable agent skills. Share them on ClawHub. Install skills from the community with one command.</p>
 					</div>
-					<div class="provider">
-						<span class="icon">🟣</span>
-						<h3>Meta</h3>
-						<p>Llama 4 (405B, 70B, 8B)</p>
+
+					<div class="feature">
+						<h3>Local Model Support</h3>
+						<p>Run Ollama, LM Studio, or vLLM locally. OpenClaw treats local models as first-class citizens.</p>
 					</div>
-					<div class="provider">
-						<span class="icon">🟡</span>
-						<h3>Mistral</h3>
-						<p>Mistral Large 3, Medium 3</p>
+				</section>
+
+				<section class="section">
+					<h2>Quick Start</h2>
+					<pre><code>npm install -g openclaw
+openclaw chat</code></pre>
+					<p>That's it. OpenClaw will guide you through provider setup.</p>
+				</section>
+
+				<section class="section">
+					<h2>Compare to Alternatives</h2>
+					<div class="table-wrapper">
+						<table>
+							<thead>
+								<tr>
+									<th>Feature</th>
+									<th>OpenClaw</th>
+									<th>LangChain</th>
+									<th>Vercel AI SDK</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>Providers</td>
+									<td>20+</td>
+									<td>100+</td>
+									<td>10</td>
+								</tr>
+								<tr>
+									<td>Setup complexity</td>
+									<td>Low</td>
+									<td>High</td>
+									<td>Low</td>
+								</tr>
+								<tr>
+									<td>Agent framework</td>
+									<td>Built-in</td>
+									<td>LangGraph (separate)</td>
+									<td>No</td>
+								</tr>
+								<tr>
+									<td>Fallbacks</td>
+									<td>Automatic</td>
+									<td>Manual</td>
+									<td>Manual</td>
+								</tr>
+								<tr>
+									<td>Skills marketplace</td>
+									<td>Yes (ClawHub)</td>
+									<td>No</td>
+									<td>No</td>
+								</tr>
+								<tr>
+									<td>CLI included</td>
+									<td>Yes</td>
+									<td>No</td>
+									<td>No</td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
-				</div>
-			</section>
+				</section>
 
-			<section>
-				<h2>Key Features</h2>
-
-				<div class="feature">
-					<h3>Multi-Provider Support</h3>
-					<p>Route requests across 20+ providers. GPT-5 for coding, Claude for reasoning, Gemini for long-context — all in one app.</p>
-				</div>
-
-				<div class="feature">
-					<h3>Intelligent Fallbacks</h3>
-					<p>If GPT-5.4 is down, automatically fall back to Claude Opus 4.6. No single point of failure.</p>
-				</div>
-
-				<div class="feature">
-					<h3>Model Routing</h3>
-					<p>Route coding tasks to GPT-5.3 Codex, reasoning to Claude Opus. Optimize for cost and performance.</p>
-				</div>
-
-				<div class="feature">
-					<h3>Skills System</h3>
-					<p>Build reusable agent skills. Coding, research, data analysis — plug and play.</p>
-				</div>
-
-				<div class="feature">
-					<h3>Structured Outputs</h3>
-					<p>Get JSON, not text. Parse responses into typed objects automatically.</p>
-				</div>
-
-				<div class="feature">
-					<h3>Prompt Caching</h3>
-					<p>Cache prompts across providers. Reduce costs by 90% on repeated queries.</p>
-				</div>
-			</section>
-
-			<section>
-				<h2>OpenClaw vs. Alternatives</h2>
-				<table>
-					<thead>
-						<tr>
-							<th>Feature</th>
-							<th>OpenClaw</th>
-							<th>LangChain</th>
-							<th>Vercel AI SDK</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Open Source</td>
-							<td>✅ MIT</td>
-							<td>✅ MIT</td>
-							<td>✅ Apache 2.0</td>
-						</tr>
-						<tr>
-							<td>Provider Count</td>
-							<td>20+</td>
-							<td>50+</td>
-							<td>5</td>
-						</tr>
-						<tr>
-							<td>Intelligent Routing</td>
-							<td>✅ Built-in</td>
-							<td>❌ Manual</td>
-							<td>❌ No</td>
-						</tr>
-						<tr>
-							<td>Auto Fallbacks</td>
-							<td>✅ Yes</td>
-							<td>❌ No</td>
-							<td>❌ No</td>
-						</tr>
-						<tr>
-							<td>Skills System</td>
-							<td>✅ Yes</td>
-							<td>❌ No</td>
-							<td>❌ No</td>
-						</tr>
-						<tr>
-							<td>Bundle Size</td>
-							<td>~50KB</td>
-							<td>~500KB</td>
-							<td>~100KB</td>
-						</tr>
-						<tr>
-							<td>TypeScript First</td>
-							<td>✅ Yes</td>
-							<td>❌ Python</td>
-							<td>✅ Yes</td>
-						</tr>
-						<tr>
-							<td>Prompt Caching</td>
-							<td>✅ Yes</td>
-							<td>❌ No</td>
-							<td>❌ No</td>
-						</tr>
-					</tbody>
-				</table>
-			</section>
-
-			<section>
-				<h2>Common Use Cases</h2>
-				<div class="grid">
-					<div class="card">
-						<h3>🤖 AI Agents</h3>
-						<p>Build agents that can code, research, analyze data, and use tools.</p>
-					</div>
-					<div class="card">
-						<h3>🔄 Multi-Model Apps</h3>
-						<p>Use GPT-5 for coding, Claude for reasoning, Gemini for long-context.</p>
-					</div>
-					<div class="card">
-						<h3>💰 Cost Optimization</h3>
-						<p>Cache prompts, route to cheaper models. Reduce AI costs by 70%.</p>
-					</div>
-					<div class="card">
-						<h3>🛡️ Production Reliability</h3>
-						<p>Auto-fallbacks, retry logic, rate limiting. Never go down.</p>
-					</div>
-				</div>
-			</section>
-
-			<section>
-				<h2>Getting Started</h2>
-				<pre><code>npm install openclaw</code></pre>
-				<pre><code>import { OpenClaw } from 'openclaw';
-
-const agent = new OpenClaw({
-  providers: ['openai', 'anthropic'],
-  primary: 'openai/gpt-5.4',
-  fallbacks: ['anthropic/claude-opus-4.6'],
-});
-
-const response = await agent.chat('Write a TypeScript function...');
-console.log(response.content);</code></pre>
-			</section>
-
-			<section>
-				<h2>Top Models for OpenClaw</h2>
-				<p>Best models to use with OpenClaw for different tasks:</p>
-				<table>
-					<thead>
-						<tr>
-							<th>Task</th>
-							<th>Best Model</th>
-							<th>Why</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Coding</td>
-							<td><strong>GPT-5.4</strong></td>
-							<td>Best coding accuracy (9.8/10)</td>
-						</tr>
-						<tr>
-							<td>Reasoning</td>
-							<td><strong>Claude Opus 4.6</strong></td>
-							<td>Best reasoning (9.8/10)</td>
-						</tr>
-						<tr>
-							<td>Long Context</td>
-							<td><strong>Gemini 3.1 Pro</strong></td>
-							<td>1M context window</td>
-						</tr>
-						<tr>
-							<td>Budget</td>
-							<td><strong>GLM-5</strong></td>
-							<td>$0.50/1M tokens</td>
-						</tr>
-						<tr>
-							<td>Tool Use</td>
-							<td><strong>GPT-5.4</strong></td>
-							<td>Best tool integration (9.7/10)</td>
-						</tr>
-					</tbody>
-				</table>
-			</section>
-
-			<section>
-				<h2>Why This Page Exists</h2>
-				<p><strong>AIModelBenchmarks.com</strong> tests models every day. But what good are benchmarks if you can't use the models?</p>
-				<p>OpenClaw is the <strong>practical bridge</strong> between our benchmarks and your production apps.</p>
-				<p>We're not affiliated with OpenClaw. We just think it's the best tool for using the models we benchmark.</p>
-			</section>
-
-			<footer>
-				<p><strong>OpenClaw</strong> is open-source (MIT). Created by the OpenClaw team.</p>
-				<p><a href="https://github.com/openclaw/openclaw" target="_blank" rel="noopener">View on GitHub</a></p>
-			</footer>
-		</article>
-	</main>
-	<Footer />
-</body>
+				<footer class="page-footer">
+					<p>OpenClaw is open-source and maintained by the community.</p>
+					<p>
+						<a href="https://github.com/openclaw/openclaw">GitHub</a> · 
+						<a href="https://docs.openclaw.ai">Docs</a> · 
+						<a href="https://discord.com/invite/clawd">Discord</a>
+					</p>
+				</footer>
+			</div>
+		</main>
+		<Footer />
+	</body>
 </html>
 
 <style>
-.openclaw-page {
-	max-width: 900px;
-	margin: 0 auto;
-	padding: 2rem;
-}
-
-header {
-	text-align: center;
-	margin-bottom: 3rem;
-}
-
-h1 {
-	font-size: 3rem;
-	margin-bottom: 1rem;
-}
-
-.subtitle {
-	font-size: 1.25rem;
-	color: var(--text-secondary);
-	margin-bottom: 0.5rem;
-}
-
-.links {
-	display: flex;
-	gap: 1rem;
-	justify-content: center;
-	flex-wrap: wrap;
-	margin-top: 2rem;
-}
-
-.links a {
-	padding: 0.75rem 1.5rem;
-	border-radius: 0.5rem;
-	font-weight: 600;
-	text-decoration: none;
-	background: var(--accent);
-	color: white;
-}
-
-.links a:hover {
-	opacity: 0.9;
-}
-
-section {
-	margin: 3rem 0;
-}
-
-h2 {
-	font-size: 2rem;
-	margin-bottom: 1.5rem;
-	padding-bottom: 0.5rem;
-	border-bottom: 2px solid var(--border);
-}
-
-h3 {
-	font-size: 1.25rem;
-	margin-bottom: 0.75rem;
-}
-
-.grid {
-	display: grid;
-	grid-template-columns: 1fr 1fr;
-	gap: 2rem;
-	margin-top: 1rem;
-}
-
-.card {
-	background: var(--bg-card);
-	padding: 1.5rem;
-	border-radius: 0.75rem;
-}
-
-.card ul {
-	list-style: none;
-	padding: 0;
-	margin: 1rem 0 0;
-}
-
-.card li {
-	padding: 0.5rem 0;
-}
-
-.providers {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-	gap: 1rem;
-	margin-top: 1.5rem;
-}
-
-.provider {
-	background: var(--bg-card);
-	border: 1px solid var(--border);
-	border-radius: 0.5rem;
-	padding: 1rem;
-}
-
-.icon {
-	font-size: 1.5rem;
-	margin-right: 0.5rem;
-}
-
-.provider h3 {
-	display: inline;
-	font-size: 1rem;
-}
-
-.provider p {
-	font-size: 0.875rem;
-	color: var(--text-secondary);
-	margin-top: 0.5rem;
-}
-
-.feature {
-	background: var(--bg-card);
-	border: 1px solid var(--border);
-	border-radius: 0.75rem;
-	padding: 1.5rem;
-	margin-bottom: 1.5rem;
-}
-
-.feature h3 {
-	color: var(--accent);
-}
-
-table {
-	width: 100%;
-	border-collapse: collapse;
-	font-size: 0.875rem;
-}
-
-th, td {
-	padding: 0.75rem 1rem;
-	text-align: left;
-	border-bottom: 1px solid var(--border);
-}
-
-th {
-	background: var(--bg-secondary);
-	font-weight: 600;
-}
-
-pre {
-	background: var(--bg-secondary);
-	border-radius: 0.5rem;
-	padding: 1rem;
-	overflow-x: auto;
-	margin: 1rem 0;
-	font-size: 0.875rem;
-}
-
-code {
-	font-family: monospace;
-}
-
-.openclaw-page footer {
-	background: var(--bg-secondary);
-	padding: 1.5rem;
-	border-radius: 0.5rem;
-	margin-top: 3rem;
-	text-align: center;
-	font-size: 0.875rem;
-}
-
-.openclaw-page footer a {
-	color: var(--accent);
-}
-
-@media (max-width: 768px) {
+	.container {
+		max-width: 900px;
+		margin: 0 auto;
+		padding: 2rem;
+	}
+	.page-header {
+		text-align: center;
+		margin-bottom: 3rem;
+		padding: 2rem 0;
+	}
 	h1 {
-		font-size: 2rem;
+		font-size: 3rem;
+		margin-bottom: 0.5rem;
 	}
-
-	.grid {
-		grid-template-columns: 1fr;
+	.subtitle {
+		font-size: 1.25rem;
+		color: var(--text-secondary);
+		margin-bottom: 0.5rem;
 	}
-
 	.links {
-		flex-direction: column;
+		display: flex;
+		gap: 1rem;
+		justify-content: center;
+		flex-wrap: wrap;
+		margin-top: 2rem;
 	}
-}
+	.btn-primary {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		background: var(--gradient-primary);
+		color: white;
+		text-decoration: none;
+		border-radius: var(--radius-md);
+		font-weight: 600;
+	}
+	.btn-secondary {
+		display: inline-block;
+		padding: 0.75rem 1.5rem;
+		background: var(--bg-tertiary);
+		color: var(--text-primary);
+		text-decoration: none;
+		border-radius: var(--radius-md);
+		font-weight: 500;
+	}
+	.section {
+		margin: 3rem 0;
+	}
+	h2 {
+		font-size: 1.75rem;
+		margin-bottom: 1.5rem;
+	}
+	.grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: 2rem;
+	}
+	.card {
+		background: var(--bg-secondary);
+		padding: 1.5rem;
+		border-radius: var(--radius-lg);
+		border: 1px solid var(--border-primary);
+	}
+	.card ul {
+		list-style: none;
+		padding: 0;
+		margin: 1rem 0 0;
+	}
+	.card li {
+		padding: 0.5rem 0;
+	}
+	.providers {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+		gap: 1rem;
+		margin-top: 1.5rem;
+	}
+	.provider {
+		background: var(--bg-secondary);
+		border: 1px solid var(--border-primary);
+		border-radius: var(--radius-md);
+		padding: 1rem;
+	}
+	.icon {
+		font-size: 1.5rem;
+	}
+	.provider h3 {
+		display: inline;
+		font-size: 1rem;
+		margin-left: 0.5rem;
+	}
+	.provider p {
+		font-size: 0.875rem;
+		color: var(--text-secondary);
+		margin-top: 0.5rem;
+	}
+	.feature {
+		background: var(--bg-secondary);
+		border: 1px solid var(--border-primary);
+		border-radius: var(--radius-lg);
+		padding: 1.5rem;
+		margin-bottom: 1rem;
+	}
+	.feature h3 {
+		color: var(--accent-light);
+		margin-bottom: 0.5rem;
+	}
+	pre {
+		background: var(--bg-secondary);
+		border-radius: var(--radius-md);
+		padding: 1rem;
+		overflow-x: auto;
+	}
+	code {
+		font-family: var(--font-mono);
+	}
+	.table-wrapper {
+		overflow-x: auto;
+	}
+	table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: 0.875rem;
+	}
+	th, td {
+		padding: 0.75rem 1rem;
+		text-align: left;
+		border-bottom: 1px solid var(--border-secondary);
+	}
+	th {
+		background: var(--bg-tertiary);
+		font-weight: 600;
+	}
+	.page-footer {
+		background: var(--bg-secondary);
+		padding: 2rem;
+		border-radius: var(--radius-lg);
+		margin-top: 3rem;
+		text-align: center;
+	}
+	.page-footer a {
+		color: var(--accent-light);
+	}
+	@media (max-width: 768px) {
+		h1 {
+			font-size: 2rem;
+		}
+		.grid {
+			grid-template-columns: 1fr;
+		}
+	}
 </style>
