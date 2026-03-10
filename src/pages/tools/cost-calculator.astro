@@ -4,6 +4,8 @@ import { allModels, calculateMonthlyCost, type ModelPricing } from '../../data/p
 
 const title = 'AI Model Cost Calculator — Compare Monthly Pricing';
 const description = 'Calculate and compare monthly API costs for GPT-5.4, Claude Opus 4.7, Gemini 3.5, and more. Verified pricing data updated March 2026.';
+const pubDate = new Date('2026-03-09');
+const noindex = false;
 
 // Pre-calculate example costs
 const exampleUsage = [
@@ -22,7 +24,7 @@ const exampleCosts = exampleUsage.map(usage => ({
 }));
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} pubDate={pubDate} noindex={noindex}>
   <article class="calculator-page">
     <header>
       <h1>AI Model Cost Calculator</h1>
