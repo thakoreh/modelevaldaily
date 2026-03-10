@@ -3,6 +3,7 @@ import '../styles/global.css';
 import type { ImageMetadata } from 'astro';
 import FallbackImage from '../assets/blog-placeholder-1.jpg';
 import { SITE_TITLE, SITE_URL, SITE_LOCALE, SITE_DESCRIPTION, SITE_UPDATED } from '../consts';
+import Analytics from '@vercel/analytics/astro';
 
 interface Props {
 	title: string;
@@ -173,3 +174,6 @@ const jsonLd = {
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+<!-- Vercel Web Analytics -->
+<Analytics />
