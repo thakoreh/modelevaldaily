@@ -48,6 +48,7 @@
 | Gemini 3 Flash | 76.2% | Proprietary | [Vals.ai](https://www.vals.ai/benchmarks/swebench) |
 | Claude Sonnet 4.6 | 76.2% | Proprietary | [Vals.ai](https://www.vals.ai/benchmarks/swebench) |
 | **GLM-5 Thinking** | 67.8% | **MIT** | [Vals.ai](https://www.vals.ai/benchmarks/swebench) |
+| **DeepSeek V3.2** | 68.4% | **MIT** | [Vals.ai](https://www.vals.ai/benchmarks/swebench) |
 | **GLM-4.7** | 67.0% | **MIT** | [Vals.ai](https://www.vals.ai/benchmarks/swebench) |
 | **DeepSeek V3.2** | 68.4% | **MIT** | [Vals.ai](https://www.vals.ai/benchmarks/swebench) |
 
