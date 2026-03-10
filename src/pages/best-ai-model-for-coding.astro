@@ -1,0 +1,136 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { VERIFIED_MODELS } from '../data/verified-models';
+
+const title = 'Best AI Model for Coding (2026) | Ranked by Real Developer Workflows';
+const description = 'Best AI coding models in 2026 ranked by coding score, tool-use, price, and local/self-hosted options. Compare GPT-5.4, Kimi K2.5, GPT-OSS-120B, and more.';
+
+const codingModels = [...VERIFIED_MODELS]
+	.sort((a, b) => (b.scores.coding + b.scores.toolUse * 0.35) - (a.scores.coding + a.scores.toolUse * 0.35))
+	.slice(0, 8);
+
+const bestOverall = codingModels[0];
+const bestValue = VERIFIED_MODELS.find((m) => m.name === 'Kimi K2.5');
+const bestBudget = VERIFIED_MODELS.find((m) => m.name === 'MiniMax M2.5');
+const bestLocal = VERIFIED_MODELS.find((m) => m.name === 'GPT-OSS-120B');
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} type="website" />
+	</head>
+	<body>
+		<Header />
+		<main class="page">
+			<section class="hero">
+				<div class="container">
+					<p class="eyebrow">Coding model guide</p>
+					<h1>Best AI Model for Coding in 2026</h1>
+					<p class="subtitle">If you want the short answer: <strong>{bestOverall.name}</strong> is the best pure API choice right now, <strong>{bestValue?.name}</strong> is the smartest value pick, and <strong>{bestLocal?.name}</strong> is the local/self-hosted answer.</p>
+					<div class="hero-actions">
+						<a href="/compare" class="btn btn-primary">Compare all models</a>
+						<a href="/local-models" class="btn btn-secondary">Run locally</a>
+					</div>
+				</div>
+			</section>
+
+			<section class="container section picks-grid">
+				<div class="pick-card">
+					<h2>Best overall</h2>
+					<div class="pick-name">{bestOverall.name}</div>
+					<p>{bestOverall.strengths[0]}. Best when you want the strongest coding + tool-use combo without babysitting the model.</p>
+				</div>
+				<div class="pick-card">
+					<h2>Best value</h2>
+					<div class="pick-name">{bestValue?.name}</div>
+					<p>Near-frontier coding quality without the “burn cash like an idiot” pricing profile.</p>
+				</div>
+				<div class="pick-card">
+					<h2>Best budget</h2>
+					<div class="pick-name">{bestBudget?.name}</div>
+					<p>Great for teams that need huge volume, acceptable quality, and sane monthly bills.</p>
+				</div>
+				<div class="pick-card">
+					<h2>Best local model</h2>
+					<div class="pick-name">{bestLocal?.name}</div>
+					<p>Best option when privacy, self-hosting, and customization matter more than managed APIs.</p>
+				</div>
+			</section>
+
+			<section class="container section">
+				<h2>Coding model leaderboard</h2>
+				<div class="table-wrap">
+					<table>
+						<thead>
+							<tr>
+								<th>Model</th>
+								<th>Coding</th>
+								<th>Tool Use</th>
+								<th>Input $/M</th>
+								<th>Context</th>
+								<th>Best for</th>
+							</tr>
+						</thead>
+						<tbody>
+							{codingModels.map((model) => (
+								<tr>
+									<td><strong>{model.name}</strong><br /><span class="muted">{model.provider}</span></td>
+									<td>{model.scores.coding}</td>
+									<td>{model.scores.toolUse}</td>
+									<td>${model.pricing.input}</td>
+									<td>{model.contextWindow}</td>
+									<td>{model.bestFor[0]}</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</section>
+
+			<section class="container section decision-box">
+				<h2>Which one should you actually pick?</h2>
+				<ul>
+					<li><strong>Pick GPT-5.4</strong> if you want strongest coding output and tool integration.</li>
+					<li><strong>Pick Kimi K2.5</strong> if you want elite coding quality without frontier-tier cost.</li>
+					<li><strong>Pick MiniMax M2.5</strong> if cost per token matters more than squeezing out the final 5%.</li>
+					<li><strong>Pick GPT-OSS-120B</strong> if you need local, private, self-hosted coding workflows.</li>
+				</ul>
+				<div class="link-row">
+					<a href="/cheapest-ai-models">Cheapest AI models →</a>
+					<a href="/best-open-weight-models">Best open-weight models →</a>
+					<a href="/local-models">Best local LLMs →</a>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page { padding-bottom: 4rem; }
+	.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+	.hero { padding: 4rem 0 3rem; background: var(--gradient-hero); }
+	.eyebrow { color: var(--accent-light); font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+	h1 { font-size: clamp(2.2rem, 5vw, 3.5rem); margin: .5rem 0 1rem; }
+	.subtitle { color: var(--text-secondary); max-width: 760px; font-size: 1.05rem; }
+	.hero-actions, .link-row { display: flex; gap: .75rem; flex-wrap: wrap; margin-top: 1.25rem; }
+	.btn { display: inline-flex; padding: .8rem 1.1rem; border-radius: 12px; text-decoration: none; font-weight: 700; }
+	.btn-primary { background: var(--gradient-primary); color: white; }
+	.btn-secondary { background: var(--bg-tertiary); color: var(--text-primary); border: 1px solid var(--border-primary); }
+	.section { padding-top: 2rem; }
+	.picks-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+	.pick-card, .decision-box { background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 18px; padding: 1.25rem; }
+	.pick-card h2, .decision-box h2 { font-size: 1rem; margin-bottom: .4rem; }
+	.pick-name { font-size: 1.2rem; font-weight: 800; margin-bottom: .5rem; }
+	.table-wrap { overflow-x: auto; background: var(--bg-card); border: 1px solid var(--border-primary); border-radius: 18px; }
+	table { width: 100%; border-collapse: collapse; }
+	th, td { padding: .9rem 1rem; border-bottom: 1px solid var(--border-secondary); text-align: left; }
+	th { color: var(--text-secondary); font-size: .85rem; }
+	.muted { color: var(--text-muted); font-size: .85rem; }
+	.decision-box ul { margin: 1rem 0; padding-left: 1.2rem; color: var(--text-secondary); }
+	.decision-box a { color: var(--accent-light); font-weight: 700; }
+	@media (max-width: 960px) { .picks-grid { grid-template-columns: repeat(2,1fr); } }
+	@media (max-width: 640px) { .picks-grid { grid-template-columns: 1fr; } }
+</style>
