@@ -87,7 +87,7 @@ export const openaiModels: ModelPricing[] = [
 export const anthropicModels: ModelPricing[] = [
   {
     provider: 'Anthropic',
-    model: 'Claude Opus 4.7',
+    model: 'Claude Opus 4.6',
     releaseDate: '2026-02-28',
     inputCost: 5.00,
     outputCost: 25.00,
@@ -154,7 +154,7 @@ export const anthropicModels: ModelPricing[] = [
 export const googleModels: ModelPricing[] = [
   {
     provider: 'Google',
-    model: 'Gemini 3.5 Pro',
+    model: 'Gemini 3.1 Pro',
     releaseDate: '2026-02-15',
     inputCost: 1.25,
     outputCost: 5.00,

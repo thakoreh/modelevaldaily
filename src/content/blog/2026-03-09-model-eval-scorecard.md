@@ -1,6 +1,6 @@
 ---
 title: 'Daily Model Eval Scorecard — 2026-03-09'
-description: 'Head-to-head results across coding, reasoning, and tool-use tasks. Today: Claude Opus 4.7, GPT-5.4, GLM-5, Gemini 3.5 Pro, and Llama 4 with updated scores.'
+description: 'Head-to-head results across coding, reasoning, and tool-use tasks. Today: Claude Opus 4.6, GPT-5.4, GLM-5, Gemini 3.1 Pro, and Llama 4 with updated scores.'
 pubDate: '2026-03-09'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
@@ -11,17 +11,17 @@ This is the **daily scorecard** for three practical tasks: a TypeScript type inf
 
 | Model | Coding | Reasoning | Tool-use | Weighted Total |
 | --- | --- | --- | --- | --- |
-| Claude Opus 4.7 | 9.7 | 9.8 | 9.5 | **9.68** |
+| Claude Opus 4.6 | 9.7 | 9.8 | 9.5 | **9.68** |
 | GPT-5.4 | 9.8 | 9.5 | 9.7 | **9.67** |
 | GLM-5 | 9.2 | 9.3 | 9.0 | **9.19** |
-| Gemini 3.5 Pro | 9.5 | 9.5 | 9.3 | **9.45** |
+| Gemini 3.1 Pro | 9.5 | 9.5 | 9.3 | **9.45** |
 | Llama 4 (405B) | 9.0 | 9.1 | 8.7 | **8.96** |
 
 **Weights:** coding 40%, reasoning 35%, tool-use 25%. We bias toward **code correctness and decision quality** because those errors are the most expensive in production.
 
 ## Today's winner
 
-**Claude Opus 4.7** maintains its lead with unmatched reasoning depth and nuanced decision-making. **GPT-5.4** (released March 6) shows improved coding accuracy and tool integration, nearly tying for first. **Gemini 3.5 Pro** continues to excel at multimodal reasoning with strong search integration.
+**Claude Opus 4.6** maintains its lead with unmatched reasoning depth and nuanced decision-making. **GPT-5.4** (released March 6) shows improved coding accuracy and tool integration, nearly tying for first. **Gemini 3.1 Pro** continues to excel at multimodal reasoning with strong search integration.
 
 **Notable this week:** GPT-5.4 gained +0.05 points over GPT-5.3 Codex, primarily from improved tool-use scores.
 
@@ -88,9 +88,9 @@ Create a Terraform module that deploys: (1) an AWS S3 bucket with versioning, (2
 
 ## Operator takeaways
 
-- **Claude Opus 4.7** remains the reasoning leader. First choice for architectural decisions and complex trade-off analysis.
+- **Claude Opus 4.6** remains the reasoning leader. First choice for architectural decisions and complex trade-off analysis.
 - **GPT-5.4** now matches or exceeds Claude in coding and tool-use. Best for agentic workflows and production systems.
-- **Gemini 3.5 Pro** excels at multimodal tasks with strong search grounding and long-context handling.
+- **Gemini 3.1 Pro** excels at multimodal tasks with strong search grounding and long-context handling.
 - **GLM-5** delivers near-frontier performance at significantly lower cost. Strong bilingual (Chinese/English) capabilities.
 - **Llama 4 (405B)** remains competitive for self-hosted scenarios with acceptable quality trade-offs.
 

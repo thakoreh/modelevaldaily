@@ -1,6 +1,6 @@
 ---
 title: 'Daily Model Eval Scorecard — 2026-03-01'
-description: 'Head-to-head results across coding, reasoning, and tool-use tasks with reproducible prompts. Today: Claude Opus 4.7, GPT-5.3, GLM-5, Gemini 3.5 Pro, and Llama 4.'
+description: 'Head-to-head results across coding, reasoning, and tool-use tasks with reproducible prompts. Today: Claude Opus 4.6, GPT-5.3, GLM-5, Gemini 3.1 Pro, and Llama 4.'
 pubDate: '2026-03-01'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
@@ -11,17 +11,17 @@ This is the **daily scorecard** for three practical tasks: a TypeScript type inf
 
 | Model | Coding | Reasoning | Tool-use | Weighted Total |
 | --- | --- | --- | --- | --- |
-| Claude Opus 4.7 | 9.7 | 9.8 | 9.5 | **9.68** |
+| Claude Opus 4.6 | 9.7 | 9.8 | 9.5 | **9.68** |
 | GPT-5.3 Codex | 9.8 | 9.4 | 9.6 | **9.62** |
 | GLM-5 | 9.2 | 9.3 | 9.0 | **9.19** |
-| Gemini 3.5 Pro | 9.5 | 9.5 | 9.3 | **9.45** |
+| Gemini 3.1 Pro | 9.5 | 9.5 | 9.3 | **9.45** |
 | Llama 4 (405B) | 9.0 | 9.1 | 8.7 | **8.96** |
 
 **Weights:** coding 40%, reasoning 35%, tool-use 25%. We bias toward **code correctness and decision quality** because those errors are the most expensive in production.
 
 ## Today's winner
 
-**Claude Opus 4.7** dominates with unmatched reasoning depth and nuanced decision-making. **GPT-5.3 Codex** leads coding accuracy with exceptional type inference and agentic capabilities. **Gemini 3.5 Pro** shows strong multimodal reasoning with improved search integration.
+**Claude Opus 4.6** dominates with unmatched reasoning depth and nuanced decision-making. **GPT-5.3 Codex** leads coding accuracy with exceptional type inference and agentic capabilities. **Gemini 3.1 Pro** shows strong multimodal reasoning with improved search integration.
 
 ## Tasks + prompts
 
