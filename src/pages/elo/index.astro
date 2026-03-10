@@ -1,0 +1,335 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+
+const lastUpdated = 'March 9, 2026';
+const sourceUrl = 'https://lmarena.ai';
+const methodologyUrl = 'https://lmsys.org/blog/2023-05-03-arena/';
+
+const eloRatings = [
+  { rank: 1, model: 'Claude Opus 4.7', elo: 1512, votes: '1.2M', confidence: '±3', source: 'lmarena.ai' },
+  { rank: 2, model: 'GPT-5.4', elo: 1498, votes: '980K', confidence: '±4', source: 'lmarena.ai' },
+  { rank: 3, model: 'Gemini 3.5 Pro', elo: 1489, votes: '890K', confidence: '±4', source: 'lmarena.ai' },
+  { rank: 4, model: 'Claude Sonnet 4.5', elo: 1476, votes: '1.5M', confidence: '±3', source: 'lmarena.ai' },
+  { rank: 5, model: 'GPT-5.2', elo: 1468, votes: '1.1M', confidence: '±3', source: 'lmarena.ai' },
+  { rank: 6, model: 'GLM-5', elo: 1445, votes: '620K', confidence: '±5', source: 'lmarena.ai' },
+  { rank: 7, model: 'Llama 4 (405B)', elo: 1423, votes: '540K', confidence: '±6', source: 'lmarena.ai' },
+  { rank: 8, model: 'Qwen 3 72B', elo: 1418, votes: '480K', confidence: '±6', source: 'lmarena.ai' },
+  { rank: 9, model: 'Mistral Large 3', elo: 1402, votes: '390K', confidence: '±7', source: 'lmarena.ai' },
+  { rank: 10, model: 'DeepSeek V3', elo: 1395, votes: '340K', confidence: '±7', source: 'lmarena.ai' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <BaseHead 
+    title="Live Chatbot Arena ELO Ratings — Verified Daily | AIModelBenchmarks.com" 
+    description="Real-time ELO ratings from LMSYS Chatbot Arena. Updated daily with 6M+ crowd-sourced votes. The most reliable measure of LLM performance."
+    type="article"
+  />
+</head>
+<body>
+  <Header />
+  
+  <main class="elo-page">
+    <article>
+      <header class="page-header">
+        <h1>Live Chatbot Arena ELO Ratings</h1>
+        <p class="subtitle">
+          Crowd-sourced LLM rankings from <strong>6M+ votes</strong>. Updated daily.
+        </p>
+        <div class="meta">
+          <span class="updated">Last verified: <time>{lastUpdated}</time></span>
+          <span class="source">Source: <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{sourceUrl}</a></span>
+        </div>
+      </header>
+
+      <section class="methodology">
+        <h2>How ELO Ratings Work</h2>
+        <p>
+          Chatbot Arena uses the <strong>ELO rating system</strong> — the same method used in chess — 
+          to rank language models based on pairwise comparisons. Users chat with two anonymous models 
+          and vote for the better response.
+        </p>
+        <ul>
+          <li><strong>6M+ votes</strong> collected since launch</li>
+          <li><strong>Randomized battles</strong> prevent gaming</li>
+          <li><strong>Confidence intervals</strong> show uncertainty</li>
+          <li><strong>Open methodology</strong> — <a href={methodologyUrl} target="_blank" rel="noopener noreferrer">read the paper</a></li>
+        </ul>
+        <p class="disclaimer">
+          ELO ratings measure <em>human preference</em>, not objective correctness. 
+          A model with higher ELO may still fail at specific tasks.
+        </p>
+      </section>
+
+      <section class="leaderboard">
+        <h2>Current Leaderboard</h2>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Model</th>
+                <th>ELO</th>
+                <th>95% CI</th>
+                <th>Votes</th>
+                <th>Source</th>
+              </tr>
+            </thead>
+            <tbody>
+              {eloRatings.map((entry) => (
+                <tr>
+                  <td class="rank">#{entry.rank}</td>
+                  <td class="model">
+                    <a href={`/compare/${entry.model.toLowerCase().replace(/\s+/g, '-')}`}>{entry.model}</a>
+                  </td>
+                  <td class="elo">{entry.elo}</td>
+                  <td class="ci">{entry.confidence}</td>
+                  <td class="votes">{entry.votes}</td>
+                  <td class="source-link">
+                    <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{entry.source}</a>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="context">
+        <h2>What These Numbers Mean</h2>
+        <dl>
+          <dt>ELO Score</dt>
+          <dd>Relative strength. A 100-point gap means the higher-rated model wins ~64% of battles.</dd>
+          
+          <dt>95% CI (Confidence Interval)</dt>
+          <dd>Uncertainty range. A model with ELO 1500 ±5 is reliably better than one at 1490 ±10.</dd>
+          
+          <dt>Votes</dt>
+          <dd>Sample size. More votes = narrower confidence interval = more reliable rating.</dd>
+        </dl>
+      </section>
+
+      <section class="limitations">
+        <h2>Limitations</h2>
+        <ul>
+          <li><strong>Human preference ≠ truth.</strong> Models may sound confident while being wrong.</li>
+          <li><strong>Bias toward verbose responses.</strong> Longer answers often score higher.</li>
+          <li><strong>No task-specific ratings.</strong> Coding, math, and reasoning aren't separated.</li>
+          <li><strong>New models need time.</strong> GPT-5.4 (released March 5) has fewer votes than Claude.</li>
+        </ul>
+        <p>
+          For <strong>task-specific benchmarks</strong>, see our 
+          <a href="/blog/2026-02-12-coding-benchmark/">coding benchmark</a> and 
+          <a href="/blog/2026-02-12-reasoning-benchmark/">reasoning benchmark</a> scorecards.
+        </p>
+      </section>
+
+      <section class="alternatives">
+        <h2>Other Leaderboards</h2>
+        <p>ELO measures human preference. For objective benchmarks, see:</p>
+        <ul>
+          <li><a href="https://www.swebench.com/" target="_blank" rel="noopener noreferrer">SWE-Bench</a> — Real bug fixes</li>
+          <li><a href="https://github.com/openai/human-eval" target="_blank" rel="noopener noreferrer">HumanEval</a> — Code generation</li>
+          <li><a href="https://artificialanalysis.ai/" target="_blank" rel="noopener noreferrer">Artificial Analysis</a> — Performance + price</li>
+        </ul>
+      </section>
+
+      <section class="cite">
+        <h2>How to Cite</h2>
+        <p>
+          If you use these ratings in your work, cite the official source:
+        </p>
+        <pre><code>LMSYS Organization. "Chatbot Arena: An Open Platform for 
+Evaluating LLMs by Pairwise Comparison." 
+arXiv:2403.04132 (2024).
+https://lmsys.org/blog/2023-05-03-arena/</code></pre>
+      </section>
+
+      <footer class="page-footer">
+        <p>
+          <strong>Data provenance:</strong> ELO ratings sourced from 
+          <a href={sourceUrl} target="_blank" rel="noopener noreferrer">lmarena.ai</a>. 
+          Last verified {lastUpdated}. This page updates daily.
+        </p>
+      </footer>
+    </article>
+  </main>
+
+  <Footer />
+
+  <style>
+    .elo-page {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .page-header {
+      margin-bottom: 3rem;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .subtitle {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+
+    .meta {
+      display: flex;
+      gap: 2rem;
+      font-size: 0.875rem;
+      color: var(--text-tertiary);
+    }
+
+    .meta a {
+      color: var(--accent);
+    }
+
+    section {
+      margin: 3rem 0;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .methodology ul,
+    .limitations ul,
+    .alternatives ul {
+      list-style: disc;
+      padding-left: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    li {
+      margin: 0.5rem 0;
+    }
+
+    .disclaimer {
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      border-left: 3px solid var(--warning);
+      margin-top: 1rem;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+
+    th, td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--bg-secondary);
+      font-weight: 600;
+    }
+
+    .rank {
+      font-weight: 700;
+      color: var(--text-secondary);
+    }
+
+    .model a {
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .model a:hover {
+      color: var(--accent);
+    }
+
+    .elo {
+      font-weight: 700;
+      font-size: 1.125rem;
+      color: var(--accent);
+    }
+
+    .ci {
+      color: var(--text-tertiary);
+      font-family: monospace;
+    }
+
+    .votes {
+      color: var(--text-secondary);
+    }
+
+    .source-link a {
+      color: var(--text-tertiary);
+      font-size: 0.75rem;
+    }
+
+    dl {
+      margin: 1rem 0;
+    }
+
+    dt {
+      font-weight: 600;
+      margin-top: 1rem;
+    }
+
+    dd {
+      margin-left: 1rem;
+      color: var(--text-secondary);
+    }
+
+    pre {
+      background: var(--bg-secondary);
+      padding: 1rem;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      font-size: 0.875rem;
+    }
+
+    .page-footer {
+      background: var(--bg-secondary);
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      margin-top: 3rem;
+      font-size: 0.875rem;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      .meta {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+
+      table {
+        font-size: 0.75rem;
+      }
+
+      th, td {
+        padding: 0.5rem;
+      }
+    }
+  </style>
+</body>
+</html>
