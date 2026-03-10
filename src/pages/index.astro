@@ -486,6 +486,32 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			}
 
 			/* ===== NEW PAGES SECTION ===== */
+			.provider-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: var(--space-lg);
+			}
+			.provider-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-xl);
+				text-decoration: none;
+				color: inherit;
+				transition: all var(--transition-base);
+			}
+			.provider-card:hover {
+				border-color: var(--accent);
+				transform: translateY(-4px);
+			}
+			.provider-card h3 {
+				font-size: var(--font-lg);
+				margin-bottom: var(--space-sm);
+			}
+			.provider-card p {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+			}
 			.new-pages-grid {
 				display: grid;
 				grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -944,46 +970,13 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			<section class="section" style="background: var(--bg-secondary);">
 				<div class="container">
 					<div class="section-header">
-						<h2>New: Open Weights, Local Models, and Decision Pages</h2>
-						<p>Instead of stuffing the nav, the homepage now routes into the highest-intent model decisions.</p>
+						<h2>Provider Pages</h2>
+						<p>Quick picks by provider if you already know whose API you want to use.</p>
 					</div>
-					<div class="new-pages-grid">
-						<a href="/local-models" class="new-page-card">
-							<div class="new-page-icon">🖥️</div>
-							<h3>Local Models Guide</h3>
-							<p>Run GPT-OSS, Llama 4, and other open-weights models with Ollama, LM Studio, or vLLM.</p>
-							<span class="new-page-link">Setup Guide →</span>
-						</a>
-						<a href="/open-vs-proprietary" class="new-page-card">
-							<div class="new-page-icon">⚖️</div>
-							<h3>Open vs Proprietary</h3>
-							<p>Compare costs, privacy, performance, and learn when to use each type of model.</p>
-							<span class="new-page-link">Full Comparison →</span>
-						</a>
-						<a href="/best-ai-model-for-coding" class="new-page-card">
-							<div class="new-page-icon">💻</div>
-							<h3>Best AI Model for Coding</h3>
-							<p>Fast path for developers who want the shortest route to the right coding model.</p>
-							<span class="new-page-link">See coding picks →</span>
-						</a>
-						<a href="/best-ai-model-for-agents" class="new-page-card">
-							<div class="new-page-icon">🧠</div>
-							<h3>Best AI Models for Agents</h3>
-							<p>Choose stronger models for tool use, memory, and multi-step workflows.</p>
-							<span class="new-page-link">See agent picks →</span>
-						</a>
-						<a href="/best-long-context-models" class="new-page-card">
-							<div class="new-page-icon">📚</div>
-							<h3>Best Long-Context Models</h3>
-							<p>Best options for giant documents, repos, transcripts, and memory-heavy workloads.</p>
-							<span class="new-page-link">See long-context picks →</span>
-						</a>
-						<a href="/cheapest-ai-models" class="new-page-card">
-							<div class="new-page-icon">💸</div>
-							<h3>Cheapest AI Models</h3>
-							<p>Best low-cost models that are still good enough to be useful at scale.</p>
-							<span class="new-page-link">See cheap picks →</span>
-						</a>
+					<div class="provider-grid">
+						<a href="/best-openai-models" class="provider-card"><h3>Best OpenAI Models</h3><p>GPT-5.4, GPT-OSS-120B, and more</p></a>
+						<a href="/best-anthropic-models" class="provider-card"><h3>Best Anthropic Models</h3><p>Claude Opus 4.6, Sonnet 4.6</p></a>
+						<a href="/best-google-models" class="provider-card"><h3>Best Google Models</h3><p>Gemini 3.1 Pro, Flash, and more</p></a>
 					</div>
 				</div>
 			</section>
