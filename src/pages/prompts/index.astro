@@ -1,0 +1,520 @@
+---
+import Layout from '../../layouts/BlogPost.astro';
+
+const title = 'AI Model Test Prompts — Reproducible Benchmark Tasks';
+const description = 'Open-source test prompts for evaluating LLMs on coding, reasoning, and tool-use tasks. Use these to benchmark models yourself. Updated March 2026.';
+const pubDate = new Date('2026-03-10');
+
+const prompts = [
+  {
+    category: 'Coding',
+    difficulty: 'Hard',
+    task: 'TypeScript Generic Type Inference',
+    prompt: `This generic API client loses type information when chaining methods. Fix it so the response type is correctly inferred through the chain.
+
+\`\`\`typescript
+class ApiClient<T> {
+  private endpoint: string;
+  
+  constructor(endpoint: string) {
+    this.endpoint = endpoint;
+  }
+  
+  get<U>(id: string): Promise<U> {
+    return fetch(\`\${this.endpoint}/\${id}\`).then(r => r.json());
+  }
+  
+  transform<U>(fn: (data: T) => U): ApiClient<U> {
+    return new ApiClient<U>(this.endpoint);
+  }
+}
+
+// Usage should infer User, not unknown
+const client = new ApiClient('/users');
+const user = await client.get<User>('123'); // Should be Promise<User>
+\`\`\``,
+    rubric: [
+      'Identifies the generic type flow issue',
+      'Preserves type information through method chains',
+      'Uses proper generic constraints',
+      'Solution compiles without \`any\` or \`unknown\`'
+    ],
+    expectedTime: '5-10 minutes',
+    source: 'Daily scorecard tests'
+  },
+  {
+    category: 'Coding',
+    difficulty: 'Hard',
+    task: 'Multi-Cloud Terraform Module',
+    prompt: `Create a Terraform module that deploys: 
+1. An AWS S3 bucket with versioning enabled
+2. A GCP Cloud Storage bucket as backup target  
+3. A Cloudflare Worker that syncs between them daily
+
+Include:
+- Proper IAM roles (least privilege)
+- Environment variable handling
+- README with usage example
+- Variables for bucket names and regions`,
+    rubric: [
+      'Uses proper provider configuration with aliases',
+      'Implements least-privilege IAM policies',
+      'Includes runnable example in README',
+      'Handles environment variables securely',
+      'Worker code is complete and functional'
+    ],
+    expectedTime: '15-20 minutes',
+    source: 'Daily scorecard tests'
+  },
+  {
+    category: 'Reasoning',
+    difficulty: 'Hard',
+    task: 'B2B SaaS Pricing Strategy',
+    prompt: `Your B2B SaaS has 500 customers on a 3-tier plan ($29/$99/$299). 
+
+Churn analysis shows:
+- Tier 1: 8%/mo churn (price-sensitive)
+- Tier 2: 3%/mo churn  
+- Tier 3: 1%/mo churn
+- 60% of Tier 1 users hit API limits monthly
+
+Recommend whether to:
+1. Introduce usage-based pricing
+2. Add a $49 middle tier
+3. Grandfather existing users
+
+Model the 12-month revenue impact for each option.`,
+    rubric: [
+      'Quantifies revenue impact for each option',
+      'Considers migration friction and support costs',
+      'Accounts for churn reduction vs revenue optimization',
+      'Provides clear recommendation with reasoning',
+      'Shows sensitivity analysis for key assumptions'
+    ],
+    expectedTime: '10-15 minutes',
+    source: 'Daily scorecard tests'
+  },
+  {
+    category: 'Tool Use',
+    difficulty: 'Medium',
+    task: 'Redis Rate Limiter',
+    prompt: `Implement a token bucket rate limiter in Redis that:
+- Allows 100 requests per minute per user
+- Returns remaining quota in response
+- Handles race conditions correctly
+- Expires old buckets after 1 hour of inactivity
+
+Provide:
+- Redis Lua script
+- Node.js/TypeScript wrapper
+- Test cases for edge conditions`,
+    rubric: [
+      'Uses Redis Lua for atomicity',
+      'Correctly implements token bucket algorithm',
+      'Handles concurrent requests safely',
+      'Includes proper expiration handling',
+      'Test cases cover edge conditions'
+    ],
+    expectedTime: '10-15 minutes',
+    source: 'Daily scorecard tests'
+  },
+  {
+    category: 'Tool Use',
+    difficulty: 'Medium',
+    task: 'JWT + Service Mesh Authentication',
+    prompt: `Design authentication for microservices that:
+- Uses JWTs for user identity
+- Propagates user context through service mesh
+- Handles token refresh without breaking requests
+- Supports service-to-service auth
+
+Provide:
+- JWT payload structure
+- Middleware code for Node.js services
+- Service mesh configuration (Istio or Linkerd)
+- Token refresh strategy`,
+    rubric: [
+      'JWT structure follows best practices',
+      'Middleware correctly validates and propagates context',
+      'Token refresh is seamless (no dropped requests)',
+      'Service-to-service auth is secure',
+      'Configuration is complete and deployable'
+    ],
+    expectedTime: '15-20 minutes',
+    source: 'Daily scorecard tests'
+  }
+];
+
+const categories = [...new Set(prompts.map(p => p.category))];
+---
+
+<Layout title={title} description={description} pubDate={pubDate}>
+  <article class="prompt-library">
+    <header>
+      <h1>AI Model Test Prompts</h1>
+      <p class="subtitle">
+        Reproducible benchmark tasks for evaluating LLMs. 
+        Use these to test models yourself — <strong>all prompts are open-source</strong>.
+      </p>
+      <p class="note">
+        These are the same prompts we use in our daily scorecards. 
+        Last updated: March 10, 2026.
+      </p>
+    </header>
+
+    <nav class="jump-nav">
+      <span>Jump to:</span>
+      {categories.map(cat => (
+        <a href={`#${cat.toLowerCase()}`}>{cat}</a>
+      ))}
+    </nav>
+
+    <section class="about">
+      <h2>Why Share Our Prompts?</h2>
+      <ul>
+        <li><strong>Reproducibility:</strong> You can verify our scores yourself</li>
+        <li><strong>Transparency:</strong> No hidden tests or secret criteria</li>
+        <li><strong>Usefulness:</strong> These are real production tasks, not synthetic</li>
+        <li><strong>Community:</strong> Help developers choose the right model for their use case</li>
+      </ul>
+      <p class="disclaimer">
+        Note: Model scores vary by prompt phrasing. These prompts are designed for 
+        <strong>operator-grade</strong> evaluation (production readiness), not academic benchmarks.
+      </p>
+    </section>
+
+    {categories.map(category => (
+      <section id={category.toLowerCase()} class="category-section">
+        <h2>{category} Tasks</h2>
+        
+        {prompts.filter(p => p.category === category).map(prompt => (
+          <div class="prompt-card">
+            <div class="prompt-header">
+              <h3>{prompt.task}</h3>
+              <span class={`difficulty ${prompt.difficulty.toLowerCase()}`}>
+                {prompt.difficulty}
+              </span>
+            </div>
+            
+            <div class="meta">
+              <span class="time">⏱️ {prompt.expectedTime}</span>
+              <span class="source">📖 {prompt.source}</span>
+            </div>
+
+            <div class="prompt-content">
+              <pre><code>{prompt.prompt}</code></pre>
+            </div>
+
+            <div class="rubric">
+              <h4>Evaluation Criteria</h4>
+              <ul>
+                {prompt.rubric.map(item => (
+                  <li>{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <button class="copy-btn" data-prompt={prompt.prompt}>
+              Copy Prompt
+            </button>
+          </div>
+        ))}
+      </section>
+    ))}
+
+    <section class="contribute">
+      <h2>Contribute a Prompt</h2>
+      <p>
+        Have a good test prompt? Submit it via 
+        <a href="https://github.com/your-repo/modelevaldaily/issues" target="_blank" rel="noopener">
+          GitHub Issues
+        </a> 
+        and we'll add it with attribution.
+      </p>
+      <p class="criteria">
+        <strong>Good prompts are:</strong>
+      </p>
+      <ul>
+        <li>Real production tasks (not synthetic)</li>
+        <li>Have clear evaluation criteria</li>
+        <li>Take 5-20 minutes for a human</li>
+        <li>Test practical skills (coding, reasoning, tool use)</li>
+      </ul>
+    </section>
+
+    <section class="usage">
+      <h2>How to Use These Prompts</h2>
+      <ol>
+        <li><strong>Copy</strong> the prompt text</li>
+        <li><strong>Paste</strong> into your preferred model (ChatGPT, Claude, Gemini, etc.)</li>
+        <li><strong>Evaluate</strong> the response using our rubric</li>
+        <li><strong>Compare</strong> scores across models</li>
+      </ol>
+      <p class="tip">
+        For fair comparison, use the same prompt verbatim across all models.
+        Small wording changes can affect scores.
+      </p>
+    </section>
+
+    <footer>
+      <p>
+        <strong>License:</strong> CC0 (public domain). Use freely, no attribution required.
+      </p>
+      <p>
+        <strong>Source:</strong> These prompts are from our 
+        <a href="/blog">daily model eval scorecards</a>.
+      </p>
+    </footer>
+  </article>
+</Layout>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const prompt = btn.getAttribute('data-prompt');
+      try {
+        await navigator.clipboard.writeText(prompt);
+        btn.textContent = '✓ Copied!';
+        setTimeout(() => btn.textContent = 'Copy Prompt', 2000);
+      } catch (err) {
+        btn.textContent = 'Copy failed';
+        setTimeout(() => btn.textContent = 'Copy Prompt', 2000);
+      }
+    });
+  });
+</script>
+
+<style>
+  .prompt-library {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  header {
+    margin-bottom: 3rem;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.25rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+  }
+
+  .note {
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+  }
+
+  .jump-nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .jump-nav a {
+    padding: 0.5rem 1rem;
+    background: var(--bg-card);
+    border-radius: 0.25rem;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .jump-nav a:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  section {
+    margin: 3rem 0;
+  }
+
+  h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--border);
+  }
+
+  .about ul,
+  .contribute ul,
+  .usage ol {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  li {
+    margin: 0.5rem 0;
+  }
+
+  .disclaimer,
+  .tip {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border-left: 3px solid var(--warning);
+    margin: 1rem 0;
+    font-size: 0.875rem;
+  }
+
+  .prompt-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .prompt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 1rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .difficulty {
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    flex-shrink: 0;
+  }
+
+  .difficulty.hard {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .difficulty.medium {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .difficulty.easy {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .meta {
+    display: flex;
+    gap: 1.5rem;
+    font-size: 0.875rem;
+    color: var(--text-tertiary);
+    margin-bottom: 1rem;
+  }
+
+  .prompt-content {
+    background: var(--bg-secondary);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+  }
+
+  .prompt-content pre {
+    margin: 0;
+    font-size: 0.875rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .rubric {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .rubric h4 {
+    margin: 0 0 0.75rem 0;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-tertiary);
+  }
+
+  .rubric ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .rubric li {
+    padding: 0.25rem 0 0.25rem 1.5rem;
+    position: relative;
+  }
+
+  .rubric li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: bold;
+  }
+
+  .copy-btn {
+    padding: 0.75rem 1.5rem;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+  }
+
+  footer {
+    background: var(--bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-top: 3rem;
+    font-size: 0.875rem;
+  }
+
+  footer a {
+    color: var(--accent);
+  }
+
+  @media (max-width: 600px) {
+    h1 {
+      font-size: 1.75rem;
+    }
+
+    .prompt-header {
+      flex-direction: column;
+    }
+
+    .meta {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .prompt-content pre {
+      font-size: 0.75rem;
+    }
+  }
+</style>
