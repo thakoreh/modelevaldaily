@@ -642,6 +642,62 @@ if (latestScorecard && latestScorecard.body) {
 				.cta-card h2 {
 					font-size: var(--font-xl);
 				}
+				
+				/* Mobile leaderboard - card view */
+				.leaderboard-card {
+					padding: var(--space-md);
+				}
+				.leaderboard-header h3 {
+					font-size: var(--font-base);
+				}
+				.model-row {
+					padding: var(--space-sm) 0;
+					gap: var(--space-sm);
+				}
+				.model-name {
+					font-size: var(--font-xs);
+					max-width: 140px;
+				}
+				.model-score {
+					font-size: var(--font-base);
+				}
+				.model-bar-container {
+					display: none;
+				}
+				.leaderboard-footer {
+					flex-direction: column;
+					gap: var(--space-xs);
+					text-align: center;
+				}
+				.leaderboard-footer span {
+					font-size: 10px;
+				}
+			}
+			
+			/* Extra small devices (phones, 400px and below) */
+			@media (max-width: 400px) {
+				.hero-title {
+					font-size: 1.25rem;
+				}
+				.hero-desc {
+					font-size: var(--font-sm);
+				}
+				.badge {
+					font-size: 10px;
+					padding: 0.25rem 0.5rem;
+				}
+				.leaderboard-card {
+					border-radius: var(--radius-lg);
+				}
+				.model-rank {
+					width: 24px;
+					height: 24px;
+					font-size: 10px;
+				}
+				.model-name {
+					font-size: 11px;
+					max-width: 110px;
+				}
 			}
 		</style>
 	</head>
