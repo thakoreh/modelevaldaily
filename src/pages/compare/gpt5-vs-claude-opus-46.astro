@@ -1,0 +1,512 @@
+---
+import { Image } from 'astro:assets';
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+
+const title = 'GPT-5.2 vs Claude Opus 4.6: Complete Benchmark Comparison 2026';
+const description = 'Side-by-side comparison of GPT-5.2 and Claude Opus 4.6 on coding, reasoning, tool use, cost, and latency. See which model wins for your use case.';
+
+const comparison = {
+	gpt52: {
+		name: 'GPT-5.2 (xhigh)',
+		provider: 'OpenAI',
+		color: '#10b981',
+		pricing: { input: 1.75, output: 14.0 },
+		context: '400K',
+		scores: { coding: 9.6, reasoning: 9.5, toolUse: 9.5 },
+		strengths: ['Best coding performance', 'Strong agentic capabilities', 'Excellent tool integration', '400K context'],
+		weaknesses: ['Higher cost for output', 'Newer model, less battle-tested'],
+		best: ['Coding tasks', 'API integrations', 'Complex workflows']
+	},
+	claude46: {
+		name: 'Claude Opus 4.6 (Adaptive)',
+		provider: 'Anthropic',
+		color: '#f59e0b',
+		pricing: { input: 18.75, output: 93.75 },
+		context: '200K',
+		scores: { coding: 9.6, reasoning: 9.7, toolUse: 9.4 },
+		strengths: ['Top-tier intelligence', 'Adaptive thinking', 'Best for complex reasoning', 'Prompt caching'],
+		weaknesses: ['Most expensive', '200K context limit vs GPT-5.2'],
+		best: ['Complex reasoning', 'Critical decisions', 'Long-form analysis']
+	}
+};
+
+const verdict = {
+	winner: 'coding' as const,
+	reason: 'GPT-5.2 wins on coding by a hair, but both are exceptional. Choose GPT-5.2 for coding/agentic work, Claude for deep reasoning and analysis.',
+	recommendation: {
+		coding: 'gpt52',
+		reasoning: 'claude46',
+		agents: 'gpt52',
+		analysis: 'claude46',
+		cost: 'claude46'
+	}
+};
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			.comparison-container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: var(--space-2xl) var(--space-lg);
+			}
+			
+			.comparison-hero {
+				text-align: center;
+				margin-bottom: var(--space-3xl);
+			}
+			
+			.comparison-hero h1 {
+				font-size: var(--font-4xl);
+				margin-bottom: var(--space-md);
+				background: var(--gradient-primary);
+				-webkit-background-clip: text;
+				-webkit-text-fill-color: transparent;
+				background-clip: text;
+			}
+			
+			.comparison-hero p {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				max-width: 600px;
+				margin: 0 auto;
+			}
+			
+			.models-side-by-side {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--space-xl);
+				margin-bottom: var(--space-3xl);
+			}
+			
+			.model-card {
+				background: var(--bg-card);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-xl);
+				padding: var(--space-xl);
+				position: relative;
+				overflow: hidden;
+			}
+			
+			.model-card.winner {
+				border-color: var(--accent);
+				box-shadow: var(--shadow-glow);
+			}
+			
+			.model-card.winner::before {
+				content: '🏆 WINNER';
+				position: absolute;
+				top: var(--space-md);
+				right: var(--space-md);
+				background: var(--accent);
+				color: white;
+				padding: var(--space-xs) var(--space-sm);
+				border-radius: var(--radius-sm);
+				font-size: var(--font-xs);
+				font-weight: 600;
+			}
+			
+			.model-card h2 {
+				font-size: var(--font-2xl);
+				margin-bottom: var(--space-xs);
+			}
+			
+			.model-card .provider {
+				color: var(--text-tertiary);
+				font-size: var(--font-sm);
+				margin-bottom: var(--space-lg);
+			}
+			
+			.score-grid {
+				display: grid;
+				gap: var(--space-md);
+				margin-bottom: var(--space-xl);
+			}
+			
+			.score-item {
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+			
+			.score-label {
+				font-size: var(--font-sm);
+				color: var(--text-secondary);
+			}
+			
+			.score-value {
+				font-size: var(--font-xl);
+				font-weight: 700;
+			}
+			
+			.score-bar {
+				height: 8px;
+				background: var(--bg-tertiary);
+				border-radius: 4px;
+				margin-top: var(--space-xs);
+				overflow: hidden;
+			}
+			
+			.score-bar-fill {
+				height: 100%;
+				border-radius: 4px;
+				transition: width 0.5s ease;
+			}
+			
+			.pricing-section {
+				background: var(--bg-secondary);
+				border-radius: var(--radius-lg);
+				padding: var(--space-lg);
+				margin-bottom: var(--space-md);
+			}
+			
+			.pricing-row {
+				display: flex;
+				justify-content: space-between;
+				margin-bottom: var(--space-sm);
+			}
+			
+			.pricing-label {
+				color: var(--text-secondary);
+			}
+			
+			.pricing-value {
+				font-weight: 600;
+			}
+			
+			.strengths-weaknesses {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: var(--space-md);
+			}
+			
+			.sw-list {
+				font-size: var(--font-sm);
+			}
+			
+			.sw-list h4 {
+				font-size: var(--font-xs);
+				text-transform: uppercase;
+				color: var(--text-tertiary);
+				margin-bottom: var(--space-sm);
+			}
+			
+			.sw-list ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			
+			.sw-list li {
+				padding: var(--space-xs) 0;
+				color: var(--text-secondary);
+			}
+			
+			.sw-list li::before {
+				content: '•';
+				margin-right: var(--space-sm);
+				color: var(--text-tertiary);
+			}
+			
+			.verdict-section {
+				background: var(--gradient-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-xl);
+				padding: var(--space-2xl);
+				text-align: center;
+				margin-bottom: var(--space-3xl);
+			}
+			
+			.verdict-section h2 {
+				font-size: var(--font-2xl);
+				margin-bottom: var(--space-md);
+			}
+			
+			.verdict-section p {
+				font-size: var(--font-lg);
+				color: var(--text-secondary);
+				max-width: 700px;
+				margin: 0 auto var(--space-xl);
+			}
+			
+			.verdict-table {
+				display: grid;
+				grid-template-columns: auto 1fr 1fr;
+				gap: var(--space-sm) var(--space-xl);
+				text-align: left;
+				max-width: 500px;
+				margin: 0 auto;
+			}
+			
+			.verdict-table .label {
+				color: var(--text-tertiary);
+				font-size: var(--font-sm);
+			}
+			
+			.verdict-table .winner-badge {
+				background: var(--accent);
+				color: white;
+				padding: var(--space-xs) var(--space-sm);
+				border-radius: var(--radius-sm);
+				font-size: var(--font-xs);
+				font-weight: 600;
+			}
+			
+			.cta-buttons {
+				display: flex;
+				gap: var(--space-md);
+				justify-content: center;
+				flex-wrap: wrap;
+			}
+			
+			.cta-buttons a {
+				padding: var(--space-md) var(--space-xl);
+				border-radius: var(--radius-lg);
+				font-weight: 600;
+				text-decoration: none;
+				transition: all var(--transition-base);
+			}
+			
+			.cta-buttons .primary {
+				background: var(--accent);
+				color: white;
+			}
+			
+			.cta-buttons .primary:hover {
+				transform: translateY(-2px);
+				box-shadow: var(--shadow-glow);
+			}
+			
+			.cta-buttons .secondary {
+				background: var(--bg-tertiary);
+				color: var(--text-primary);
+				border: 1px solid var(--border-primary);
+			}
+			
+			.cta-buttons .secondary:hover {
+				border-color: var(--accent);
+			}
+			
+			/* Mobile responsive */
+			@media (max-width: 768px) {
+				.models-side-by-side {
+					grid-template-columns: 1fr;
+				}
+				
+				.model-card {
+					padding: var(--space-lg);
+				}
+				
+				.strengths-weaknesses {
+					grid-template-columns: 1fr;
+				}
+				
+				.verdict-section {
+					padding: var(--space-xl);
+				}
+				
+				.verdict-table {
+					gap: var(--space-sm) var(--space-md);
+				}
+				
+				.cta-buttons {
+					flex-direction: column;
+				}
+				
+				.cta-buttons a {
+					width: 100%;
+					text-align: center;
+				}
+			}
+			
+			@media (max-width: 480px) {
+				.comparison-hero h1 {
+					font-size: var(--font-2xl);
+				}
+				
+				.model-card h2 {
+					font-size: var(--font-xl);
+				}
+				
+				.score-value {
+					font-size: var(--font-lg);
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		
+		<main class="comparison-container">
+			<!-- Hero -->
+			<section class="comparison-hero">
+				<h1>GPT-5.2 vs Claude Opus 4.6</h1>
+				<p>Complete benchmark comparison on coding, reasoning, tool use, cost, and latency. Updated March 2026.</p>
+			</section>
+			
+			<!-- Side by Side Comparison -->
+			<div class="models-side-by-side">
+				<!-- GPT-5.2 Card -->
+				<div class={`model-card ${verdict.winner === 'coding' ? 'winner' : ''}`}>
+					<h2 style={`color: ${comparison.gpt52.color}`}>{comparison.gpt52.name}</h2>
+					<p class="provider">by {comparison.gpt52.provider}</p>
+					
+					<div class="score-grid">
+						<div class="score-item">
+							<span class="score-label">Coding</span>
+							<span class="score-value">{comparison.gpt52.scores.coding}</span>
+						</div>
+						<div class="score-bar">
+							<div class="score-bar-fill" style={`width: ${comparison.gpt52.scores.coding * 10}%; background: ${comparison.gpt52.color}`}></div>
+						</div>
+						
+						<div class="score-item">
+							<span class="score-label">Reasoning</span>
+							<span class="score-value">{comparison.gpt52.scores.reasoning}</span>
+						</div>
+						<div class="score-bar">
+							<div class="score-bar-fill" style={`width: ${comparison.gpt52.scores.reasoning * 10}%; background: ${comparison.gpt52.color}`}></div>
+						</div>
+						
+						<div class="score-item">
+							<span class="score-label">Tool Use</span>
+							<span class="score-value">{comparison.gpt52.scores.toolUse}</span>
+						</div>
+						<div class="score-bar">
+							<div class="score-bar-fill" style={`width: ${comparison.gpt52.scores.toolUse * 10}%; background: ${comparison.gpt52.color}`}></div>
+						</div>
+					</div>
+					
+					<div class="pricing-section">
+						<div class="pricing-row">
+							<span class="pricing-label">Input</span>
+							<span class="pricing-value">${comparison.gpt52.pricing.input} / 1M tokens</span>
+						</div>
+						<div class="pricing-row">
+							<span class="pricing-label">Output</span>
+							<span class="pricing-value">${comparison.gpt52.picing.output} / 1M tokens</span>
+						</div>
+						<div class="pricing-row">
+							<span class="pricing-label">Context</span>
+							<span class="pricing-value">{comparison.gpt52.context}</span>
+						</div>
+					</div>
+					
+					<div class="strengths-weaknesses">
+						<div class="sw-list">
+							<h4>Strengths</h4>
+							<ul>
+								{comparison.gpt52.strengths.map(s => <li>{s}</li>)}
+							</ul>
+						</div>
+						<div class="sw-list">
+							<h4>Weaknesses</h4>
+							<ul>
+								{comparison.gpt52.weaknesses.map(w => <li>{w}</li>)}
+							</ul>
+						</div>
+					</div>
+				</div>
+				
+				<!-- Claude Opus 4.6 Card -->
+				<div class={`model-card ${verdict.winner === 'reasoning' ? 'winner' : ''}`}>
+					<h2 style={`color: ${comparison.claude46.color}`}>{comparison.claude46.name}</h2>
+					<p class="provider">by {comparison.claude46.provider}</p>
+					
+					<div class="score-grid">
+						<div class="score-item">
+							<span class="score-label">Coding</span>
+							<span class="score-value">{comparison.claude46.scores.coding}</span>
+						</div>
+						<div class="score-bar">
+							<div class="score-bar-fill" style={`width: ${comparison.claude46.scores.coding * 10}%; background: ${comparison.claude46.color}`}></div>
+						</div>
+						
+						<div class="score-item">
+							<span class="score-label">Reasoning</span>
+							<span class="score-value">{comparison.claude46.scores.reasoning}</span>
+						</div>
+						<div class="score-bar">
+							<div class="score-bar-fill" style={`width: ${comparison.claude46.scores.reasoning * 10}%; background: ${comparison.claude46.color}`}></div>
+						</div>
+						
+						<div class="score-item">
+							<span class="score-label">Tool Use</span>
+							<span class="score-value">{comparison.claude46.scores.toolUse}</span>
+						</div>
+						<div class="score-bar">
+							<div class="score-bar-fill" style={`width: ${comparison.claude46.scores.toolUse * 10}%; background: ${comparison.claude46.color}`}></div>
+						</div>
+					</div>
+					
+					<div class="pricing-section">
+						<div class="pricing-row">
+							<span class="pricing-label">Input</span>
+							<span class="pricing-value">${comparison.claude46.pricing.input} / 1M tokens</span>
+						</div>
+						<div class="pricing-row">
+							<span class="pricing-label">Output</span>
+							<span class="pricing-value">${comparison.claude46.pricing.output} / 1M tokens</span>
+						</div>
+						<div class="pricing-row">
+							<span class="pricing-label">Context</span>
+							<span class="pricing-value">{comparison.claude46.context}</span>
+						</div>
+					</div>
+					
+					<div class="strengths-weaknesses">
+						<div class="sw-list">
+							<h4>Strengths</h4>
+							<ul>
+								{comparison.claude46.strengths.map(s => <li>{s}</li>)}
+							</ul>
+						</div>
+						<div class="sw-list">
+							<h4>Weaknesses</h4>
+							<ul>
+								{comparison.claude46.weaknesses.map(w => <li>{w}</li>)}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Verdict -->
+			<section class="verdict-section">
+				<h2>🏆 The Verdict</h2>
+				<p>{verdict.reason}</p>
+				
+				<div class="verdict-table">
+					<span class="label">Best for Coding:</span>
+					<span style={`color: ${comparison.gpt52.color}; font-weight: 600`}>GPT-5.2</span>
+					<span class="winner-badge">✓ WIN</span>
+					
+					<span class="label">Best for Reasoning:</span>
+					<span style={`color: ${comparison.claude46.color}; font-weight: 600`}>Claude Opus 4.6</span>
+					<span class="winner-badge">✓ WIN</span>
+					
+					<span class="label">Best for Agents:</span>
+					<span style={`color: ${comparison.gpt52.color}; font-weight: 600`}>GPT-5.2</span>
+					<span class="winner-badge">✓ WIN</span>
+					
+					<span class="label">Best for Cost:</span>
+					<span style={`color: ${comparison.gpt52.color}; font-weight: 600`}>GPT-5.2</span>
+					<span class="winner-badge">✓ WIN</span>
+				</div>
+			</section>
+			
+			<!-- CTA -->
+			<div class="cta-buttons">
+				<a href="/scorecards" class="primary">View All Scorecards</a>
+				<a href="/compare" class="secondary">All Comparisons</a>
+			</div>
+		</main>
+		
+		<Footer />
+	</body>
+</html>
