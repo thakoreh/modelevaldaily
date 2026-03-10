@@ -58,6 +58,22 @@ ollama run qwen3-coder:7b
 # - deepseek-v3
 							</code>
 						</div>
+
+						<div class="tool-card tool-card-highlight">
+							<h3>OpenClaw ⚡</h3>
+							<p>Run local models with a full AI agent interface. Chat, automate, and integrate with your tools.</p>
+							<code class="code-block">
+# Install OpenClaw
+npm install -g openclaw
+
+# Configure with local model
+openclaw config set model local
+
+# Start chatting
+openclaw chat
+							</code>
+							<a href="/openclaw" class="tool-link">Learn more about OpenClaw →</a>
+						</div>
 					</div>
 				</div>
 			</section>
@@ -366,6 +382,17 @@ ollama run qwen3-coder:7b
 			}
 			.tool-card h3 {
 				margin-bottom: var(--space-sm);
+			}
+			.tool-card-highlight {
+				border: 2px solid var(--accent);
+				background: rgba(99, 102, 241, 0.05);
+			}
+			.tool-link {
+				display: inline-block;
+				margin-top: var(--space-sm);
+				font-size: var(--font-sm);
+				font-weight: 600;
+				color: var(--accent-light);
 			}
 			.code-block {
 				display: block;
