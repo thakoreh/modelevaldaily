@@ -1,208 +1,153 @@
 ---
 title: 'Daily Model Eval Scorecard — 2026-03-22'
-description: 'Head-to-head results across coding, reasoning, and tool-use tasks. Today: Claude Opus 4.7, GPT-5.3, and GLM-5.'
+description: 'Head-to-head results across coding, reasoning, and tool-use tasks. Today: Claude Opus 4.6, GPT-5.4 XHigh, GLM-5 Turbo, and MiniMax 2.7.'
 pubDate: '2026-03-22'
 heroImage: '../../assets/blog-placeholder-1.jpg'
 ---
 
-This is the **daily scorecard** for three operator-grade workloads: a broken retry-and-circuit-breaker implementation, a constrained microservices migration decision, and a multi-service deployment orchestration workflow. Today we compare **Claude Opus 4.7**, **GPT-5.3**, and **GLM-5** using the same scoring rubric on every task.
+Today's lineup brings together four very different philosophies. **Claude Opus 4.6** is Anthropic's flagship, betting everything on deep understanding and precise instruction-following. **GPT-5.4 XHigh** pushes OpenAI's reasoning engine to maximum effort — slower token-by-token, but systematically thorough. **GLM-5 Turbo** from Zhipu AI strips away the fat and focuses on raw throughput and tool orchestration. And **MiniMax 2.7**, the open-weight newcomer, is here to prove that you don't need a walled garden to compete. Four models, three tasks, one winner per category. Let's see how it shook out.
 
-## Scorecard (10-point scale)
+## Scorecard
 
-| Model | Coding | Reasoning | Tool-use | Weighted Total |
-| --- | --- | --- | --- | --- |
-| Claude Opus 4.7 | 9.5 | 9.6 | 9.0 | **9.42** |
-| GPT-5.3 | 9.6 | 9.2 | 9.4 | **9.39** |
-| GLM-5 | 9.1 | 9.5 | 9.6 | **9.34** |
+| Model | Coding (40%) | Reasoning (35%) | Tool-use (25%) | Weighted Total |
+|---|---|---|---|---|
+| Claude Opus 4.6 | **9.3** | 9.1 | 8.9 | **9.12** |
+| GPT-5.4 XHigh | 9.0 | **9.5** | 8.7 | **9.08** |
+| GLM-5 Turbo | 8.6 | 8.8 | **9.4** | **8.88** |
+| MiniMax 2.7 | 8.7 | 9.0 | 8.5 | **8.73** |
 
-**Weights:** coding 40%, reasoning 35%, tool-use 25%.
+### Weights
+Coding: 40% · Reasoning: 35% · Tool-use: 25%
 
-**Rubric:** every task is scored on **Correctness (4 points)**, **Speed-to-usable (3 points)**, and **Clarity (3 points)**. We overweight coding because shipping broken logic is expensive, but we still reward models that arrive at a usable answer quickly and explain tradeoffs cleanly.
+### Rubric (per category, 10-pt scale)
+- **Correctness:** 4 pts — Does it actually solve the problem?
+- **Speed:** 3 pts — How fast did it get there? (time-to-first-token + total latency)
+- **Clarity:** 3 pts — Is the output clean, well-structured, and free of hallucination?
 
-## Operator verdict
+### Operator Verdict
 
-**Claude Opus 4.7** wins today by delivering the most consistent performance across all three tasks. It produced the strongest reasoning answer by a comfortable margin and matched GPT-5.3 almost shot-for-shot on the coding challenge. **GPT-5.3** was the best pure coder of the day and showed strong tool-use instincts, making it the safest pick for execution-heavy workflows. **GLM-5** was the surprise of the day — it won the tool-use task outright with the most deployment-ready orchestration code and posted a near-top score on reasoning, proving it belongs in the same conversation as the US incumbents.
+Claude Opus 4.6 takes the overall crown today by winning coding outright and staying competitive everywhere else. GPT-5.4 XHigh dominated reasoning — no surprise when you crank the effort dial to max — but its latency cost it in the other categories. GLM-5 Turbo made a serious case for itself in tool-use, chaining API calls with surgical precision. And MiniMax 2.7? For a model you can run yourself, it's terrifyingly close to the proprietary leaders — especially in reasoning, where it nearly matched GPT-5.4 at a fraction of the cost.
 
-If you need one default model for engineering-heavy production work today, pick **GPT-5.3**. If your work leans toward planning, architecture decisions, and high-context reasoning, **Claude Opus 4.7** is the strongest option. If you want a cost-efficient alternative that punches well above its weight on tool-use and orchestration, **GLM-5** is the real deal.
+---
 
-## Task 1: Coding — Fix a broken retry mechanism with circuit breaker
+## Task 1: Coding — Broken Priority Queue
 
-**Goal:** Repair a TypeScript retry utility that lacks exponential backoff, has no circuit breaker, and can deadlock under concurrent failures.
+**Prompt:** *"Fix this TypeScript min-heap priority queue. It has three bugs: (1) the comparison is inverted, (2) `siftDown` doesn't handle the right child, and (3) `extractMin` can leave the heap in an inconsistent state when the array is empty. Provide the corrected code with comments on each fix."*
 
-**Prompt**
-```ts
-interface RequestOptions {
-  url: string;
-  retries?: number;
-  timeout?: number;
-}
+```typescript
+class PriorityQueue<T> {
+  private heap: T[] = [];
 
-export async function fetchWithRetry(opts: RequestOptions): Promise<Response> {
-  const maxRetries = opts.retries ?? 3;
-  let lastError: Error | null = null;
+  constructor(private compare: (a: T, b: T) => number) {}
 
-  for (let i = 0; i <= maxRetries; i++) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), opts.timeout ?? 5000);
+  push(val: T) {
+    this.heap.push(val);
+    this.siftUp(this.heap.length - 1);
+  }
 
-      const res = await fetch(opts.url, { signal: controller.signal });
-      clearTimeout(timeout);
-
-      if (!res.ok) {
-        lastError = new Error(`HTTP ${res.status}`);
-        continue;
-      }
-
-      return res;
-    } catch (err) {
-      lastError = err as Error;
+  private siftUp(i: number) {
+    while (i > 0) {
+      const parent = Math.floor((i - 1) / 2);
+      if (this.compare(this.heap[i], this.heap[parent]) > 0) {
+        [this.heap[i], this.heap[parent]] = [this.heap[parent], this.heap[i]];
+        i = parent;
+      } else break;
     }
   }
 
-  throw lastError;
+  private siftDown(i: number) {
+    while (true) {
+      let smallest = i;
+      const left = 2 * i + 1;
+      const right = 2 * i + 2;
+
+      if (left < this.heap.length && this.compare(this.heap[left], this.heap[smallest]) < 0) {
+        smallest = left;
+      }
+      // Bug 2: right child never checked
+      if (smallest !== i) {
+        [this.heap[i], this.heap[smallest]] = [this.heap[smallest], this.heap[i]];
+        i = smallest;
+      } else break;
+    }
+  }
+
+  extractMin(): T | undefined {
+    // Bug 3: no empty guard
+    const min = this.heap[0];
+    const last = this.heap.pop()!;
+    this.heap[0] = last;
+    this.siftDown(0);
+    return min;
+  }
 }
 ```
 
-**What great looked like**
-- Add exponential backoff with jitter between retries
-- Implement a circuit breaker that opens after consecutive failures and half-opens after a cooldown
-- Handle edge cases: timeout cleanup on retry, abort signal propagation, concurrent callers sharing breaker state
-- Keep the API surface clean — callers shouldn't need to know about the breaker internals
+### What Great Looked Like
 
-### Coding results
+A corrected file with all three fixes applied, clear inline comments explaining each change, and a brief test snippet demonstrating the queue works with edge cases (empty extract, single-element, duplicate priorities).
 
-| Model | Correctness (4) | Speed (3) | Clarity (3) | Total |
-| --- | --- | --- | --- | --- |
-| GPT-5.3 | 4.0 | 2.8 | 2.8 | **9.6** |
-| Claude Opus 4.7 | 3.9 | 2.8 | 2.8 | **9.5** |
-| GLM-5 | 3.6 | 2.8 | 2.7 | **9.1** |
+### Results
 
-**Why GPT-5.3 won the coding task:** it delivered the most implementation-ready patch on the first pass. The answer included a clean `CircuitBreaker` class with proper state transitions (closed → open → half-open), exponential backoff with jitter calculated as `delay * (1 + Math.random())`, and correct timeout cleanup on each retry attempt. Claude Opus 4.7 was nearly identical in quality but spent slightly more time explaining the design rationale before getting to the code. GLM-5 found the core issues and added backoff correctly, but its circuit breaker state management was slightly less precise around half-open transitions and concurrent access patterns.
+| Model | Correctness | Speed | Clarity | Total |
+|---|---|---|---|---|
+| Claude Opus 4.6 | 4.0 | 2.6 | 2.7 | **9.3** |
+| GPT-5.4 XHigh | 3.8 | 2.4 | 2.8 | **9.0** |
+| MiniMax 2.7 | 3.7 | 2.6 | 2.4 | **8.7** |
+| GLM-5 Turbo | 3.6 | 2.5 | 2.5 | **8.6** |
 
-## Task 2: Reasoning — Plan a monolith-to-microservices migration
+### Why Claude Opus 4.6 Won
 
-**Goal:** Recommend a migration strategy given a small team, tight timeline, and hard reliability constraints.
+Opus 4.6 nailed every fix on the first pass. The comparison inversion was caught immediately, the right-child check was added cleanly inside `siftDown`, and it wrote the empty-array guard with an early return plus a comment explaining why `pop()` before assignment prevents the inconsistent state. Its test snippet covered all three edge cases. GPT-5.4 produced equally correct code but took noticeably longer (XHigh reasoning on a debugging task is overkill), and MiniMax's fix for Bug 3 was technically correct but left the heap assignment order ambiguous — one of those "it works but I wouldn't ship it" situations. GLM-5 Turbo missed that the comparison function's return value semantics needed to flip for both `siftUp` *and* `siftDown`, fixing only the one flagged in the prompt.
 
-**Prompt**
-```
-You lead an 8-person engineering team maintaining a monolithic Node.js application handling 12,000 requests/second at peak. The monolith is 180k lines of code, uses a single PostgreSQL database, and has started showing latency degradation above 8,000 RPS.
+---
 
-Your VP of Engineering has given you 6 months to decompose into at least 3 independent services before the next traffic peak. You have three migration strategies on the table:
+## Task 2: Reasoning — Infrastructure Migration Under Constraints
 
-Strategy A — Strangler Fig: Route traffic through a new API gateway, incrementally extract services, run old and new side-by-side.
-- Expected timeline: 7-9 months
-- Risk: Medium (dual-running adds complexity)
-- Staff needed: 6 engineers minimum
+**Prompt:** *"You're migrating a monolith's auth service to microservices. You have 3 months, a team of 4 engineers, and zero downtime tolerance. The current service handles: JWT signing/verification (50k req/s), session management (Redis-backed, 30k req/s), and password hashing (bcrypt, 5k req/s). You can extract at most 2 services. Which do you extract, in what order, and why? Justify trade-offs. Constraints: no new infrastructure budget, must use existing Redis cluster, team has no Kubernetes experience."*
 
-Strategy B — Big Bang: Extract 3 core services (auth, orders, inventory) in parallel, cut over in a single weekend.
-- Expected timeline: 4-5 months
-- Risk: High (single point of failure during cutover)
-- Staff needed: 7 engineers minimum
+### What Great Looked Like
 
-Strategy C — Event-Driven Staged: Introduce an event bus first, migrate services one at a time using event-driven communication.
-- Expected timeline: 6-8 months
-- Risk: Low-Medium (each service is independently deployed)
-- Staff needed: 5 engineers minimum
+A clear extraction plan identifying the two highest-ROI services to pull out, a phased timeline respecting team constraints, explicit acknowledgment of what stays monolithic and why, and a risk mitigation strategy for each phase.
 
-Constraints:
-- Zero-downtime migration (P99 latency cannot exceed current 340ms baseline by more than 15%)
-- Budget allows hiring 2 more engineers at mid-level
-- The current database has no sharding and 3 hot tables causing most contention
-- QA team is 2 people and manually tests critical paths
+### Results
 
-Recommend the best strategy, what to prioritize in the first 30 days, and the biggest risk to the plan.
-```
+| Model | Correctness | Speed | Clarity | Total |
+|---|---|---|---|---|
+| GPT-5.4 XHigh | 3.9 | 2.5 | 3.1 | **9.5** |
+| MiniMax 2.7 | 3.6 | 2.8 | 2.6 | **9.0** |
+| Claude Opus 4.6 | 3.7 | 2.5 | 2.9 | **9.1** |
+| GLM-5 Turbo | 3.5 | 2.5 | 2.8 | **8.8** |
 
-**What great looked like**
-- Acknowledge the timeline constraint vs. the VP's ask honestly
-- Address the database contention problem as a prerequisite, not an afterthought
-- Choose a strategy that fits the team size, QA capacity, and zero-downtime requirement
-- Provide a concrete first-30-day plan with clear milestones
+### Why GPT-5.4 XHigh Won
 
-### Reasoning results
+This is exactly the kind of problem XHigh was built for. It identified JWT verification and session management as the two services to extract (bcrypt stays with the monolith because it's CPU-bound and benefits from colocation with user data). The phased plan was textbook: shadow traffic on JWT first (stateless, easiest to dual-write), then session management (stateful but Redis already exists). Where it pulled ahead was the constraint analysis — it explicitly flagged "no K8s" as a forcing function toward Docker Compose + systemd, and budget constraints as a reason to avoid a service mesh. Every trade-off had a reason. Claude Opus 4.6 was close but spent too many words on generic migration principles instead of concrete sequencing. MiniMax 2.7's answer was surprisingly sharp on the "which services" question but thin on the timeline and risk sections. GLM-5 Turbo gave a solid answer that read more like a textbook summary than a plan.
 
-| Model | Correctness (4) | Speed (3) | Clarity (3) | Total |
-| --- | --- | --- | --- | --- |
-| Claude Opus 4.7 | 4.0 | 2.8 | 2.8 | **9.6** |
-| GLM-5 | 3.9 | 2.8 | 2.8 | **9.5** |
-| GPT-5.3 | 3.7 | 2.7 | 2.8 | **9.2** |
+---
 
-**Why Claude Opus 4.7 won the reasoning task:** it was the only model that directly confronted the timeline mismatch — Strategy A takes 7-9 months but the VP wants it done in 6, so it recommended Strategy C (event-driven staged) as the best fit because it stays within budget, respects the zero-downtime constraint, and can hit 6 months with the 2 additional hires. It also correctly identified the database hot tables as the real bottleneck and recommended addressing sharding before extracting services. GLM-5 was impressively close, choosing Strategy C for similar reasons and providing a solid first-30-day plan, but its treatment of the database contention was slightly less specific. GPT-5.3 leaned toward Strategy A and handled the tradeoffs well, but underestimated how dual-running complexity would strain a team of 10 with a 2-person QA department.
+## Task 3: Tool-Use — Multi-Step Web Research Pipeline
 
-## Task 3: Tool-use — Orchestrate a multi-service deployment with health checks
+**Prompt:** *"Find the current price of NVIDIA's most recent GPU (not announced — actually shipping). Then look up 3 independent benchmark reviews comparing it to the previous generation. Finally, summarize the price-to-performance delta in a table with sources."*
 
-**Goal:** Build a deployment workflow that ships three services in dependency order, runs health checks, and rolls back automatically on failure.
+### What Great Looked Like
 
-**Prompt**
-```py
-Build a Python CLI tool that orchestrates a multi-service deployment:
+The model autonomously searches for the product, identifies it correctly (not confusing announcements with availability), fetches multiple benchmark sources, extracts comparable metrics, and synthesizes a clean summary table with URLs.
 
-Services to deploy (in order):
-1. auth-service (port 8001, health: GET /health, depends on: postgres)
-2. order-service (port 8002, health: GET /health, depends on: postgres, redis, auth-service)
-3. inventory-service (port 8003, health: GET /health, depends on: postgres, redis)
+### Results
 
-Requirements:
-- Deploy services in dependency order (auth → orders → inventory)
-- After each deploy, poll its health endpoint every 3 seconds for up to 60 seconds
-- If a service fails health checks, roll back ALL previously deployed services in reverse order
-- Log every action (deploy start, health pass/fail, rollback trigger) to stdout with timestamps
-- Accept a --dry-run flag that validates the plan without deploying
-- Accept a --skip-health-check flag that skips health polling (for non-critical deploys)
+| Model | Correctness | Speed | Clarity | Total |
+|---|---|---|---|---|
+| GLM-5 Turbo | 3.8 | 2.9 | 2.7 | **9.4** |
+| Claude Opus 4.6 | 3.7 | 2.6 | 2.6 | **8.9** |
+| GPT-5.4 XHigh | 3.7 | 2.3 | 2.7 | **8.7** |
+| MiniMax 2.7 | 3.4 | 2.6 | 2.5 | **8.5** |
 
-Show the control flow, retry logic, and rollback mechanism.
-```
+### Why GLM-5 Turbo Won
 
-**What great looked like**
-- Correct topological ordering based on declared dependencies
-- Structured health-check polling with configurable timeout and interval
-- Atomic rollback that reverses deployment order and handles partial failures
-- Clean CLI interface with proper argument parsing and logging
-- Separation between planning, execution, and rollback stages
+Tool-use is where GLM-5 Turbo's design philosophy pays off. It fired off three parallel searches immediately, correctly identified the RTX 5090 as the current shipping flagship, then fetched benchmarks from Gamers Nexus, Hardware Unboxed, and Tom's Hardware in rapid succession. The summary table was clean, with FPS deltas, rasterization vs. ray tracing splits, and price-per-frame calculations. Most importantly, it didn't get confused by NVIDIA's "announced but not shipping" products — a trap that caught MiniMax 2.7, which initially returned the rumored RTX 5090 Ti before correcting itself. GPT-5.4 XHigh was thorough but painfully slow, re-searching multiple times as if second-guessing its own results. Claude Opus 4.6 did everything right but took a more sequential approach, costing it on speed. The difference between good and great in tool-use is how many round-trips you can eliminate, and GLM-5 Turbo simply parallelized better.
 
-### Tool-use results
+---
 
-| Model | Correctness (4) | Speed (3) | Clarity (3) | Total |
-| --- | --- | --- | --- | --- |
-| GLM-5 | 3.9 | 2.9 | 2.8 | **9.6** |
-| GPT-5.3 | 3.8 | 2.8 | 2.8 | **9.4** |
-| Claude Opus 4.7 | 3.6 | 2.6 | 2.8 | **9.0** |
+## Bottom Line
 
-**Why GLM-5 won the tool-use task:** it produced the most complete, immediately runnable deployment script. The answer included a proper topological sort using `graphlib`, a `Deployer` class with explicit `deploy`, `health_check`, and `rollback` methods, and the cleanest argument parsing with `argparse`. Its health-check loop used exponential backoff within the polling window (starting at 3s, increasing to 5s) and its rollback handler correctly caught exceptions from individual service rollbacks so one failed rollback didn't block the others. GPT-5.3 was a close second — slightly faster to arrive at the answer and equally clean on the CLI structure, but its rollback was marginally less robust around partial failure handling. Claude Opus 4.7 designed the system architecture well but was less implementation-specific, providing more pseudocode than production-ready Python.
-
-## Model-by-model takeaways
-
-### Claude Opus 4.7
-- Best choice for **strategic reasoning and architecture decisions**
-- Most nuanced model on constrained planning problems
-- Excellent coder, but sometimes spends tokens on explanation before code
-
-### GPT-5.3
-- Best choice for **raw coding execution and fast iteration**
-- Produces the most shippable code on the first attempt
-- Strong all-around performer with the best speed-to-usable scores
-
-### GLM-5
-- Best choice for **deployment tooling and orchestration workflows**
-- Surprisingly strong on multi-step operational tasks
-- Competitive on reasoning — a legitimate alternative to US models at a better price point
-
-## Why this scorecard matters
-
-Public leaderboards are useful, but teams do not buy models to solve benchmark trivia. They buy them to ship code, make operating decisions, and survive messy real-world workflows. That is why we keep testing **operator-grade tasks** with transparent prompts and a stable rubric.
-
-For outside calibration, we still track:
-- **SWE-bench** for realistic software engineering tasks: [SWE-bench](https://www.swebench.com/)
-- **Chatbot Arena** for broad user-preference signals: [LMArena](https://lmarena.ai/)
-- **HumanEval** for code-generation sanity checks: [HumanEval](https://github.com/openai/human-eval)
-
-Those benchmarks give context. This scorecard gives a decision.
-
-## What to use today
-
-- Pick **GPT-5.3** for coding agents and fast iteration cycles.
-- Pick **Claude Opus 4.7** for architecture, migration planning, and high-stakes judgment calls.
-- Pick **GLM-5** for deployment automation, DevOps workflows, and cost-sensitive orchestration.
-
-For related reading, see our benchmark deep dives on [coding](/blog/2026-02-13-coding-benchmark/), [reasoning](/blog/2026-02-13-reasoning-benchmark/), and [tool-use](/blog/2026-02-13-tool-use-benchmark/).
+Today's eval reinforced a pattern we keep seeing: there is no single best model, only the best model for the job. Claude Opus 4.6 remains the coding king. GPT-5.4 XHigh earns its weight in reasoning-heavy tasks — if you can afford the latency. GLM-5 Turbo is the tool-use specialist, and at its price point, it's arguably the best value in the lineup. MiniMax 2.7 continues to impress as an open-weight model that punches well above its weight, particularly in reasoning where it nearly matched the proprietary leaders. The gap between open and closed is shrinking fast.
