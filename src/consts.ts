@@ -5,4 +5,4 @@ export const SITE_TITLE = 'AIModelBenchmarks.com';
 export const SITE_DESCRIPTION = 'Operator-grade AI model scorecards across real tasks: performance, cost, latency, and reliability.';
 export const SITE_URL = 'https://aimodelbenchmarks.com';
 export const SITE_LOCALE = 'en_US';
-export const SITE_UPDATED = '2026-02-16';
+export const SITE_UPDATED = '2026-05-06';
