@@ -1,0 +1,28 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../../data/verified-models';
+import { SITE_TITLE } from '../../consts';
+
+const pageTitle = 'Claude vs Gemini for Coding and Long Context';
+const description = 'Claude vs Gemini for Coding and Long Context: compare coding, reasoning, tool use, pricing, context window, and practical production recommendations.';
+const modelA = VERIFIED_MODELS.find((m) => m.name === 'Claude Opus 4.6') ?? VERIFIED_MODELS[0];
+const modelB = VERIFIED_MODELS.find((m) => m.name === 'Gemini 3.1 Pro') ?? VERIFIED_MODELS[1];
+const verdict = 'Claude is usually the safer choice for careful code review and architecture tradeoffs. Gemini is the better pick when long context and multimodal/search-adjacent work dominate.';
+const rows = [
+  ['Coding', modelA.scores.coding, modelB.scores.coding],
+  ['Reasoning', modelA.scores.reasoning, modelB.scores.reasoning],
+  ['Tool use', modelA.scores.toolUse, modelB.scores.toolUse],
+  ['Input cost / 1M', `$${modelA.pricing.input}`, `$${modelB.pricing.input}`],
+  ['Output cost / 1M', `$${modelA.pricing.output}`, `$${modelB.pricing.output}`],
+  ['Context window', modelA.contextWindow, modelB.contextWindow],
+];
+---
+<html lang="en"><head><BaseHead title={`${pageTitle} | ${SITE_TITLE}`} description={description} type="website" /></head><body><Header />
+<main class="page"><section class="hero"><div class="container"><p class="eyebrow">Model comparison</p><h1>{pageTitle}</h1><p class="subtitle">{verdict}</p><div class="meta"><span>Verified {MODEL_DATA_VERIFIED_ON}</span><span>Source-backed model cards</span></div></div></section>
+<section class="container cards"><article class="model-card"><h2>{modelA.name}</h2><p>{modelA.provider}</p><strong>${modelA.pricing.input}/${modelA.pricing.output} per 1M tokens</strong><ul>{modelA.strengths.slice(0,3).map((s)=><li>{s}</li>)}</ul></article><article class="model-card"><h2>{modelB.name}</h2><p>{modelB.provider}</p><strong>${modelB.pricing.input}/${modelB.pricing.output} per 1M tokens</strong><ul>{modelB.strengths.slice(0,3).map((s)=><li>{s}</li>)}</ul></article></section>
+<section class="container section"><h2>Head-to-head scorecard</h2><div class="table-wrap"><table><thead><tr><th>Dimension</th><th>{modelA.name}</th><th>{modelB.name}</th><th>Practical read</th></tr></thead><tbody>{rows.map(([label,a,b]) => <tr><td>{label}</td><td><strong>{a}</strong></td><td><strong>{b}</strong></td><td>{String(a) === String(b) ? 'Tie or depends on workload.' : 'Use this row as a directional signal, then test on your own eval set.'}</td></tr>)}</tbody></table></div></section>
+<section class="container section decision"><h2>Which should you pick?</h2><ul><li><strong>Pick {modelA.name}</strong> when you need {modelA.bestFor.slice(0,2).join(' or ')}.</li><li><strong>Pick {modelB.name}</strong> when you need {modelB.bestFor.slice(0,2).join(' or ')}.</li><li>Run your own 10-task eval before standardizing. Public leaderboards are useful filters, not final answers.</li></ul><div class="links"><a href="/tools/model-picker/">Use the model picker</a><a href="/cost-calculator/">Estimate API cost</a><a href="/models/">Full leaderboard</a></div></section>
+<section class="container section sources"><h2>Sources</h2><ul>{[...modelA.sources, ...modelB.sources].map((source)=><li><a href={source.url} target="_blank" rel="noopener">{source.label}</a></li>)}</ul></section></main><Footer /></body></html>
+<style>.page{padding-bottom:4rem}.container{max-width:1120px;margin:0 auto;padding:0 1.5rem}.hero{padding:4rem 0 2.5rem;background:var(--gradient-hero)}.eyebrow{color:var(--accent-light);text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:800}h1{font-size:clamp(2.2rem,5vw,3.7rem);margin:.5rem 0 1rem}.subtitle{color:var(--text-secondary);font-size:1.08rem;line-height:1.7;max-width:820px}.meta,.links{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1rem}.meta span{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:999px;padding:.35rem .75rem;color:var(--text-tertiary)}.cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding-top:2rem}.model-card,.decision{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:18px;padding:1.25rem}.model-card p,.model-card li,.decision li{color:var(--text-secondary)}.model-card strong{color:var(--accent-light)}.section{padding-top:2rem}.table-wrap{overflow-x:auto;background:var(--bg-card);border:1px solid var(--border-primary);border-radius:18px}table{width:100%;border-collapse:collapse}th,td{padding:.9rem 1rem;border-bottom:1px solid var(--border-secondary);text-align:left}th{color:var(--text-secondary)}a{color:var(--accent-light);font-weight:800}.links a{background:var(--bg-tertiary);border:1px solid var(--border-primary);border-radius:12px;padding:.75rem 1rem;text-decoration:none}.sources li{margin:.4rem 0}@media(max-width:760px){.cards{grid-template-columns:1fr}}</style>

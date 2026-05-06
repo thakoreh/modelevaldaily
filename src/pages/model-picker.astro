@@ -1,0 +1,24 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+const title = 'AI Model Picker | AIModelBenchmarks.com';
+const description = 'Find the right AI model for coding, agents, RAG, reasoning, local deployment, and cost-sensitive workflows.';
+---
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} type="website" />
+    <meta http-equiv="refresh" content="0; url=/tools/model-picker/" />
+    <link rel="canonical" href="https://aimodelbenchmarks.com/tools/model-picker/" />
+  </head>
+  <body>
+    <Header />
+    <main class="container">
+      <h1>AI Model Picker</h1>
+      <p>Redirecting to the model picker tool.</p>
+      <a href="/tools/model-picker/">Open the AI Model Picker</a>
+    </main>
+    <Footer />
+  </body>
+</html>
+<style>.container{max-width:900px;margin:0 auto;padding:4rem 1.5rem}a{color:var(--accent-light);font-weight:800}</style>

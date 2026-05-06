@@ -1,0 +1,239 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../../data/verified-models';
+
+const title = 'AI Model Picker — Choose the Best LLM for Your Use Case';
+const description = 'Answer six questions and get a practical AI model recommendation for coding, agents, RAG, long-context, cost-sensitive, or local/private workflows.';
+
+const pickerModels = VERIFIED_MODELS.map((model) => ({
+  name: model.name,
+  provider: model.provider,
+  coding: model.scores.coding,
+  reasoning: model.scores.reasoning,
+  toolUse: model.scores.toolUse,
+  input: model.pricing.input,
+  output: model.pricing.output,
+  contextWindow: model.contextWindow,
+  bestFor: model.bestFor,
+  strengths: model.strengths,
+  color: model.color,
+}));
+---
+
+<html lang="en">
+  <head>
+    <BaseHead title={title} description={description} type="website" />
+  </head>
+  <body>
+    <Header />
+    <main class="page">
+      <section class="hero">
+        <div class="container">
+          <p class="eyebrow">Decision tool</p>
+          <h1>AI Model Picker</h1>
+          <p class="subtitle">Stop reading 20 leaderboard pages. Tell us the workflow, budget, context needs, and risk profile. Get a practical model shortlist with a cost-aware recommendation.</p>
+          <div class="meta-row">
+            <span>Data verified: {MODEL_DATA_VERIFIED_ON}</span>
+            <span>{VERIFIED_MODELS.length} models in selector</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="container app-grid">
+        <form class="panel picker-form" id="picker-form">
+          <h2>What are you building?</h2>
+
+          <label>
+            Primary workflow
+            <select id="task">
+              <option value="coding">Coding / code review</option>
+              <option value="agents">Agent workflows / tool use</option>
+              <option value="rag">RAG / document Q&A</option>
+              <option value="reasoning">Reasoning / analysis</option>
+              <option value="extraction">Data extraction / structured output</option>
+              <option value="local">Local / private deployment</option>
+            </select>
+          </label>
+
+          <label>
+            Budget sensitivity
+            <select id="budget">
+              <option value="low">Quality first</option>
+              <option value="medium" selected>Balanced</option>
+              <option value="high">Minimize cost</option>
+            </select>
+          </label>
+
+          <label>
+            Context requirement
+            <select id="context">
+              <option value="normal">Normal docs / small repos</option>
+              <option value="large">Large repo or long documents</option>
+              <option value="huge">Huge context required</option>
+            </select>
+          </label>
+
+          <label>
+            Tool calling importance
+            <select id="tools">
+              <option value="low">Low</option>
+              <option value="medium" selected>Medium</option>
+              <option value="high">High / agentic workflow</option>
+            </select>
+          </label>
+
+          <label>
+            Deployment preference
+            <select id="deployment">
+              <option value="api" selected>Hosted API is fine</option>
+              <option value="local">Prefer local / open weights</option>
+              <option value="any">No preference</option>
+            </select>
+          </label>
+
+          <button type="button" id="run-picker">Pick my model</button>
+        </form>
+
+        <aside class="panel result-panel" id="result-panel">
+          <p class="eyebrow">Recommendation</p>
+          <h2 id="winner-name">GPT-5.4</h2>
+          <p id="winner-provider" class="muted">OpenAI</p>
+          <div class="score-grid">
+            <div><span id="coding-score">9.8</span><small>Coding</small></div>
+            <div><span id="reasoning-score">9.5</span><small>Reasoning</small></div>
+            <div><span id="tool-score">9.7</span><small>Tool use</small></div>
+            <div><span id="price-score">$2.50</span><small>Input / 1M</small></div>
+          </div>
+          <p id="reason-text">Best balanced pick for coding and agentic development.</p>
+          <div class="actions">
+            <a href="/cost-calculator/">Estimate cost</a>
+            <a href="/compare/">Compare models</a>
+          </div>
+        </aside>
+      </section>
+
+      <section class="container section">
+        <h2>Shortlist</h2>
+        <div id="shortlist" class="shortlist"></div>
+      </section>
+    </main>
+    <Footer />
+    <script type="application/json" id="model-data" set:html={JSON.stringify(pickerModels)} />
+    <script>
+      const models = JSON.parse(document.getElementById('model-data').textContent || '[]');
+      const taskWeights = {
+        coding: { coding: 0.52, reasoning: 0.18, toolUse: 0.22, context: 0.04, cost: 0.04 },
+        agents: { coding: 0.22, reasoning: 0.20, toolUse: 0.42, context: 0.08, cost: 0.08 },
+        rag: { coding: 0.08, reasoning: 0.26, toolUse: 0.16, context: 0.34, cost: 0.16 },
+        reasoning: { coding: 0.08, reasoning: 0.58, toolUse: 0.12, context: 0.12, cost: 0.10 },
+        extraction: { coding: 0.06, reasoning: 0.20, toolUse: 0.26, context: 0.16, cost: 0.32 },
+        local: { coding: 0.22, reasoning: 0.22, toolUse: 0.16, context: 0.10, cost: 0.30 },
+      };
+      function contextScore(label) {
+        if (/2M|1\.05M|1M/.test(label)) return 10;
+        if (/256K|205K|200K|196K/.test(label)) return 8;
+        if (/128K/.test(label)) return 6;
+        return 5;
+      }
+      function costScore(model) {
+        const blended = (model.input * 0.7) + (model.output * 0.3);
+        return Math.max(1, 10 - blended / 2);
+      }
+      function isLocal(model) {
+        return /Llama|OSS|open|self-host/i.test([model.name, model.provider, ...(model.bestFor||[]), ...(model.strengths||[])].join(' '));
+      }
+      function scoreModel(model, options) {
+        const w = taskWeights[options.task] || taskWeights.coding;
+        let score = model.coding*w.coding + model.reasoning*w.reasoning + model.toolUse*w.toolUse + contextScore(model.contextWindow)*w.context + costScore(model)*w.cost;
+        if (options.budget === 'high') score += costScore(model) * 0.35;
+        if (options.budget === 'low') score += ((model.coding + model.reasoning + model.toolUse) / 3) * 0.18;
+        if (options.context === 'large') score += contextScore(model.contextWindow) * 0.18;
+        if (options.context === 'huge') score += contextScore(model.contextWindow) * 0.35;
+        if (options.tools === 'high') score += model.toolUse * 0.28;
+        if (options.deployment === 'local') score += isLocal(model) ? 2.2 : -1.4;
+        if (options.task === 'local') score += isLocal(model) ? 2.6 : -1.2;
+        return score;
+      }
+      function pick() {
+        const options = {
+          task: document.getElementById('task').value,
+          budget: document.getElementById('budget').value,
+          context: document.getElementById('context').value,
+          tools: document.getElementById('tools').value,
+          deployment: document.getElementById('deployment').value,
+        };
+        const ranked = [...models].map((m) => ({...m, fit: scoreModel(m, options)})).sort((a,b) => b.fit - a.fit).slice(0, 5);
+        const winner = ranked[0];
+        if (!winner) return;
+        document.getElementById('winner-name').textContent = winner.name;
+        document.getElementById('winner-provider').textContent = winner.provider + ' • ' + winner.contextWindow + ' context';
+        document.getElementById('coding-score').textContent = winner.coding.toFixed(1);
+        document.getElementById('reasoning-score').textContent = winner.reasoning.toFixed(1);
+        document.getElementById('tool-score').textContent = winner.toolUse.toFixed(1);
+        document.getElementById('price-score').textContent = `$${winner.input}`;
+        document.getElementById('reason-text').textContent = `${winner.name} is the best fit for ${options.task.replace('-', ' ')} with your budget/context settings. Main strengths: ${(winner.strengths || []).slice(0,2).join(', ')}.`;
+        const shortlist = document.getElementById('shortlist');
+        shortlist.replaceChildren();
+        ranked.forEach((m, index) => {
+          const card = document.createElement('article');
+          card.className = 'short-card';
+          const title = document.createElement('strong');
+          title.textContent = `#${index + 1} ${m.name}`;
+          const provider = document.createElement('span');
+          provider.textContent = m.provider;
+          const best = document.createElement('p');
+          best.textContent = (m.bestFor || []).slice(0, 3).join(' • ');
+          const meta = document.createElement('small');
+          meta.textContent = `Fit score ${m.fit.toFixed(1)} • $${m.input}/$${m.output} per 1M`;
+          card.append(title, provider, best, meta);
+          shortlist.appendChild(card);
+        });
+        const params = new URLSearchParams(options);
+        history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
+      }
+      function loadParams() {
+        const params = new URLSearchParams(location.search);
+        for (const id of ['task','budget','context','tools','deployment']) {
+          const value = params.get(id);
+          if (value && document.getElementById(id)) document.getElementById(id).value = value;
+        }
+      }
+      loadParams();
+      document.getElementById('run-picker').addEventListener('click', pick);
+      document.querySelectorAll('#picker-form select').forEach((select) => select.addEventListener('change', pick));
+      pick();
+    </script>
+  </body>
+</html>
+
+<style>
+  .page { padding-bottom: 4rem; }
+  .container { max-width: 1120px; margin: 0 auto; padding: 0 1.5rem; }
+  .hero { padding: 4rem 0 2.5rem; background: var(--gradient-hero); }
+  .eyebrow { color: var(--accent-light); text-transform: uppercase; letter-spacing: .08em; font-size: .78rem; font-weight: 800; }
+  h1 { font-size: clamp(2.3rem, 5vw, 4rem); margin: .4rem 0 1rem; }
+  .subtitle { color: var(--text-secondary); max-width: 760px; font-size: 1.08rem; line-height: 1.7; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1rem; color: var(--text-tertiary); }
+  .meta-row span, .panel { border: 1px solid var(--border-primary); background: var(--bg-card); border-radius: 18px; }
+  .meta-row span { padding: .35rem .65rem; }
+  .app-grid { display: grid; grid-template-columns: minmax(0, 1fr) 420px; gap: 1rem; padding-top: 2rem; }
+  .panel { padding: 1.35rem; }
+  label { display: grid; gap: .4rem; color: var(--text-secondary); margin-top: 1rem; font-weight: 700; }
+  select { background: var(--bg-secondary); color: var(--text-primary); border: 1px solid var(--border-primary); border-radius: 12px; padding: .8rem; }
+  button, .actions a { display: inline-flex; justify-content: center; padding: .85rem 1rem; border-radius: 12px; border: 0; background: var(--gradient-primary); color: white; font-weight: 800; text-decoration: none; cursor: pointer; }
+  button { width: 100%; margin-top: 1.2rem; }
+  .muted { color: var(--text-tertiary); }
+  .score-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: .7rem; margin: 1.1rem 0; }
+  .score-grid div, .short-card { background: var(--bg-tertiary); border: 1px solid var(--border-secondary); border-radius: 14px; padding: .8rem; }
+  .score-grid span { display: block; font-size: 1.35rem; font-weight: 900; color: var(--accent-light); }
+  .score-grid small, .short-card span, .short-card small { color: var(--text-tertiary); }
+  .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1rem; }
+  .actions a:nth-child(2) { background: var(--bg-tertiary); border: 1px solid var(--border-primary); }
+  .section { padding-top: 2rem; }
+  .shortlist { display: grid; grid-template-columns: repeat(5,1fr); gap: .75rem; }
+  .short-card p { color: var(--text-secondary); min-height: 3rem; }
+  @media (max-width: 960px) { .app-grid { grid-template-columns: 1fr; } .shortlist { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 640px) { .shortlist { grid-template-columns: 1fr; } }
+</style>
