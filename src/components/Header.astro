@@ -10,24 +10,23 @@ import HeaderLink from './HeaderLink.astro';
 				<span class="logo-icon">
 					<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
 						<rect width="28" height="28" rx="7" fill="#11130f" stroke="#2dd4bf"/>
-						<path d="M7 18L11 10L15 16L19 8L21 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+						<path d="M7 18L11 10L15 16L19 8L21 12" stroke="#f4f1e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
 				</span>
-				<span class="logo-text">Model Eval Daily</span>
+				<span class="logo-text">AI Model Benchmarks</span>
 			</a>
 		</div>
 		<div class="nav-center">
 			<HeaderLink href="/models">Models</HeaderLink>
+			<HeaderLink href="/coding-agents">Coding Agents</HeaderLink>
 			<HeaderLink href="/compare">Compare</HeaderLink>
 			<HeaderLink href="/cost-calculator">Pricing</HeaderLink>
-			<HeaderLink href="/scorecards">Scorecards</HeaderLink>
-			<HeaderLink href="/blog">Evals</HeaderLink>
-			<HeaderLink href="/about">Methodology</HeaderLink>
+			<HeaderLink href="/tools/model-picker">Model Picker</HeaderLink>
 		</div>
 		<div class="nav-right">
-			<a class="nav-cta" href="/scorecards">
+			<a class="nav-cta" href="/model-data">
 				<span class="pulse-dot"></span>
-				Scorecards
+				Data
 			</a>
 		</div>
 	</nav>
@@ -48,14 +47,13 @@ import HeaderLink from './HeaderLink.astro';
 	<div class="mobile-menu" id="mobile-menu">
 		<a href="/">Home</a>
 		<a href="/models">Models</a>
+		<a href="/coding-agents">Coding Agents</a>
 		<a href="/compare">Compare</a>
-		<a href="/local-models">Local Models</a>
 		<a href="/cost-calculator">Pricing</a>
 		<a href="/tools/model-picker">Model Picker</a>
-		<a href="/scorecards">Scorecards</a>
-		<a href="/blog">Evals</a>
+		<a href="/model-data">Source Data</a>
+		<a href="/local-models">Local Models</a>
 		<a href="/openclaw">OpenClaw</a>
-		<a href="/about">Methodology</a>
 	</div>
 </header>
 

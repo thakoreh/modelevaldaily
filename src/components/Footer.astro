@@ -3,17 +3,16 @@ import { TOP_5_MODELS, MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
 
 const today = new Date();
 const categories = [
-	{ name: 'Coding Evals', href: '/scorecards#coding' },
-	{ name: 'Reasoning Evals', href: '/scorecards#reasoning' },
-	{ name: 'Tool-use Evals', href: '/scorecards#tool-use' },
-	{ name: 'Agent Evals', href: '/scorecards#agents' },
+	{ name: 'Coding Agents', href: '/coding-agents' },
+	{ name: 'Model Picker', href: '/tools/model-picker' },
+	{ name: 'Compare Models', href: '/compare' },
+	{ name: 'API Pricing', href: '/cost-calculator' },
 ];
 const resources = [
-	{ name: 'All Scorecards', href: '/scorecards' },
-	{ name: 'Latest Evals', href: '/blog' },
-	{ name: 'Methodology', href: '/about' },
-	{ name: 'Test Prompts', href: '/prompts' },
-	{ name: 'Cost Calculator', href: '/cost-calculator' },
+	{ name: 'Model Data', href: '/model-data' },
+	{ name: 'All Models', href: '/models' },
+	{ name: 'Local Models', href: '/local-models' },
+	{ name: 'Open Weights', href: '/best-open-weight-models' },
 	{ name: 'FAQ', href: '/faq' },
 ];
 ---
@@ -27,9 +26,10 @@ const resources = [
 						<rect width="28" height="28" rx="7" fill="#11130f" stroke="#2dd4bf"/>
 						<path d="M7 18L11 10L15 16L19 8L21 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
 					</svg>
-					<span>Model Eval Daily</span>
+					<span>AI Model Benchmarks</span>
 				</a>
-				<p class="footer-tagline">Source-reviewed model benchmarks for developers who use AI in production.</p>
+				<p class="footer-tagline">Practical AI model benchmarks for coding agents, tool use, context-heavy work, and production model routing.</p>
+				<a class="domain-link" href="https://aimodelbenchmarks.com">aimodelbenchmarks.com</a>
 				<div class="footer-social">
 					<a href="https://x.com/aimodelbench" target="_blank" rel="noopener noreferrer" aria-label="Follow on X (Twitter)">
 						<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
@@ -40,7 +40,7 @@ const resources = [
 				</div>
 			</div>
 			<div class="footer-col">
-				<h4>Evals</h4>
+				<h4>Decision Tools</h4>
 				<ul>
 					{categories.map(cat => (
 						<li><a href={cat.href}>{cat.name}</a></li>
@@ -48,7 +48,7 @@ const resources = [
 				</ul>
 			</div>
 			<div class="footer-col">
-				<h4>Resources</h4>
+				<h4>Reference</h4>
 				<ul>
 					{resources.map(res => (
 						<li><a href={res.href}>{res.name}</a></li>
@@ -66,7 +66,7 @@ const resources = [
 			</div>
 		</div>
 		<div class="footer-bottom">
-			<p>&copy; {today.getFullYear()} AIModelBenchmarks.com</p>
+			<p>&copy; {today.getFullYear()} AI Model Benchmarks</p>
 			<p class="footer-disclaimer">Data verified {MODEL_DATA_VERIFIED_ON}. Benchmarks are for informational purposes only.</p>
 		</div>
 	</div>
@@ -116,6 +116,12 @@ const resources = [
 	.footer-social {
 		display: flex;
 		gap: 0.75rem;
+	}
+	.domain-link {
+		color: var(--accent-light);
+		font-size: var(--font-sm);
+		font-weight: 700;
+		width: fit-content;
 	}
 	.footer-social a {
 		color: var(--text-tertiary);

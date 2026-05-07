@@ -12,9 +12,9 @@ const { title, description, pubDate, updatedDate, heroImage, noindex = false } =
 	noindex?: boolean;
 };
 
-const titleWithSite = title.includes('AIModelBenchmarks.com')
+const titleWithSite = title.includes('AI Model Benchmarks')
 	? title
-	: `${title} | AIModelBenchmarks.com`;
+	: `${title} | AI Model Benchmarks`;
 const pageTitle = titleWithSite.length <= 65
 	? titleWithSite
 	: title.length <= 65

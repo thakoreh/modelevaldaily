@@ -1,25 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import { getCollection } from 'astro:content';
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
-import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
 import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
-import { isFactCheckedPost } from '../utils/fact-check';
-
-const allPosts = (await getCollection('blog')).sort(
-	(a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
-// Exclude templates from public lists
-const posts = allPosts.filter((p) => !p.id.includes('template') && isFactCheckedPost(p));
-const latest = posts[0];
-const recent = posts.slice(0, 6);
-
-// Get latest scorecard for leaderboard
-const scorecardPosts = posts.filter(p => p.id.includes('scorecard') || p.data.title.toLowerCase().includes('scorecard'));
-const latestScorecard = scorecardPosts.length > 0 ? scorecardPosts[0] : null;
 
 // Use verified models data directly (more reliable than parsing markdown)
 const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
@@ -27,12 +11,36 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 	total: (model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25),
 	color: model.color
 }));
+
+const decisionCards = [
+	{
+		title: 'Build Coding Agents',
+		href: '/coding-agents',
+		description: 'Model routing for planning, coding, review, repo Q&A, bulk edits, and private codebases.',
+	},
+	{
+		title: 'Pick a Model',
+		href: '/tools/model-picker',
+		description: 'Answer workflow, budget, context, and deployment questions to get a practical shortlist.',
+	},
+	{
+		title: 'Compare APIs',
+		href: '/compare',
+		description: 'Compare model scores, context windows, provider tradeoffs, and pricing side by side.',
+	},
+];
+
+const architectureCards = [
+	{ title: 'Plan', model: 'GPT-5.5 / Claude Opus 4.7', description: 'Decompose work, identify files, set constraints, and decide when to escalate.' },
+	{ title: 'Edit', model: 'GPT-5.4 / GPT-5.2-Codex', description: 'Generate diffs, run tests, fix failures, and keep changes scoped.' },
+	{ title: 'Review', model: 'Claude Opus 4.7 / Sonnet 4.6', description: 'Audit regressions, edge cases, architecture risk, and unclear assumptions.' },
+];
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${SITE_TITLE} — Verified AI Model Scorecards`} description={SITE_DESCRIPTION} />
+		<BaseHead title={`${SITE_TITLE} — Coding Agent Model Guide`} description={SITE_DESCRIPTION} />
 		<style>
 			/* Override main for homepage — full-width sections */
 			main {
@@ -752,31 +760,31 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 						<span class="dot"></span>
 						Model data verified {MODEL_DATA_VERIFIED_ON}
 					</span>
-					<h1 class="hero-title">Pick the right AI model with real-world benchmarks.</h1>
+					<h1 class="hero-title">Build better coding agents with the right AI models.</h1>
 					<p class="hero-desc">
-						We run actual engineering tasks — bug fixes, architecture decisions, API integrations — and score every model on <strong>correctness</strong>, <strong>cost</strong>, <strong>latency</strong>, and <strong>reliability</strong>. No synthetic benchmarks. No marketing claims. Just reproducible evals.
+						Choose models for coding, agent workflows, long-context analysis, and production API routing. We focus on what developers actually need: <strong>code quality</strong>, <strong>tool use</strong>, <strong>context</strong>, <strong>price</strong>, and <strong>reliability</strong>.
 					</p>
 					<div class="hero-badges">
-						<span class="badge badge-accent">Verified scorecards</span>
-						<span class="badge">Transparent rubrics</span>
-						<span class="badge">Failure cases included</span>
-						<span class="badge badge-success">Cost + latency tracked</span>
+						<span class="badge badge-accent">Coding-agent focused</span>
+						<span class="badge">Model routing guidance</span>
+						<span class="badge">API price checks</span>
+						<span class="badge badge-success">Source-reviewed data</span>
 					</div>
 					<div class="hero-actions">
-						<a class="btn btn-primary" href="/scorecards">
-							See verified scorecards
+						<a class="btn btn-primary" href="/coding-agents">
+							Build coding agents
 							<span class="btn-arrow">&rarr;</span>
 						</a>
-						<a class="btn btn-secondary" href="/model-data">Source log</a>
+						<a class="btn btn-secondary" href="/tools/model-picker">Pick a model</a>
 					</div>
 				</div>
 
 				<div class="hero-visual">
 					<div class="leaderboard-card">
-						<a href={latestScorecard ? `/blog/${latestScorecard.id}/` : '/scorecards'} class="leaderboard-link"></a>
+						<a href="/models" class="leaderboard-link"></a>
 						<div class="leaderboard-header">
 							<h3>Verified Leaderboard</h3>
-							<span>{latestScorecard ? latestScorecard.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : MODEL_DATA_VERIFIED_ON}</span>
+							<span>{MODEL_DATA_VERIFIED_ON}</span>
 						</div>
 						{models.map((model, i) => (
 							<div class="model-row">
@@ -796,7 +804,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 							</div>
 						))}
 						<div class="leaderboard-footer">
-							<a href="/scorecards">View full scorecards &rarr;</a>
+							<a href="/models">View all models &rarr;</a>
 							<span>Coding 40% / Reasoning 35% / Tool-use 25%</span>
 						</div>
 					</div>
@@ -818,8 +826,8 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 							<div class="stat-label">AI providers</div>
 						</div>
 						<div class="stat-card">
-							<div class="stat-number">100%</div>
-							<div class="stat-label">Transparent rubrics</div>
+							<div class="stat-number">4</div>
+							<div class="stat-label">Core routing roles</div>
 						</div>
 						<div class="stat-card">
 							<div class="stat-number">Verified</div>
@@ -829,24 +837,20 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				</div>
 			</section>
 
-			<!-- Recent scorecards -->
+			<!-- High-value paths -->
 			<section class="section">
 				<div class="container">
 					<div class="section-header">
-						<h2>Recent Scorecards</h2>
-						<p>Latest model evaluations across coding, reasoning, and tool-use tasks.</p>
+						<h2>Start With the Job You Need Done</h2>
+						<p>Skip archive browsing. These are the practical paths for developers choosing models for real systems.</p>
 					</div>
 					<div class="post-grid">
-						{recent.map((post) => (
-							<a class="post-card" href={`/blog/${post.id}/`}>
-								{post.data.heroImage && (
-									<div class="post-card-image">
-										<Image width={720} height={360} src={post.data.heroImage} alt={post.data.title} />
-									</div>
-								)}
+						{decisionCards.map((card) => (
+							<a class="post-card text-card" href={card.href}>
 								<div class="post-card-body">
-									<span class="post-card-date"><FormattedDate date={post.data.pubDate} /></span>
-									<h3 class="post-card-title">{post.data.title}</h3>
+									<span class="post-card-date">Decision tool</span>
+									<h3 class="post-card-title">{card.title}</h3>
+									<p class="post-card-excerpt">{card.description}</p>
 								</div>
 							</a>
 						))}
@@ -858,57 +862,45 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			<section class="section">
 				<div class="container">
 					<div class="section-header">
-						<h2>Why Engineers Trust This</h2>
-						<p>Built for teams choosing AI models for production workloads.</p>
+						<h2>Built for Coding and Agent Workflows</h2>
+						<p>Most model sites stop at rankings. This one is structured around production decisions.</p>
 					</div>
 					<div class="trust-grid">
 						<div class="trust-card">
 							<div class="trust-icon">&#9881;</div>
-							<h3>Real engineering tasks</h3>
-							<p>Bug fixes, build-vs-buy decisions, docs-driven workflows. No synthetic toy problems.</p>
+							<h3>Agent routing guidance</h3>
+							<p>Separate planning, coding, reviewing, and bulk work instead of forcing one model to do everything.</p>
 						</div>
 						<div class="trust-card">
 							<div class="trust-icon">&#128270;</div>
-							<h3>Rubrics you can audit</h3>
-							<p>Every eval includes the exact prompt, scoring criteria, and failure cases. Fully reproducible.</p>
+							<h3>Developer-first criteria</h3>
+							<p>Score coding quality, tool use, context, and price together because agent systems need all four.</p>
 						</div>
 						<div class="trust-card">
 							<div class="trust-icon">&#9889;</div>
-							<h3>Actionable recommendations</h3>
-							<p>Pick a model for the job with clear rationale. We track cost, latency, and reliability -- not just accuracy.</p>
+							<h3>Source-reviewed facts</h3>
+							<p>Model availability, context, and pricing are tied back to source data so claims can be audited.</p>
 						</div>
 					</div>
 				</div>
 			</section>
 
-				<!-- What we track -->
+			<!-- Agent architecture -->
 			<section class="section">
 				<div class="container">
 					<div class="section-header">
-						<h2>How It Works</h2>
-						<p>Transparent, reproducible benchmarks you can verify.</p>
+						<h2>A Better AI Agent Stack</h2>
+						<p>Use the right model for each stage instead of spending frontier-model money on every token.</p>
 					</div>
 					<div class="trust-grid how-it-works">
-						<div class="trust-card">
-							<div class="trust-icon" style="background: rgba(99, 102, 241, 0.1); border-color: var(--accent);">1</div>
-							<h3>Real tasks</h3>
-							<p>We run actual engineering prompts — bug fixes, tradeoffs, integrations.</p>
-						</div>
-						<div class="trust-card">
-							<div class="trust-icon" style="background: rgba(99, 102, 241, 0.1); border-color: var(--accent);">2</div>
-							<h3>Blind scoring</h3>
-							<p>Two engineers score each output against a 10-point rubric.</p>
-						</div>
-						<div class="trust-card">
-							<div class="trust-icon" style="background: rgba(99, 102, 241, 0.1); border-color: var(--accent);">3</div>
-							<h3>Full transparency</h3>
-							<p>Every prompt, rubric, and failure case is published.</p>
-						</div>
-						<div class="trust-card">
-							<div class="trust-icon" style="background: rgba(99, 102, 241, 0.1); border-color: var(--accent);">4</div>
-							<h3>Freshness-first updates</h3>
-							<p>New scorecards and model data are published only after source review.</p>
-						</div>
+						{architectureCards.map((card, index) => (
+							<div class="trust-card">
+								<div class="trust-icon">{index + 1}</div>
+								<h3>{card.title}</h3>
+								<p><strong>{card.model}</strong></p>
+								<p>{card.description}</p>
+							</div>
+						))}
 					</div>
 				</div>
 			</section>
@@ -928,19 +920,19 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 							<tbody>
 								<tr>
 									<td><strong>Performance</strong></td>
-									<td>Task score, error rate, rubric compliance</td>
+									<td>Coding score, tool-use score, reasoning score, context window</td>
 								</tr>
 								<tr>
 									<td><strong>Cost</strong></td>
-									<td>Tokens used, estimated spend, cost per task</td>
+									<td>Input/output price per 1M tokens, context pricing notes, provider tradeoffs</td>
 								</tr>
 								<tr>
 									<td><strong>Latency</strong></td>
-									<td>P50/P95 response time, time-to-first-token</td>
+									<td>Best-fit workflow, routing role, escalation path, production caveats</td>
 								</tr>
 								<tr>
 									<td><strong>Reliability</strong></td>
-									<td>Failure cases, guardrail misses, audit notes</td>
+									<td>Source links, verification date, stale-claim audit flags</td>
 								</tr>
 							</tbody>
 						</table>
@@ -948,45 +940,20 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				</div>
 			</section>
 
-			<!-- Latest Articles -->
-			<section class="section">
-				<div class="container">
-					<div class="section-header">
-						<h2>Latest Articles</h2>
-						<p>Deep dives on model performance, comparisons, and engineering benchmarks.</p>
-					</div>
-					<div class="post-grid">
-						{recent.slice(0, 3).map((post) => (
-							<a href={`/blog/${post.id.replace(/\.md$/, '')}/`} class="post-card">
-								<div class="post-card-image">
-									{post.data.heroImage && (
-										<Image src={post.data.heroImage} alt="" loading="lazy" />
-									)}
-								</div>
-								<div class="post-card-body">
-									<h3 class="post-card-title">{post.data.title}</h3>
-									<p class="post-card-excerpt">{post.data.description}</p>
-								</div>
-							</a>
-						))}
-					</div>
-					<div style="text-align: center; margin-top: var(--space-xl);">
-						<a href="/blog" class="btn btn-secondary">View all articles</a>
-					</div>
-				</div>
-			</section>
-
-			<!-- New: Open Weights & Local Models -->
+			<!-- Provider pages -->
 			<section class="section" style="background: var(--bg-secondary);">
 				<div class="container">
 					<div class="section-header">
-						<h2>Provider Pages</h2>
-						<p>Quick picks by provider if you already know whose API you want to use.</p>
+						<h2>Provider and Deployment Guides</h2>
+						<p>Go deeper when you already know your provider, budget, or deployment constraint.</p>
 					</div>
 					<div class="provider-grid">
 						<a href="/best-openai-models" class="provider-card"><h3>Best OpenAI Models</h3><p>GPT-5.5, GPT-5.4, GPT-5.2-Codex, and more</p></a>
 						<a href="/best-anthropic-models" class="provider-card"><h3>Best Anthropic Models</h3><p>Claude Opus 4.7, Sonnet 4.6</p></a>
 						<a href="/best-google-models" class="provider-card"><h3>Best Google Models</h3><p>Gemini 3.1 Pro Preview, Gemini 3 Flash, and more</p></a>
+						<a href="/local-models" class="provider-card"><h3>Local Model Guide</h3><p>Private deployment, open weights, and self-hosting tradeoffs</p></a>
+						<a href="/cheapest-ai-models" class="provider-card"><h3>Cheapest AI Models</h3><p>Lower-cost API options for high-volume workloads</p></a>
+						<a href="/model-data" class="provider-card"><h3>Source Data</h3><p>Verification dates, source links, pricing, and context windows</p></a>
 					</div>
 				</div>
 			</section>
@@ -995,10 +962,10 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			<section class="cta-section">
 				<div class="container">
 					<div class="cta-card">
-						<h2>Start with today's winner</h2>
-						<p>Go straight to the verified scorecards, then drill into task-level breakdowns for coding, reasoning, and tool-use.</p>
-						<a class="btn btn-primary" href="/scorecards">
-							View scorecards
+						<h2>Build a smarter model router</h2>
+						<p>Start with coding-agent routing, then use the model picker to tune for cost, context, and deployment constraints.</p>
+						<a class="btn btn-primary" href="/coding-agents">
+							Open coding-agent guide
 							<span class="btn-arrow">&rarr;</span>
 						</a>
 					</div>

@@ -1,0 +1,411 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+import { SITE_TITLE } from '../consts';
+import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
+
+const title = `Best AI Models for Coding Agents | ${SITE_TITLE}`;
+const description = 'Choose the right AI model for coding agents, code review, repo-scale refactors, tool use, long context, and cost-aware production routing.';
+
+const names = ['GPT-5.5', 'GPT-5.4', 'Claude Opus 4.7', 'GPT-5.2-Codex', 'Claude Sonnet 4.6', 'Gemini 3.1 Pro Preview', 'DeepSeek V3', 'Llama 4 (405B)'];
+const agentModels = names
+	.map((name) => VERIFIED_MODELS.find((model) => model.name === name))
+	.filter(Boolean);
+
+const stack = [
+	{
+		label: 'Planner',
+		pick: 'GPT-5.5 or Claude Opus 4.7',
+		why: 'Use the strongest reasoning model to decompose tasks, choose files, and decide when to stop.',
+	},
+	{
+		label: 'Coder',
+		pick: 'GPT-5.4 or GPT-5.2-Codex',
+		why: 'Use a coding-optimized model for implementation loops, test fixes, and repository edits.',
+	},
+	{
+		label: 'Reviewer',
+		pick: 'Claude Opus 4.7',
+		why: 'Use a second frontier model for architecture review, hidden assumptions, and regression risk.',
+	},
+	{
+		label: 'Bulk Work',
+		pick: 'Claude Sonnet 4.6, DeepSeek V3, or local models',
+		why: 'Route repetitive linting, extraction, and low-risk edits to lower-cost models.',
+	},
+];
+
+const workflows = [
+	{ task: 'Large refactor', primary: 'Claude Opus 4.7', fallback: 'GPT-5.4', note: 'Prioritize context, careful planning, and review quality.' },
+	{ task: 'Autonomous feature build', primary: 'GPT-5.5', fallback: 'GPT-5.4', note: 'Keep planning and execution separate for cleaner diffs.' },
+	{ task: 'Bug fix from failing tests', primary: 'GPT-5.2-Codex', fallback: 'GPT-5.4', note: 'Give the model test output, touched files, and reproduction steps.' },
+	{ task: 'Repo Q&A / codebase search', primary: 'Gemini 3.1 Pro Preview', fallback: 'Claude Sonnet 4.6', note: 'Long context helps, but still pair it with retrieval.' },
+	{ task: 'High-volume code review', primary: 'Claude Sonnet 4.6', fallback: 'DeepSeek V3', note: 'Use cheaper models for first-pass comments, then escalate risky files.' },
+	{ task: 'Private codebase', primary: 'Llama 4 (405B)', fallback: 'GPT-OSS-120B', note: 'Prefer open or local deployment when source cannot leave your environment.' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} />
+		<style>
+			main {
+				width: 100%;
+				max-width: 100%;
+				padding: 0;
+			}
+			.container {
+				max-width: var(--container-xl);
+				margin: 0 auto;
+				padding: 0 1.5rem;
+			}
+			.hero {
+				padding: 4.5rem 0 3rem;
+				border-bottom: 1px solid var(--border-secondary);
+				background: linear-gradient(180deg, rgba(20, 184, 166, 0.08), transparent);
+			}
+			.hero-grid {
+				display: grid;
+				grid-template-columns: minmax(0, 1fr) 380px;
+				gap: 3rem;
+				align-items: end;
+			}
+			.eyebrow {
+				color: var(--accent-light);
+				font-weight: 800;
+				font-size: var(--font-xs);
+				margin-bottom: 0.8rem;
+			}
+			h1 {
+				font-size: clamp(2.5rem, 5vw, 4.35rem);
+				line-height: 1.02;
+				max-width: 850px;
+				margin-bottom: 1rem;
+			}
+			.subtitle {
+				color: var(--text-secondary);
+				font-size: 1.08rem;
+				line-height: 1.65;
+				max-width: 720px;
+			}
+			.hero-panel,
+			.card,
+			.stack-card,
+			.workflow-table {
+				background: rgba(18, 20, 16, 0.9);
+				border: 1px solid var(--border-primary);
+				border-radius: var(--radius-lg);
+			}
+			.hero-panel {
+				padding: 1.25rem;
+			}
+			.hero-panel strong {
+				display: block;
+				font-size: 2rem;
+				line-height: 1;
+				color: var(--text-primary);
+			}
+			.hero-panel span,
+			.hero-panel p {
+				color: var(--text-tertiary);
+				margin: 0.35rem 0 0;
+				font-size: var(--font-sm);
+			}
+			.section {
+				padding: 3.25rem 0;
+			}
+			.section-head {
+				display: flex;
+				justify-content: space-between;
+				gap: 2rem;
+				align-items: end;
+				margin-bottom: 1.25rem;
+			}
+			.section-head p {
+				max-width: 560px;
+				margin: 0;
+				color: var(--text-tertiary);
+			}
+			.model-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 1rem;
+			}
+			.card {
+				padding: 1.15rem;
+				min-height: 100%;
+			}
+			.card-top {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				margin-bottom: 0.8rem;
+			}
+			.provider-dot {
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+				flex: 0 0 auto;
+			}
+			.card h3 {
+				font-size: var(--font-base);
+				margin: 0;
+			}
+			.card p {
+				color: var(--text-secondary);
+				font-size: var(--font-sm);
+				line-height: 1.55;
+				margin: 0.6rem 0;
+			}
+			.metrics {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1px;
+				background: var(--border-secondary);
+				border-radius: var(--radius-md);
+				overflow: hidden;
+				margin-top: 1rem;
+			}
+			.metric {
+				background: rgba(244, 241, 232, 0.035);
+				padding: 0.55rem;
+			}
+			.metric strong,
+			.metric span {
+				display: block;
+			}
+			.metric strong {
+				color: var(--text-primary);
+			}
+			.metric span {
+				color: var(--text-tertiary);
+				font-size: 0.72rem;
+			}
+			.stack-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 1rem;
+			}
+			.stack-card {
+				padding: 1.2rem;
+			}
+			.stack-card .step {
+				display: inline-flex;
+				color: var(--accent-light);
+				font-size: var(--font-xs);
+				font-weight: 800;
+				margin-bottom: 0.7rem;
+			}
+			.stack-card h3 {
+				font-size: var(--font-lg);
+			}
+			.stack-card p {
+				font-size: var(--font-sm);
+				color: var(--text-tertiary);
+				line-height: 1.55;
+			}
+			.workflow-table {
+				overflow-x: auto;
+			}
+			.workflow-table table {
+				border: 0;
+				border-radius: 0;
+				background: transparent;
+			}
+			.cta {
+				padding: 0 0 4rem;
+			}
+			.cta-inner {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1.5rem;
+				background: linear-gradient(135deg, rgba(20, 184, 166, 0.14), rgba(245, 158, 11, 0.08)), var(--bg-card);
+				border: 1px solid var(--border-accent);
+				border-radius: var(--radius-lg);
+				padding: 1.5rem;
+			}
+			.cta-inner p {
+				margin: 0;
+				color: var(--text-secondary);
+			}
+			.actions {
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+			}
+			.btn {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				padding: 0.75rem 1rem;
+				border-radius: var(--radius-md);
+				background: var(--accent);
+				color: var(--text-inverse);
+				font-weight: 800;
+				text-decoration: none;
+			}
+			.btn.secondary {
+				background: rgba(244, 241, 232, 0.05);
+				border: 1px solid var(--border-primary);
+				color: var(--text-primary);
+			}
+			@media (max-width: 1040px) {
+				.hero-grid,
+				.stack-grid {
+					grid-template-columns: 1fr 1fr;
+				}
+				.model-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+			@media (max-width: 680px) {
+				.hero {
+					padding: 3rem 0 2rem;
+				}
+				.hero-grid,
+				.model-grid,
+				.stack-grid {
+					grid-template-columns: 1fr;
+				}
+				.section-head,
+				.cta-inner {
+					display: block;
+				}
+				.actions {
+					margin-top: 1rem;
+				}
+				.workflow-table table th,
+				.workflow-table table td {
+					white-space: normal;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<Header />
+		<main>
+			<section class="hero">
+				<div class="container hero-grid">
+					<div>
+						<p class="eyebrow">Coding and agent model guide</p>
+						<h1>Pick models for coding agents, not leaderboard screenshots.</h1>
+						<p class="subtitle">
+							Use this page to decide which model should plan, edit, review, and handle bulk work in an AI coding-agent stack.
+							It combines coding quality, tool use, context length, and API cost into practical routing guidance.
+						</p>
+					</div>
+					<aside class="hero-panel">
+						<strong>{agentModels.length}</strong>
+						<span>recommended coding-agent models</span>
+						<p>Model data verified {MODEL_DATA_VERIFIED_ON}. Prices are listed per 1M tokens where provider pricing is available.</p>
+					</aside>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Shortlist</p>
+							<h2>Best Models for Agentic Coding</h2>
+						</div>
+						<p>Use frontier models for planning and risky edits. Use cheaper or local models for repetitive, low-risk work.</p>
+					</div>
+					<div class="model-grid">
+						{agentModels.map((model) => model && (
+							<article class="card">
+								<div class="card-top">
+									<h3>{model.name}</h3>
+									<span class="provider-dot" style={`background:${model.color}`}></span>
+								</div>
+								<p><strong>{model.provider}</strong> · {model.contextWindow} context · ${model.pricing.input}/${model.pricing.output} per 1M</p>
+								<p>{model.bestFor.slice(0, 3).join(' · ')}</p>
+								<div class="metrics">
+									<div class="metric"><strong>{model.scores.coding}</strong><span>Coding</span></div>
+									<div class="metric"><strong>{model.scores.toolUse}</strong><span>Tools</span></div>
+									<div class="metric"><strong>{model.scores.reasoning}</strong><span>Reasoning</span></div>
+								</div>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Routing pattern</p>
+							<h2>A Practical Coding-Agent Stack</h2>
+						</div>
+						<p>The best setup is usually a router, not one model doing every step. Split planning, implementation, review, and bulk work.</p>
+					</div>
+					<div class="stack-grid">
+						{stack.map((item, index) => (
+							<article class="stack-card">
+								<span class="step">Step {index + 1}</span>
+								<h3>{item.label}</h3>
+								<p><strong>{item.pick}</strong></p>
+								<p>{item.why}</p>
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="section">
+				<div class="container">
+					<div class="section-head">
+						<div>
+							<p class="eyebrow">Workflow map</p>
+							<h2>What to Use for Each Coding Workflow</h2>
+						</div>
+						<p>Choose based on the job: long context, autonomy, privacy, and retry cost matter as much as raw coding score.</p>
+					</div>
+					<div class="workflow-table">
+						<table>
+							<thead>
+								<tr>
+									<th>Workflow</th>
+									<th>Primary model</th>
+									<th>Fallback</th>
+									<th>Why</th>
+								</tr>
+							</thead>
+							<tbody>
+								{workflows.map((row) => (
+									<tr>
+										<td><strong>{row.task}</strong></td>
+										<td>{row.primary}</td>
+										<td>{row.fallback}</td>
+										<td>{row.note}</td>
+									</tr>
+								))}
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</section>
+
+			<section class="cta">
+				<div class="container">
+					<div class="cta-inner">
+						<div>
+							<h2>Need a recommendation for your exact workflow?</h2>
+							<p>Use the model picker for budget, context, tool-use, and deployment constraints.</p>
+						</div>
+						<div class="actions">
+							<a class="btn" href="/tools/model-picker">Open model picker</a>
+							<a class="btn secondary" href="/compare">Compare models</a>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
