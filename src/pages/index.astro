@@ -6,7 +6,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
-import { VERIFIED_MODELS } from '../data/verified-models';
+import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
 import { isFactCheckedPost } from '../utils/fact-check';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -32,7 +32,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${SITE_TITLE} — Daily AI Scorecards`} description={SITE_DESCRIPTION} />
+		<BaseHead title={`${SITE_TITLE} — Verified AI Model Scorecards`} description={SITE_DESCRIPTION} />
 		<style>
 			/* Override main for homepage — full-width sections */
 			main {
@@ -51,8 +51,9 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			/* ===== HERO ===== */
 			.hero-section {
 				position: relative;
-				padding: var(--space-4xl) 0 var(--space-3xl);
+				padding: 4.6rem 0 3.5rem;
 				overflow: hidden;
+				border-bottom: 1px solid var(--border-secondary);
 			}
 			.hero-bg {
 				position: absolute;
@@ -64,23 +65,23 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				position: absolute;
 				inset: 0;
 				background: var(--gradient-mesh);
-				opacity: 0.6;
+				opacity: 0.42;
 				pointer-events: none;
 			}
 			.hero-grid-lines {
 				position: absolute;
 				inset: 0;
 				background-image:
-					linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-					linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-				background-size: 60px 60px;
+					linear-gradient(rgba(244,241,232,0.022) 1px, transparent 1px),
+					linear-gradient(90deg, rgba(244,241,232,0.022) 1px, transparent 1px);
+				background-size: 72px 72px;
 				pointer-events: none;
 			}
 			.hero-content {
 				position: relative;
 				display: grid;
-				grid-template-columns: 1.1fr 0.9fr;
-				gap: var(--space-3xl);
+				grid-template-columns: minmax(0, 1fr) minmax(360px, 0.92fr);
+				gap: 4rem;
 				align-items: center;
 			}
 			.hero-text {
@@ -92,15 +93,14 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				align-items: center;
 				gap: 0.5rem;
 				font-size: var(--font-xs);
-				font-weight: 600;
-				text-transform: uppercase;
-				letter-spacing: 0.08em;
+				font-weight: 700;
+				letter-spacing: 0;
 				color: var(--accent-light);
 				margin-bottom: var(--space-md);
 				padding: 0.35rem 0.85rem;
-				background: rgba(99, 102, 241, 0.1);
+				background: rgba(20, 184, 166, 0.1);
 				border: 1px solid var(--border-accent);
-				border-radius: var(--radius-full);
+				border-radius: var(--radius-md);
 			}
 			.hero-eyebrow .dot {
 				width: 6px;
@@ -110,20 +110,19 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				animation: pulse 2s ease-in-out infinite;
 			}
 			.hero-title {
-				font-size: clamp(2.5rem, 4.5vw, 3.75rem);
-				line-height: 1.08;
+				font-size: clamp(2.65rem, 4.7vw, 4.35rem);
+				line-height: 1.02;
 				margin-bottom: var(--space-lg);
-				letter-spacing: -0.035em;
-				background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.7) 100%);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-clip: text;
+				letter-spacing: 0;
+				color: var(--text-primary);
+				background: none;
+				-webkit-text-fill-color: currentColor;
 			}
 			.hero-desc {
-				font-size: var(--font-lg);
+				font-size: 1.05rem;
 				color: var(--text-secondary);
-				line-height: 1.7;
-				max-width: 520px;
+				line-height: 1.65;
+				max-width: 620px;
 				margin-bottom: var(--space-xl);
 			}
 			.hero-badges {
@@ -148,9 +147,9 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				justify-content: center;
 				gap: 0.5rem;
 				min-height: 44px;
-				padding: 0.7rem 1.4rem;
+				padding: 0.72rem 1.1rem;
 				border-radius: var(--radius-md);
-				font-weight: 600;
+				font-weight: 700;
 				font-size: var(--font-sm);
 				text-decoration: none;
 				transition: all var(--transition-fast);
@@ -158,17 +157,17 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				border: none;
 			}
 			.btn-primary {
-				background: var(--gradient-primary);
-				color: white;
-				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
+				background: var(--accent);
+				color: var(--text-inverse);
+				box-shadow: none;
 			}
 			.btn-primary:hover {
 				transform: translateY(-2px);
-				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
-				color: white;
+				box-shadow: 0 14px 30px rgba(20, 184, 166, 0.16);
+				color: var(--text-inverse);
 			}
 			.btn-secondary {
-				background: var(--bg-tertiary);
+				background: rgba(244, 241, 232, 0.05);
 				color: var(--text-primary);
 				border: 1px solid var(--border-primary);
 			}
@@ -190,11 +189,11 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				animation: fadeInUp 0.7s ease-out 0.3s forwards;
 			}
 			.leaderboard-card {
-				background: var(--bg-card);
+				background: linear-gradient(180deg, rgba(25, 28, 23, 0.96), rgba(15, 17, 14, 0.96));
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-xl);
-				padding: var(--space-lg);
-				box-shadow: var(--shadow-lg), var(--shadow-glow);
+				padding: 1.35rem;
+				box-shadow: var(--shadow-lg);
 				position: relative;
 				overflow: hidden;
 			}
@@ -208,7 +207,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				grid-template-columns: auto 1fr auto;
 				gap: var(--space-md);
 				align-items: center;
-				padding: 0.65rem 0;
+				padding: 0.75rem 0;
 				border-bottom: 1px solid var(--border-secondary);
 				min-width: 0;
 			}
@@ -229,9 +228,9 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				top: 0;
 				left: 0;
 				right: 0;
-				height: 2px;
-				background: var(--gradient-primary);
-				opacity: 0.6;
+				height: 3px;
+				background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+				opacity: 0.88;
 			}
 			.leaderboard-header {
 				display: flex;
@@ -254,14 +253,14 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				display: flex;
 				align-items: center;
 				justify-content: center;
-				border-radius: var(--radius-sm);
+				border-radius: var(--radius-md);
 				font-size: var(--font-xs);
 				font-weight: 700;
-				background: var(--bg-tertiary);
+				background: rgba(244, 241, 232, 0.06);
 				color: var(--text-secondary);
 			}
 			.model-rank.gold {
-				background: rgba(245, 158, 11, 0.15);
+				background: rgba(245, 158, 11, 0.16);
 				color: var(--warning);
 			}
 			.model-info {
@@ -276,7 +275,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			}
 			.model-bar-container {
 				height: 6px;
-				background: var(--bg-tertiary);
+				background: rgba(244, 241, 232, 0.08);
 				border-radius: 3px;
 				overflow: hidden;
 				margin-top: 0.2rem;
@@ -312,29 +311,29 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			.stats-strip {
 				display: grid;
 				grid-template-columns: repeat(4, 1fr);
-				gap: var(--space-md);
-				padding-top: var(--space-2xl);
-				padding-bottom: var(--space-2xl);
-			}
-			.stat-card {
-				background: var(--bg-card);
+				gap: 1px;
+				padding: 0;
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-lg);
-				padding: var(--space-lg);
-				text-align: center;
+				overflow: hidden;
+				background: var(--border-primary);
+			}
+			.stat-card {
+				background: rgba(18, 20, 16, 0.95);
+				border: 0;
+				border-radius: 0;
+				padding: 1.25rem;
+				text-align: left;
 				transition: all var(--transition-base);
 			}
 			.stat-card:hover {
-				border-color: var(--border-accent);
-				transform: translateY(-2px);
+				background: var(--bg-card-hover);
+				transform: none;
 			}
 			.stat-number {
-				font-size: var(--font-3xl);
+				font-size: var(--font-2xl);
 				font-weight: 700;
-				background: var(--gradient-primary);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-clip: text;
+				color: var(--text-primary);
 				line-height: 1;
 				margin-bottom: 0.35rem;
 			}
@@ -345,10 +344,14 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 
 			/* ===== SECTIONS ===== */
 			.section {
-				padding: var(--space-3xl) 0;
+				padding: 3.25rem 0;
 			}
 			.section-header {
 				margin-bottom: var(--space-xl);
+				display: flex;
+				align-items: end;
+				justify-content: space-between;
+				gap: var(--space-xl);
 			}
 			.section-header h2 {
 				margin-bottom: 0.35rem;
@@ -356,16 +359,18 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			.section-header p {
 				color: var(--text-tertiary);
 				font-size: var(--font-base);
+				max-width: 560px;
+				margin: 0;
 			}
 
 			/* ===== POST GRID ===== */
 			.post-grid {
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-lg);
+				gap: 1rem;
 			}
 			.post-card {
-				background: var(--bg-card);
+				background: rgba(18, 20, 16, 0.88);
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-lg);
 				overflow: hidden;
@@ -377,7 +382,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			}
 			.post-card:hover {
 				border-color: var(--border-accent);
-				transform: translateY(-4px);
+				transform: translateY(-3px);
 				box-shadow: var(--shadow-lg);
 			}
 			.post-card:hover .post-card-title {
@@ -421,40 +426,33 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			.trust-grid {
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-lg);
+				gap: 1rem;
 			}
 			/* How It Works - 4 columns on desktop */
 			.trust-grid.how-it-works {
 				grid-template-columns: repeat(4, 1fr);
 			}
 			.trust-card {
-				background: var(--bg-card);
+				background: rgba(18, 20, 16, 0.88);
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-lg);
-				padding: var(--space-xl);
+				padding: 1.35rem;
 				transition: all var(--transition-base);
 				position: relative;
 				overflow: hidden;
 			}
 			.trust-card::before {
-				content: '';
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 60px;
-				height: 60px;
-				background: var(--gradient-card);
-				border-radius: 0 0 60px 0;
+				content: none;
 			}
 			.trust-card:hover {
 				border-color: var(--border-accent);
-				transform: translateY(-2px);
+				transform: translateY(-3px);
 			}
 			.trust-icon {
 				width: 40px;
 				height: 40px;
 				border-radius: var(--radius-md);
-				background: var(--bg-tertiary);
+				background: rgba(20, 184, 166, 0.1);
 				border: 1px solid var(--border-primary);
 				display: flex;
 				align-items: center;
@@ -476,10 +474,11 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 
 			/* ===== FIELDS TABLE ===== */
 			.fields-section {
-				background: var(--bg-card);
+				background: linear-gradient(180deg, rgba(18, 20, 16, 0.94), rgba(16, 17, 15, 0.94));
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-xl);
 				padding: var(--space-2xl);
+				overflow-x: auto;
 			}
 			.fields-section h2 {
 				margin-bottom: var(--space-lg);
@@ -489,20 +488,20 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			.provider-grid {
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-lg);
+				gap: 1rem;
 			}
 			.provider-card {
-				background: var(--bg-card);
+				background: rgba(18, 20, 16, 0.9);
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-lg);
-				padding: var(--space-xl);
+				padding: 1.35rem;
 				text-decoration: none;
 				color: inherit;
 				transition: all var(--transition-base);
 			}
 			.provider-card:hover {
-				border-color: var(--accent);
-				transform: translateY(-4px);
+				border-color: var(--border-accent);
+				transform: translateY(-3px);
 			}
 			.provider-card h3 {
 				font-size: var(--font-lg);
@@ -518,7 +517,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				gap: var(--space-lg);
 			}
 			.new-page-card {
-				background: var(--bg-card);
+				background: linear-gradient(135deg, rgba(20, 184, 166, 0.14), rgba(245, 158, 11, 0.08)), var(--bg-card);
 				border: 1px solid var(--border-primary);
 				border-radius: var(--radius-lg);
 				padding: var(--space-xl);
@@ -557,7 +556,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				background: var(--bg-card);
 				border: 1px solid var(--border-accent);
 				border-radius: var(--radius-xl);
-				padding: var(--space-3xl);
+				padding: 2.5rem;
 				text-align: center;
 				position: relative;
 				overflow: hidden;
@@ -622,7 +621,8 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 					padding: var(--space-xl) 0;
 				}
 				.hero-title {
-					font-size: 1.5rem;
+					font-size: 2.15rem;
+					line-height: 1.05;
 				}
 				.hero-badges {
 					flex-wrap: wrap;
@@ -652,6 +652,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				}
 				.section-header {
 					margin-bottom: var(--space-md);
+					display: block;
 				}
 				.trust-card {
 					padding: var(--space-lg);
@@ -662,6 +663,14 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				}
 				.fields-section {
 					padding: var(--space-lg);
+				}
+				.fields-section table th,
+				.fields-section table td {
+					white-space: normal;
+					min-width: 0;
+				}
+				.provider-grid {
+					grid-template-columns: 1fr;
 				}
 				.cta-card {
 					padding: var(--space-xl);
@@ -704,7 +713,8 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 			/* Extra small devices (phones, 400px and below) */
 			@media (max-width: 400px) {
 				.hero-title {
-					font-size: 1.25rem;
+					font-size: 2rem;
+					line-height: 1.06;
 				}
 				.hero-desc {
 					font-size: var(--font-sm);
@@ -740,21 +750,21 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				<div class="hero-text">
 					<span class="hero-eyebrow">
 						<span class="dot"></span>
-						Model data verified Feb 16, 2026
+						Model data verified {MODEL_DATA_VERIFIED_ON}
 					</span>
 					<h1 class="hero-title">Pick the right AI model with real-world benchmarks.</h1>
 					<p class="hero-desc">
 						We run actual engineering tasks — bug fixes, architecture decisions, API integrations — and score every model on <strong>correctness</strong>, <strong>cost</strong>, <strong>latency</strong>, and <strong>reliability</strong>. No synthetic benchmarks. No marketing claims. Just reproducible evals.
 					</p>
 					<div class="hero-badges">
-						<span class="badge badge-accent">Daily scorecards</span>
+						<span class="badge badge-accent">Verified scorecards</span>
 						<span class="badge">Transparent rubrics</span>
 						<span class="badge">Failure cases included</span>
 						<span class="badge badge-success">Cost + latency tracked</span>
 					</div>
 					<div class="hero-actions">
 						<a class="btn btn-primary" href="/scorecards">
-							See today's scorecards
+							See verified scorecards
 							<span class="btn-arrow">&rarr;</span>
 						</a>
 						<a class="btn btn-secondary" href="/model-data">Source log</a>
@@ -765,8 +775,8 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 					<div class="leaderboard-card">
 						<a href={latestScorecard ? `/blog/${latestScorecard.id}/` : '/scorecards'} class="leaderboard-link"></a>
 						<div class="leaderboard-header">
-							<h3>Today's Leaderboard</h3>
-							<span>{latestScorecard ? latestScorecard.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Feb 16, 2026'}</span>
+							<h3>Verified Leaderboard</h3>
+							<span>{latestScorecard ? latestScorecard.data.pubDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : MODEL_DATA_VERIFIED_ON}</span>
 						</div>
 						{models.map((model, i) => (
 							<div class="model-row">
@@ -801,7 +811,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 					<div class="stats-strip">
 						<div class="stat-card">
 							<div class="stat-number">25</div>
-							<div class="stat-label">Models tested daily</div>
+							<div class="stat-label">Models in source log</div>
 						</div>
 						<div class="stat-card">
 							<div class="stat-number">10+</div>
@@ -812,8 +822,8 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 							<div class="stat-label">Transparent rubrics</div>
 						</div>
 						<div class="stat-card">
-							<div class="stat-number">Daily</div>
-							<div class="stat-label">Updated at 6am ET</div>
+							<div class="stat-number">Verified</div>
+							<div class="stat-label">Updated after source review</div>
 						</div>
 					</div>
 				</div>
@@ -896,8 +906,8 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 						</div>
 						<div class="trust-card">
 							<div class="trust-icon" style="background: rgba(99, 102, 241, 0.1); border-color: var(--accent);">4</div>
-							<h3>Daily updates</h3>
-							<p>New scorecards every morning at 6am ET.</p>
+							<h3>Freshness-first updates</h3>
+							<p>New scorecards and model data are published only after source review.</p>
 						</div>
 					</div>
 				</div>
@@ -974,9 +984,9 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 						<p>Quick picks by provider if you already know whose API you want to use.</p>
 					</div>
 					<div class="provider-grid">
-						<a href="/best-openai-models" class="provider-card"><h3>Best OpenAI Models</h3><p>GPT-5.4, GPT-OSS-120B, and more</p></a>
-						<a href="/best-anthropic-models" class="provider-card"><h3>Best Anthropic Models</h3><p>Claude Opus 4.6, Sonnet 4.6</p></a>
-						<a href="/best-google-models" class="provider-card"><h3>Best Google Models</h3><p>Gemini 3.1 Pro, Flash, and more</p></a>
+						<a href="/best-openai-models" class="provider-card"><h3>Best OpenAI Models</h3><p>GPT-5.5, GPT-5.4, GPT-5.2-Codex, and more</p></a>
+						<a href="/best-anthropic-models" class="provider-card"><h3>Best Anthropic Models</h3><p>Claude Opus 4.7, Sonnet 4.6</p></a>
+						<a href="/best-google-models" class="provider-card"><h3>Best Google Models</h3><p>Gemini 3.1 Pro Preview, Gemini 3 Flash, and more</p></a>
 					</div>
 				</div>
 			</section>
@@ -986,7 +996,7 @@ const models = VERIFIED_MODELS.slice(0, 5).map(model => ({
 				<div class="container">
 					<div class="cta-card">
 						<h2>Start with today's winner</h2>
-						<p>Go straight to the daily scorecard, then drill into task-level breakdowns for coding, reasoning, and tool-use.</p>
+						<p>Go straight to the verified scorecards, then drill into task-level breakdowns for coding, reasoning, and tool-use.</p>
 						<a class="btn btn-primary" href="/scorecards">
 							View scorecards
 							<span class="btn-arrow">&rarr;</span>

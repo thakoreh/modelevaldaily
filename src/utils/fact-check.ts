@@ -15,12 +15,16 @@ const UNVERIFIED_PATTERNS: FactIssueDefinition[] = [
 		reason: 'Not listed in official OpenAI model references.',
 	},
 	{
-		pattern: /\bClaude Opus 4\.[67]\b/gi,
-		reason: 'Not listed in official Anthropic model references.',
+		pattern: /\bGPT-5\.3 Codex\b/gi,
+		reason: 'Current official OpenAI references list GPT-5.2-Codex, not GPT-5.3 Codex.',
 	},
 	{
 		pattern: /\bClaude 4o\b/gi,
 		reason: 'No official Anthropic model named "Claude 4o".',
+	},
+	{
+		pattern: /\bGemini 3 Pro Preview\b/gi,
+		reason: 'Google says Gemini 3 Pro Preview is deprecated and shut down; use Gemini 3.1 Pro Preview.',
 	},
 	{
 		pattern: /\bKimi K2\.5\b/gi,

@@ -8,12 +8,12 @@ const faqs = [
 	{
 		id: 'what-is-benchmarking',
 		question: 'What is AI model benchmarking?',
-		answer: `AI model benchmarking is the systematic evaluation of language models across standardized tasks. At AIModelBenchmarks.com, we test models on real engineering work: coding tasks, reasoning challenges, and tool-use workflows. Unlike synthetic benchmarks that test isolated capabilities, our approach measures how models perform on actual work that developers and operators do daily. We score models on correctness, speed-to-usable-output, and clarity, then aggregate results into daily scorecards that account for cost and latency.`,
+		answer: `AI model benchmarking is the systematic evaluation of language models across standardized tasks. At AIModelBenchmarks.com, we test models on real engineering work: coding tasks, reasoning challenges, and tool-use workflows. Unlike synthetic benchmarks that test isolated capabilities, our approach measures how models perform on actual work that developers and operators do. We score models on correctness, speed-to-usable-output, and clarity, then aggregate results into source-reviewed scorecards that account for cost and latency.`,
 	},
 	{
 		id: 'best-coding-model-2026',
 		question: 'Which AI model is best for coding in 2026?',
-		answer: `The answer depends on your workflow, but as of February 16, 2026 our top coding performers are GPT-5 and Claude Opus 4.1. GPT-5 is usually stronger for tool-heavy engineering flows, while Claude Opus 4.1 is strong for careful refactors and architecture reviews. For lower-cost usage, DeepSeek-R1 and GLM-5 often provide better price/performance. Rankings shift as providers ship updates, so we recommend checking current scorecards before committing.`,
+		answer: `The answer depends on your workflow, but our current source-reviewed guide favors frontier models such as GPT-5.5, Claude Opus 4.7, GPT-5.2-Codex, and strong cost-efficient alternatives depending on whether you need tool use, deep reasoning, context length, or low cost. Rankings shift as providers ship updates, so we recommend checking current scorecards before committing.`,
 	},
 	{
 		id: 'cheapest-api',
@@ -28,22 +28,22 @@ const faqs = [
 	{
 		id: 'swe-bench',
 		question: 'What is SWE-bench?',
-		answer: `SWE-bench is a benchmark dataset that tests AI models on real GitHub issues from popular Python repositories. Models must understand bug reports, navigate codebases, and generate patches that pass test suites. It's one of the most rigorous evaluations of software engineering capability because it uses authentic problems, not synthetic exercises. SWE-bench scores are widely cited, but they only capture one dimension of model capability. Our daily scorecards complement SWE-bench by testing a broader range of tasks including reasoning, tool use, and documentation-driven workflows.`,
+		answer: `SWE-bench is a benchmark dataset that tests AI models on real GitHub issues from popular Python repositories. Models must understand bug reports, navigate codebases, and generate patches that pass test suites. It's one of the most rigorous evaluations of software engineering capability because it uses authentic problems, not synthetic exercises. SWE-bench scores are widely cited, but they only capture one dimension of model capability. Our scorecards complement SWE-bench by testing a broader range of tasks including reasoning, tool use, and documentation-driven workflows.`,
 	},
 	{
 		id: 'claude-vs-gpt',
 		question: 'How do I choose between Claude and GPT?',
-		answer: `Claude (Anthropic) and GPT (OpenAI) are both excellent, with different strengths. Claude tends to excel at nuanced reasoning, following complex instructions, and producing well-structured output with fewer hallucinations. GPT models often have better tool integration, larger context windows in some variants, and more extensive ecosystem support. For coding specifically, both are competitive; check our daily scorecards for current rankings. Consider: your existing toolchain, data residency requirements, cost sensitivity, and which model performs better on tasks similar to yours. The best approach is often to test both on your actual workload.`,
+		answer: `Claude (Anthropic) and GPT (OpenAI) are both excellent, with different strengths. Claude tends to excel at nuanced reasoning, following complex instructions, and producing well-structured output with fewer hallucinations. GPT models often have strong tool integration, large context windows in current variants, and extensive ecosystem support. For coding specifically, both are competitive; check our source-reviewed scorecards for current rankings. Consider: your existing toolchain, data residency requirements, cost sensitivity, and which model performs better on tasks similar to yours. The best approach is often to test both on your actual workload.`,
 	},
 	{
 		id: 'best-reasoning-model',
 		question: 'What is the best AI model for reasoning?',
-		answer: `Based on our current scorecards, Claude Opus 4.1 and GPT-5 are both strong on reasoning, with Gemini 2.5 Pro also performing well when long context matters. Reasoning quality varies by task type: some models do better on strict constraint solving, others on ambiguous tradeoff analysis. Our scorecards break reasoning into categories so you can map strengths to your own decision workflows.`,
+		answer: `Based on our current scorecards, Claude Opus 4.7, GPT-5.5, GPT-5.4, and Gemini 3.1 Pro Preview are all strong reasoning candidates, with different cost, latency, and context tradeoffs. Reasoning quality varies by task type: some models do better on strict constraint solving, others on ambiguous tradeoff analysis. Our scorecards break reasoning into categories so you can map strengths to your own decision workflows.`,
 	},
 	{
 		id: 'open-vs-closed',
 		question: 'Can open-source models compete with closed models?',
-		answer: `The gap is closing rapidly. Open-source models like Llama, Mistral, and DeepSeek now approach or match closed models on many benchmarks. The tradeoffs: closed models (Claude, GPT, Gemini) still generally lead on cutting-edge capabilities, complex reasoning, and reliability guarantees. Open-source models offer data privacy, deployment flexibility, no vendor lock-in, and often lower cost at scale. For many production workloads, top open-source models are now viable alternatives. We're adding more open-source models to our daily benchmarks as they reach production readiness.`,
+		answer: `The gap is closing rapidly. Open-source models like Llama, Mistral, and DeepSeek now approach or match closed models on many benchmarks. The tradeoffs: closed models (Claude, GPT, Gemini) still generally lead on cutting-edge capabilities, complex reasoning, and reliability guarantees. Open-source models offer data privacy, deployment flexibility, no vendor lock-in, and often lower cost at scale. For many production workloads, top open-source models are now viable alternatives. We're adding more open-source models as they reach production readiness.`,
 	},
 	{
 		id: 'prompt-caching',
@@ -53,7 +53,7 @@ const faqs = [
 	{
 		id: 're-evaluate-frequency',
 		question: 'How often should I re-evaluate my AI model choice?',
-		answer: `At minimum, quarterly. The AI landscape changes fast: new model versions release weekly, pricing shifts frequently, and capabilities evolve rapidly. If you're running production workloads, we recommend checking monthly scorecards to spot significant changes. Red flags that warrant immediate re-evaluation: your model's performance degrading, a competitor releasing a major update, your costs increasing unexpectedly, or your use case expanding to new task types. Subscribe to our daily scorecards to stay informed without constant manual checking.`,
+		answer: `At minimum, quarterly. The AI landscape changes fast: new model versions release often, pricing shifts frequently, and capabilities evolve rapidly. If you're running production workloads, we recommend checking monthly scorecards to spot significant changes. Red flags that warrant immediate re-evaluation: your model's performance degrading, a competitor releasing a major update, your costs increasing unexpectedly, or your use case expanding to new task types. Follow source-reviewed scorecards to stay informed without constant manual checking.`,
 	},
 ];
 

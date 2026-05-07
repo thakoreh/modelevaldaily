@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: March 9, 2026
+// Last Updated: May 7, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -16,33 +16,46 @@ export interface ModelPricing {
   notes?: string;
 }
 
-// Verified from: https://openai.com/api/pricing/ and https://www.tldl.io/resources/openai-api-pricing
+// Verified from: https://platform.openai.com/docs/pricing/ and https://platform.openai.com/docs/models
 export const openaiModels: ModelPricing[] = [
+  {
+    provider: 'OpenAI',
+    model: 'GPT-5.5',
+    releaseDate: '2026-05-01',
+    inputCost: 5.00,
+    outputCost: 30.00,
+    contextWindow: 1000000,
+    maxOutput: 128000,
+    source: 'OpenAI Official Models',
+    sourceUrl: 'https://platform.openai.com/docs/models',
+    lastVerified: '2026-05-07',
+    notes: 'Current OpenAI flagship for complex reasoning and coding'
+  },
   {
     provider: 'OpenAI',
     model: 'GPT-5.4',
     releaseDate: '2026-03-05',
     inputCost: 2.50,
     outputCost: 15.00,
-    contextWindow: 1050000,
+    contextWindow: 1000000,
     maxOutput: 128000,
     source: 'OpenAI Official Pricing',
-    sourceUrl: 'https://openai.com/api/pricing/',
-    lastVerified: '2026-03-09',
-    notes: 'Latest frontier model, released March 5, 2026'
+    sourceUrl: 'https://platform.openai.com/docs/models',
+    lastVerified: '2026-05-07',
+    notes: 'Affordable frontier model for coding and professional workflows'
   },
   {
     provider: 'OpenAI',
-    model: 'GPT-5.3 Codex',
-    releaseDate: '2026-02-20',
-    inputCost: 3.00,
-    outputCost: 15.00,
-    contextWindow: 200000,
-    maxOutput: 65536,
+    model: 'GPT-5.2-Codex',
+    releaseDate: '2026-03-01',
+    inputCost: 1.75,
+    outputCost: 14.00,
+    contextWindow: 400000,
+    maxOutput: 128000,
     source: 'OpenAI Official Pricing',
-    sourceUrl: 'https://openai.com/api/pricing/',
-    lastVerified: '2026-03-09',
-    notes: 'Coding-focused model'
+    sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.2-codex',
+    lastVerified: '2026-05-07',
+    notes: 'Coding-focused model for long-horizon agentic coding'
   },
   {
     provider: 'OpenAI',
@@ -50,11 +63,11 @@ export const openaiModels: ModelPricing[] = [
     releaseDate: '2025-12-15',
     inputCost: 1.75,
     outputCost: 14.00,
-    contextWindow: 128000,
-    maxOutput: 16384,
+    contextWindow: 400000,
+    maxOutput: 128000,
     source: 'OpenAI Official Pricing',
-    sourceUrl: 'https://openai.com/api/pricing/',
-    lastVerified: '2026-03-09'
+    sourceUrl: 'https://platform.openai.com/docs/pricing/',
+    lastVerified: '2026-05-07'
   },
   {
     provider: 'OpenAI',
@@ -65,50 +78,50 @@ export const openaiModels: ModelPricing[] = [
     contextWindow: 128000,
     maxOutput: 16384,
     source: 'OpenAI Official Pricing',
-    sourceUrl: 'https://openai.com/api/pricing/',
-    lastVerified: '2026-03-09'
+    sourceUrl: 'https://platform.openai.com/docs/pricing/',
+    lastVerified: '2026-05-07'
   },
   {
     provider: 'OpenAI',
     model: 'GPT-4.1-mini',
     releaseDate: '2026-01-15',
-    inputCost: 0.15,
-    outputCost: 0.60,
-    contextWindow: 128000,
-    maxOutput: 16384,
+    inputCost: 0.40,
+    outputCost: 1.60,
+    contextWindow: 1047576,
+    maxOutput: 32768,
     source: 'OpenAI Official Pricing',
-    sourceUrl: 'https://openai.com/api/pricing/',
-    lastVerified: '2026-03-09',
+    sourceUrl: 'https://platform.openai.com/docs/pricing/',
+    lastVerified: '2026-05-07',
     notes: 'Budget-friendly option'
   }
 ];
 
-// Verified from: https://platform.claude.com/docs/en/about-claude/pricing and https://www.tldl.io/resources/anthropic-api-pricing
+// Verified from: https://docs.anthropic.com/en/docs/about-claude/pricing
 export const anthropicModels: ModelPricing[] = [
+  {
+    provider: 'Anthropic',
+    model: 'Claude Opus 4.7',
+    releaseDate: '2026-04-01',
+    inputCost: 5.00,
+    outputCost: 25.00,
+    contextWindow: 1000000,
+    maxOutput: 128000,
+    source: 'Anthropic Official Pricing',
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-05-07',
+    notes: 'Most capable generally available Claude model'
+  },
   {
     provider: 'Anthropic',
     model: 'Claude Opus 4.6',
     releaseDate: '2026-02-28',
     inputCost: 5.00,
     outputCost: 25.00,
-    contextWindow: 200000,
-    maxOutput: 32000,
+    contextWindow: 1000000,
+    maxOutput: 128000,
     source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://platform.claude.com/docs/en/about-claude/pricing',
-    lastVerified: '2026-03-09',
-    notes: 'Most capable Claude model'
-  },
-  {
-    provider: 'Anthropic',
-    model: 'Claude Opus 4.6',
-    releaseDate: '2026-02-01',
-    inputCost: 5.00,
-    outputCost: 25.00,
-    contextWindow: 200000,
-    maxOutput: 32000,
-    source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://platform.claude.com/docs/en/about-claude/pricing',
-    lastVerified: '2026-03-09'
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-05-07'
   },
   {
     provider: 'Anthropic',
@@ -116,11 +129,11 @@ export const anthropicModels: ModelPricing[] = [
     releaseDate: '2026-01-15',
     inputCost: 3.00,
     outputCost: 15.00,
-    contextWindow: 200000,
-    maxOutput: 16000,
+    contextWindow: 1000000,
+    maxOutput: 64000,
     source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://platform.claude.com/docs/en/about-claude/pricing',
-    lastVerified: '2026-03-09',
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-05-07',
     notes: 'Balanced performance/cost'
   },
   {
@@ -132,20 +145,20 @@ export const anthropicModels: ModelPricing[] = [
     contextWindow: 200000,
     maxOutput: 16000,
     source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://platform.claude.com/docs/en/about-claude/pricing',
-    lastVerified: '2026-03-09'
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-05-07'
   },
   {
     provider: 'Anthropic',
     model: 'Claude Haiku 4.5',
     releaseDate: '2025-11-15',
-    inputCost: 0.25,
-    outputCost: 1.25,
+    inputCost: 1.00,
+    outputCost: 5.00,
     contextWindow: 200000,
-    maxOutput: 8192,
+    maxOutput: 64000,
     source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://platform.claude.com/docs/en/about-claude/pricing',
-    lastVerified: '2026-03-09',
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-05-07',
     notes: 'Fastest and cheapest'
   }
 ];
@@ -154,16 +167,29 @@ export const anthropicModels: ModelPricing[] = [
 export const googleModels: ModelPricing[] = [
   {
     provider: 'Google',
-    model: 'Gemini 3.1 Pro',
+    model: 'Gemini 3.1 Pro Preview',
     releaseDate: '2026-02-15',
-    inputCost: 1.25,
-    outputCost: 5.00,
+    inputCost: 2.00,
+    outputCost: 12.00,
     contextWindow: 1048576,
     maxOutput: 65536,
     source: 'Google AI Official Pricing',
     sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
-    lastVerified: '2026-03-09',
-    notes: 'Best long-context handling'
+    lastVerified: '2026-05-07',
+    notes: 'Preview model; standard tier pricing for prompts <= 200k tokens'
+  },
+  {
+    provider: 'Google',
+    model: 'Gemini 3 Flash Preview',
+    releaseDate: '2026-03-01',
+    inputCost: 0.50,
+    outputCost: 3.00,
+    contextWindow: 1048576,
+    maxOutput: 65536,
+    source: 'Google AI Official Pricing',
+    sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
+    lastVerified: '2026-05-07',
+    notes: 'Speed-focused Gemini 3 preview model'
   },
   {
     provider: 'Google',

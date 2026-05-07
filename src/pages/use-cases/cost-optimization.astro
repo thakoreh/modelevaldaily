@@ -9,8 +9,8 @@ const costModels = [
 	{ rank: 2, name: 'DeepSeek V3', provider: 'DeepSeek', inputPrice: 0.27, outputPrice: 1.1, overall: 8.7, color: '#8b5cf6', context: '64K', costPer1MTasks: '~$0.95', highlights: ['Best value performance', 'Strong coding', 'Fast responses'] },
 	{ rank: 3, name: 'MiniMax M2.5', provider: 'MiniMax', inputPrice: 0.5, outputPrice: 2, overall: 8.3, color: '#00bcd4', context: '245K', costPer1MTasks: '~$1.50', highlights: ['Low cost', 'Multimodal support', 'Fast inference'] },
 	{ rank: 4, name: 'Kimi K2.5', provider: 'Moonshot', inputPrice: 2, outputPrice: 10, overall: 8.9, color: '#e040fb', context: '200K', costPer1MTasks: '~$5.00', highlights: ['Great value', 'Strong reasoning', 'Large context'] },
-	{ rank: 5, name: 'Gemini 2.5 Pro', provider: 'Google', inputPrice: 7, outputPrice: 21, overall: 8.4, color: '#4285f4', context: '1M', costPer1MTasks: '~$12.00', highlights: ['Prompt caching', 'Massive context', 'Good value'] },
-	{ rank: 6, name: 'Claude Opus 4.6', provider: 'Anthropic', inputPrice: 15, outputPrice: 75, overall: 9.4, color: 'var(--claude)', context: '200K', costPer1MTasks: '~$45.00', highlights: ['Best quality', 'Prompt caching', 'Complex tasks'] },
+	{ rank: 5, name: 'Gemini 3.1 Pro Preview', provider: 'Google', inputPrice: 2, outputPrice: 12, overall: 8.4, color: '#4285f4', context: '1M', costPer1MTasks: '~$7.00', highlights: ['Prompt caching', 'Massive context', 'Good value'] },
+	{ rank: 6, name: 'Claude Opus 4.7', provider: 'Anthropic', inputPrice: 5, outputPrice: 25, overall: 9.4, color: 'var(--claude)', context: '1M', costPer1MTasks: '~$15.00', highlights: ['Best quality', 'Prompt caching', 'Complex tasks'] },
 ];
 
 const costScenarios = [
@@ -25,7 +25,7 @@ const decisionGuide = [
 	{ scenario: 'Enterprise on a budget', pick: 'GLM-5', reason: 'Lowest pricing at $0.50/$0.50 with solid 8.5/10 performance. Enterprise features included.' },
 	{ scenario: 'Need quality + reasonable cost', pick: 'Kimi K2.5', reason: '8.9/10 overall score at $2/$10 per million. Best quality-per-dollar for most workloads.' },
 	{ scenario: 'Long context + caching', pick: 'Gemini 2.5 Pro', reason: 'Prompt caching can reduce costs 50-90% on repeated contexts. 1M context for large documents.' },
-	{ scenario: 'Quality matters more than cost', pick: 'Claude Opus 4.6', reason: 'Best quality at 9.4/10. Use for critical tasks where accuracy justifies the premium.' },
+	{ scenario: 'Quality matters more than cost', pick: 'Claude Opus 4.7', reason: 'Best quality at 9.4/10. Use for critical tasks where accuracy justifies the premium.' },
 ];
 
 const savingsTips = [
@@ -37,7 +37,7 @@ const savingsTips = [
 ];
 
 const faqs = [
-	{ q: 'What is the cheapest LLM API in 2026?', a: 'GLM-5 offers the lowest pricing at $0.50 per million tokens for both input and output. DeepSeek V3 is close at $0.27/$1.10 with slightly better performance. Both are dramatically cheaper than Claude ($15/$75) or GPT-4 ($10/$30).' },
+	{ q: 'What is the cheapest LLM API in 2026?', a: 'GLM-5 offers low pricing at $0.50 per million tokens for both input and output. DeepSeek V3 is close at $0.27/$1.10 with strong performance. Both are dramatically cheaper than Claude Opus 4.7 ($5/$25) or GPT-5.5 ($5/$30).' },
 	{ q: 'How do I calculate my AI API costs?', a: 'Cost = (input tokens × input price + output tokens × output price) / 1,000,000. Track your average tokens per task, multiply by your volume, and compare across models. Our cost scenarios table shows real examples.' },
 	{ q: 'Is it worth paying more for a better model?', a: 'Sometimes yes. If a cheaper model requires 3 retries or produces unusable output, a more expensive model that works first try can be cheaper overall. Track success rates and retries, not just token costs.' },
 	{ q: 'What is prompt caching and how much does it save?', a: 'Prompt caching stores processed prompt prefixes so repeated context doesn\'t need reprocessing. Claude and Gemini offer this. Savings range from 50-90% when your requests share common system prompts or documentation.' },

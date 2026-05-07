@@ -1,7 +1,7 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-03-10';
+export const MODEL_DATA_VERIFIED_ON = '2026-05-07';
 
-// Last force rebuild: 2026-03-10 13:30 UTC
-// Added: Kimi K2.5, MiniMax M2.5, Grok 4.1 Fast, Qwen 3 Max, GPT-OSS-120B
+// Last verification pass: 2026-05-07
+// Official docs checked for OpenAI, Anthropic, and Google model names/pricing.
 
 export interface VerifiedModel {
 	name: string;
@@ -27,18 +27,33 @@ export interface VerifiedModel {
 	}>;
 }
 
-// Current frontier models (March 2026) - verified and fact-checked
+// Current frontier models - model names/pricing verified against provider docs.
 export const VERIFIED_MODELS: VerifiedModel[] = [
 	{
-		name: 'Claude Opus 4.6',
+		name: 'GPT-5.5',
+		provider: 'OpenAI',
+		color: '#10b981',
+		releaseDate: '2026-05-01',
+		pricing: { input: 5.00, output: 30.00 },
+		contextWindow: '1M',
+		bestFor: ['Complex reasoning', 'Coding', 'Professional workflows'],
+		scores: { coding: 9.8, reasoning: 9.8, toolUse: 9.7 },
+		strengths: ['OpenAI flagship', 'Strong coding and reasoning', 'Built-in tool support'],
+		sources: [
+			{ label: 'OpenAI Models', url: 'https://platform.openai.com/docs/models' },
+			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
+		],
+	},
+	{
+		name: 'Claude Opus 4.7',
 		provider: 'Anthropic',
 		color: '#f59e0b',
-		releaseDate: '2026-02-05',
+		releaseDate: '2026-04-01',
 		pricing: { input: 5.00, output: 25.00 },
-		contextWindow: '200K',
-		bestFor: ['Complex reasoning', 'Critical decisions', 'Long-form analysis'],
+		contextWindow: '1M',
+		bestFor: ['Complex reasoning', 'Agentic coding', 'Critical decisions'],
 		scores: { coding: 9.7, reasoning: 9.8, toolUse: 9.5 },
-		strengths: ['Top-tier intelligence', 'Nuanced decision-making', 'Best for complex reasoning'],
+		strengths: ['Anthropic flagship', 'Strong agentic coding', 'Large context window'],
 		sources: [
 			{ label: 'Anthropic Models', url: 'https://docs.anthropic.com/en/docs/about-claude/models' },
 			{ label: 'Anthropic Pricing', url: 'https://docs.anthropic.com/en/docs/about-claude/pricing' },
@@ -50,21 +65,21 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		color: '#10b981',
 		releaseDate: '2026-03-05',
 		pricing: { input: 2.50, output: 15.00 },
-		contextWindow: '1.05M',
+		contextWindow: '1M',
 		bestFor: ['Coding', 'Agents', 'Tool integration'],
 		scores: { coding: 9.8, reasoning: 9.5, toolUse: 9.7 },
-		strengths: ['Best coding performance', 'Excellent tool integration', 'Strong agentic capabilities'],
+		strengths: ['Strong coding performance', 'Excellent tool integration', 'Strong agentic capabilities'],
 		sources: [
 			{ label: 'OpenAI Models', url: 'https://platform.openai.com/docs/models' },
-			{ label: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/' },
+			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
 		],
 	},
 	{
-		name: 'Gemini 3.1 Pro',
+		name: 'Gemini 3.1 Pro Preview',
 		provider: 'Google',
 		color: '#4285f4',
 		releaseDate: '2026-02-19',
-		pricing: { input: 1.25, output: 5.00 },
+		pricing: { input: 2.00, output: 12.00, notes: 'Standard tier, prompts <= 200k tokens; higher rates apply above 200k.' },
 		contextWindow: '1M',
 		bestFor: ['Multimodal tasks', 'Long context', 'Search integration'],
 		scores: { coding: 9.5, reasoning: 9.5, toolUse: 9.3 },
@@ -80,7 +95,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		color: '#ea580c',
 		releaseDate: '2026-02-17',
 		pricing: { input: 3.00, output: 15.00 },
-		contextWindow: '200K',
+		contextWindow: '1M',
 		bestFor: ['Balanced performance', 'Production workloads', 'Cost-efficient'],
 		scores: { coding: 9.4, reasoning: 9.3, toolUse: 9.1 },
 		strengths: ['Great value', 'Fast response times', 'Consistent quality'],
@@ -90,18 +105,18 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
-		name: 'GPT-5.3 Codex',
+		name: 'GPT-5.2-Codex',
 		provider: 'OpenAI',
 		color: '#059669',
-		releaseDate: '2026-02-20',
-		pricing: { input: 3.00, output: 15.00 },
-		contextWindow: '200K',
+		releaseDate: '2026-03-01',
+		pricing: { input: 1.75, output: 14.00 },
+		contextWindow: '400K',
 		bestFor: ['Coding-focused tasks', 'Type inference', 'Agentic coding'],
 		scores: { coding: 9.7, reasoning: 9.3, toolUse: 9.4 },
-		strengths: ['Best for coding', 'Strong agentic capabilities', 'Production-ready'],
+		strengths: ['Optimized for long-horizon coding', 'Strong agentic capabilities', 'Production-ready'],
 		sources: [
-			{ label: 'OpenAI Models', url: 'https://platform.openai.com/docs/models' },
-			{ label: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/' },
+			{ label: 'OpenAI Model Card', url: 'https://developers.openai.com/api/docs/models/gpt-5.2-codex' },
+			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
 		],
 	},
 	{
@@ -155,13 +170,13 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		color: '#10b981',
 		releaseDate: '2025-12-15',
 		pricing: { input: 1.75, output: 14.00 },
-		contextWindow: '128K',
+		contextWindow: '400K',
 		bestFor: ['General-purpose', 'Balanced tasks'],
 		scores: { coding: 9.3, reasoning: 9.2, toolUse: 9.0 },
 		strengths: ['Reliable', 'Good performance', 'Widely available'],
 		sources: [
 			{ label: 'OpenAI Models', url: 'https://platform.openai.com/docs/models' },
-			{ label: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/' },
+			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
 		],
 	},
 	{

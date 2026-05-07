@@ -3,30 +3,17 @@ import BaseHead from '../../components/BaseHead.astro';
 import Header from '../../components/Header.astro';
 import Footer from '../../components/Footer.astro';
 
-const lastUpdated = 'March 9, 2026';
+const lastUpdated = 'May 7, 2026';
 const sourceUrl = 'https://lmarena.ai';
 const methodologyUrl = 'https://lmsys.org/blog/2023-05-03-arena/';
-
-const eloRatings = [
-  { rank: 1, model: 'Claude Opus 4.6', elo: 1512, votes: '1.2M', confidence: '±3', source: 'lmarena.ai' },
-  { rank: 2, model: 'GPT-5.4', elo: 1498, votes: '980K', confidence: '±4', source: 'lmarena.ai' },
-  { rank: 3, model: 'Gemini 3.1 Pro', elo: 1489, votes: '890K', confidence: '±4', source: 'lmarena.ai' },
-  { rank: 4, model: 'Claude Sonnet 4.5', elo: 1476, votes: '1.5M', confidence: '±3', source: 'lmarena.ai' },
-  { rank: 5, model: 'GPT-5.2', elo: 1468, votes: '1.1M', confidence: '±3', source: 'lmarena.ai' },
-  { rank: 6, model: 'GLM-5', elo: 1445, votes: '620K', confidence: '±5', source: 'lmarena.ai' },
-  { rank: 7, model: 'Llama 4 (405B)', elo: 1423, votes: '540K', confidence: '±6', source: 'lmarena.ai' },
-  { rank: 8, model: 'Qwen 3 72B', elo: 1418, votes: '480K', confidence: '±6', source: 'lmarena.ai' },
-  { rank: 9, model: 'Mistral Large 3', elo: 1402, votes: '390K', confidence: '±7', source: 'lmarena.ai' },
-  { rank: 10, model: 'DeepSeek V3', elo: 1395, votes: '340K', confidence: '±7', source: 'lmarena.ai' },
-];
 ---
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <BaseHead 
-    title="Live Chatbot Arena ELO Ratings — Verified Daily | AIModelBenchmarks.com" 
-    description="Real-time ELO ratings from LMSYS Chatbot Arena. Updated daily with 6M+ crowd-sourced votes. The most reliable measure of LLM performance."
+    title="Chatbot Arena ELO Ratings Explained | AIModelBenchmarks.com" 
+    description="How to read Chatbot Arena ELO ratings, confidence intervals, and human-preference leaderboards. Use the official LM Arena site for current rankings."
     type="article"
   />
 </head>
@@ -36,9 +23,9 @@ const eloRatings = [
   <main class="elo-page">
     <article>
       <header class="page-header">
-        <h1>Live Chatbot Arena ELO Ratings</h1>
+        <h1>Chatbot Arena ELO Ratings Explained</h1>
         <p class="subtitle">
-          Crowd-sourced LLM rankings from <strong>6M+ votes</strong>. Updated daily.
+          Human-preference leaderboards are useful, but the current rankings belong at the official source.
         </p>
         <div class="meta">
           <span class="updated">Last verified: <time>{lastUpdated}</time></span>
@@ -54,7 +41,7 @@ const eloRatings = [
           and vote for the better response.
         </p>
         <ul>
-          <li><strong>6M+ votes</strong> collected since launch</li>
+          <li><strong>Large-scale public voting</strong> collected since launch</li>
           <li><strong>Randomized battles</strong> prevent gaming</li>
           <li><strong>Confidence intervals</strong> show uncertainty</li>
           <li><strong>Open methodology</strong> — <a href={methodologyUrl} target="_blank" rel="noopener noreferrer">read the paper</a></li>
@@ -67,36 +54,11 @@ const eloRatings = [
 
       <section class="leaderboard">
         <h2>Current Leaderboard</h2>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Rank</th>
-                <th>Model</th>
-                <th>ELO</th>
-                <th>95% CI</th>
-                <th>Votes</th>
-                <th>Source</th>
-              </tr>
-            </thead>
-            <tbody>
-              {eloRatings.map((entry) => (
-                <tr>
-                  <td class="rank">#{entry.rank}</td>
-                  <td class="model">
-                    <a href={`/compare/${entry.model.toLowerCase().replace(/\s+/g, '-')}`}>{entry.model}</a>
-                  </td>
-                  <td class="elo">{entry.elo}</td>
-                  <td class="ci">{entry.confidence}</td>
-                  <td class="votes">{entry.votes}</td>
-                  <td class="source-link">
-                    <a href={sourceUrl} target="_blank" rel="noopener noreferrer">{entry.source}</a>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <p>
+          For current model ranks, ELO scores, vote counts, and confidence intervals, use the
+          official <a href={sourceUrl} target="_blank" rel="noopener noreferrer">LM Arena leaderboard</a>.
+          This page explains how to interpret those numbers without republishing a static copy that can drift.
+        </p>
       </section>
 
       <section class="context">
@@ -119,7 +81,7 @@ const eloRatings = [
           <li><strong>Human preference ≠ truth.</strong> Models may sound confident while being wrong.</li>
           <li><strong>Bias toward verbose responses.</strong> Longer answers often score higher.</li>
           <li><strong>No task-specific ratings.</strong> Coding, math, and reasoning aren't separated.</li>
-          <li><strong>New models need time.</strong> GPT-5.4 (released March 5) has fewer votes than Claude.</li>
+          <li><strong>New models need time.</strong> Fresh releases may have wider confidence intervals until enough battles accumulate.</li>
         </ul>
         <p>
           For <strong>task-specific benchmarks</strong>, see our 
@@ -153,7 +115,7 @@ https://lmsys.org/blog/2023-05-03-arena/</code></pre>
         <p>
           <strong>Data provenance:</strong> ELO ratings sourced from 
           <a href={sourceUrl} target="_blank" rel="noopener noreferrer">lmarena.ai</a>. 
-          Last verified {lastUpdated}. This page updates daily.
+          Last source review {lastUpdated}. Current rankings should be checked at the official leaderboard.
         </p>
       </footer>
     </article>

@@ -3,9 +3,9 @@ import AboutHeroImage from '../assets/blog-placeholder-about.jpg';
 import Layout from '../layouts/BlogPost.astro';
 ---
 
-<Layout
+	<Layout
 	title="Methodology — How We Benchmark AI Models"
-	description="How AIModelBenchmarks.com runs daily model evaluations. Our transparent methodology: real tasks, public rubrics, and reproducible results."
+	description="How AIModelBenchmarks.com runs source-reviewed model evaluations. Our transparent methodology: real tasks, public rubrics, and reproducible results."
 	pubDate={new Date('February 12 2026')}
 	heroImage={AboutHeroImage}
 >
@@ -42,24 +42,23 @@ import Layout from '../layouts/BlogPost.astro';
 		<li><strong>Clarity (3 pts):</strong> Is the output well-structured, documented, and easy to review?</li>
 	</ul>
 	<p>
-		The weighted total rolls into the daily scorecard. We weight coding at 40%, reasoning at 35%, and tool-use at 25%.
+		The weighted total rolls into the model scorecard. We weight coding at 40%, reasoning at 35%, and tool-use at 25%.
 	</p>
 
 	<h2>How We Run Evals</h2>
 	<ol>
 		<li><strong>Task selection:</strong> We pick a real-world task from our backlog (contributed by engineers, PMs, and our team).</li>
 		<li><strong>Prompt design:</strong> We write a clear, constrained prompt with explicit success criteria.</li>
-		<li><strong>Model execution:</strong> We run the same prompt against every model under test (currently GPT-5, Claude Opus 4.1, Gemini 2.5 Pro, DeepSeek-R1, and GLM-5).</li>
+		<li><strong>Model execution:</strong> We run the same prompt against every model under test and verify model availability, pricing, and context claims against provider documentation.</li>
 		<li><strong>Blind scoring:</strong> Outputs are scored against the rubric without knowing which model produced them.</li>
-		<li><strong>Publication:</strong> The full scorecard -- prompt, rubric, scores, and analysis -- is published daily.</li>
+		<li><strong>Publication:</strong> The full scorecard -- prompt, rubric, scores, source links, and analysis -- is published after source review.</li>
 	</ol>
 
 	<h2>Models We Track</h2>
 	<p>
-		We currently evaluate <strong>GPT-5 (OpenAI)</strong>, <strong>Claude Opus 4.1 (Anthropic)</strong>,
-		<strong>Gemini 2.5 Pro (Google)</strong>, <strong>DeepSeek-R1 (DeepSeek)</strong>, and
-		<strong>GLM-5 (Zhipu)</strong>. Official model names and pricing references are documented on our
-		<a href="/model-data">Model Data Sources</a> page and were last verified on February 16, 2026.
+		We currently evaluate frontier and cost-efficient models from OpenAI, Anthropic, Google,
+		DeepSeek, xAI, Meta, Mistral, and Zhipu. Official model names and pricing references are
+		documented on our <a href="/model-data">Model Data Sources</a> page.
 	</p>
 
 	<h2>How to Contribute</h2>

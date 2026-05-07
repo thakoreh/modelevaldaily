@@ -11,7 +11,7 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 	<head>
 		<BaseHead
 			title={`Model Data Sources — Fact Check Log | ${SITE_TITLE}`}
-			description="Official model and pricing source references used on AIModelBenchmarks.com. Last verified on February 16, 2026."
+			description={`Official model and pricing source references used on AIModelBenchmarks.com. Last verified on ${MODEL_DATA_VERIFIED_ON}.`}
 		/>
 		<style>
 			main {
@@ -95,7 +95,8 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 				<h1>Model Data Sources</h1>
 				<p>
 					This page tracks the official provider docs used to validate model names and pricing displayed on
-					this site.
+					this site. Benchmark scores are internal editorial scores; provider docs validate model availability,
+					context windows, and token pricing.
 				</p>
 				<span class="badge">Last verified: {MODEL_DATA_VERIFIED_ON}</span>
 			</section>

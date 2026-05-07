@@ -7,8 +7,8 @@ import { SITE_TITLE } from '../../consts';
 
 const pageTitle = 'Claude vs Gemini for Coding and Long Context';
 const description = 'Claude vs Gemini for Coding and Long Context: compare coding, reasoning, tool use, pricing, context window, and practical production recommendations.';
-const modelA = VERIFIED_MODELS.find((m) => m.name === 'Claude Opus 4.6') ?? VERIFIED_MODELS[0];
-const modelB = VERIFIED_MODELS.find((m) => m.name === 'Gemini 3.1 Pro') ?? VERIFIED_MODELS[1];
+const modelA = VERIFIED_MODELS.find((m) => m.name === 'Claude Opus 4.7') ?? VERIFIED_MODELS[0];
+const modelB = VERIFIED_MODELS.find((m) => m.name === 'Gemini 3.1 Pro Preview') ?? VERIFIED_MODELS[1];
 const verdict = 'Claude is usually the safer choice for careful code review and architecture tradeoffs. Gemini is the better pick when long context and multimodal/search-adjacent work dominate.';
 const rows = [
   ['Coding', modelA.scores.coding, modelB.scores.coding],

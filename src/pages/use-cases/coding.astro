@@ -5,11 +5,11 @@ import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
 
 const codingModels = [
-	{ rank: 1, name: 'Claude Opus 4.6', provider: 'Anthropic', score: 9.5, color: 'var(--claude)', pricing: { input: 15, output: 75 }, context: '200K', highlights: ['Best at complex refactors', 'Excellent code architecture', 'Strong at following specs'] },
-	{ rank: 2, name: '5.3-Codex-Spark', provider: 'OpenAI', score: 9.2, color: 'var(--openai)', pricing: { input: 10, output: 30 }, context: '128K', highlights: ['Fast iteration cycles', 'Great for prototyping', 'Strong API integration'] },
+	{ rank: 1, name: 'Claude Opus 4.7', provider: 'Anthropic', score: 9.5, color: 'var(--claude)', pricing: { input: 5, output: 25 }, context: '1M', highlights: ['Best at complex refactors', 'Excellent code architecture', 'Strong at following specs'] },
+	{ rank: 2, name: 'GPT-5.2-Codex', provider: 'OpenAI', score: 9.2, color: 'var(--openai)', pricing: { input: 1.75, output: 14 }, context: '400K', highlights: ['Fast iteration cycles', 'Great for prototyping', 'Strong API integration'] },
 	{ rank: 3, name: 'Kimi K2.5', provider: 'Moonshot', score: 8.9, color: '#e040fb', pricing: { input: 2, output: 10 }, context: '200K', highlights: ['Best value for coding', 'Good at debugging', 'Handles large codebases'] },
 	{ rank: 4, name: 'DeepSeek V3', provider: 'DeepSeek', score: 8.9, color: '#8b5cf6', pricing: { input: 0.27, output: 1.1 }, context: '64K', highlights: ['Ultra-low cost', 'Strong code generation', 'Fast responses'] },
-	{ rank: 5, name: 'Gemini 2.5 Pro', provider: 'Google', score: 8.6, color: '#4285f4', pricing: { input: 7, output: 21 }, context: '1M', highlights: ['Massive context', 'Good multimodal', 'Strong documentation'] },
+	{ rank: 5, name: 'Gemini 3.1 Pro Preview', provider: 'Google', score: 8.6, color: '#4285f4', pricing: { input: 2, output: 12 }, context: '1M', highlights: ['Massive context', 'Good multimodal', 'Strong documentation'] },
 	{ rank: 6, name: 'GLM-5', provider: 'Zhipu AI', score: 8.3, color: '#f43f5e', pricing: { input: 0.5, output: 0.5 }, context: '128K', highlights: ['Budget-friendly', 'Enterprise ready', 'Good Chinese support'] },
 ];
 
@@ -23,19 +23,19 @@ const benchmarks = [
 ];
 
 const decisionGuide = [
-	{ scenario: 'Complex enterprise codebase', pick: 'Claude Opus 4.6', reason: 'Best at understanding context and making architectural decisions that fit your existing patterns.' },
-	{ scenario: 'Rapid prototyping / startups', pick: '5.3-Codex-Spark', reason: 'Fast iteration with good quality. Balances speed and correctness for moving quickly.' },
+	{ scenario: 'Complex enterprise codebase', pick: 'Claude Opus 4.7', reason: 'Best at understanding context and making architectural decisions that fit your existing patterns.' },
+	{ scenario: 'Rapid prototyping / startups', pick: 'GPT-5.2-Codex', reason: 'Fast iteration with good quality. Balances speed and correctness for moving quickly.' },
 	{ scenario: 'High-volume production', pick: 'DeepSeek V3', reason: 'Lowest cost per task while maintaining strong coding performance. Ideal when cost matters.' },
-	{ scenario: 'Large monorepo analysis', pick: 'Kimi K2.5 or Gemini', reason: '200K-1M context windows let you include entire codebases for better context.' },
+	{ scenario: 'Large monorepo analysis', pick: 'Claude Opus 4.7 or Gemini', reason: '1M context windows let you include entire codebases for better context.' },
 	{ scenario: 'Budget-conscious team', pick: 'GLM-5', reason: 'Ultra-low pricing at $0.50/$0.50 per million tokens with solid coding capability.' },
 ];
 
 const faqs = [
-	{ q: 'Which AI model is best for coding in 2026?', a: 'Based on our daily benchmarks, Claude Opus 4.6 currently leads in coding tasks with a 9.5/10 score, excelling at complex refactors and architectural decisions. 5.3-Codex-Spark is close behind at 9.2/10, offering faster iteration for prototyping work.' },
+	{ q: 'Which AI model is best for coding in 2026?', a: 'Based on our current source-reviewed benchmarks, Claude Opus 4.7 leads in coding tasks with a 9.5/10 score, excelling at complex refactors and architectural decisions. GPT-5.2-Codex is close behind at 9.2/10, offering faster iteration for prototyping work.' },
 	{ q: 'What is the best free AI coding assistant?', a: 'While most top-tier models require payment, GitHub Copilot offers free tiers for students and open-source maintainers. For API access, DeepSeek V3 offers exceptional value at $0.27/$1.10 per million tokens—nearly free for most coding tasks.' },
-	{ q: 'How do Claude and GPT compare for coding?', a: 'Claude Opus 4.6 excels at understanding complex codebases and following detailed specifications. GPT models are faster and have better tool integration. For pure coding quality, Claude slightly edges out; for speed and ecosystem, GPT wins.' },
+	{ q: 'How do Claude and GPT compare for coding?', a: 'Claude Opus 4.7 excels at understanding complex codebases and following detailed specifications. GPT models are faster and have strong tool integration. For pure coding quality, Claude slightly edges out; for speed and ecosystem, GPT wins.' },
 	{ q: 'Should I use a cheaper model for coding?', a: 'It depends on task complexity. Simple boilerplate and standard patterns work fine with cheaper models like GLM-5 or DeepSeek. Complex bug fixes, architectural decisions, and nuanced refactors benefit from top-tier models like Claude.' },
-	{ q: 'How important is context window for coding?', a: 'Very important for large codebases. A 200K context window (Claude, Kimi) or 1M window (Gemini) lets the model see more of your codebase at once, leading to more contextually aware suggestions and fewer hallucinations.' },
+	{ q: 'How important is context window for coding?', a: 'Very important for large codebases. A 400K context window (GPT-5.2-Codex) or 1M window (Claude Opus 4.7 and Gemini 3.1 Pro Preview) lets the model see more of your codebase at once, leading to more contextually aware suggestions and fewer hallucinations.' },
 ];
 
 const faqSchema = {
@@ -175,7 +175,7 @@ const faqSchema = {
 					<p>We test every major AI model on real coding tasks—bug fixes, refactors, API integrations, and test generation—so you can pick the right model for your workflow.</p>
 					<div class="hero-badges">
 						<span class="badge badge-accent">Coding benchmarks</span>
-						<span class="badge">Daily updated</span>
+						<span class="badge">Source reviewed</span>
 						<span class="badge badge-success">Cost analysis</span>
 					</div>
 					<div class="hero-actions">
