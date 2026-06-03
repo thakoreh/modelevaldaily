@@ -8,7 +8,7 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 const title = `Best AI Models for Coding Agents | ${SITE_TITLE}`;
 const description = 'Choose the right AI model for coding agents, code review, repo-scale refactors, tool use, long context, and cost-aware production routing.';
 
-const names = ['GPT-5.5', 'GPT-5.4', 'Claude Opus 4.7', 'GPT-5.2-Codex', 'Claude Sonnet 4.6', 'Gemini 3.1 Pro Preview', 'DeepSeek V3', 'Llama 4 (405B)'];
+const names = ['GPT-5.5', 'GPT-5.4', 'Claude Opus 4.8', 'GPT-5.2-Codex', 'Claude Sonnet 4.6', 'Gemini 3.1 Pro Preview', 'DeepSeek V4 Pro', 'Llama 4 Maverick'];
 const agentModels = names
 	.map((name) => VERIFIED_MODELS.find((model) => model.name === name))
 	.filter(Boolean);
@@ -16,7 +16,7 @@ const agentModels = names
 const stack = [
 	{
 		label: 'Planner',
-		pick: 'GPT-5.5 or Claude Opus 4.7',
+		pick: 'GPT-5.5 or Claude Opus 4.8',
 		why: 'Use the strongest reasoning model to decompose tasks, choose files, and decide when to stop.',
 	},
 	{
@@ -26,23 +26,23 @@ const stack = [
 	},
 	{
 		label: 'Reviewer',
-		pick: 'Claude Opus 4.7',
+		pick: 'Claude Opus 4.8',
 		why: 'Use a second frontier model for architecture review, hidden assumptions, and regression risk.',
 	},
 	{
 		label: 'Bulk Work',
-		pick: 'Claude Sonnet 4.6, DeepSeek V3, or local models',
+		pick: 'Claude Sonnet 4.6, DeepSeek V4 Pro, or local models',
 		why: 'Route repetitive linting, extraction, and low-risk edits to lower-cost models.',
 	},
 ];
 
 const workflows = [
-	{ task: 'Large refactor', primary: 'Claude Opus 4.7', fallback: 'GPT-5.4', note: 'Prioritize context, careful planning, and review quality.' },
+	{ task: 'Large refactor', primary: 'Claude Opus 4.8', fallback: 'GPT-5.4', note: 'Prioritize context, careful planning, and review quality.' },
 	{ task: 'Autonomous feature build', primary: 'GPT-5.5', fallback: 'GPT-5.4', note: 'Keep planning and execution separate for cleaner diffs.' },
 	{ task: 'Bug fix from failing tests', primary: 'GPT-5.2-Codex', fallback: 'GPT-5.4', note: 'Give the model test output, touched files, and reproduction steps.' },
 	{ task: 'Repo Q&A / codebase search', primary: 'Gemini 3.1 Pro Preview', fallback: 'Claude Sonnet 4.6', note: 'Long context helps, but still pair it with retrieval.' },
-	{ task: 'High-volume code review', primary: 'Claude Sonnet 4.6', fallback: 'DeepSeek V3', note: 'Use cheaper models for first-pass comments, then escalate risky files.' },
-	{ task: 'Private codebase', primary: 'Llama 4 (405B)', fallback: 'GPT-OSS-120B', note: 'Prefer open or local deployment when source cannot leave your environment.' },
+	{ task: 'High-volume code review', primary: 'Claude Sonnet 4.6', fallback: 'DeepSeek V4 Pro', note: 'Use cheaper models for first-pass comments, then escalate risky files.' },
+	{ task: 'Private codebase', primary: 'Llama 4 Maverick', fallback: 'GPT-OSS-120B', note: 'Prefer open or local deployment when source cannot leave your environment.' },
 ];
 ---
 

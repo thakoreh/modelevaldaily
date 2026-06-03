@@ -5,7 +5,7 @@ import Header from '../components/Header.astro';
 import { VERIFIED_MODELS } from '../data/verified-models';
 
 const title = 'Best AI Model for Coding (2026) | Ranked by Real Developer Workflows';
-const description = 'Best AI coding models in 2026 ranked by coding score, tool-use, price, and local/self-hosted options. Compare GPT-5.4, Kimi K2.5, GPT-OSS-120B, and more.';
+const description = 'Best AI coding models in 2026 ranked by coding score, tool-use, price, and local/self-hosted options. Compare GPT-5.5, Claude Opus 4.8, GPT-5.4, GPT-OSS-120B, and more.';
 
 const codingModels = [...VERIFIED_MODELS]
 	.sort((a, b) => (b.scores.coding + b.scores.toolUse * 0.35) - (a.scores.coding + a.scores.toolUse * 0.35))
@@ -45,7 +45,7 @@ const bestLocal = VERIFIED_MODELS.find((m) => m.name === 'GPT-OSS-120B');
 				<div class="pick-card">
 					<h2>Best value</h2>
 					<div class="pick-name">{bestValue?.name}</div>
-					<p>Near-frontier coding quality without the “burn cash like an idiot” pricing profile.</p>
+					<p>Near-frontier coding quality without premium frontier pricing.</p>
 				</div>
 				<div class="pick-card">
 					<h2>Best budget</h2>
@@ -92,8 +92,10 @@ const bestLocal = VERIFIED_MODELS.find((m) => m.name === 'GPT-OSS-120B');
 			<section class="container section decision-box">
 				<h2>Which one should you actually pick?</h2>
 				<ul>
-					<li><strong>Pick GPT-5.4</strong> if you want strongest coding output and tool integration.</li>
-					<li><strong>Pick Kimi K2.5</strong> if you want elite coding quality without frontier-tier cost.</li>
+					<li><strong>Pick GPT-5.5</strong> if you want the strongest OpenAI coding and reasoning stack.</li>
+					<li><strong>Pick Claude Opus 4.8</strong> if autonomous engineering reliability and review quality matter most.</li>
+					<li><strong>Pick GPT-5.4</strong> if you want strong coding output and tool integration at lower cost than GPT-5.5.</li>
+					<li><strong>Pick Kimi K2.5</strong> if you want competitive coding quality without frontier-tier cost.</li>
 					<li><strong>Pick MiniMax M2.5</strong> if cost per token matters more than squeezing out the final 5%.</li>
 					<li><strong>Pick GPT-OSS-120B</strong> if you need local, private, self-hosted coding workflows.</li>
 				</ul>

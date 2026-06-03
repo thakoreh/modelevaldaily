@@ -4,32 +4,32 @@ import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 import { SITE_TITLE } from '../../consts';
 
-const lastUpdated = 'February 13, 2026';
+const lastUpdated = 'June 3, 2026';
 
 const deepseekModel = {
-	name: 'DeepSeek V3',
+	name: 'DeepSeek V4 Pro',
 	provider: 'DeepSeek',
 	color: '#8b5cf6',
-	pricing: { input: 0.27, output: 1.1 },
-	contextWindow: '64K',
-	scores: { coding: 8.9, reasoning: 8.5, toolUse: 8.2, speed: 9.0 },
+	pricing: { input: 0.435, output: 0.87 },
+	contextWindow: '1M',
+	scores: { coding: 9.0, reasoning: 9.2, toolUse: 8.9, speed: 9.0 },
 };
 
 const claudeModel = {
-	name: 'Claude Opus 4.6',
+	name: 'Claude Opus 4.8',
 	provider: 'Anthropic',
 	color: '#d97706',
-	pricing: { input: 15, output: 75 },
-	contextWindow: '200K',
-	scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.3, speed: 7.5 },
+	pricing: { input: 5, output: 25 },
+	contextWindow: '1M',
+	scores: { coding: 9.8, reasoning: 9.8, toolUse: 9.6, speed: 7.5 },
 };
 
 const gptModel = {
 	name: 'GPT-5.2',
 	provider: 'OpenAI',
 	color: '#10b981',
-	pricing: { input: 10, output: 30 },
-	contextWindow: '128K',
+	pricing: { input: 1.75, output: 14 },
+	contextWindow: '400K',
 	scores: { coding: 9.2, reasoning: 9.0, toolUse: 9.1, speed: 8.5 },
 };
 
@@ -45,30 +45,30 @@ const codingCategories = [
 ];
 
 const pricingComparison = [
-	{ name: 'Input Cost (per 1M tokens)', deepseek: '$0.27', claude: '$15', ratio: '55x cheaper' },
-	{ name: 'Output Cost (per 1M tokens)', deepseek: '$1.10', claude: '$75', ratio: '68x cheaper' },
-	{ name: 'Typical Small Task (~5K tokens)', deepseek: '$0.006', claude: '$0.45', ratio: '75x cheaper' },
-	{ name: 'Typical Medium Task (~50K tokens)', deepseek: '$0.06', claude: '$4.50', ratio: '75x cheaper' },
-	{ name: 'Large Codebase Analysis (~200K)', deepseek: 'N/A (64K limit)', claude: '$18.00', ratio: 'Claude only' },
-	{ name: 'Monthly High Volume (100M tokens)', deepseek: '$137', claude: '$7,500', ratio: '55x cheaper' },
+	{ name: 'Input Cost (per 1M tokens)', deepseek: '$0.435', claude: '$5', ratio: '11.5x cheaper' },
+	{ name: 'Output Cost (per 1M tokens)', deepseek: '$0.87', claude: '$25', ratio: '28.7x cheaper' },
+	{ name: 'Typical Small Task (~5K tokens)', deepseek: '$0.004', claude: '$0.075', ratio: '18.8x cheaper' },
+	{ name: 'Typical Medium Task (~50K tokens)', deepseek: '$0.04', claude: '$0.75', ratio: '18.8x cheaper' },
+	{ name: 'Large Codebase Analysis (~200K)', deepseek: '$0.16', claude: '$3.00', ratio: '18.8x cheaper' },
+	{ name: 'Monthly High Volume (100M tokens)', deepseek: '$65', claude: '$1,500', ratio: '23x cheaper' },
 ];
 
 const useCases = [
-	{ title: 'Startup on a Budget', pick: 'DeepSeek', reason: 'At $0.27/$1.10 per million tokens, DeepSeek offers incredible value for cost-conscious startups', alt: 'Claude for investor-facing quality' },
+	{ title: 'Startup on a Budget', pick: 'DeepSeek', reason: 'At $0.435/$0.87 per million tokens, DeepSeek offers strong value for cost-conscious startups', alt: 'Claude for investor-facing quality' },
 	{ title: 'Enterprise Production', pick: 'Claude', reason: 'Higher reliability scores and enterprise support make Claude safer for production workloads', alt: 'DeepSeek for non-critical paths' },
-	{ title: 'High-Volume Processing', pick: 'DeepSeek', reason: 'Process 100M tokens for $137 vs $7,500 with Claude — ideal for data pipelines and batch jobs', alt: 'Claude when quality is critical' },
-	{ title: 'Complex Architecture', pick: 'Claude', reason: '200K context window and 9.6 refactoring score perfect for large-scale system design', alt: 'DeepSeek for smaller modules' },
+	{ title: 'High-Volume Processing', pick: 'DeepSeek', reason: 'Process 100M balanced input/output tokens for about $65 vs $1,500 with Claude — ideal for data pipelines and batch jobs', alt: 'Claude when quality is critical' },
+	{ title: 'Complex Architecture', pick: 'Claude', reason: 'Higher reliability and stronger refactoring scores make Claude the safer pick for large-scale system design', alt: 'DeepSeek for cost-sensitive modules' },
 	{ title: 'CI/CD Automation', pick: 'DeepSeek', reason: 'Fast responses and low cost make DeepSeek ideal for automated code generation in pipelines', alt: 'Claude for critical deployments' },
-	{ title: 'Research & Analysis', pick: 'Claude', reason: 'Superior reasoning (9.4 vs 8.5) and larger context for comprehensive research tasks', alt: 'DeepSeek for initial exploration' },
+	{ title: 'Research & Analysis', pick: 'Claude', reason: 'Superior reasoning and reliability for comprehensive research tasks', alt: 'DeepSeek for initial exploration' },
 ];
 
 const faqs = [
-	{ q: 'Is DeepSeek as good as Claude for coding?', a: 'DeepSeek V3 achieves an 8.9 coding score vs Claude\'s 9.5, making it competitive for most tasks. Claude excels at complex refactoring and architecture, while DeepSeek is excellent for rapid prototyping and high-volume code generation at a fraction of the cost.' },
-	{ q: 'How much cheaper is DeepSeek than Claude?', a: 'DeepSeek V3 is approximately 55-68x cheaper than Claude Opus 4.6. Input tokens cost $0.27/M vs $15/M, and output tokens cost $1.10/M vs $75/M. This makes DeepSeek the most cost-effective option for high-volume applications.' },
-	{ q: 'Does DeepSeek support the same context length as Claude?', a: 'No, DeepSeek V3 has a 64K token context window compared to Claude\'s 200K. For tasks requiring analysis of large codebases or long documents, Claude\'s larger context is necessary.' },
-	{ q: 'Is DeepSeek faster than Claude?', a: 'Yes, DeepSeek V3 scores 9.0 for speed vs Claude\'s 7.5. For latency-sensitive applications or high-throughput scenarios, DeepSeek provides faster response times.' },
-	{ q: 'Can DeepSeek replace Claude for production use?', a: 'It depends on your requirements. DeepSeek is suitable for non-critical workloads, high-volume processing, and prototyping. For enterprise production systems requiring maximum reliability, Claude\'s higher scores in tool-use (9.3 vs 8.2) and reasoning (9.4 vs 8.5) may be worth the premium.' },
-	{ q: 'How does DeepSeek compare to GPT?', a: 'DeepSeek V3 (coding: 8.9) is competitive with GPT-5.2 (coding: 9.2) while being 37x cheaper on input tokens and 27x cheaper on output tokens. GPT has a larger 128K context window vs DeepSeek\'s 64K.' },
+	{ q: 'Is DeepSeek as good as Claude for coding?', a: 'DeepSeek V4 Pro achieves a 9.0 coding score vs Claude Opus 4.8 at 9.8 in our current table, making it competitive for many tasks. Claude excels at complex refactoring and architecture, while DeepSeek is excellent for rapid prototyping and high-volume code generation at a fraction of the cost.' },
+	{ q: 'How much cheaper is DeepSeek than Claude?', a: 'DeepSeek V4 Pro is approximately 11.5x cheaper on input and 28.7x cheaper on output than Claude Opus 4.8 at current listed pricing. This makes DeepSeek a cost-effective option for high-volume applications.' },
+	{ q: 'Does DeepSeek support the same context length as Claude?', a: 'Yes. Current DeepSeek V4 Pro and Claude Opus 4.8 listings both support 1M-token context windows, though reliability on very large inputs still depends on the task, prompt, and retrieval setup.' },
+	{ q: 'Is DeepSeek faster than Claude?', a: 'Yes, DeepSeek V4 Pro scores 9.0 for speed vs Claude\'s 7.5. For latency-sensitive applications or high-throughput scenarios, DeepSeek provides faster response times.' },
+	{ q: 'Can DeepSeek replace Claude for production use?', a: 'It depends on your requirements. DeepSeek is suitable for cost-sensitive workloads, high-volume processing, and prototyping. For enterprise production systems requiring maximum reliability, Claude\'s higher scores in tool-use and reasoning may be worth the premium.' },
+	{ q: 'How does DeepSeek compare to GPT?', a: 'DeepSeek V4 Pro is much cheaper than GPT-5.2 and has a larger listed context window, while GPT remains stronger for first-party OpenAI tooling and some coding workflows.' },
 	{ q: 'What is DeepSeek best used for?', a: 'DeepSeek excels at high-volume code generation, rapid prototyping, CI/CD automation, batch processing, and any scenario where cost efficiency is more important than maximum quality. It\'s ideal for startups, side projects, and experimentation.' },
 ];
 ---
@@ -78,7 +78,7 @@ const faqs = [
 	<head>
 		<BaseHead
 			title={`DeepSeek vs Claude (2026) — Cost & Performance Comparison | ${SITE_TITLE}`}
-			description="DeepSeek V3 vs Claude Opus 4.6: Compare coding performance, pricing (55x cheaper), context windows, and speed. Find the best model for your budget and use case."
+			description="DeepSeek V4 Pro vs Claude Opus 4.8: Compare coding performance, pricing, context windows, and speed. Find the best model for your budget and use case."
 			noindex={true}
 		/>
 		<style>
@@ -665,10 +665,10 @@ const faqs = [
 			<div class="hero-inner">
 				<div class="hero-text">
 					<h1>DeepSeek vs Claude: Cost vs Quality Trade-off</h1>
-					<p>DeepSeek V3 offers comparable coding performance at 55x lower cost. Compare benchmarks, pricing, and use cases to decide between budget-friendly DeepSeek and premium Claude for your development workflow.</p>
+					<p>DeepSeek V4 Pro offers comparable coding performance at substantially lower cost. Compare benchmarks, pricing, and use cases to decide between budget-friendly DeepSeek and premium Claude for your development workflow.</p>
 					<div class="hero-meta">
 						<span class="hero-badge">Last updated <span class="count">{lastUpdated}</span></span>
-						<span class="hero-highlight">55x cheaper</span>
+						<span class="hero-highlight">substantially cheaper</span>
 						<span class="hero-badge">8 coding categories</span>
 					</div>
 				</div>
@@ -742,7 +742,7 @@ const faqs = [
 
 				<div class="savings-box">
 					<h3>Cost Savings Summary</h3>
-					<p>DeepSeek V3 costs <strong>$0.27 per million input tokens</strong> vs Claude's <strong>$15</strong> — a <strong>55x reduction</strong>. For a startup processing 50 million tokens monthly, that's <strong>$137 with DeepSeek vs $7,500 with Claude</strong>. The quality gap (8.9 vs 9.5 coding score) may be acceptable for many use cases.</p>
+					<p>DeepSeek V4 Pro costs <strong>$0.435 per million input tokens</strong> vs Claude's <strong>$5</strong> — a <strong>substantial reduction</strong>. For a startup processing 50 million balanced input/output tokens monthly, that's about <strong>$33 with DeepSeek vs $750 with Claude</strong>. The quality gap (9.0 vs 9.8 coding score) may be acceptable for many use cases.</p>
 				</div>
 			</section>
 
@@ -756,7 +756,7 @@ const faqs = [
 					<div class="mini-card">
 						<div class="mini-card-header">
 							<div class="model-dot" style={`background: ${deepseekModel.color}`}></div>
-							<span class="name">DeepSeek V3</span>
+							<span class="name">DeepSeek V4 Pro</span>
 						</div>
 						<div class="price" style="color: #8b5cf6;">$0.27 / $1.10</div>
 						<div style="font-size: var(--font-xs); color: var(--text-tertiary); margin-top: 0.25rem;">per 1M tokens (in/out)</div>
@@ -841,7 +841,7 @@ const faqs = [
 						<thead>
 							<tr>
 								<th>Scenario</th>
-								<th>DeepSeek V3</th>
+								<th>DeepSeek V4 Pro</th>
 								<th>Claude Opus 4.6</th>
 								<th>Savings</th>
 							</tr>
@@ -871,7 +871,7 @@ const faqs = [
 						<thead>
 							<tr>
 								<th>Metric</th>
-								<th>DeepSeek V3</th>
+								<th>DeepSeek V4 Pro</th>
 								<th>Claude Opus 4.6</th>
 								<th>Winner</th>
 							</tr>
@@ -987,7 +987,7 @@ const faqs = [
 					<a href="/compare/open-source-vs-closed" class="related-link">Open Source vs Closed Models</a>
 					<a href="/compare" class="related-link">All Model Comparisons</a>
 					<a href="/scorecards" class="related-link">Daily Scorecards</a>
-					<a href="/blog/deepseek-v3" class="related-link">DeepSeek V3 Deep Dive</a>
+					<a href="/blog/deepseek-v3" class="related-link">DeepSeek V4 Pro Deep Dive</a>
 					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.6 Deep Dive</a>
 				</div>
 			</section>

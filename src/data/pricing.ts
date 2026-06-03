@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: May 7, 2026
+// Last Updated: June 3, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -28,7 +28,7 @@ export const openaiModels: ModelPricing[] = [
     maxOutput: 128000,
     source: 'OpenAI Official Models',
     sourceUrl: 'https://platform.openai.com/docs/models',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Current OpenAI flagship for complex reasoning and coding'
   },
   {
@@ -41,7 +41,7 @@ export const openaiModels: ModelPricing[] = [
     maxOutput: 128000,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://platform.openai.com/docs/models',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Affordable frontier model for coding and professional workflows'
   },
   {
@@ -54,7 +54,7 @@ export const openaiModels: ModelPricing[] = [
     maxOutput: 128000,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.2-codex',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Coding-focused model for long-horizon agentic coding'
   },
   {
@@ -67,7 +67,7 @@ export const openaiModels: ModelPricing[] = [
     maxOutput: 128000,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://platform.openai.com/docs/pricing/',
-    lastVerified: '2026-05-07'
+    lastVerified: '2026-06-03'
   },
   {
     provider: 'OpenAI',
@@ -79,7 +79,7 @@ export const openaiModels: ModelPricing[] = [
     maxOutput: 16384,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://platform.openai.com/docs/pricing/',
-    lastVerified: '2026-05-07'
+    lastVerified: '2026-06-03'
   },
   {
     provider: 'OpenAI',
@@ -91,7 +91,7 @@ export const openaiModels: ModelPricing[] = [
     maxOutput: 32768,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://platform.openai.com/docs/pricing/',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Budget-friendly option'
   }
 ];
@@ -100,16 +100,28 @@ export const openaiModels: ModelPricing[] = [
 export const anthropicModels: ModelPricing[] = [
   {
     provider: 'Anthropic',
-    model: 'Claude Opus 4.7',
-    releaseDate: '2026-04-01',
+    model: 'Claude Opus 4.8',
+    releaseDate: '2026-05-28',
     inputCost: 5.00,
     outputCost: 25.00,
     contextWindow: 1000000,
     maxOutput: 128000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Most capable generally available Claude model'
+  },
+  {
+    provider: 'Anthropic',
+    model: 'Claude Opus 4.7',
+    releaseDate: '2026-04-16',
+    inputCost: 5.00,
+    outputCost: 25.00,
+    contextWindow: 1000000,
+    maxOutput: 128000,
+    source: 'Anthropic Official Pricing',
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-06-03'
   },
   {
     provider: 'Anthropic',
@@ -121,7 +133,7 @@ export const anthropicModels: ModelPricing[] = [
     maxOutput: 128000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-05-07'
+    lastVerified: '2026-06-03'
   },
   {
     provider: 'Anthropic',
@@ -133,7 +145,7 @@ export const anthropicModels: ModelPricing[] = [
     maxOutput: 64000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Balanced performance/cost'
   },
   {
@@ -146,7 +158,7 @@ export const anthropicModels: ModelPricing[] = [
     maxOutput: 16000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-05-07'
+    lastVerified: '2026-06-03'
   },
   {
     provider: 'Anthropic',
@@ -158,13 +170,26 @@ export const anthropicModels: ModelPricing[] = [
     maxOutput: 64000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Fastest and cheapest'
   }
 ];
 
 // Verified from: https://ai.google.dev/gemini-api/docs/pricing
 export const googleModels: ModelPricing[] = [
+  {
+    provider: 'Google',
+    model: 'Gemini 3.5 Flash',
+    releaseDate: '2026-05-20',
+    inputCost: 1.50,
+    outputCost: 9.00,
+    contextWindow: 1048576,
+    maxOutput: 65536,
+    source: 'Google AI Official Pricing',
+    sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
+    lastVerified: '2026-06-03',
+    notes: 'Current stable Gemini model for speed, search grounding, and high-volume multimodal agents'
+  },
   {
     provider: 'Google',
     model: 'Gemini 3.1 Pro Preview',
@@ -175,21 +200,21 @@ export const googleModels: ModelPricing[] = [
     maxOutput: 65536,
     source: 'Google AI Official Pricing',
     sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
-    lastVerified: '2026-05-07',
+    lastVerified: '2026-06-03',
     notes: 'Preview model; standard tier pricing for prompts <= 200k tokens'
   },
   {
     provider: 'Google',
-    model: 'Gemini 3 Flash Preview',
+    model: 'Gemini 3.1 Flash-Lite',
     releaseDate: '2026-03-01',
-    inputCost: 0.50,
-    outputCost: 3.00,
+    inputCost: 0.25,
+    outputCost: 1.50,
     contextWindow: 1048576,
     maxOutput: 65536,
     source: 'Google AI Official Pricing',
     sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
-    lastVerified: '2026-05-07',
-    notes: 'Speed-focused Gemini 3 preview model'
+    lastVerified: '2026-06-03',
+    notes: 'Cost-efficient Gemini 3.1 model for high-volume agentic tasks'
   },
   {
     provider: 'Google',
@@ -236,33 +261,33 @@ export const zhipuModels: ModelPricing[] = [
   }
 ];
 
-// Verified from: Meta official announcements and https://artificialanalysis.ai/
+// Verified from: Meta official announcements and host pricing estimates.
 export const metaModels: ModelPricing[] = [
   {
     provider: 'Meta',
-    model: 'Llama 4 (405B)',
-    releaseDate: '2026-01-28',
+    model: 'Llama 4 Maverick',
+    releaseDate: '2025-04-05',
     inputCost: 2.00,
     outputCost: 8.00,
-    contextWindow: 128000,
+    contextWindow: 1000000,
     maxOutput: 8192,
-    source: 'Artificial Analysis estimate (open source)',
-    sourceUrl: 'https://artificialanalysis.ai/',
-    lastVerified: '2026-03-09',
-    notes: 'Open source - pricing varies by host'
+    source: 'Meta Llama 4 announcement plus host pricing estimates',
+    sourceUrl: 'https://ai.meta.com/blog/llama-4-multimodal-intelligence/',
+    lastVerified: '2026-06-03',
+    notes: 'Open-weight multimodal model; pricing varies by host'
   },
   {
     provider: 'Meta',
-    model: 'Llama 4 (70B)',
-    releaseDate: '2026-01-28',
+    model: 'Llama 4 Scout',
+    releaseDate: '2025-04-05',
     inputCost: 0.30,
     outputCost: 1.20,
-    contextWindow: 128000,
+    contextWindow: 10000000,
     maxOutput: 8192,
-    source: 'Artificial Analysis estimate (open source)',
-    sourceUrl: 'https://artificialanalysis.ai/',
-    lastVerified: '2026-03-09',
-    notes: 'Open source - pricing varies by host'
+    source: 'Meta Llama 4 announcement plus host pricing estimates',
+    sourceUrl: 'https://ai.meta.com/blog/llama-4-multimodal-intelligence/',
+    lastVerified: '2026-06-03',
+    notes: 'Open-weight long-context model; pricing varies by host'
   }
 ];
 
