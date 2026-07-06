@@ -8,7 +8,7 @@ import { SITE_TITLE } from '../../consts';
 const pageTitle = 'OpenAI vs Anthropic API for Production Teams';
 const description = 'OpenAI vs Anthropic API for Production Teams: compare coding, reasoning, tool use, pricing, context window, and practical production recommendations.';
 const modelA = VERIFIED_MODELS.find((m) => m.name === 'GPT-5.4') ?? VERIFIED_MODELS[0];
-const modelB = VERIFIED_MODELS.find((m) => m.name === 'Claude Sonnet 4.6') ?? VERIFIED_MODELS[1];
+const modelB = VERIFIED_MODELS.find((m) => m.name === 'Claude Sonnet 5') ?? VERIFIED_MODELS[1];
 const verdict = 'OpenAI is the stronger default for tool integration and broad platform workflows. Anthropic is the stronger default for careful reasoning, code review, and long-form analysis.';
 const rows = [
   ['Coding', modelA.scores.coding, modelB.scores.coding],

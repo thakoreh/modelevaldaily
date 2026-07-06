@@ -15,7 +15,7 @@ const openSourceModels = [
 ];
 
 const closedModels = [
-	{ name: 'Claude Opus 4.6', provider: 'Anthropic', color: '#d97706', pricing: { input: 15, output: 75 }, context: '200K', coding: 9.5, reasoning: 9.4, license: 'Proprietary' },
+	{ name: 'Claude Opus 4.8', provider: 'Anthropic', color: '#d97706', pricing: { input: 5, output: 25 }, context: '1M', coding: 9.8, reasoning: 9.8, license: 'Proprietary' },
 	{ name: 'GPT-5.2', provider: 'OpenAI', color: '#10b981', pricing: { input: 10, output: 30 }, context: '128K', coding: 9.2, reasoning: 9.0, license: 'Proprietary' },
 	{ name: 'Gemini 3 Pro', provider: 'Google', color: '#4285f4', pricing: { input: 7, output: 21 }, context: '1M', coding: 8.8, reasoning: 9.1, license: 'Proprietary' },
 	{ name: 'Grok 2', provider: 'xAI', color: '#1da1f2', pricing: { input: 5, output: 15 }, context: '128K', coding: 8.6, reasoning: 8.7, license: 'Proprietary' },
@@ -24,7 +24,7 @@ const closedModels = [
 const comparisonFactors = [
 	{ factor: 'Coding Performance', openSource: '8.3-8.9', closed: '8.6-9.5', winner: 'Closed', note: 'Closed models lead by ~0.5 points on average' },
 	{ factor: 'Reasoning Ability', openSource: '8.4-8.8', closed: '8.7-9.4', winner: 'Closed', note: 'Claude leads significantly at 9.4' },
-	{ factor: 'Cost Efficiency', openSource: '$0.27-$2.00/M', closed: '$5-$15/M', winner: 'Open Source', note: 'Open source is 5-50x cheaper on average' },
+	{ factor: 'Cost Efficiency', openSource: '$0.27-$2.00/M', closed: '$5-$10/M', winner: 'Open Source', note: 'Open source is 5-50x cheaper on average' },
 	{ factor: 'Context Window', openSource: '128K-1M+', closed: '400K-1M', winner: 'Tie', note: 'DeepSeek, Claude, OpenAI, and Gemini now all have 1M-class options' },
 	{ factor: 'Self-Hosting', openSource: 'Yes', closed: 'No', winner: 'Open Source', note: 'Critical for data privacy requirements' },
 	{ factor: 'Fine-tuning', openSource: 'Full access', closed: 'Limited/API only', winner: 'Open Source', note: 'Open weights allow full customization' },
@@ -36,8 +36,8 @@ const comparisonFactors = [
 
 const useCases = [
 	{ title: 'Enterprise with Data Regulations', pick: 'Open Source', reason: 'Self-hosting ensures compliance with GDPR, HIPAA, and data residency requirements', alt: 'Closed with data processing agreements' },
-	{ title: 'Startup MVP Development', pick: 'Open Source', reason: 'DeepSeek at $0.27/M tokens vs Claude at $15/M — save $14,700 per million tokens', alt: 'Closed for faster time-to-market' },
-	{ title: 'Maximum Code Quality', pick: 'Closed', reason: 'Claude Opus 4.6 leads coding benchmarks at 9.5/10 with superior refactoring ability', alt: 'Llama 4 405B at 8.7 for cost savings' },
+	{ title: 'Startup MVP Development', pick: 'Open Source', reason: 'DeepSeek at $0.435/M input vs Claude at $5/M — substantially lower input-token cost at high volume', alt: 'Closed for faster time-to-market' },
+	{ title: 'Maximum Code Quality', pick: 'Closed', reason: 'Claude Opus 4.8 leads coding benchmarks at 9.8/10 with superior refactoring ability', alt: 'Llama 4 405B at 8.7 for cost savings' },
 	{ title: 'Long Context Analysis', pick: 'Closed', reason: 'Gemini 3 Pro offers 1M context window for analyzing entire codebases or documents', alt: 'Qwen 2.5 at 128K for most needs' },
 	{ title: 'Custom Fine-tuning', pick: 'Open Source', reason: 'Full model weights allow domain-specific fine-tuning for specialized applications', alt: 'Closed API fine-tuning where available' },
 	{ title: 'High-Volume Production', pick: 'Open Source', reason: 'DeepSeek or self-hosted Llama 4 can reduce costs by 90%+ at scale', alt: 'Closed for guaranteed uptime' },
@@ -53,7 +53,7 @@ const topOpenSource = [
 ];
 
 const topClosed = [
-	{ name: 'Claude Opus 4.6', best: 'Best for coding', why: '9.5 coding score, 200K context, best for complex development' },
+	{ name: 'Claude Opus 4.8', best: 'Best for coding', why: '9.5 coding score, 200K context, best for complex development' },
 	{ name: 'GPT-5.2', best: 'Best all-rounder', why: 'Balanced 9.2 coding, fast responses, excellent ecosystem' },
 	{ name: 'Gemini 3 Pro', best: 'Best for long context', why: '1M context window handles entire codebases and documents' },
 ];
@@ -65,7 +65,7 @@ const faqs = [
 	{ q: 'When should I choose closed models over open source?', a: 'Choose closed models when you need: (1) maximum coding quality (Claude at 9.5), (2) guaranteed 99.9% uptime SLAs, (3) very long context (Gemini\'s 1M), (4) instant API access without infrastructure, or (5) enterprise support with dedicated SLAs.' },
 	{ q: 'Can I self-host open source LLMs for free?', a: 'Yes, models like Llama 4 and Qwen can be self-hosted on your own GPU infrastructure with no per-token cost. However, you pay for compute (GPU rental ~$2-8/hour for inference), electricity, and engineering time. For high volume, self-hosting is usually cheaper than APIs.' },
 	{ q: 'What is the cheapest AI model for coding?', a: 'DeepSeek V4 Pro at $0.27/$1.10 per million tokens is the cheapest capable coding model. GLM-5 at $0.50/$0.50 is even cheaper for output-heavy workloads. Self-hosted Llama 4 can be cheaper still at very high volumes.' },
-	{ q: 'Which open source model has the largest context window?', a: 'Llama 4 405B, Qwen 2.5 Max, and Mistral Medium 3.5 all offer 128K token context windows. For longer context, you would need closed models like Gemini 3 Pro (1M) or Claude Opus 4.6 (200K).' },
+	{ q: 'Which open source model has the largest context window?', a: 'Llama 4 405B, Qwen 2.5 Max, and Mistral Medium 3.5 all offer 128K token context windows. For longer context, you would need closed models like Gemini 3 Pro (1M) or Claude Opus 4.8 (200K).' },
 	{ q: 'Are open source models safe for enterprise use?', a: 'Open source models can be safer for enterprises with strict data requirements since you control where data goes. However, closed vendors often provide better security certifications (SOC 2, HIPAA BAA), red-teaming, and safety fine-tuning. Evaluate based on your specific compliance needs.' },
 ];
 ---
@@ -660,7 +660,7 @@ const faqs = [
 
 				<div class="summary-box">
 					<h3>Quick Takeaway</h3>
-					<p><strong>Open source wins on cost:</strong> DeepSeek V4 Pro at $0.435/M input is substantially cheaper than Claude Opus 4.8. <strong>Closed wins on quality:</strong> Claude leads coding at 9.8 vs DeepSeek's 9.0. <strong>Open source wins on control:</strong> Self-host for data privacy and fine-tuning. <strong>Closed wins on convenience:</strong> Instant API access with uptime SLAs.</p>
+					<p><strong>Open source wins on cost:</strong> DeepSeek V4 Pro at $0.435/M input is about 11.5x cheaper on input than Claude Opus 4.8 at $5/M. <strong>Closed wins on quality:</strong> Claude leads coding at 9.8 vs DeepSeek's 9.0. <strong>Open source wins on control:</strong> Self-host for data privacy and fine-tuning. <strong>Closed wins on convenience:</strong> Instant API access with uptime SLAs.</p>
 				</div>
 			</section>
 
@@ -828,7 +828,7 @@ const faqs = [
 					<a href="/compare" class="related-link">All Model Comparisons</a>
 					<a href="/scorecards" class="related-link">Daily Scorecards</a>
 					<a href="/blog/deepseek-v3" class="related-link">DeepSeek V4 Pro Deep Dive</a>
-					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.6 Deep Dive</a>
+					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.8 Deep Dive</a>
 				</div>
 			</section>
 

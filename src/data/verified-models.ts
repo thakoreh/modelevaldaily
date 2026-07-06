@@ -1,7 +1,7 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-06-03';
+export const MODEL_DATA_VERIFIED_ON = '2026-07-06';
 
-// Last verification pass: 2026-06-03
-// Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, and Alibaba model names/pricing.
+// Last verification pass: 2026-07-06
+// Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, and source URL availability.
 
 export interface VerifiedModel {
 	name: string;
@@ -45,15 +45,30 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
+		name: 'Claude Fable 5',
+		provider: 'Anthropic',
+		color: '#7c3aed',
+		releaseDate: '2026-06-09',
+		pricing: { input: 10.00, output: 50.00 },
+		contextWindow: '1M',
+		bestFor: ['Long-running agents', 'Highest-capability tasks', 'Complex reasoning'],
+		scores: { coding: 9.9, reasoning: 9.9, toolUse: 9.8 },
+		strengths: ['Next-generation intelligence for long-running agents', 'Always-on adaptive thinking', '128K max output'],
+		sources: [
+			{ label: 'Anthropic Models', url: 'https://docs.anthropic.com/en/docs/about-claude/models' },
+			{ label: 'Anthropic Pricing', url: 'https://docs.anthropic.com/en/docs/about-claude/pricing' },
+		],
+	},
+	{
 		name: 'Claude Opus 4.8',
 		provider: 'Anthropic',
 		color: '#f59e0b',
-		releaseDate: '2026-05-28',
+		releaseDate: '2026-06-09',
 		pricing: { input: 5.00, output: 25.00 },
 		contextWindow: '1M',
-		bestFor: ['Complex reasoning', 'Agentic coding', 'Critical decisions'],
+		bestFor: ['Complex reasoning', 'Agentic coding', 'Enterprise work'],
 		scores: { coding: 9.8, reasoning: 9.8, toolUse: 9.6 },
-		strengths: ['Anthropic flagship', 'Strong agentic coding', 'Large context window'],
+		strengths: ['Anthropic flagship for complex agentic coding', 'Adaptive thinking', '128K max output'],
 		sources: [
 			{ label: 'Anthropic Models', url: 'https://docs.anthropic.com/en/docs/about-claude/models' },
 			{ label: 'Anthropic Pricing', url: 'https://docs.anthropic.com/en/docs/about-claude/pricing' },
@@ -105,15 +120,30 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
-		name: 'Claude Sonnet 4.6',
+		name: 'Claude Sonnet 5',
 		provider: 'Anthropic',
 		color: '#ea580c',
-		releaseDate: '2026-02-17',
-		pricing: { input: 3.00, output: 15.00 },
+		releaseDate: '2026-06-09',
+		pricing: { input: 3.00, output: 15.00, notes: 'Anthropic lists introductory pricing of $2 input / $10 output per MTok through August 31, 2026.' },
 		contextWindow: '1M',
 		bestFor: ['Balanced performance', 'Production workloads', 'Cost-efficient'],
-		scores: { coding: 9.4, reasoning: 9.3, toolUse: 9.1 },
-		strengths: ['Great value', 'Fast response times', 'Consistent quality'],
+		scores: { coding: 9.6, reasoning: 9.5, toolUse: 9.3 },
+		strengths: ['Best combination of speed and intelligence', 'Fast comparative latency', '128K max output'],
+		sources: [
+			{ label: 'Anthropic Models', url: 'https://docs.anthropic.com/en/docs/about-claude/models' },
+			{ label: 'Anthropic Pricing', url: 'https://docs.anthropic.com/en/docs/about-claude/pricing' },
+		],
+	},
+	{
+		name: 'Claude Haiku 4.5',
+		provider: 'Anthropic',
+		color: '#fb923c',
+		releaseDate: '2025-10-01',
+		pricing: { input: 1.00, output: 5.00 },
+		contextWindow: '200K',
+		bestFor: ['Fast responses', 'High-volume tasks', 'Near-frontier intelligence'],
+		scores: { coding: 8.9, reasoning: 8.8, toolUse: 8.7 },
+		strengths: ['Fastest current Claude model', 'Extended thinking', '64K max output'],
 		sources: [
 			{ label: 'Anthropic Models', url: 'https://docs.anthropic.com/en/docs/about-claude/models' },
 			{ label: 'Anthropic Pricing', url: 'https://docs.anthropic.com/en/docs/about-claude/pricing' },

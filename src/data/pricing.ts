@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: June 3, 2026
+// Last Updated: July 6, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -100,78 +100,55 @@ export const openaiModels: ModelPricing[] = [
 export const anthropicModels: ModelPricing[] = [
   {
     provider: 'Anthropic',
+    model: 'Claude Fable 5',
+    releaseDate: '2026-06-09',
+    inputCost: 10.00,
+    outputCost: 50.00,
+    contextWindow: 1000000,
+    maxOutput: 128000,
+    source: 'Anthropic Official Pricing',
+    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
+    lastVerified: '2026-07-06',
+    notes: 'Next-generation intelligence for long-running agents; generally available on Claude API and supported cloud platforms'
+  },
+  {
+    provider: 'Anthropic',
     model: 'Claude Opus 4.8',
-    releaseDate: '2026-05-28',
+    releaseDate: '2026-06-09',
     inputCost: 5.00,
     outputCost: 25.00,
     contextWindow: 1000000,
     maxOutput: 128000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-06-03',
-    notes: 'Most capable generally available Claude model'
+    lastVerified: '2026-07-06',
+    notes: 'Current Anthropic pick for complex agentic coding and enterprise work'
   },
   {
     provider: 'Anthropic',
-    model: 'Claude Opus 4.7',
-    releaseDate: '2026-04-16',
-    inputCost: 5.00,
-    outputCost: 25.00,
-    contextWindow: 1000000,
-    maxOutput: 128000,
-    source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-06-03'
-  },
-  {
-    provider: 'Anthropic',
-    model: 'Claude Opus 4.6',
-    releaseDate: '2026-02-28',
-    inputCost: 5.00,
-    outputCost: 25.00,
-    contextWindow: 1000000,
-    maxOutput: 128000,
-    source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-06-03'
-  },
-  {
-    provider: 'Anthropic',
-    model: 'Claude Sonnet 4.6',
-    releaseDate: '2026-01-15',
+    model: 'Claude Sonnet 5',
+    releaseDate: '2026-06-09',
     inputCost: 3.00,
     outputCost: 15.00,
     contextWindow: 1000000,
-    maxOutput: 64000,
+    maxOutput: 128000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-06-03',
-    notes: 'Balanced performance/cost'
-  },
-  {
-    provider: 'Anthropic',
-    model: 'Claude Sonnet 4.5',
-    releaseDate: '2025-12-01',
-    inputCost: 3.00,
-    outputCost: 15.00,
-    contextWindow: 200000,
-    maxOutput: 16000,
-    source: 'Anthropic Official Pricing',
-    sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-06-03'
+    lastVerified: '2026-07-06',
+    notes: 'Best combination of speed and intelligence; introductory $2/$10 per MTok through Aug 31, 2026'
   },
   {
     provider: 'Anthropic',
     model: 'Claude Haiku 4.5',
-    releaseDate: '2025-11-15',
+    releaseDate: '2025-10-01',
     inputCost: 1.00,
     outputCost: 5.00,
     contextWindow: 200000,
     maxOutput: 64000,
     source: 'Anthropic Official Pricing',
     sourceUrl: 'https://docs.anthropic.com/en/docs/about-claude/pricing',
-    lastVerified: '2026-06-03',
-    notes: 'Fastest and cheapest'
+    lastVerified: '2026-07-06',
+    notes: 'Fastest current Claude model with extended thinking'
   }
 ];
 

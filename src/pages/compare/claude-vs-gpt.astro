@@ -7,11 +7,11 @@ import { SITE_TITLE } from '../../consts';
 const lastUpdated = 'February 13, 2026';
 
 const claudeModel = {
-	name: 'Claude Opus 4.6',
+	name: 'Claude Opus 4.8',
 	provider: 'Anthropic',
 	color: '#d97706',
-	pricing: { input: 15, output: 75 },
-	contextWindow: '200K',
+	pricing: { input: 5, output: 25 },
+	contextWindow: '1M',
 	scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.3, speed: 7.5 },
 };
 
@@ -53,9 +53,9 @@ const useCases = [
 ];
 
 const faqs = [
-	{ q: 'Is Claude better than GPT for coding?', a: 'Claude Opus 4.6 scores higher (9.5 vs 9.2) in our coding benchmarks, particularly excelling at complex refactoring, code review, and architecture decisions. However, GPT-5.2 is faster and more cost-effective for simpler coding tasks.' },
-	{ q: 'Which is cheaper: Claude or GPT?', a: 'GPT-5.2 is significantly cheaper at $10/$30 per million tokens (input/output) compared to Claude Opus 4.6 at $15/$75. For high-volume applications, GPT offers 60% savings on output tokens.' },
-	{ q: 'Does Claude or GPT have a larger context window?', a: 'Claude Opus 4.6 has a 200K token context window vs GPT-5.2\'s 128K tokens. This 56% larger context makes Claude better for analyzing entire codebases or long documents.' },
+	{ q: 'Is Claude better than GPT for coding?', a: 'Claude Opus 4.8 scores higher (9.8 vs 9.2) in our coding benchmarks, particularly excelling at complex refactoring, code review, and architecture decisions. However, GPT-5.2 is faster and more cost-effective for simpler coding tasks.' },
+	{ q: 'Which is cheaper: Claude or GPT?', a: 'Claude Opus 4.8 is cheaper than GPT-5.2 on the listed token prices ($5/$25 vs $10/$30), while GPT can still be preferred for ecosystem fit and speed-sensitive workflows.' },
+	{ q: 'Does Claude or GPT have a larger context window?', a: 'Claude Opus 4.8 has a 200K token context window vs GPT-5.2\'s 128K tokens. This 56% larger context makes Claude better for analyzing entire codebases or long documents.' },
 	{ q: 'Which model is faster: Claude or GPT?', a: 'GPT-5.2 is generally faster with a speed score of 8.5 vs Claude\'s 7.5. For applications where latency is critical, GPT is the better choice.' },
 	{ q: 'Can I use Claude and GPT together?', a: 'Yes, many teams use Claude for complex tasks (refactoring, architecture) and GPT for high-volume, speed-sensitive operations. This hybrid approach optimizes both quality and cost.' },
 	{ q: 'Which model is better for beginners learning to code?', a: 'GPT-5.2 is often better for beginners due to faster responses and lower cost for experimentation. Claude excels when you need deeper explanations and more thorough code review.' },
@@ -67,7 +67,7 @@ const faqs = [
 	<head>
 		<BaseHead
 			title={`Claude vs GPT for Coding (2026) — Complete Comparison | ${SITE_TITLE}`}
-			description="Claude Opus 4.6 vs GPT-5.2: Compare coding performance, reasoning, pricing, and speed. Find which AI model is best for your development workflow with detailed benchmarks."
+			description="Claude Opus 4.8 vs GPT-5.2: Compare coding performance, reasoning, pricing, and speed. Find which AI model is best for your development workflow with detailed benchmarks."
 			noindex={true}
 		/>
 		<style>
@@ -576,7 +576,7 @@ const faqs = [
 			<div class="hero-inner">
 				<div class="hero-text">
 					<h1>Claude vs GPT for Coding: Complete 2026 Comparison</h1>
-					<p>Comprehensive comparison of Claude Opus 4.6 and GPT-5.2 for software development. Benchmark scores, pricing analysis, and use case recommendations to help you choose the right AI assistant for your coding workflow.</p>
+					<p>Comprehensive comparison of Claude Opus 4.8 and GPT-5.2 for software development. Benchmark scores, pricing analysis, and use case recommendations to help you choose the right AI assistant for your coding workflow.</p>
 					<div class="hero-meta">
 						<span class="hero-badge">Last updated <span class="count">{lastUpdated}</span></span>
 						<span class="hero-badge">8 coding categories</span>
@@ -653,7 +653,7 @@ const faqs = [
 
 				<div class="summary-box">
 					<h3>Verdict</h3>
-					<p><strong>Choose Claude Opus 4.6</strong> for complex coding tasks, large refactors, and architecture decisions where quality matters more than speed. <strong>Choose GPT-5.2</strong> for high-volume coding tasks, rapid prototyping, and when cost efficiency is important. Both models excel at different aspects of software development.</p>
+					<p><strong>Choose Claude Opus 4.8</strong> for complex coding tasks, large refactors, and architecture decisions where quality matters more than speed. <strong>Choose GPT-5.2</strong> for high-volume coding tasks, rapid prototyping, and when cost efficiency is important. Both models excel at different aspects of software development.</p>
 				</div>
 			</section>
 
@@ -768,7 +768,7 @@ const faqs = [
 						<thead>
 							<tr>
 								<th>Metric</th>
-								<th>Claude Opus 4.6</th>
+								<th>Claude Opus 4.8</th>
 								<th>GPT-5.2</th>
 								<th>Difference</th>
 							</tr>
@@ -862,7 +862,7 @@ const faqs = [
 					<a href="/compare/open-source-vs-closed" class="related-link">Open Source vs Closed Models</a>
 					<a href="/compare" class="related-link">All Model Comparisons</a>
 					<a href="/scorecards" class="related-link">Daily Scorecards</a>
-					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.6 Deep Dive</a>
+					<a href="/blog/claude-opus-4-6" class="related-link">Claude Opus 4.8 Deep Dive</a>
 					<a href="/blog/gpt-5-2" class="related-link">GPT-5.2 Deep Dive</a>
 				</div>
 			</section>

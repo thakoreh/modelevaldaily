@@ -4,8 +4,8 @@ import BaseHead from '../../components/BaseHead.astro';
 import Footer from '../../components/Footer.astro';
 import Header from '../../components/Header.astro';
 
-const title = 'GPT-5.2 vs Claude Opus 4.6: Complete Benchmark Comparison 2026';
-const description = 'Side-by-side comparison of GPT-5.2 and Claude Opus 4.6 on coding, reasoning, tool use, cost, and latency. See which model wins for your use case.';
+const title = 'GPT-5.2 vs Claude Opus 4.8: Complete Benchmark Comparison 2026';
+const description = 'Side-by-side comparison of GPT-5.2 and Claude Opus 4.8 on coding, reasoning, tool use, cost, and latency. See which model wins for your use case.';
 
 const comparison = {
 	gpt52: {
@@ -19,12 +19,12 @@ const comparison = {
 		weaknesses: ['Higher cost for output', 'Newer model, less battle-tested'],
 		best: ['Coding tasks', 'API integrations', 'Complex workflows']
 	},
-	claude46: {
-		name: 'Claude Opus 4.6 (Adaptive)',
+	claude48: {
+		name: 'Claude Opus 4.8 (Adaptive)',
 		provider: 'Anthropic',
 		color: '#f59e0b',
-		pricing: { input: 18.75, output: 93.75 },
-		context: '200K',
+		pricing: { input: 5, output: 25 },
+		context: '1M',
 		scores: { coding: 9.6, reasoning: 9.7, toolUse: 9.4 },
 		strengths: ['Top-tier intelligence', 'Adaptive thinking', 'Best for complex reasoning', 'Prompt caching'],
 		weaknesses: ['Most expensive', '200K context limit vs GPT-5.2'],
@@ -37,9 +37,9 @@ const verdict = {
 	reason: 'GPT-5.2 wins on coding by a hair, but both are exceptional. Choose GPT-5.2 for coding/agentic work, Claude for deep reasoning and analysis.',
 	recommendation: {
 		coding: 'gpt52',
-		reasoning: 'claude46',
+		reasoning: 'claude48',
 		agents: 'gpt52',
-		analysis: 'claude46',
+		analysis: 'claude48',
 		cost: 'gpt52'
 	}
 };
@@ -345,7 +345,7 @@ const verdict = {
 		<main class="comparison-container">
 			<!-- Hero -->
 			<section class="comparison-hero">
-				<h1>GPT-5.2 vs Claude Opus 4.6</h1>
+				<h1>GPT-5.2 vs Claude Opus 4.8</h1>
 				<p>Complete benchmark comparison on coding, reasoning, tool use, cost, and latency. Updated March 2026.</p>
 			</section>
 			
@@ -413,49 +413,49 @@ const verdict = {
 					</div>
 				</div>
 				
-				<!-- Claude Opus 4.6 Card -->
+				<!-- Claude Opus 4.8 Card -->
 				<div class={`model-card ${verdict.winner === 'reasoning' ? 'winner' : ''}`}>
-					<h2 style={`color: ${comparison.claude46.color}`}>{comparison.claude46.name}</h2>
-					<p class="provider">by {comparison.claude46.provider}</p>
+					<h2 style={`color: ${comparison.claude48.color}`}>{comparison.claude48.name}</h2>
+					<p class="provider">by {comparison.claude48.provider}</p>
 					
 					<div class="score-grid">
 						<div class="score-item">
 							<span class="score-label">Coding</span>
-							<span class="score-value">{comparison.claude46.scores.coding}</span>
+							<span class="score-value">{comparison.claude48.scores.coding}</span>
 						</div>
 						<div class="score-bar">
-							<div class="score-bar-fill" style={`width: ${comparison.claude46.scores.coding * 10}%; background: ${comparison.claude46.color}`}></div>
+							<div class="score-bar-fill" style={`width: ${comparison.claude48.scores.coding * 10}%; background: ${comparison.claude48.color}`}></div>
 						</div>
 						
 						<div class="score-item">
 							<span class="score-label">Reasoning</span>
-							<span class="score-value">{comparison.claude46.scores.reasoning}</span>
+							<span class="score-value">{comparison.claude48.scores.reasoning}</span>
 						</div>
 						<div class="score-bar">
-							<div class="score-bar-fill" style={`width: ${comparison.claude46.scores.reasoning * 10}%; background: ${comparison.claude46.color}`}></div>
+							<div class="score-bar-fill" style={`width: ${comparison.claude48.scores.reasoning * 10}%; background: ${comparison.claude48.color}`}></div>
 						</div>
 						
 						<div class="score-item">
 							<span class="score-label">Tool Use</span>
-							<span class="score-value">{comparison.claude46.scores.toolUse}</span>
+							<span class="score-value">{comparison.claude48.scores.toolUse}</span>
 						</div>
 						<div class="score-bar">
-							<div class="score-bar-fill" style={`width: ${comparison.claude46.scores.toolUse * 10}%; background: ${comparison.claude46.color}`}></div>
+							<div class="score-bar-fill" style={`width: ${comparison.claude48.scores.toolUse * 10}%; background: ${comparison.claude48.color}`}></div>
 						</div>
 					</div>
 					
 					<div class="pricing-section">
 						<div class="pricing-row">
 							<span class="pricing-label">Input</span>
-							<span class="pricing-value">${comparison.claude46.pricing.input} / 1M tokens</span>
+							<span class="pricing-value">${comparison.claude48.pricing.input} / 1M tokens</span>
 						</div>
 						<div class="pricing-row">
 							<span class="pricing-label">Output</span>
-							<span class="pricing-value">${comparison.claude46.pricing.output} / 1M tokens</span>
+							<span class="pricing-value">${comparison.claude48.pricing.output} / 1M tokens</span>
 						</div>
 						<div class="pricing-row">
 							<span class="pricing-label">Context</span>
-							<span class="pricing-value">{comparison.claude46.context}</span>
+							<span class="pricing-value">{comparison.claude48.context}</span>
 						</div>
 					</div>
 					
@@ -463,13 +463,13 @@ const verdict = {
 						<div class="sw-list">
 							<h4>Strengths</h4>
 							<ul>
-								{comparison.claude46.strengths.map(s => <li>{s}</li>)}
+								{comparison.claude48.strengths.map(s => <li>{s}</li>)}
 							</ul>
 						</div>
 						<div class="sw-list">
 							<h4>Weaknesses</h4>
 							<ul>
-								{comparison.claude46.weaknesses.map(w => <li>{w}</li>)}
+								{comparison.claude48.weaknesses.map(w => <li>{w}</li>)}
 							</ul>
 						</div>
 					</div>
@@ -487,7 +487,7 @@ const verdict = {
 					<span class="winner-badge">✓ WIN</span>
 					
 					<span class="label">Best for Reasoning:</span>
-					<span style={`color: ${comparison.claude46.color}; font-weight: 600`}>Claude Opus 4.6</span>
+					<span style={`color: ${comparison.claude48.color}; font-weight: 600`}>Claude Opus 4.8</span>
 					<span class="winner-badge">✓ WIN</span>
 					
 					<span class="label">Best for Agents:</span>
