@@ -1,0 +1,72 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title="LLM Benchmarks 2026: Compare GPT, Claude, Gemini, DeepSeek & Open Models" description="LLM benchmarks explained for production model selection: coding, reasoning, tool use, context windows, API pricing, and open-weight tradeoffs." type="website" />
+	</head>
+	<body>
+		<Header />
+		<main class="page">
+			<section class="hero">
+				<div class="container">
+					<p class="eyebrow">LLM benchmark guide</p>
+					<h1>LLM Benchmarks for Model Selection</h1>
+					<p class="subtitle">Use LLM benchmarks to narrow the field, then choose by workflow fit: quality, context, reliability, tool use, privacy, deployment model, and cost.</p>
+					<div class="link-row"><a href="/models/">View model leaderboard →</a><a href="/compare/">Compare models →</a><a href="/model-data/">Check source data →</a></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="grid">
+					<div class="card"><h2>Frontier APIs</h2><p>GPT, Claude, Gemini, and Grok compete on general quality, tool integration, and long-context workflows.</p></div>
+					<div class="card"><h2>Value APIs</h2><p>DeepSeek, GLM, Kimi, MiniMax, and Qwen-style models can win cost-sensitive jobs.</p></div>
+					<div class="card"><h2>Open weights</h2><p>Open-weight models matter when privacy, self-hosting, customization, or predictable infra cost dominates.</p></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel">
+					<h2>Benchmark signals to use</h2>
+					<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Signal</th><th>Next page</th></tr></thead><tbody>
+						<tr><td><strong>Coding</strong></td><td>SWE-bench, repo tasks, tool-use success</td><td><a href="/best-ai-model-for-coding/">/best-ai-model-for-coding/</a></td></tr>
+						<tr><td><strong>Knowledge</strong></td><td>MMLU and domain tests</td><td><a href="/benchmarks/mmlu/">/benchmarks/mmlu/</a></td></tr>
+						<tr><td><strong>Preference</strong></td><td>Chatbot Arena / Elo-style rankings</td><td><a href="/benchmarks/chatbot-arena/">/benchmarks/chatbot-arena/</a></td></tr>
+						<tr><td><strong>Deployment</strong></td><td>API vs local vs hosted open weights</td><td><a href="/local-models/">/local-models/</a></td></tr>
+					</tbody></table></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel callout">
+					<h2>Practical rule</h2>
+					<p>Use public AI model benchmarks as a shortlist, not as the final answer. Before adopting a model, test it on your own prompts, codebase, documents, budget constraints, and deployment requirements.</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page { padding-bottom: 4rem; }
+	.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+	.hero { padding: 4rem 0 3rem; background: var(--gradient-hero); border-bottom: 1px solid var(--border-secondary); }
+	.eyebrow { color: var(--accent-light); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+	h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); margin: .6rem 0 1rem; line-height: 1; letter-spacing: -0.04em; }
+	.subtitle { color: var(--text-secondary); max-width: 780px; font-size: 1.06rem; line-height: 1.65; }
+	.section { padding: 3rem 0 0; }
+	.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+	.card, .panel { border: 1px solid var(--border-secondary); background: var(--surface-elevated); border-radius: 1.25rem; padding: 1.25rem; }
+	.card h2, .card h3 { margin-top: 0; }
+	.card p, .panel p, li { color: var(--text-secondary); line-height: 1.65; }
+	.table-wrap { overflow-x: auto; border: 1px solid var(--border-secondary); border-radius: 1rem; }
+	table { width: 100%; border-collapse: collapse; min-width: 720px; }
+	th, td { padding: .9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-secondary); }
+	th { color: var(--text-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+	.link-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+	.link-row a { color: var(--accent-light); font-weight: 700; }
+	.callout { border-left: 3px solid var(--accent); padding-left: 1rem; }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hero { padding: 3rem 0 2rem; } }
+</style>
+

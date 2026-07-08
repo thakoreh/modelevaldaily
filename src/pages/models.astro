@@ -12,11 +12,13 @@ const openWeightModels = VERIFIED_MODELS.filter(model =>
 	model.strengths.some(tag => openWeightKeywords.some(keyword => tag.toLowerCase().includes(keyword)))
 );
 
+const leaderboardLabel = `Top ${VERIFIED_MODELS.length} AI Models`;
+
 const modelsJsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'ItemList',
-	name: 'Top 25 AI Models - Leaderboard',
-	description: 'Comprehensive comparison of the top 25 AI language models ranked by coding, reasoning, and tool-use performance.',
+	name: `${leaderboardLabel} - Leaderboard`,
+	description: `Comprehensive comparison of ${VERIFIED_MODELS.length} AI language models ranked by editorial coding, reasoning, and tool-use scores.`,
 	numberOfItems: VERIFIED_MODELS.length,
 	itemListElement: VERIFIED_MODELS.map((model, index) => ({
 		'@type': 'ListItem',
@@ -45,8 +47,8 @@ const modelsJsonLd = {
 <html lang="en">
 	<head>
 		<BaseHead
-			title={`Top 25 AI Models — Complete Leaderboard | ${SITE_TITLE}`}
-			description="Compare the top 25 AI models including GPT-5, Claude Opus 4.1, Gemini 2.5 Pro, and more. Real benchmarks for coding, reasoning, and tool-use tasks."
+			title={`${leaderboardLabel} — Complete Leaderboard | ${SITE_TITLE}`}
+			description={`Compare ${VERIFIED_MODELS.length} current AI models including GPT-5.5, Claude Fable 5, Claude Opus 4.8, Gemini 3.5 Flash, and more. Editorial scores for coding, reasoning, and tool-use tasks with official provider sources.`}
 		/>
 		<script type="application/ld+json" set:html={JSON.stringify(modelsJsonLd)} />
 		<style>
@@ -342,10 +344,10 @@ const modelsJsonLd = {
 		<main>
 			<section class="hero">
 				<div class="container hero-content">
-					<h1>Top 25 AI Models — Complete Leaderboard</h1>
+					<h1>{leaderboardLabel} — Complete Leaderboard</h1>
 					<p>
-						Compare the top 25 AI language models ranked by coding, reasoning, and tool-use benchmarks.
-						All pricing and specifications verified against official provider documentation.
+						Compare {VERIFIED_MODELS.length} current AI language models ranked by editorial coding, reasoning, and tool-use scores.
+						All pricing and specifications are checked against official provider documentation where available.
 					</p>
 					<div class="hero-meta">
 						<span class="badge badge-success">

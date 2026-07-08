@@ -205,7 +205,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		scores: { coding: 9.1, reasoning: 9.2, toolUse: 8.9 },
 		strengths: ['Excellent value', 'Hybrid thinking/non-thinking modes', 'Large context window'],
 		sources: [
-			{ label: 'DeepSeek Models', url: 'https://api-docs.deepseek.com/quick_start/pricing' },
+			{ label: 'DeepSeek API Docs', url: 'https://api-docs.deepseek.com/' },
 			{ label: 'DeepSeek Pricing', url: 'https://api-docs.deepseek.com/quick_start/pricing' },
 		],
 	},

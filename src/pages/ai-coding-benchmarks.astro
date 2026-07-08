@@ -1,0 +1,72 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title="AI Coding Benchmarks 2026: SWE-bench, Agents, Tool Use & Cost" description="Compare AI coding benchmarks for model selection. Learn how SWE-bench, tool-use scores, context, price, and agent reliability affect real developer workflows." type="website" />
+	</head>
+	<body>
+		<Header />
+		<main class="page">
+			<section class="hero">
+				<div class="container">
+					<p class="eyebrow">Coding benchmark guide</p>
+					<h1>AI Coding Benchmarks That Matter in 2026</h1>
+					<p class="subtitle">Coding quality is not just code generation. The useful benchmark stack includes bug fixes, repo navigation, tool use, test repair, review quality, and cost per accepted patch.</p>
+					<div class="link-row"><a href="/models/">View model leaderboard →</a><a href="/compare/">Compare models →</a><a href="/model-data/">Check source data →</a></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="grid">
+					<div class="card"><h2>SWE-bench is the anchor</h2><p>SWE-bench tests real GitHub issues and is a strong signal for repo-level engineering work.</p></div>
+					<div class="card"><h2>Tool use matters</h2><p>Coding agents need reliable shell, editor, browser, and API tool calls, not just pretty snippets.</p></div>
+					<div class="card"><h2>Price changes routing</h2><p>Use frontier models for planning/review and cheaper capable models for repetitive implementation.</p></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel">
+					<h2>Benchmark signals to use</h2>
+					<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Signal</th><th>Next page</th></tr></thead><tbody>
+						<tr><td><strong>Bug fixing</strong></td><td>SWE-bench Verified, internal regression suites</td><td><a href="/benchmarks/swe-bench/">/benchmarks/swe-bench/</a></td></tr>
+						<tr><td><strong>Feature work</strong></td><td>Repo-specific evals, test pass rate</td><td><a href="/best-ai-model-for-coding/">/best-ai-model-for-coding/</a></td></tr>
+						<tr><td><strong>Code review</strong></td><td>False-positive rate, missed-defect rate</td><td><a href="/best-ai-model-for-agents/">/best-ai-model-for-agents/</a></td></tr>
+						<tr><td><strong>Bulk edits</strong></td><td>Cost per successful task</td><td><a href="/cheapest-ai-models/">/cheapest-ai-models/</a></td></tr>
+					</tbody></table></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel callout">
+					<h2>Practical rule</h2>
+					<p>Use public AI model benchmarks as a shortlist, not as the final answer. Before adopting a model, test it on your own prompts, codebase, documents, budget constraints, and deployment requirements.</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page { padding-bottom: 4rem; }
+	.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+	.hero { padding: 4rem 0 3rem; background: var(--gradient-hero); border-bottom: 1px solid var(--border-secondary); }
+	.eyebrow { color: var(--accent-light); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+	h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); margin: .6rem 0 1rem; line-height: 1; letter-spacing: -0.04em; }
+	.subtitle { color: var(--text-secondary); max-width: 780px; font-size: 1.06rem; line-height: 1.65; }
+	.section { padding: 3rem 0 0; }
+	.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+	.card, .panel { border: 1px solid var(--border-secondary); background: var(--surface-elevated); border-radius: 1.25rem; padding: 1.25rem; }
+	.card h2, .card h3 { margin-top: 0; }
+	.card p, .panel p, li { color: var(--text-secondary); line-height: 1.65; }
+	.table-wrap { overflow-x: auto; border: 1px solid var(--border-secondary); border-radius: 1rem; }
+	table { width: 100%; border-collapse: collapse; min-width: 720px; }
+	th, td { padding: .9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-secondary); }
+	th { color: var(--text-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+	.link-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+	.link-row a { color: var(--accent-light); font-weight: 700; }
+	.callout { border-left: 3px solid var(--accent); padding-left: 1rem; }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hero { padding: 3rem 0 2rem; } }
+</style>
+

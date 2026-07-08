@@ -24,7 +24,7 @@ const decisionGuide = [
 	{ scenario: 'High-volume production API', pick: 'DeepSeek V4 Pro', reason: 'Best balance of low cost, 1M context, and strong performance. Current listed pricing is $0.435/$0.87 per million tokens.' },
 	{ scenario: 'Enterprise on a budget', pick: 'GLM-5', reason: 'Lowest pricing at $0.50/$0.50 with solid 8.5/10 performance. Enterprise features included.' },
 	{ scenario: 'Need quality + reasonable cost', pick: 'Kimi K2.5', reason: '8.9/10 overall score at $2/$10 per million. Best quality-per-dollar for most workloads.' },
-	{ scenario: 'Long context + caching', pick: 'Gemini 2.5 Pro', reason: 'Prompt caching can reduce costs 50-90% on repeated contexts. 1M context for large documents.' },
+	{ scenario: 'Long context + caching', pick: 'Gemini 3.1 Pro Preview', reason: 'Prompt caching can reduce costs 50-90% on repeated contexts. 1M context for large documents.' },
 	{ scenario: 'Quality matters more than cost', pick: 'Claude Opus 4.8', reason: 'Best quality at 9.4/10. Use for critical tasks where accuracy justifies the premium.' },
 ];
 
@@ -61,7 +61,6 @@ const faqSchema = {
 		<BaseHead
 			title={`Cheapest LLM API — Reduce AI Costs & Optimize Spending | ${SITE_TITLE}`}
 			description="Find the cheapest LLM APIs and learn how to reduce AI costs. Compare GLM-5, DeepSeek, MiniMax and more. Cost analysis, prompt caching tips, and model routing strategies."
-			noindex={true}
 		/>
 		<style>
 			main { width: 100%; max-width: 100%; padding: 0; }

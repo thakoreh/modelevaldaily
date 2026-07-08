@@ -6,6 +6,7 @@ import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
+import { MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
 import { isFactCheckedPost } from '../utils/fact-check';
 
 const allPosts = (await getCollection('blog')).sort(
@@ -30,9 +31,9 @@ const ragCount = ragPosts.length;
 const agentCount = agentPosts.length;
 
 const taxonomy = [
-	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount, winner: 'GPT-5' },
-	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount, winner: 'Claude Opus 4.1' },
-	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUseCount, winner: 'GPT-5' },
+	{ title: 'Coding', emoji: '&#128187;', description: 'Bug fixes, refactors, API patches, diffs.', href: '#coding', count: codingCount, winner: 'Claude Fable 5' },
+	{ title: 'Reasoning', emoji: '&#129504;', description: 'Decisions, tradeoffs, leadership calls.', href: '#reasoning', count: reasoningCount, winner: 'Claude Fable 5' },
+	{ title: 'Tool-use', emoji: '&#128295;', description: 'Docs, CLI flows, integrations.', href: '#tool-use', count: toolUseCount, winner: 'GPT-5.5' },
 	{ title: 'RAG / Research', emoji: '&#128218;', description: 'Retrieval, synthesis, audit trails.', href: '#rag', count: ragCount },
 	{ title: 'Agents', emoji: '&#129302;', description: 'Multi-step plans, tool reliability.', href: '#agents', count: agentCount },
 	{ title: 'Latency & Cost', emoji: '&#9889;', description: 'Speed, spend, and throughput tradeoffs.', href: '#cost', count: costCount },
@@ -54,7 +55,6 @@ const filters = [
 		<BaseHead
 			title={`AI Model Scorecards — Daily Benchmarks | ${SITE_TITLE}`}
 			description="Browse daily AI model scorecards across coding, reasoning, tool-use, and more. Compare Claude, GPT, and other models on real-world tasks."
-			noindex={true}
 		/>
 		<style>
 			/* Hero */
@@ -370,7 +370,7 @@ const filters = [
 					<p>Browse today&apos;s winners, task leaders, and cost/latency tradeoffs across models with verified naming.</p>
 					<div class="hero-meta">
 						<span class="live">Live</span>
-						<span>Source log verified on Feb 16, 2026</span>
+						<span>Source log verified on {MODEL_DATA_VERIFIED_ON}</span>
 					</div>
 				</div>
 				{latest && (

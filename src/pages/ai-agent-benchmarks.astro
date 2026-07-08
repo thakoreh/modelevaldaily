@@ -1,0 +1,72 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title="AI Agent Benchmarks 2026: Tool Use, Coding, Planning & Reliability" description="Benchmark AI models for agent workflows: planning, coding, review, tool use, long context, reliability, and cost per completed task." type="website" />
+	</head>
+	<body>
+		<Header />
+		<main class="page">
+			<section class="hero">
+				<div class="container">
+					<p class="eyebrow">Agent benchmark guide</p>
+					<h1>AI Agent Benchmarks for Real Workflows</h1>
+					<p class="subtitle">Agent benchmarks should measure completed work, not isolated answers. The right model can plan, call tools, recover from errors, and keep costs under control.</p>
+					<div class="link-row"><a href="/models/">View model leaderboard →</a><a href="/compare/">Compare models →</a><a href="/model-data/">Check source data →</a></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="grid">
+					<div class="card"><h2>Plan</h2><p>Use the strongest reasoning models to decompose tasks, define constraints, and decide escalation paths.</p></div>
+					<div class="card"><h2>Edit</h2><p>Use coding-specialized or value models for iterative implementation, tests, and bulk changes.</p></div>
+					<div class="card"><h2>Review</h2><p>Use careful frontier models for regressions, architecture risk, and source-grounded verification.</p></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel">
+					<h2>Benchmark signals to use</h2>
+					<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Signal</th><th>Next page</th></tr></thead><tbody>
+						<tr><td><strong>Planning</strong></td><td>Task decomposition, constraint tracking</td><td><a href="/best-ai-model-for-agents/">/best-ai-model-for-agents/</a></td></tr>
+						<tr><td><strong>Tool use</strong></td><td>Function calls, browser actions, shell reliability</td><td><a href="/models/">/models/</a></td></tr>
+						<tr><td><strong>Coding</strong></td><td>Patch quality, test pass rate</td><td><a href="/best-ai-model-for-coding/">/best-ai-model-for-coding/</a></td></tr>
+						<tr><td><strong>Cost</strong></td><td>Tokens per completed task</td><td><a href="/cost-calculator/">/cost-calculator/</a></td></tr>
+					</tbody></table></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel callout">
+					<h2>Practical rule</h2>
+					<p>Use public AI model benchmarks as a shortlist, not as the final answer. Before adopting a model, test it on your own prompts, codebase, documents, budget constraints, and deployment requirements.</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page { padding-bottom: 4rem; }
+	.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+	.hero { padding: 4rem 0 3rem; background: var(--gradient-hero); border-bottom: 1px solid var(--border-secondary); }
+	.eyebrow { color: var(--accent-light); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+	h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); margin: .6rem 0 1rem; line-height: 1; letter-spacing: -0.04em; }
+	.subtitle { color: var(--text-secondary); max-width: 780px; font-size: 1.06rem; line-height: 1.65; }
+	.section { padding: 3rem 0 0; }
+	.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+	.card, .panel { border: 1px solid var(--border-secondary); background: var(--surface-elevated); border-radius: 1.25rem; padding: 1.25rem; }
+	.card h2, .card h3 { margin-top: 0; }
+	.card p, .panel p, li { color: var(--text-secondary); line-height: 1.65; }
+	.table-wrap { overflow-x: auto; border: 1px solid var(--border-secondary); border-radius: 1rem; }
+	table { width: 100%; border-collapse: collapse; min-width: 720px; }
+	th, td { padding: .9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-secondary); }
+	th { color: var(--text-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+	.link-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+	.link-row a { color: var(--accent-light); font-weight: 700; }
+	.callout { border-left: 3px solid var(--accent); padding-left: 1rem; }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hero { padding: 3rem 0 2rem; } }
+</style>
+

@@ -1,0 +1,72 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import Footer from '../components/Footer.astro';
+import Header from '../components/Header.astro';
+---
+
+<html lang="en">
+	<head>
+		<BaseHead title="Model Benchmark Methodology: How AI Model Benchmarks Scores Models" description="Understand the AI Model Benchmarks methodology: source review, pricing checks, context windows, coding scores, reasoning scores, and workflow-based recommendations." type="website" />
+	</head>
+	<body>
+		<Header />
+		<main class="page">
+			<section class="hero">
+				<div class="container">
+					<p class="eyebrow">How scores are used</p>
+					<h1>Model Benchmark Methodology</h1>
+					<p class="subtitle">Our methodology treats benchmark scores as decision inputs. We combine source-reviewed model data with workflow fit, pricing, context, and deployment tradeoffs.</p>
+					<div class="link-row"><a href="/models/">View model leaderboard →</a><a href="/compare/">Compare models →</a><a href="/model-data/">Check source data →</a></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="grid">
+					<div class="card"><h2>Source review</h2><p>Model names, availability, context windows, and pricing claims should be traceable to official provider documentation.</p></div>
+					<div class="card"><h2>Workflow weighting</h2><p>Coding, reasoning, and tool-use scores matter differently for agents, RAG, support bots, data extraction, and local deployments.</p></div>
+					<div class="card"><h2>Freshness matters</h2><p>Model data decays quickly. Each high-value page should show freshness, cite sources, and avoid stale model names.</p></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel">
+					<h2>Benchmark signals to use</h2>
+					<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Signal</th><th>Next page</th></tr></thead><tbody>
+						<tr><td><strong>Model identity</strong></td><td>Official model names and release status</td><td><a href="/model-data/">/model-data/</a></td></tr>
+						<tr><td><strong>Pricing</strong></td><td>Input/output cost per 1M tokens</td><td><a href="/cost-calculator/">/cost-calculator/</a></td></tr>
+						<tr><td><strong>Context</strong></td><td>Window size and practical reliability</td><td><a href="/best-long-context-models/">/best-long-context-models/</a></td></tr>
+						<tr><td><strong>Recommendation</strong></td><td>Best-fit workflow and caveats</td><td><a href="/compare/">/compare/</a></td></tr>
+					</tbody></table></div>
+				</div>
+			</section>
+			<section class="container section">
+				<div class="panel callout">
+					<h2>Practical rule</h2>
+					<p>Use public AI model benchmarks as a shortlist, not as the final answer. Before adopting a model, test it on your own prompts, codebase, documents, budget constraints, and deployment requirements.</p>
+				</div>
+			</section>
+		</main>
+		<Footer />
+	</body>
+</html>
+
+<style>
+	.page { padding-bottom: 4rem; }
+	.container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+	.hero { padding: 4rem 0 3rem; background: var(--gradient-hero); border-bottom: 1px solid var(--border-secondary); }
+	.eyebrow { color: var(--accent-light); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+	h1 { font-size: clamp(2.3rem, 5vw, 3.6rem); margin: .6rem 0 1rem; line-height: 1; letter-spacing: -0.04em; }
+	.subtitle { color: var(--text-secondary); max-width: 780px; font-size: 1.06rem; line-height: 1.65; }
+	.section { padding: 3rem 0 0; }
+	.grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+	.card, .panel { border: 1px solid var(--border-secondary); background: var(--surface-elevated); border-radius: 1.25rem; padding: 1.25rem; }
+	.card h2, .card h3 { margin-top: 0; }
+	.card p, .panel p, li { color: var(--text-secondary); line-height: 1.65; }
+	.table-wrap { overflow-x: auto; border: 1px solid var(--border-secondary); border-radius: 1rem; }
+	table { width: 100%; border-collapse: collapse; min-width: 720px; }
+	th, td { padding: .9rem 1rem; text-align: left; border-bottom: 1px solid var(--border-secondary); }
+	th { color: var(--text-muted); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+	.link-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.25rem; }
+	.link-row a { color: var(--accent-light); font-weight: 700; }
+	.callout { border-left: 3px solid var(--accent); padding-left: 1rem; }
+	@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .hero { padding: 3rem 0 2rem; } }
+</style>
+

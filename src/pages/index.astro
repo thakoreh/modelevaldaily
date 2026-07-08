@@ -2,7 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_DESCRIPTION, SITE_TITLE } from '../consts';
+import { SITE_TITLE } from '../consts';
 import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
 
 // Use verified models data directly (more reliable than parsing markdown)
@@ -40,7 +40,10 @@ const architectureCards = [
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={`${SITE_TITLE} — Coding Agent Model Guide`} description={SITE_DESCRIPTION} />
+		<BaseHead
+			title="AI Model Benchmarks 2026: Compare GPT, Claude, Gemini & DeepSeek"
+			description="Compare AI model benchmarks for coding, agents, reasoning, context windows, and API pricing. Updated source-reviewed rankings for GPT, Claude, Gemini, DeepSeek, and open models."
+		/>
 		<style>
 			/* Override main for homepage — full-width sections */
 			main {

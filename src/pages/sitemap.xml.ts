@@ -13,11 +13,14 @@ export async function GET() {
 		{ path: '/scorecards/', priority: '0.9', changefreq: 'daily', lastmod: defaultLastmod },
 		{ path: '/compare/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/cost-calculator/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
-		{ path: '/tools/cost-calculator/', priority: '0.8', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/tools/model-picker/', priority: '0.92', changefreq: 'weekly', lastmod: defaultLastmod },
-		{ path: '/model-picker/', priority: '0.74', changefreq: 'monthly', lastmod: defaultLastmod },
 		{ path: '/blog/', priority: '0.85', changefreq: 'daily', lastmod: defaultLastmod },
 		{ path: '/model-data/', priority: '0.8', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/ai-model-benchmarking/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/ai-coding-benchmarks/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/llm-benchmarks/', priority: '0.88', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/ai-agent-benchmarks/', priority: '0.88', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/model-benchmark-methodology/', priority: '0.82', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/best-ai-model-for-coding/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/best-ai-model-for-agents/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/cheapest-ai-models/', priority: '0.88', changefreq: 'weekly', lastmod: defaultLastmod },
@@ -45,7 +48,6 @@ export async function GET() {
 		{ path: '/prompts/', priority: '0.72', changefreq: 'monthly', lastmod: defaultLastmod },
 		{ path: '/openclaw/', priority: '0.7', changefreq: 'monthly', lastmod: defaultLastmod },
 		{ path: '/faq/', priority: '0.7', changefreq: 'weekly', lastmod: defaultLastmod },
-		{ path: '/about/', priority: '0.6', changefreq: 'monthly', lastmod: defaultLastmod },
 	];
 
 	const blogUrls = posts
