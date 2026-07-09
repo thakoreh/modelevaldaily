@@ -1,255 +1,94 @@
 ---
-import { SITE_TITLE } from '../consts';
 import HeaderLink from './HeaderLink.astro';
 ---
 
-<header>
-	<nav>
-		<div class="nav-left">
-			<a href="/" class="logo">
-				<span class="logo-icon">
-					<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect width="28" height="28" rx="7" fill="#11130f" stroke="#2dd4bf"/>
-						<path d="M7 18L11 10L15 16L19 8L21 12" stroke="#f4f1e8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-				</span>
-				<span class="logo-text">AI Model Benchmarks</span>
-			</a>
+<header class="site-header">
+	<div class="nav-shell">
+		<a href="/" class="brand" aria-label="AI Model Benchmarks home">
+			<span class="brand-mark" aria-hidden="true">AM</span>
+			<span class="brand-copy"><strong>AI Model</strong><span>Benchmarks</span></span>
+		</a>
+		<nav class="desktop-nav" aria-label="Primary navigation">
+			<HeaderLink href="/models/">Rankings</HeaderLink>
+			<HeaderLink href="/compare/">Compare</HeaderLink>
+			<HeaderLink href="/use-cases/">Use cases</HeaderLink>
+			<HeaderLink href="/blog/">Research</HeaderLink>
+			<HeaderLink href="/model-data/">Methodology</HeaderLink>
+		</nav>
+		<div class="nav-actions">
+			<button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch color theme" title="Switch color theme">
+				<svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.5"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg>
+				<svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 15.2A8.4 8.4 0 0 1 8.8 3.8 8.5 8.5 0 1 0 20.2 15.2Z"/></svg>
+			</button>
+			<a class="find-model" href="/tools/model-picker/">Find a model <span aria-hidden="true">→</span></a>
+			<button class="menu-toggle" id="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open navigation">
+				<span></span><span></span><span></span>
+			</button>
 		</div>
-		<div class="nav-center">
-			<HeaderLink href="/models">Models</HeaderLink>
-			<HeaderLink href="/coding-agents">Coding Agents</HeaderLink>
-			<HeaderLink href="/compare">Compare</HeaderLink>
-			<HeaderLink href="/cost-calculator">Pricing</HeaderLink>
-			<HeaderLink href="/tools/model-picker">Model Picker</HeaderLink>
-		</div>
-		<div class="nav-right">
-			<a class="nav-cta" href="/model-data">
-				<span class="pulse-dot"></span>
-				Data
-			</a>
-		</div>
-	</nav>
-	<!-- Mobile nav -->
-	<button
-		class="mobile-toggle"
-		aria-label="Toggle navigation"
-		aria-expanded="false"
-		aria-controls="mobile-menu"
-		id="mobile-nav-toggle"
-	>
-		<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-			<line x1="3" y1="6" x2="21" y2="6"/>
-			<line x1="3" y1="12" x2="21" y2="12"/>
-			<line x1="3" y1="18" x2="21" y2="18"/>
-		</svg>
-	</button>
-	<div class="mobile-menu" id="mobile-menu">
-		<a href="/">Home</a>
-		<a href="/models">Models</a>
-		<a href="/coding-agents">Coding Agents</a>
-		<a href="/compare">Compare</a>
-		<a href="/cost-calculator">Pricing</a>
-		<a href="/tools/model-picker">Model Picker</a>
-		<a href="/model-data">Source Data</a>
-		<a href="/local-models">Local Models</a>
-		<a href="/openclaw">OpenClaw</a>
 	</div>
+	<nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+		<a href="/models/">Rankings</a><a href="/compare/">Compare</a><a href="/use-cases/">Use cases</a><a href="/blog/">Research</a><a href="/model-data/">Methodology</a><a href="/tools/model-picker/">Find a model →</a>
+	</nav>
 </header>
 
-<script>
-	const toggle = document.getElementById('mobile-nav-toggle');
-	const menu = document.getElementById('mobile-menu');
-	const links = menu?.querySelectorAll('a') ?? [];
-
-	const closeMenu = () => {
-		menu?.classList.remove('open');
-		toggle?.setAttribute('aria-expanded', 'false');
-	};
-
-	const openMenu = () => {
-		menu?.classList.add('open');
-		toggle?.setAttribute('aria-expanded', 'true');
-	};
-
-	toggle?.addEventListener('click', (event) => {
-		event.stopPropagation();
-		if (menu?.classList.contains('open')) {
-			closeMenu();
-		} else {
-			openMenu();
-		}
-	});
-
-	document.addEventListener('click', (event) => {
-		if (!menu?.classList.contains('open')) return;
-		const target = event.target;
-		if (!(target instanceof Node)) return;
-		if (menu?.contains(target) || toggle?.contains(target)) return;
-		closeMenu();
-	});
-
-	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape') closeMenu();
-	});
-
-	links.forEach((link) => {
-		link.addEventListener('click', () => closeMenu());
-	});
+<script is:inline>
+	(() => {
+		const root = document.documentElement;
+		const themeButton = document.getElementById('theme-toggle');
+		const menuButton = document.getElementById('menu-toggle');
+		const menu = document.getElementById('mobile-menu');
+		const updateThemeLabel = () => {
+			const dark = root.dataset.theme === 'dark';
+			themeButton?.setAttribute('aria-label', dark ? 'Switch to light theme' : 'Switch to dark theme');
+		};
+		updateThemeLabel();
+		themeButton?.addEventListener('click', () => {
+			const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+			root.dataset.theme = next;
+			localStorage.setItem('amb-theme', next);
+			updateThemeLabel();
+			window.dispatchEvent(new CustomEvent('amb:theme-change', { detail: { theme: next } }));
+		});
+		const closeMenu = () => {
+			menu?.classList.remove('open');
+			menuButton?.setAttribute('aria-expanded', 'false');
+		};
+		menuButton?.addEventListener('click', () => {
+			const open = menu?.classList.toggle('open') ?? false;
+			menuButton.setAttribute('aria-expanded', String(open));
+		});
+		menu?.querySelectorAll('a').forEach((link) => link.addEventListener('click', closeMenu));
+		document.addEventListener('keydown', (event) => event.key === 'Escape' && closeMenu());
+	})();
 </script>
 
 <style>
-	header {
-		position: sticky;
-		top: 0;
-		z-index: 1000;
-		background: rgba(9, 10, 8, 0.88);
-		backdrop-filter: blur(18px) saturate(130%);
-		-webkit-backdrop-filter: blur(18px) saturate(130%);
-		border-bottom: 1px solid var(--border-primary);
-	}
-	nav {
-		display: flex;
-		align-items: center;
-		justify-content: space-between;
-		max-width: var(--container-xl);
-		margin: 0 auto;
-		padding: 0.68rem 1.5rem;
-		gap: 1rem;
-	}
-
-	/* Logo */
-	.logo {
-		display: flex;
-		align-items: center;
-		gap: 0.7rem;
-		text-decoration: none;
-		color: var(--text-primary);
-	}
-	.logo:hover {
-		color: var(--text-primary);
-	}
-	.logo-icon {
-		display: flex;
-		align-items: center;
-	}
-	.logo-text {
-		font-size: var(--font-sm);
-		font-weight: 700;
-		letter-spacing: 0;
-		white-space: nowrap;
-	}
-
-	/* Nav center links */
-	.nav-center {
-		display: flex;
-		align-items: center;
-		gap: 0.15rem;
-		padding: 0.2rem;
-		background: rgba(244, 241, 232, 0.028);
-		border: 1px solid var(--border-secondary);
-		border-radius: var(--radius-lg);
-	}
-	.nav-center :global(a) {
-		padding: 0.42rem 0.78rem;
-		color: var(--text-secondary);
-		text-decoration: none;
-		font-size: var(--font-sm);
-		font-weight: 500;
-		border-radius: var(--radius-md);
-		transition: all var(--transition-fast);
-	}
-	.nav-center :global(a:hover) {
-		color: var(--text-primary);
-		background: rgba(244, 241, 232, 0.052);
-	}
-	.nav-center :global(a.active) {
-		color: var(--text-primary);
-		background: rgba(20, 184, 166, 0.12);
-		box-shadow: inset 0 0 0 1px rgba(20, 184, 166, 0.14);
-	}
-
-	/* Right section */
-	.nav-right {
-		display: flex;
-		align-items: center;
-		gap: 0.75rem;
-	}
-	.nav-cta {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		padding: 0.48rem 0.95rem;
-		border-radius: var(--radius-md);
-		background: var(--accent);
-		color: var(--text-inverse) !important;
-		font-size: var(--font-sm);
-		font-weight: 700;
-		text-decoration: none;
-		transition: all var(--transition-fast);
-		box-shadow: none;
-	}
-	.nav-cta:hover {
-		transform: translateY(-1px);
-		box-shadow: 0 10px 24px rgba(20, 184, 166, 0.18);
-		color: var(--text-inverse);
-	}
-	.pulse-dot {
-		width: 6px;
-		height: 6px;
-		border-radius: 50%;
-		background: #072a24;
-		box-shadow: 0 0 0 2px rgba(9, 10, 8, 0.32);
-	}
-
-
-	/* Mobile */
-	.mobile-toggle {
-		display: none;
-		position: absolute;
-		right: 1rem;
-		top: 50%;
-		transform: translateY(-50%);
-		background: none;
-		border: none;
-		color: var(--text-secondary);
-		cursor: pointer;
-		padding: 0.5rem;
-	}
-	.mobile-menu {
-		display: none;
-		flex-direction: column;
-		padding: 0.5rem 1.5rem 1rem;
-		background: rgba(9, 10, 8, 0.96);
-		border-top: 1px solid var(--border-secondary);
-	}
-	.mobile-menu a {
-		display: block;
-		padding: 0.65rem 0;
-		color: var(--text-secondary);
-		text-decoration: none;
-		font-size: var(--font-sm);
-		border-bottom: 1px solid var(--border-secondary);
-	}
-	.mobile-menu a:hover {
-		color: var(--text-primary);
-	}
-
-	@media (max-width: 768px) {
-		.nav-center {
-			display: none;
-		}
-		.nav-cta {
-			display: none;
-		}
-		.mobile-toggle {
-			display: block;
-		}
-		.mobile-menu.open {
-			display: flex;
-		}
-		nav {
-			position: relative;
-		}
+	.site-header { position: sticky; top: 0; z-index: 100; border-bottom: 1px solid var(--line); background: color-mix(in srgb, var(--canvas) 92%, transparent); backdrop-filter: blur(16px); }
+	.nav-shell { width: min(var(--container-xl), calc(100% - 3rem)); min-height: 68px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1.5rem; }
+	.brand { width: fit-content; display: inline-flex; align-items: center; gap: 0.65rem; color: var(--ink); text-decoration: none; }
+	.brand-mark { display: grid; width: 34px; height: 34px; place-items: center; border: 1px solid var(--ink); border-radius: 50%; font: 700 0.68rem var(--font-mono); letter-spacing: -0.05em; }
+	.brand-copy { display: flex; flex-direction: column; line-height: 0.95; font-size: 0.82rem; }
+	.brand-copy strong { font-weight: 720; }
+	.brand-copy span { color: var(--ink-muted); }
+	.desktop-nav { display: flex; align-items: center; gap: 1.35rem; }
+	.desktop-nav :global(a) { position: relative; color: var(--ink-muted); font-size: 0.86rem; font-weight: 620; text-decoration: none; }
+	.desktop-nav :global(a:hover), .desktop-nav :global(a.active) { color: var(--ink); }
+	.desktop-nav :global(a.active)::after { content: ''; position: absolute; left: 0; right: 0; bottom: -0.55rem; height: 2px; background: var(--blue); }
+	.nav-actions { justify-self: end; display: flex; align-items: center; gap: 0.6rem; }
+	.theme-toggle { display: grid; width: 40px; height: 40px; place-items: center; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); color: var(--ink); cursor: pointer; }
+	.theme-toggle svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+	.theme-toggle .moon, :global([data-theme='dark']) .theme-toggle .sun { display: none; }
+	:global([data-theme='dark']) .theme-toggle .moon { display: block; }
+	.find-model { display: inline-flex; align-items: center; gap: 0.4rem; min-height: 40px; padding: 0.55rem 0.85rem; border-radius: var(--radius-md); background: var(--blue); color: #fff; font-size: 0.84rem; font-weight: 680; text-decoration: none; }
+	.find-model:hover { background: var(--blue-dark); color: #fff; }
+	.menu-toggle { display: none; width: 40px; height: 40px; padding: 10px; border: 1px solid var(--line); border-radius: 50%; background: var(--surface); }
+	.menu-toggle span { display: block; height: 1px; margin: 4px 0; background: var(--ink); }
+	.mobile-menu { display: none; }
+	@media (max-width: 900px) {
+		.nav-shell { width: calc(100% - 1.25rem); grid-template-columns: 1fr auto; }
+		.desktop-nav, .find-model { display: none; }
+		.menu-toggle { display: block; }
+		.mobile-menu.open { display: grid; padding: 0.4rem 1rem 1rem; border-top: 1px solid var(--line); background: var(--canvas); }
+		.mobile-menu a { padding: 0.7rem 0; border-bottom: 1px solid var(--line); color: var(--ink); font-weight: 620; text-decoration: none; }
 	}
 </style>

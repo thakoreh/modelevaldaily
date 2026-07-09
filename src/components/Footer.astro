@@ -1,207 +1,30 @@
 ---
-import { TOP_5_MODELS, MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
-
-const today = new Date();
-const categories = [
-	{ name: 'Coding Agents', href: '/coding-agents' },
-	{ name: 'Model Picker', href: '/tools/model-picker' },
-	{ name: 'Compare Models', href: '/compare' },
-	{ name: 'API Pricing', href: '/cost-calculator' },
-];
-const resources = [
-	{ name: 'Model Data', href: '/model-data' },
-	{ name: 'All Models', href: '/models' },
-	{ name: 'Local Models', href: '/local-models' },
-	{ name: 'Open Weights', href: '/best-open-weight-models' },
-	{ name: 'FAQ', href: '/faq' },
-];
+import { MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
+const year = new Date().getFullYear();
 ---
-
-<footer>
-	<div class="footer-inner">
-		<div class="footer-top">
-			<div class="footer-brand">
-				<a href="/" class="footer-logo">
-					<svg width="24" height="24" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<rect width="28" height="28" rx="7" fill="#11130f" stroke="#2dd4bf"/>
-						<path d="M7 18L11 10L15 16L19 8L21 12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-					</svg>
-					<span>AI Model Benchmarks</span>
-				</a>
-				<p class="footer-tagline">Practical AI model benchmarks for coding agents, tool use, context-heavy work, and production model routing.</p>
-				<a class="domain-link" href="https://aimodelbenchmarks.com">aimodelbenchmarks.com</a>
-				<div class="footer-social">
-					<a href="https://x.com/aimodelbench" target="_blank" rel="noopener noreferrer" aria-label="Follow on X (Twitter)">
-						<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-					</a>
-					<a href="/rss.xml" aria-label="RSS Feed">
-						<svg viewBox="0 0 24 24" width="16" height="16"><path fill="currentColor" d="M6.503 20.752c0 1.794-1.456 3.248-3.251 3.248-1.796 0-3.252-1.454-3.252-3.248 0-1.794 1.456-3.248 3.252-3.248 1.795 0 3.251 1.454 3.251 3.248zm-6.503-12.572v4.811c6.05.062 10.96 4.966 11.022 11.009h4.817c-.062-8.71-7.118-15.758-15.839-15.82zm0-8.18v4.819c12.951.115 23.424 10.563 23.547 23.501h4.813c-.123-15.618-12.747-28.218-28.36-28.32z"/></svg>
-					</a>
-				</div>
-			</div>
-			<div class="footer-col">
-				<h4>Decision Tools</h4>
-				<ul>
-					{categories.map(cat => (
-						<li><a href={cat.href}>{cat.name}</a></li>
-					))}
-				</ul>
-			</div>
-			<div class="footer-col">
-				<h4>Reference</h4>
-				<ul>
-					{resources.map(res => (
-						<li><a href={res.href}>{res.name}</a></li>
-					))}
-				</ul>
-			</div>
-			<div class="footer-col">
-				<h4>Top Models</h4>
-				<ul>
-					{TOP_5_MODELS.map(model => (
-						<li><span class="model-name">{model.name}</span></li>
-					))}
-					<li><a href="/models" class="view-all">View all →</a></li>
-				</ul>
-			</div>
+<footer class="site-footer">
+	<div class="footer-grid">
+		<div class="footer-intro">
+			<a class="footer-brand" href="/">AI Model Benchmarks</a>
+			<p>Independent, source-aware guidance for choosing AI models by workload, cost, context, and deployment needs.</p>
+			<span class="verification">Data reviewed {MODEL_DATA_VERIFIED_ON}</span>
 		</div>
-		<div class="footer-bottom">
-			<p>&copy; {today.getFullYear()} AI Model Benchmarks</p>
-			<p class="footer-disclaimer">Data verified {MODEL_DATA_VERIFIED_ON}. Benchmarks are for informational purposes only.</p>
-		</div>
+		<div><h2>Decide</h2><a href="/tools/model-picker/">Find a model</a><a href="/compare/">Compare models</a><a href="/models/">Rankings</a><a href="/cost-calculator/">Cost calculator</a></div>
+		<div><h2>Explore</h2><a href="/coding-agents/">Coding agents</a><a href="/local-models/">Local models</a><a href="/best-open-weight-models/">Open weights</a><a href="/blog/">Research</a></div>
+		<div><h2>Evidence</h2><a href="/model-data/">Methodology & data</a><a href="/scorecards/">Scorecards</a><a href="/faq/">FAQ</a><a href="/about/">About</a></div>
 	</div>
+	<div class="footer-bottom"><span>© {year} AI Model Benchmarks</span><span>Rankings are decision aids, not universal truths.</span></div>
 </footer>
-
 <style>
-	footer {
-		background: rgba(16, 17, 15, 0.88);
-		border-top: 1px solid var(--border-primary);
-		margin-top: 3.5rem;
-	}
-	.footer-inner {
-		max-width: var(--container-xl);
-		margin: 0 auto;
-		padding: 2.5rem 1.5rem 1.25rem;
-	}
-	.footer-top {
-		display: grid;
-		grid-template-columns: 1.6fr 1fr 1fr 1fr;
-		gap: 2rem;
-		padding-bottom: 2rem;
-		border-bottom: 1px solid var(--border-primary);
-	}
-
-	/* Brand column */
-	.footer-brand {
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-md);
-	}
-	.footer-logo {
-		display: flex;
-		align-items: center;
-		gap: 0.5rem;
-		color: var(--text-primary);
-		text-decoration: none;
-		font-weight: 600;
-		font-size: var(--font-base);
-	}
-	.footer-tagline {
-		color: var(--text-secondary);
-		font-size: var(--font-sm);
-		line-height: 1.55;
-		margin: 0;
-		max-width: 320px;
-	}
-	.footer-social {
-		display: flex;
-		gap: 0.75rem;
-	}
-	.domain-link {
-		color: var(--accent-light);
-		font-size: var(--font-sm);
-		font-weight: 700;
-		width: fit-content;
-	}
-	.footer-social a {
-		color: var(--text-tertiary);
-		transition: color var(--transition-fast);
-		padding: 0.25rem;
-	}
-	.footer-social a:hover {
-		color: var(--text-primary);
-	}
-
-	/* Columns */
-	.footer-col h4 {
-		color: var(--text-primary);
-		font-size: var(--font-xs);
-		font-weight: 600;
-		text-transform: none;
-		letter-spacing: 0;
-		margin: 0 0 var(--space-md);
-	}
-	.footer-col ul {
-		list-style: none;
-		padding: 0;
-		margin: 0;
-	}
-	.footer-col li {
-		margin: 0;
-		line-height: 1.75;
-	}
-	.footer-col a {
-		color: var(--text-secondary);
-		text-decoration: none;
-		font-size: var(--font-sm);
-		transition: color var(--transition-fast);
-	}
-	.footer-col a:hover {
-		color: var(--text-primary);
-	}
-	.model-name {
-		color: var(--text-secondary);
-		font-size: var(--font-sm);
-	}
-	.view-all {
-		color: var(--accent-light) !important;
-		font-weight: 500;
-		margin-top: 0.25rem;
-		display: inline-block;
-	}
-
-	/* Bottom */
-	.footer-bottom {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding-top: var(--space-lg);
-		font-size: var(--font-xs);
-		color: var(--text-tertiary);
-	}
-	.footer-disclaimer {
-		color: var(--text-tertiary);
-		font-size: var(--font-xs);
-	}
-
-	/* Mobile */
-	@media (max-width: 768px) {
-		.footer-top {
-			grid-template-columns: 1fr 1fr;
-			gap: var(--space-xl);
-		}
-		.footer-brand {
-			grid-column: 1 / -1;
-		}
-	}
-	@media (max-width: 480px) {
-		.footer-top {
-			grid-template-columns: 1fr;
-		}
-		.footer-bottom {
-			flex-direction: column;
-			gap: 0.5rem;
-			text-align: center;
-		}
-	}
+	.site-footer { margin-top: 5rem; border-top: 1px solid var(--line); background: var(--surface); }
+	.footer-grid { width: min(var(--container-xl), calc(100% - 3rem)); margin: 0 auto; padding: 3.5rem 0; display: grid; grid-template-columns: 1.7fr repeat(3, 1fr); gap: 3rem; }
+	.footer-intro p { max-width: 420px; margin: 0.9rem 0 1.25rem; font-size: 0.94rem; }
+	.footer-brand { color: var(--ink); font-family: var(--font-serif); font-size: 1.35rem; font-weight: 680; text-decoration: none; }
+	.verification { display: inline-flex; padding: 0.25rem 0.55rem; border-radius: 999px; background: var(--green-soft); color: var(--green); font-size: 0.76rem; font-weight: 650; }
+	.footer-grid h2 { margin-bottom: 1rem; font: 700 0.72rem var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; }
+	.footer-grid > div:not(.footer-intro) { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
+	.footer-grid a:not(.footer-brand) { color: var(--ink-muted); font-size: 0.88rem; text-decoration: none; }
+	.footer-grid a:hover { color: var(--blue); }
+	.footer-bottom { width: min(var(--container-xl), calc(100% - 3rem)); margin: 0 auto; padding: 1rem 0 1.5rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; color: var(--ink-faint); font-size: 0.75rem; }
+	@media (max-width: 760px) { .footer-grid { width: calc(100% - 1.25rem); grid-template-columns: 1fr 1fr; gap: 2rem 1rem; } .footer-intro { grid-column: 1 / -1; } .footer-bottom { width: calc(100% - 1.25rem); flex-direction: column; gap: 0.35rem; } }
 </style>

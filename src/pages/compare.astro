@@ -5,813 +5,176 @@ import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
 import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
 
-const models = VERIFIED_MODELS;
-
-const useCases = [
-	{
-		title: 'Best for Coding',
-		emoji: '&#128187;',
-		pick: 'GPT-5.5',
-		reason: 'Highest current coding score in the shared table, with strong reasoning and tool integration for large codebases.',
-		alternative: 'Claude Opus 4.8 for autonomous engineering reliability, or GPT-OSS-120B if you want local/self-hosted coding',
-	},
-	{
-		title: 'Best on a Budget',
-		emoji: '&#128176;',
-		pick: 'DeepSeek V4 Pro',
-		reason: 'Official DeepSeek pricing is unusually low for a thinking-capable 1M-context model.',
-		alternative: 'MiniMax M2.5 for broad productivity value, or Gemini 3.1 Flash-Lite for Google-native high volume',
-	},
-	{
-		title: 'Best for Long Context',
-		emoji: '&#128218;',
-		pick: 'GPT-5.5',
-		reason: '1M context plus strong reasoning makes it a safer default for large repos, large documents, and agent memory workloads.',
-		alternative: 'Claude Opus 4.8 or Gemini 3.5 Flash when provider fit matters more than OpenAI ecosystem',
-	},
-	{
-		title: 'Best for Reasoning',
-		emoji: '&#129504;',
-		pick: 'Kimi K2.5',
-		reason: 'Strong reasoning plus practical tool-use makes it one of the most useful frontier picks right now.',
-		alternative: 'Qwen3 Max 2026-01-23 for bilingual enterprise reasoning',
-	},
-	{
-		title: 'Best All-Rounder',
-		emoji: '&#127942;',
-		pick: 'GPT-5.5',
-		reason: 'Best blend of coding, reasoning, tool use, context, and first-party platform support on the board.',
-		alternative: 'Claude Opus 4.8 if reliability and professional work quality matter more than OpenAI tooling',
-	},
-	{
-		title: 'Best for Local / Open Weights',
-		emoji: '&#128421;&#65039;',
-		pick: 'GPT-OSS-120B',
-		reason: 'Best open-weights option here if you care about privacy, self-hosting, and no per-token API bills.',
-		alternative: 'Llama 4 or Qwen3-Coder for lighter local deployments',
-	},
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const models = VERIFIED_MODELS.map((model) => ({ ...model, slug: slugify(model.name) }));
+const requested = (Astro.url.searchParams.get('models') ?? '').split(',').filter(Boolean);
+const validRequested = requested.filter((slug, index) => models.some((model) => model.slug === slug) && requested.indexOf(slug) === index).slice(0, 3);
+const selectedSlugs = validRequested.length >= 2 ? validRequested : models.slice(0, 2).map((model) => model.slug);
+const selected = selectedSlugs.map((slug) => models.find((model) => model.slug === slug)!).filter(Boolean);
+const fit = (model: (typeof models)[number]) => model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25;
+const contextNumber = (value: string) => Number.parseFloat(value) * (value.toUpperCase().includes('M') ? 1_000_000 : 1_000);
+const maxOf = (getter: (model: (typeof selected)[number]) => number) => Math.max(...selected.map(getter));
+const minOf = (getter: (model: (typeof selected)[number]) => number) => Math.min(...selected.map(getter));
+const metricRows = [
+	{ label: 'Editorial fit', note: '40% coding · 35% reasoning · 25% tool use', value: fit, format: (value: number) => value.toFixed(1), best: 'max' },
+	{ label: 'Coding', note: 'Normalized editorial dimension', value: (model: (typeof selected)[number]) => model.scores.coding, format: (value: number) => value.toFixed(1), best: 'max' },
+	{ label: 'Reasoning', note: 'Normalized editorial dimension', value: (model: (typeof selected)[number]) => model.scores.reasoning, format: (value: number) => value.toFixed(1), best: 'max' },
+	{ label: 'Tool use', note: 'Normalized editorial dimension', value: (model: (typeof selected)[number]) => model.scores.toolUse, format: (value: number) => value.toFixed(1), best: 'max' },
+	{ label: 'Context window', note: 'Provider specification', value: (model: (typeof selected)[number]) => contextNumber(model.contextWindow), display: (model: (typeof selected)[number]) => model.contextWindow, best: 'max' },
+	{ label: 'Input price', note: 'USD per 1M tokens', value: (model: (typeof selected)[number]) => model.pricing.input, format: (value: number) => `$${value}`, best: 'min' },
+	{ label: 'Output price', note: 'USD per 1M tokens', value: (model: (typeof selected)[number]) => model.pricing.output, format: (value: number) => `$${value}`, best: 'min' },
 ];
 ---
-
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead
-			title={`AI Model Comparison & Pricing (2026) | ${SITE_TITLE}`}
-			description={`Compare fact-checked AI models side-by-side. Pricing references are verified against official provider docs as of ${MODEL_DATA_VERIFIED_ON}.`}
-		/>
-		<style>
-			main {
-				width: 100%;
-				max-width: 100%;
-				padding: 0;
-			}
-
-			.container {
-				max-width: var(--container-xl);
-				margin: 0 auto;
-				padding: 0 1.5rem;
-			}
-
-			.page-hero {
-				position: relative;
-				padding: var(--space-3xl) 0 var(--space-2xl);
-				overflow: hidden;
-			}
-
-			.page-hero::before {
-				content: '';
-				position: absolute;
-				inset: 0;
-				background: var(--gradient-hero);
-				pointer-events: none;
-			}
-
-			.hero-inner {
-				position: relative;
-				max-width: var(--container-xl);
-				margin: 0 auto;
-				padding: 0 1.5rem;
-			}
-
-			.hero-text h1 {
-				font-size: clamp(2rem, 3.5vw, 2.75rem);
-				margin-bottom: var(--space-sm);
-			}
-
-			.hero-text > p {
-				color: var(--text-secondary);
-				font-size: var(--font-lg);
-				margin-bottom: var(--space-lg);
-				max-width: 600px;
-			}
-
-			.hero-meta {
-				display: flex;
-				align-items: center;
-				gap: 1rem;
-				flex-wrap: wrap;
-			}
-
-			.hero-badge {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.35rem;
-				font-size: var(--font-sm);
-				color: var(--text-tertiary);
-				padding: 0.35rem 0.75rem;
-				background: var(--bg-tertiary);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-full);
-			}
-
-			.hero-badge .count {
-				font-weight: 700;
-				color: var(--accent-light);
-			}
-
-			.section {
-				max-width: var(--container-xl);
-				margin: 0 auto;
-				padding: var(--space-2xl) 1.5rem;
-			}
-
-			.section-header {
-				margin-bottom: var(--space-lg);
-			}
-
-			.section-header h2 {
-				margin-bottom: 0.35rem;
-			}
-
-			.section-header p {
-				color: var(--text-tertiary);
-				font-size: var(--font-base);
-			}
-
-			.compare-table-wrapper {
-				overflow-x: auto;
-				border-radius: var(--radius-xl);
-				border: 1px solid var(--border-primary);
-				background: var(--bg-card);
-			}
-
-			.compare-table {
-				width: 100%;
-				border-collapse: collapse;
-				min-width: 900px;
-			}
-
-			.compare-table th {
-				background: var(--bg-tertiary);
-				color: var(--text-secondary);
-				font-weight: 600;
-				font-size: var(--font-xs);
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-				padding: 0.85rem 1rem;
-				text-align: left;
-				border-bottom: 1px solid var(--border-primary);
-				white-space: nowrap;
-				position: sticky;
-				top: 0;
-			}
-
-			.compare-table td {
-				padding: 0.85rem 1rem;
-				border-bottom: 1px solid var(--border-secondary);
-				vertical-align: top;
-			}
-
-			.compare-table tr:last-child td {
-				border-bottom: none;
-			}
-
-			.compare-table tr:hover td {
-				background: var(--bg-elevated);
-			}
-
-			.model-cell {
-				display: flex;
-				align-items: center;
-				gap: 0.75rem;
-			}
-
-			.model-dot {
-				width: 10px;
-				height: 10px;
-				border-radius: 50%;
-				flex-shrink: 0;
-			}
-
-			.model-name {
-				font-weight: 600;
-				color: var(--text-primary);
-				font-size: var(--font-sm);
-			}
-
-			.model-provider {
-				font-size: var(--font-xs);
-				color: var(--text-tertiary);
-			}
-
-			.price-cell {
-				font-family: ui-monospace, monospace;
-				font-size: var(--font-sm);
-			}
-
-			.price-cell .input {
-				color: var(--text-secondary);
-			}
-
-			.price-cell .sep {
-				color: var(--text-tertiary);
-				margin: 0 0.25rem;
-			}
-
-			.price-cell .output {
-				color: var(--text-tertiary);
-			}
-
-			.context-cell {
-				font-family: ui-monospace, monospace;
-				font-size: var(--font-sm);
-				color: var(--text-secondary);
-			}
-
-			.score-cell {
-				display: flex;
-				flex-direction: column;
-				gap: 0.25rem;
-			}
-
-			.score-row {
-				display: flex;
-				align-items: center;
-				gap: 0.5rem;
-				font-size: var(--font-xs);
-			}
-
-			.score-label {
-				color: var(--text-tertiary);
-				width: 50px;
-			}
-
-			.score-bar {
-				flex: 1;
-				height: 4px;
-				background: var(--bg-tertiary);
-				border-radius: 2px;
-				overflow: hidden;
-				min-width: 40px;
-			}
-
-			.score-fill {
-				height: 100%;
-				border-radius: 2px;
-			}
-
-			.score-value {
-				font-weight: 600;
-				color: var(--text-primary);
-				width: 28px;
-				text-align: right;
-			}
-
-			.best-for-cell {
-				display: flex;
-				flex-wrap: wrap;
-				gap: 0.35rem;
-			}
-
-			.best-for-tag {
-				font-size: var(--font-xs);
-				padding: 0.2rem 0.5rem;
-				background: var(--bg-tertiary);
-				border-radius: var(--radius-sm);
-				color: var(--text-secondary);
-			}
-
-			.use-case-grid {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-md);
-			}
-
-			.use-case-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-lg);
-				padding: var(--space-lg);
-				transition: all var(--transition-base);
-			}
-
-			.use-case-card:hover {
-				border-color: var(--border-accent);
-				transform: translateY(-2px);
-			}
-
-			.use-case-emoji {
-				font-size: 1.5rem;
-				margin-bottom: 0.5rem;
-			}
-
-			.use-case-card h3 {
-				font-size: var(--font-base);
-				margin-bottom: 0.25rem;
-			}
-
-			.use-case-pick {
-				font-size: var(--font-lg);
-				font-weight: 700;
-				color: var(--accent-light);
-				margin-bottom: 0.5rem;
-			}
-
-			.use-case-reason {
-				font-size: var(--font-sm);
-				color: var(--text-tertiary);
-				margin-bottom: 0.5rem;
-				line-height: 1.5;
-			}
-
-			.use-case-alt {
-				font-size: var(--font-xs);
-				color: var(--text-tertiary);
-			}
-
-			.use-case-alt span {
-				color: var(--text-secondary);
-			}
-
-			.strengths-cell ul {
-				margin: 0;
-				padding: 0;
-				list-style: none;
-				display: flex;
-				flex-direction: column;
-				gap: 0.25rem;
-			}
-
-			.strengths-cell li {
-				font-size: var(--font-xs);
-				color: var(--text-tertiary);
-				padding-left: 0.85rem;
-				position: relative;
-			}
-
-			.strengths-cell li::before {
-				content: '';
-				position: absolute;
-				left: 0;
-				top: 6px;
-				width: 4px;
-				height: 4px;
-				border-radius: 50%;
-				background: var(--accent);
-			}
-
-			.source-links {
-				display: flex;
-				flex-direction: column;
-				gap: 0.35rem;
-			}
-
-			.source-links a {
-				font-size: var(--font-sm);
-				color: var(--accent-light);
-			}
-
-			.cta-section {
-				padding: var(--space-2xl) 0;
-			}
-
-			.cta-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-accent);
-				border-radius: var(--radius-xl);
-				padding: var(--space-2xl);
-				text-align: center;
-				position: relative;
-				overflow: hidden;
-			}
-
-			.cta-card::before {
-				content: '';
-				position: absolute;
-				inset: 0;
-				background: var(--gradient-card);
-				pointer-events: none;
-			}
-
-			.cta-card h2 {
-				position: relative;
-				margin-bottom: var(--space-sm);
-			}
-
-			.cta-card p {
-				position: relative;
-				color: var(--text-secondary);
-				margin-bottom: var(--space-lg);
-				max-width: 500px;
-				margin-left: auto;
-				margin-right: auto;
-			}
-
-			.btn {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.5rem;
-				padding: 0.7rem 1.4rem;
-				border-radius: var(--radius-md);
-				font-weight: 600;
-				font-size: var(--font-sm);
-				text-decoration: none;
-				transition: all var(--transition-fast);
-				cursor: pointer;
-				border: none;
-				position: relative;
-			}
-
-			.btn-primary {
-				background: var(--gradient-primary);
-				color: white;
-				box-shadow: 0 0 24px rgba(99, 102, 241, 0.3);
-			}
-
-			.btn-primary:hover {
-				transform: translateY(-2px);
-				box-shadow: 0 0 36px rgba(99, 102, 241, 0.5);
-				color: white;
-			}
-
-			.btn-secondary {
-				background: var(--bg-tertiary);
-				color: var(--text-primary);
-				border: 1px solid var(--border-primary);
-				margin-left: 0.5rem;
-			}
-
-			.btn-secondary:hover {
-				background: var(--bg-elevated);
-				border-color: var(--border-accent);
-				color: var(--text-primary);
-			}
-
-			.btn-arrow {
-				transition: transform var(--transition-fast);
-			}
-
-			.btn:hover .btn-arrow {
-				transform: translateX(3px);
-			}
-
-			.quick-links {
-				display: flex;
-				gap: 0.5rem;
-				flex-wrap: wrap;
-				margin-top: var(--space-lg);
-			}
-
-			.quick-link {
-				font-size: var(--font-sm);
-				padding: 0.35rem 0.75rem;
-				background: var(--bg-tertiary);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-sm);
-				color: var(--text-secondary);
-				text-decoration: none;
-				transition: all var(--transition-fast);
-			}
-
-			.quick-link:hover {
-				background: var(--bg-elevated);
-				border-color: var(--border-accent);
-				color: var(--accent-light);
-			}
-
-			.decision-grid {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-md);
-			}
-
-			.decision-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-lg);
-				padding: var(--space-lg);
-			}
-
-			.decision-card h3 {
-				margin-bottom: 0.5rem;
-				font-size: var(--font-lg);
-			}
-
-			.decision-card p {
-				color: var(--text-secondary);
-				margin-bottom: var(--space-md);
-				font-size: var(--font-sm);
-			}
-
-			.decision-link {
-				font-size: var(--font-sm);
-				font-weight: 600;
-				color: var(--accent-light);
-				text-decoration: none;
-			}
-
-			@media (max-width: 960px) {
-				.use-case-grid {
-					grid-template-columns: repeat(2, 1fr);
-				}
-				.decision-grid {
-					grid-template-columns: 1fr;
-				}
-			}
-
-			@media (max-width: 600px) {
-				.page-hero {
-					padding: var(--space-xl) 0;
-				}
-
-				.hero-text h1 {
-					font-size: 1.5rem;
-				}
-
-				.hero-text > p {
-					font-size: var(--font-base);
-				}
-
-				.section {
-					padding: var(--space-lg) 1rem;
-				}
-
-				.use-case-grid {
-					grid-template-columns: 1fr;
-				}
-
-				.use-case-card {
-					padding: var(--space-md);
-				}
-
-				.cta-card {
-					padding: var(--space-lg);
-				}
-
-				.cta-card h2 {
-					font-size: var(--font-xl);
-				}
-
-				.quick-links {
-					justify-content: center;
-				}
-			}
-		</style>
-	</head>
+	<head><BaseHead title={`${selected.map((model) => model.name).join(' vs ')} | ${SITE_TITLE}`} description={`Compare ${selected.map((model) => model.name).join(', ')} across editorial fit, coding, reasoning, tool use, context, pricing, and evidence.`} /></head>
 	<body>
 		<Header />
+		<main class="compare-page">
+			<section class="page-intro container">
+				<span class="eyebrow">Side-by-side decision workspace</span>
+				<h1>Compare models without flattening the tradeoffs.</h1>
+				<p>Choose two or three models. We’ll keep capability, price, context, caveats, and evidence in the same view.</p>
+			</section>
 
-		<section class="page-hero">
-			<div class="hero-inner">
-				<div class="hero-text">
-					<h1>AI Model Comparison</h1>
-					<p>Compare leading AI models side-by-side with provider-verified model names and pricing references.</p>
-					<div class="hero-meta">
-						<span class="hero-badge"><span class="count">{models.length}</span> models compared</span>
-						<span class="hero-badge">Verified <span class="count">{MODEL_DATA_VERIFIED_ON}</span></span>
-					</div>
-					<div class="quick-links">
-						<a href="#pricing" class="quick-link">Pricing</a>
-						<a href="#performance" class="quick-link">Performance</a>
-						<a href="#recommendations" class="quick-link">Quick Picks</a>
-						<a href="#sources" class="quick-link">Sources</a>
-					</div>
-				</div>
-			</div>
-		</section>
+			<section class="selector-band">
+				<form class="container selector-form" id="comparison-form">
+					{[0, 1, 2].map((index) => <label><span>Model {index + 1}{index === 2 ? ' (optional)' : ''}</span><select class="model-select" data-index={index}><option value="">{index === 2 ? 'No third model' : 'Select a model'}</option>{models.map((model) => <option value={model.slug} selected={selectedSlugs[index] === model.slug}>{model.name} — {model.provider}</option>)}</select></label>)}
+					<button class="btn btn-primary" type="submit">Update comparison →</button>
+				</form>
+			</section>
 
-		<main>
-			<section class="section" id="pricing">
-				<div class="section-header">
-					<h2>Quick Reference: Pricing & Context</h2>
-					<p>Input/output pricing per million tokens from provider docs. Notes are included where pricing tiers apply.</p>
+			<section class="comparison container" aria-labelledby="comparison-heading">
+				<div class="comparison-head"><div><span class="eyebrow">Decision summary</span><h2 id="comparison-heading"><span id="comparison-title">{selected.map((model) => model.name).join(' vs ')}</span></h2></div><div class="share-note"><span class="badge badge-success">Reviewed {MODEL_DATA_VERIFIED_ON}</span><button id="copy-link" type="button">Copy comparison link</button></div></div>
+
+				<div id="model-summaries" class:list={['model-summaries', `columns-${selected.length}`]}>
+					{selected.map((model) => <article class="model-summary" style={`--model-color:${model.color}`}><div class="model-title"><span class="model-swatch"></span><div><span class="meta">{model.provider}</span><h3>{model.name}</h3></div></div><div class="headline-score"><strong class="mono">{fit(model).toFixed(1)}</strong><span>editorial fit</span></div><p>{model.strengths.slice(0, 2).join('. ')}.</p><div class="tag-list">{model.bestFor.slice(0, 3).map((item) => <span>{item}</span>)}</div>{model.pricing.notes && <div class="caveat"><strong>Pricing caveat</strong><p>{model.pricing.notes}</p></div>}</article>)}
 				</div>
-				<div class="compare-table-wrapper">
-					<table class="compare-table">
-						<thead>
-							<tr>
-								<th>Model</th>
-								<th>Pricing ($/M tokens)</th>
-								<th>Context</th>
-								<th>Best For</th>
-							</tr>
-						</thead>
-						<tbody>
-							{models.map((model) => (
-								<tr>
-									<td>
-										<div class="model-cell">
-											<div class="model-dot" style={`background: ${model.color}`}></div>
-											<div>
-												<div class="model-name">{model.name}</div>
-												<div class="model-provider">{model.provider}</div>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="price-cell">
-											<span class="input">${model.pricing.input}</span>
-											<span class="sep">/</span>
-											<span class="output">${model.pricing.output}</span>
-										</div>
-										{model.pricing.notes && (
-											<div class="model-provider">{model.pricing.notes}</div>
-										)}
-									</td>
-									<td>
-										<span class="context-cell">{model.contextWindow}</span>
-									</td>
-									<td>
-										<div class="best-for-cell">
-											{model.bestFor.map((tag) => (
-												<span class="best-for-tag">{tag}</span>
-											))}
-										</div>
-									</td>
-								</tr>
-							))}
+
+				<div class="matrix-wrap">
+					<table class="comparison-matrix">
+						<thead><tr id="matrix-head"><th>Decision factor</th>{selected.map((model) => <th>{model.name}</th>)}</tr></thead>
+						<tbody id="matrix-body">
+							{metricRows.map((metric) => {
+								const target = metric.best === 'min' ? minOf(metric.value) : maxOf(metric.value);
+								return <tr><td><strong>{metric.label}</strong><span>{metric.note}</span></td>{selected.map((model) => { const numeric = metric.value(model); return <td><strong class="mono">{'display' in metric && metric.display ? metric.display(model) : metric.format?.(numeric)}</strong>{numeric === target && <span class="best-label">Best in this set</span>}</td>; })}</tr>;
+							})}
+							<tr><td><strong>Best fit</strong><span>From the catalog record</span></td>{selected.map((model) => <td><ul>{model.bestFor.slice(0, 3).map((item) => <li>{item}</li>)}</ul></td>)}</tr>
+							<tr><td><strong>Source trail</strong><span>Open before choosing</span></td>{selected.map((model) => <td><div class="source-list">{model.sources.map((source) => <a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a>)}</div></td>)}</tr>
 						</tbody>
 					</table>
 				</div>
 			</section>
 
-			<section class="section" id="performance">
-				<div class="section-header">
-					<h2>Performance Scores</h2>
-					<p>Internal task-level evaluations across coding, reasoning, and tool-use (scale: 1-10).</p>
-				</div>
-				<div class="compare-table-wrapper">
-					<table class="compare-table">
-						<thead>
-							<tr>
-								<th>Model</th>
-								<th>Coding</th>
-								<th>Reasoning</th>
-								<th>Tool-use</th>
-								<th>Key Strengths</th>
-							</tr>
-						</thead>
-						<tbody>
-							{models.map((model) => (
-								<tr>
-									<td>
-										<div class="model-cell">
-											<div class="model-dot" style={`background: ${model.color}`}></div>
-											<div>
-												<div class="model-name">{model.name}</div>
-												<div class="model-provider">{model.provider}</div>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="score-cell">
-											<div class="score-row">
-												<div class="score-bar">
-													<div class="score-fill" style={`width: ${model.scores.coding * 10}%; background: ${model.color}`}></div>
-												</div>
-												<span class="score-value">{model.scores.coding}</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="score-cell">
-											<div class="score-row">
-												<div class="score-bar">
-													<div class="score-fill" style={`width: ${model.scores.reasoning * 10}%; background: ${model.color}`}></div>
-												</div>
-												<span class="score-value">{model.scores.reasoning}</span>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="score-cell">
-											<div class="score-row">
-												<div class="score-bar">
-													<div class="score-fill" style={`width: ${model.scores.toolUse * 10}%; background: ${model.color}`}></div>
-												</div>
-												<span class="score-value">{model.scores.toolUse}</span>
-											</div>
-										</div>
-									</td>
-									<td class="strengths-cell">
-										<ul>
-											{model.strengths.map((s) => (
-												<li>{s}</li>
-											))}
-										</ul>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
-			</section>
-
-			<section class="section" id="recommendations">
-				<div class="section-header">
-					<h2>Quick Pick Recommendations</h2>
-					<p>Not sure which model? Here's our picks by use case.</p>
-				</div>
-				<div class="use-case-grid">
-					{useCases.map((uc) => (
-						<div class="use-case-card">
-							<span class="use-case-emoji" set:html={uc.emoji} />
-							<h3>{uc.title}</h3>
-							<div class="use-case-pick">{uc.pick}</div>
-							<p class="use-case-reason">{uc.reason}</p>
-							<p class="use-case-alt">Alternative: <span>{uc.alternative}</span></p>
-						</div>
-					))}
-				</div>
-			</section>
-
-			<section class="section" id="decision-guide">
-				<div class="section-header">
-					<h2>Need a Faster Decision?</h2>
-					<p>Most competitors win on discoverability because they guide the user to the next step immediately. This does that.</p>
-				</div>
-				<div class="decision-grid">
-					<div class="decision-card">
-						<h3>Choose an API model</h3>
-						<p>Use this if you care about fastest setup, no infrastructure, and provider-managed uptime.</p>
-						<a href="/models" class="decision-link">Browse ranked API models →</a>
-					</div>
-					<div class="decision-card">
-						<h3>Run models locally</h3>
-						<p>Use open-weights models if privacy, customization, or long-term cost control matters most.</p>
-						<a href="/local-models" class="decision-link">See local model guide →</a>
-					</div>
-					<div class="decision-card">
-						<h3>Understand open vs proprietary</h3>
-						<p>Still not sure? Start with the tradeoffs around privacy, cost, customization, and performance.</p>
-						<a href="/open-vs-proprietary" class="decision-link">Read the comparison →</a>
-					</div>
-				</div>
-			</section>
-
-			<section class="section" id="sources">
-				<div class="section-header">
-					<h2>Verification Sources</h2>
-					<p>Official model and pricing references checked on {MODEL_DATA_VERIFIED_ON}.</p>
-				</div>
-				<div class="compare-table-wrapper">
-					<table class="compare-table">
-						<thead>
-							<tr>
-								<th>Model</th>
-								<th>Official Sources</th>
-							</tr>
-						</thead>
-						<tbody>
-							{models.map((model) => (
-								<tr>
-									<td>
-										<div class="model-cell">
-											<div class="model-dot" style={`background: ${model.color}`}></div>
-											<div>
-												<div class="model-name">{model.name}</div>
-												<div class="model-provider">{model.provider}</div>
-											</div>
-										</div>
-									</td>
-									<td>
-										<div class="source-links">
-											{model.sources.map((source) => (
-												<a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
-											))}
-										</div>
-									</td>
-								</tr>
-							))}
-						</tbody>
-					</table>
-				</div>
-			</section>
-
-			<section class="cta-section container">
-				<div class="cta-card">
-					<h2>Dive Deeper into Model Performance</h2>
-					<p>See detailed daily scorecards with task-level breakdowns, failure cases, and cost analysis.</p>
-					<a class="btn btn-primary" href="/scorecards">
-						View Daily Scorecards
-						<span class="btn-arrow">&rarr;</span>
-					</a>
-					<a class="btn btn-secondary" href="/about">Our Methodology</a>
-				</div>
+			<section class="decision-guidance container">
+				<div><span class="eyebrow">How to decide</span><h2>Choose the constraint that can’t move.</h2></div>
+				<div class="guidance-list"><div><span class="mono">01</span><p><strong>Quality floor:</strong> eliminate any model that cannot reliably complete the task, regardless of price.</p></div><div><span class="mono">02</span><p><strong>Operating constraint:</strong> compare real context, throughput, privacy, and deployment requirements.</p></div><div><span class="mono">03</span><p><strong>Total cost:</strong> calculate the full prompt/output mix and account for retries, caching, and routing.</p></div></div>
 			</section>
 		</main>
-
 		<Footer />
+		<script id="comparison-data" type="application/json" set:html={JSON.stringify(models)}></script>
+		<script is:inline>
+			(() => {
+				const form = document.getElementById('comparison-form');
+				const selects = [...document.querySelectorAll('.model-select')];
+				const allModels = JSON.parse(document.getElementById('comparison-data')?.textContent || '[]');
+				const fromUrl = (new URLSearchParams(window.location.search).get('models') || '').split(',').filter((slug, index, list) => slug && list.indexOf(slug) === index).map((slug) => allModels.find((model) => model.slug === slug)).filter(Boolean).slice(0, 3);
+				const fit = (model) => model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25;
+				const contextNumber = (value) => Number.parseFloat(value) * (value.toUpperCase().includes('M') ? 1000000 : 1000);
+				const el = (tag, className, text) => { const node = document.createElement(tag); if (className) node.className = className; if (text !== undefined) node.textContent = text; return node; };
+				const render = (chosen) => {
+					if (chosen.length < 2) return;
+					selects.forEach((select, index) => { select.value = chosen[index]?.slug || ''; });
+					document.getElementById('comparison-title').textContent = chosen.map((model) => model.name).join(' vs ');
+					const summaries = document.getElementById('model-summaries');
+					summaries.className = `model-summaries columns-${chosen.length}`;
+					summaries.replaceChildren(...chosen.map((model) => {
+						const article = el('article', 'model-summary'); article.style.setProperty('--model-color', model.color);
+						const title = el('div', 'model-title'); title.append(el('span', 'model-swatch')); const titleCopy = el('div'); titleCopy.append(el('span', 'meta', model.provider), el('h3', '', model.name)); title.append(titleCopy);
+						const score = el('div', 'headline-score'); score.append(el('strong', 'mono', fit(model).toFixed(1)), el('span', '', 'editorial fit'));
+						const description = el('p', '', `${model.strengths.slice(0, 2).join('. ')}.`);
+						const tags = el('div', 'tag-list'); model.bestFor.slice(0, 3).forEach((item) => tags.append(el('span', '', item)));
+						article.append(title, score, description, tags);
+						if (model.pricing.notes) { const caveat = el('div', 'caveat'); caveat.append(el('strong', '', 'Pricing caveat'), el('p', '', model.pricing.notes)); article.append(caveat); }
+						return article;
+					}));
+					const head = document.getElementById('matrix-head'); head.replaceChildren(el('th', '', 'Decision factor'), ...chosen.map((model) => el('th', '', model.name)));
+					const metrics = [
+						['Editorial fit','40% coding · 35% reasoning · 25% tool use',fit,(model,value)=>value.toFixed(1),'max'],
+						['Coding','Normalized editorial dimension',(model)=>model.scores.coding,(model,value)=>value.toFixed(1),'max'],
+						['Reasoning','Normalized editorial dimension',(model)=>model.scores.reasoning,(model,value)=>value.toFixed(1),'max'],
+						['Tool use','Normalized editorial dimension',(model)=>model.scores.toolUse,(model,value)=>value.toFixed(1),'max'],
+						['Context window','Provider specification',(model)=>contextNumber(model.contextWindow),(model)=>model.contextWindow,'max'],
+						['Input price','USD per 1M tokens',(model)=>model.pricing.input,(model,value)=>`$${value}`,'min'],
+						['Output price','USD per 1M tokens',(model)=>model.pricing.output,(model,value)=>`$${value}`,'min'],
+					];
+					const body = document.getElementById('matrix-body');
+					const rows = metrics.map(([label,note,getter,format,best]) => {
+						const values = chosen.map(getter); const target = best === 'min' ? Math.min(...values) : Math.max(...values); const row = el('tr'); const labelCell = el('td'); labelCell.append(el('strong','',label), el('span','',note)); row.append(labelCell);
+						chosen.forEach((model,index) => { const cell=el('td'); cell.append(el('strong','mono',format(model,values[index]))); if(values[index]===target) cell.append(el('span','best-label','Best in this set')); row.append(cell); }); return row;
+					});
+					const bestRow = el('tr'); const bestLabel = el('td'); bestLabel.append(el('strong','','Best fit'),el('span','','From the catalog record')); bestRow.append(bestLabel); chosen.forEach((model)=>{const cell=el('td');const list=el('ul');model.bestFor.slice(0,3).forEach((item)=>list.append(el('li','',item)));cell.append(list);bestRow.append(cell);}); rows.push(bestRow);
+					const sourceRow = el('tr'); const sourceLabel=el('td'); sourceLabel.append(el('strong','','Source trail'),el('span','','Open before choosing'));sourceRow.append(sourceLabel);chosen.forEach((model)=>{const cell=el('td');const list=el('div','source-list');model.sources.forEach((source)=>{const link=el('a','',`${source.label} ↗`);link.href=source.url;link.target='_blank';link.rel='noopener noreferrer';list.append(link);});cell.append(list);sourceRow.append(cell);});rows.push(sourceRow);
+					body.replaceChildren(...rows);
+				};
+				if (fromUrl.length >= 2) render(fromUrl);
+				form?.addEventListener('submit', (event) => {
+					event.preventDefault();
+					const values = selects.map((select) => select.value).filter((value, index, all) => value && all.indexOf(value) === index).slice(0, 3);
+					if (values.length < 2) { selects[1]?.focus(); return; }
+					window.location.href = `/compare/?models=${values.join(',')}`;
+				});
+				document.getElementById('copy-link')?.addEventListener('click', async (event) => {
+					try { await navigator.clipboard.writeText(window.location.href); event.currentTarget.textContent = 'Link copied'; } catch { event.currentTarget.textContent = 'Copy failed'; }
+				});
+			})();
+		</script>
 	</body>
 </html>
+
+<style>
+	.compare-page { width: 100%; max-width: none; padding: 0; }
+	.page-intro { padding-block: 5.5rem 4rem; }
+	.page-intro h1 { max-width: 1020px; font-size: clamp(3.5rem, 7vw, 7rem); line-height: 0.93; }
+	.page-intro p { max-width: 680px; margin-top: 1.5rem; font-size: 1.12rem; }
+	.selector-band { border-block: 1px solid var(--line); background: var(--surface); }
+	.selector-form { padding-block: 1.2rem; display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 0.75rem; align-items: end; }
+	.selector-form label { display: flex; flex-direction: column; gap: 0.3rem; color: var(--ink-faint); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; }
+	.selector-form select { min-height: 44px; padding: 0.55rem 0.65rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--canvas); color: var(--ink); font-size: 0.86rem; text-transform: none; }
+	.comparison { padding-block: 4.5rem 6rem; }
+	.comparison-head { margin-bottom: 2rem; display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
+	.share-note { display: flex; align-items: center; gap: 0.65rem; }
+	#copy-link { min-height: 36px; padding: 0.4rem 0.65rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); color: var(--ink-muted); cursor: pointer; font-size: 0.75rem; }
+	.model-summaries { display: grid; gap: 1px; padding: 1px; border-radius: var(--radius-lg); background: var(--line); overflow: hidden; }
+	.columns-2 { grid-template-columns: repeat(2, 1fr); }
+	.columns-3 { grid-template-columns: repeat(3, 1fr); }
+	.model-summary { min-width: 0; padding: 1.5rem; background: var(--surface); }
+	.model-title { display: flex; align-items: center; gap: 0.7rem; }
+	.model-swatch { width: 12px; height: 36px; border-radius: 99px; background: var(--model-color); }
+	.model-title h3 { margin: 0; font-size: 1.2rem; }
+	.headline-score { margin: 2rem 0 1rem; display: flex; align-items: baseline; gap: 0.65rem; }
+	.headline-score strong { color: var(--blue); font-size: 2.6rem; }
+	.headline-score span { color: var(--ink-faint); font-size: 0.75rem; }
+	.model-summary > p { min-height: 3em; font-size: 0.86rem; }
+	.tag-list { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+	.tag-list span { padding: 0.25rem 0.5rem; border: 1px solid var(--line); border-radius: 99px; color: var(--ink-muted); font-size: 0.7rem; }
+	.caveat { margin-top: 1rem; padding: 0.8rem; border-left: 3px solid var(--amber); background: var(--amber-soft); }
+	.caveat strong { color: var(--amber); font-size: 0.72rem; text-transform: uppercase; }
+	.caveat p { margin: 0.2rem 0 0; font-size: 0.72rem; }
+	.matrix-wrap { margin-top: 2rem; overflow-x: auto; border: 1px solid var(--line); }
+	.comparison-matrix { min-width: 760px; table-layout: fixed; }
+	.comparison-matrix th:first-child, .comparison-matrix td:first-child { width: 25%; }
+	.comparison-matrix td strong, .comparison-matrix td span { display: block; }
+	.comparison-matrix td > span, .comparison-matrix td:first-child span { margin-top: 0.2rem; color: var(--ink-faint); font-size: 0.7rem; }
+	.best-label { width: fit-content; margin-top: 0.35rem !important; padding: 0.17rem 0.4rem; border-radius: 99px; background: var(--green-soft); color: var(--green) !important; font-weight: 680; }
+	.comparison-matrix ul { margin: 0; padding-left: 1rem; font-size: 0.8rem; }
+	.source-list { display: flex; flex-direction: column; gap: 0.25rem; }
+	.source-list a { font-size: 0.76rem; text-decoration: none; }
+	.decision-guidance { padding-block: 5rem; border-top: 1px solid var(--line); display: grid; grid-template-columns: 0.7fr 1.3fr; gap: 5rem; }
+	.guidance-list { border-top: 1px solid var(--line-strong); }
+	.guidance-list div { display: grid; grid-template-columns: 42px 1fr; gap: 1rem; padding: 1.2rem 0; border-bottom: 1px solid var(--line); }
+	.guidance-list span { color: var(--ink-faint); font-size: 0.72rem; }
+	.guidance-list p { margin: 0; }
+	@media (max-width: 850px) { .selector-form { grid-template-columns: 1fr 1fr; } .selector-form label:nth-child(3) { grid-column: 1 / -1; } .model-summaries { grid-template-columns: 1fr; } .decision-guidance { grid-template-columns: 1fr; gap: 2rem; } }
+	@media (max-width: 600px) { .page-intro { padding-block: 4rem 3rem; } .page-intro h1 { font-size: clamp(3.1rem, 15vw, 4.6rem); } .selector-form { grid-template-columns: 1fr; } .selector-form label:nth-child(3) { grid-column: auto; } .comparison { padding-block: 3rem; } .comparison-head { align-items: flex-start; flex-direction: column; } .share-note { flex-wrap: wrap; } }
+</style>

@@ -3,34 +3,33 @@ import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 import { SITE_TITLE } from '../consts';
-import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../data/verified-models';
+import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
 
-const providers = [...new Set(VERIFIED_MODELS.map(m => m.provider))];
-const openWeightKeywords = ['open weights', 'self-hosted', 'self hosted', 'privacy', 'customization'];
-const openWeightModels = VERIFIED_MODELS.filter(model =>
-	model.bestFor.some(tag => openWeightKeywords.some(keyword => tag.toLowerCase().includes(keyword))) ||
-	model.strengths.some(tag => openWeightKeywords.some(keyword => tag.toLowerCase().includes(keyword)))
-);
-
+const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const fit = (model: (typeof VERIFIED_MODELS)[number]) => model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25;
+const contextNumber = (value: string) => {
+	const number = Number.parseFloat(value);
+	return value.toUpperCase().includes('M') ? number * 1_000_000 : number * 1_000;
+};
+const providers = [...new Set(VERIFIED_MODELS.map((model) => model.provider))].sort();
+const openTerms = ['open weights', 'open-weight', 'self-hosted', 'self hosted', 'privacy', 'customization'];
+const isOpen = (model: (typeof VERIFIED_MODELS)[number]) => [...model.bestFor, ...model.strengths].some((item) => openTerms.some((term) => item.toLowerCase().includes(term)));
+const ranked = VERIFIED_MODELS.slice().sort((a, b) => fit(b) - fit(a));
 const leaderboardLabel = `Top ${VERIFIED_MODELS.length} AI Models`;
-
 const modelsJsonLd = {
 	'@context': 'https://schema.org',
 	'@type': 'ItemList',
 	name: `${leaderboardLabel} - Leaderboard`,
-	description: `Comprehensive comparison of ${VERIFIED_MODELS.length} AI language models ranked by editorial coding, reasoning, and tool-use scores.`,
+	description: `Comparison of ${VERIFIED_MODELS.length} AI models with editorial coding, reasoning, tool-use, context, and pricing data.`,
 	numberOfItems: VERIFIED_MODELS.length,
-	itemListElement: VERIFIED_MODELS.map((model, index) => ({
+	itemListElement: ranked.map((model, index) => ({
 		'@type': 'ListItem',
 		position: index + 1,
 		item: {
 			'@type': 'Product',
 			name: model.name,
-			brand: {
-				'@type': 'Brand',
-				name: model.provider,
-			},
-			description: `${model.name} by ${model.provider}. Best for: ${model.bestFor.join(', ')}. ${model.strengths.join(' ')}`,
+			brand: { '@type': 'Brand', name: model.provider },
+			description: `${model.name} by ${model.provider}. Best for: ${model.bestFor.join(', ')}.`,
 			offers: {
 				'@type': 'AggregateOffer',
 				priceCurrency: 'USD',
@@ -42,457 +41,151 @@ const modelsJsonLd = {
 	})),
 };
 ---
-
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead
-			title={`${leaderboardLabel} — Complete Leaderboard | ${SITE_TITLE}`}
-			description={`Compare ${VERIFIED_MODELS.length} current AI models including GPT-5.5, Claude Fable 5, Claude Opus 4.8, Gemini 3.5 Flash, and more. Editorial scores for coding, reasoning, and tool-use tasks with official provider sources.`}
-		/>
-		<script type="application/ld+json" set:html={JSON.stringify(modelsJsonLd)} />
-		<style>
-			main {
-				width: 100%;
-				max-width: 100%;
-				padding: 0;
-			}
-			.container {
-				max-width: var(--container-xl);
-				margin: 0 auto;
-				padding: 0 1.5rem;
-			}
-			.hero {
-				padding: var(--space-3xl) 0 var(--space-xl);
-				position: relative;
-			}
-			.hero::before {
-				content: '';
-				position: absolute;
-				inset: 0;
-				background: var(--gradient-hero);
-				pointer-events: none;
-			}
-			.hero-content {
-				position: relative;
-			}
-			.hero h1 {
-				font-size: clamp(2rem, 3.5vw, 2.75rem);
-				margin-bottom: var(--space-sm);
-			}
-			.hero p {
-				font-size: var(--font-lg);
-				color: var(--text-secondary);
-				margin-bottom: var(--space-md);
-				max-width: 700px;
-			}
-			.hero-meta {
-				display: flex;
-				gap: 1rem;
-				flex-wrap: wrap;
-			}
-			.badge {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.35rem;
-				padding: 0.35rem 0.75rem;
-				border-radius: var(--radius-full);
-				font-size: var(--font-xs);
-				font-weight: 600;
-			}
-			.badge-success {
-				background: rgba(34, 197, 94, 0.1);
-				color: var(--success);
-				border: 1px solid rgba(34, 197, 94, 0.3);
-			}
-			.badge-accent {
-				background: rgba(99, 102, 241, 0.1);
-				color: var(--accent-light);
-				border: 1px solid var(--border-accent);
-			}
-
-			.filters {
-				display: flex;
-				gap: 0.5rem;
-				flex-wrap: wrap;
-				margin-bottom: var(--space-xl);
-			}
-			.filter-btn {
-				padding: 0.4rem 0.9rem;
-				border-radius: var(--radius-full);
-				border: 1px solid var(--border-primary);
-				background: transparent;
-				color: var(--text-secondary);
-				font-size: var(--font-sm);
-				font-weight: 500;
-				cursor: pointer;
-				transition: all var(--transition-fast);
-			}
-			.filter-btn:hover, .filter-btn.active {
-				background: var(--accent);
-				color: white;
-				border-color: var(--accent);
-			}
-
-			.models-grid {
-				display: grid;
-				grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-				gap: var(--space-md);
-			}
-			.model-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-lg);
-				padding: var(--space-lg);
-				transition: all var(--transition-base);
-			}
-			.model-card:hover {
-				border-color: var(--border-accent);
-				transform: translateY(-2px);
-				box-shadow: var(--shadow-lg);
-			}
-			.model-header {
-				display: flex;
-				align-items: flex-start;
-				gap: var(--space-md);
-				margin-bottom: var(--space-md);
-			}
-			.model-rank {
-				width: 36px;
-				height: 36px;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				border-radius: var(--radius-md);
-				background: var(--bg-tertiary);
-				font-size: var(--font-sm);
-				font-weight: 700;
-				color: var(--text-secondary);
-				flex-shrink: 0;
-			}
-			.model-rank.gold {
-				background: rgba(245, 158, 11, 0.15);
-				color: var(--warning);
-			}
-			.model-rank.silver {
-				background: rgba(156, 163, 175, 0.15);
-				color: #9ca3af;
-			}
-			.model-rank.bronze {
-				background: rgba(180, 83, 9, 0.15);
-				color: #d97706;
-			}
-			.model-info {
-				flex: 1;
-				min-width: 0;
-			}
-			.model-name {
-				font-size: var(--font-lg);
-				font-weight: 600;
-				color: var(--text-primary);
-				margin-bottom: 0.15rem;
-			}
-			.model-provider {
-				font-size: var(--font-sm);
-				color: var(--text-tertiary);
-			}
-			.model-color {
-				width: 4px;
-				height: 100%;
-				min-height: 60px;
-				border-radius: 2px;
-				flex-shrink: 0;
-			}
-
-			.model-scores {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-sm);
-				margin-bottom: var(--space-md);
-			}
-			.score-item {
-				text-align: center;
-				padding: var(--space-sm);
-				background: var(--bg-tertiary);
-				border-radius: var(--radius-sm);
-			}
-			.score-value {
-				font-size: var(--font-lg);
-				font-weight: 700;
-				color: var(--text-primary);
-			}
-			.score-label {
-				font-size: var(--font-xs);
-				color: var(--text-tertiary);
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-			}
-
-			.model-details {
-				display: flex;
-				flex-wrap: wrap;
-				gap: var(--space-sm);
-				margin-bottom: var(--space-md);
-			}
-			.detail-tag {
-				padding: 0.25rem 0.6rem;
-				background: var(--bg-tertiary);
-				border-radius: var(--radius-sm);
-				font-size: var(--font-xs);
-				color: var(--text-secondary);
-			}
-
-			.model-pricing {
-				display: flex;
-				gap: var(--space-lg);
-				padding-top: var(--space-sm);
-				border-top: 1px solid var(--border-secondary);
-			}
-			.price-item {
-				display: flex;
-				flex-direction: column;
-			}
-			.price-value {
-				font-size: var(--font-base);
-				font-weight: 600;
-				color: var(--text-primary);
-			}
-			.price-label {
-				font-size: var(--font-xs);
-				color: var(--text-tertiary);
-			}
-
-			.model-sources {
-				margin-top: var(--space-sm);
-				display: flex;
-				gap: 0.75rem;
-				flex-wrap: wrap;
-			}
-			.model-sources a {
-				font-size: var(--font-xs);
-				color: var(--accent-light);
-			}
-
-			.stats-bar {
-				display: grid;
-				grid-template-columns: repeat(4, 1fr);
-				gap: var(--space-md);
-				padding: var(--space-xl) 0;
-			}
-			.insight-strip {
-				display: grid;
-				grid-template-columns: repeat(3, 1fr);
-				gap: var(--space-md);
-				margin-bottom: var(--space-xl);
-			}
-			.insight-card {
-				background: var(--bg-card);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-lg);
-				padding: var(--space-lg);
-			}
-			.insight-card h2 {
-				font-size: var(--font-lg);
-				margin-bottom: 0.5rem;
-			}
-			.insight-card p {
-				font-size: var(--font-sm);
-				color: var(--text-secondary);
-				margin-bottom: 0.75rem;
-			}
-			.insight-card a {
-				font-size: var(--font-sm);
-				font-weight: 600;
-				color: var(--accent-light);
-			}
-			.stat-item {
-				text-align: center;
-				padding: var(--space-lg);
-				background: var(--bg-card);
-				border: 1px solid var(--border-primary);
-				border-radius: var(--radius-lg);
-			}
-			.stat-number {
-				font-size: var(--font-3xl);
-				font-weight: 700;
-				background: var(--gradient-primary);
-				-webkit-background-clip: text;
-				-webkit-text-fill-color: transparent;
-				background-clip: text;
-			}
-			.stat-label {
-				font-size: var(--font-sm);
-				color: var(--text-tertiary);
-				margin-top: 0.25rem;
-			}
-
-			@media (max-width: 768px) {
-				.models-grid {
-					grid-template-columns: 1fr;
-				}
-				.stats-bar {
-					grid-template-columns: repeat(2, 1fr);
-				}
-				.insight-strip {
-					grid-template-columns: 1fr;
-				}
-			}
-		</style>
-	</head>
+	<head><BaseHead title={`${leaderboardLabel} — Rankings & Decision Table | ${SITE_TITLE}`} description={`Compare ${VERIFIED_MODELS.length} current AI models by editorial fit, coding, reasoning, tool use, context, and API price. Source review: ${MODEL_DATA_VERIFIED_ON}.`} /><script type="application/ld+json" set:html={JSON.stringify(modelsJsonLd)} /></head>
 	<body>
 		<Header />
-		<main>
-			<section class="hero">
-				<div class="container hero-content">
-					<h1>{leaderboardLabel} — Complete Leaderboard</h1>
-					<p>
-						Compare {VERIFIED_MODELS.length} current AI language models ranked by editorial coding, reasoning, and tool-use scores.
-						All pricing and specifications are checked against official provider documentation where available.
-					</p>
-					<div class="hero-meta">
-						<span class="badge badge-success">
-							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-								<polyline points="20 6 9 17 4 12"></polyline>
-							</svg>
-							Verified {MODEL_DATA_VERIFIED_ON}
-						</span>
-						<span class="badge badge-accent">{VERIFIED_MODELS.length} models tracked</span>
-						<span class="badge badge-accent">{providers.length} providers</span>
-					</div>
-				</div>
+		<main class="models-page">
+			<section class="page-intro container">
+				<div><span class="eyebrow">Model decision table</span><h1>Rankings with the tradeoffs left in.</h1></div>
+				<div class="intro-copy"><p>Scan the full catalog, narrow it to your workload, and compare up to three models. Specifications are source-reviewed; fit scores are editorial and their weighting is explicit.</p><div class="intro-meta"><span class="badge badge-success">Reviewed {MODEL_DATA_VERIFIED_ON}</span><span class="badge">{VERIFIED_MODELS.length} models</span><span class="badge">{providers.length} providers</span></div></div>
 			</section>
 
-			<section class="container">
-				<div class="stats-bar">
-					<div class="stat-item">
-						<div class="stat-number">{VERIFIED_MODELS.length}</div>
-						<div class="stat-label">Models Tracked</div>
-					</div>
-					<div class="stat-item">
-						<div class="stat-number">{providers.length}</div>
-						<div class="stat-label">AI Providers</div>
-					</div>
-					<div class="stat-item">
-						<div class="stat-number">{VERIFIED_MODELS.filter(m => m.pricing.input < 0.5).length}</div>
-						<div class="stat-label">Budget Options</div>
-					</div>
-					<div class="stat-item">
-						<div class="stat-number">{VERIFIED_MODELS.filter(m => m.contextWindow.includes('M') || m.contextWindow.includes('1M')).length}</div>
-						<div class="stat-label">Large Context</div>
-					</div>
+			<section class="catalog container" aria-labelledby="catalog-heading">
+				<div class="catalog-head"><div><span class="eyebrow">Full catalog</span><h2 id="catalog-heading">Compare models</h2></div><p id="result-count" aria-live="polite">Showing {VERIFIED_MODELS.length} models</p></div>
+				<div class="filter-bar" role="search">
+					<label class="search-field"><span class="sr-only">Search models</span><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input id="model-search" type="search" placeholder="Search model or provider" autocomplete="off" /></label>
+					<label><span>Provider</span><select id="provider-filter"><option value="all">All providers</option>{providers.map((provider) => <option value={provider.toLowerCase()}>{provider}</option>)}</select></label>
+					<label><span>Workload</span><select id="workload-filter"><option value="all">All workloads</option><option value="coding">Coding & agents</option><option value="reasoning">Reasoning</option><option value="budget">Budget / volume</option><option value="context">Long context</option></select></label>
+					<label><span>Sort</span><select id="sort-models"><option value="fit-desc">Editorial fit</option><option value="coding-desc">Coding</option><option value="reasoning-desc">Reasoning</option><option value="tools-desc">Tool use</option><option value="input-asc">Lowest input cost</option><option value="output-asc">Lowest output cost</option><option value="context-desc">Largest context</option></select></label>
+					<label class="check-filter"><input id="open-filter" type="checkbox" /><span>Open weights only</span></label>
+					<button id="reset-filters" type="button">Reset</button>
 				</div>
 
-				<div class="filters">
-					<button class="filter-btn active" data-filter="all">All Models</button>
-					{providers.map(provider => (
-						<button class="filter-btn" data-filter={provider}>{provider}</button>
-					))}
+				<div class="table-wrap">
+					<table class="model-table">
+						<thead><tr><th class="select-col"><span class="sr-only">Compare</span></th><th>#</th><th>Model</th><th>Editorial fit</th><th>Coding</th><th>Reasoning</th><th>Tool use</th><th>Context</th><th>Price / 1M tokens</th><th>Evidence</th></tr></thead>
+						<tbody id="model-rows">
+							{ranked.map((model, index) => {
+								const slug = slugify(model.name);
+								const haystack = `${model.name} ${model.provider} ${model.bestFor.join(' ')} ${model.strengths.join(' ')}`.toLowerCase();
+								const workloads = [haystack.includes('coding') || haystack.includes('agent') ? 'coding' : '', haystack.includes('reason') ? 'reasoning' : '', haystack.includes('budget') || haystack.includes('cost') || haystack.includes('value') || haystack.includes('volume') ? 'budget' : '', haystack.includes('long context') || contextNumber(model.contextWindow) >= 1_000_000 ? 'context' : ''].filter(Boolean).join(' ');
+								return <tr data-model-row data-name={haystack} data-provider={model.provider.toLowerCase()} data-workloads={workloads} data-open={String(isOpen(model))} data-fit={fit(model)} data-coding={model.scores.coding} data-reasoning={model.scores.reasoning} data-tools={model.scores.toolUse} data-input={model.pricing.input} data-output={model.pricing.output} data-context={contextNumber(model.contextWindow)}>
+									<td class="select-col"><label><input class="compare-check" type="checkbox" value={slug} data-label={model.name} /><span class="sr-only">Add {model.name} to comparison</span></label></td>
+									<td class="mono rank-cell">{String(index + 1).padStart(2, '0')}</td>
+									<td class="model-cell"><span class="model-dot" style={`--model-color:${model.color}`}></span><div><strong>{model.name}</strong><span>{model.provider} · {model.name.toLowerCase().includes('preview') ? 'Preview' : 'Available'}</span><small>{model.bestFor.slice(0, 2).join(' · ')}</small></div></td>
+									<td><b class="fit-score mono">{fit(model).toFixed(1)}</b><span class="cell-note">editorial</span></td>
+									<td class="mono">{model.scores.coding.toFixed(1)}</td><td class="mono">{model.scores.reasoning.toFixed(1)}</td><td class="mono">{model.scores.toolUse.toFixed(1)}</td>
+									<td><span class="mono">{model.contextWindow}</span></td>
+									<td class="price-cell"><span class="mono">${model.pricing.input}</span><span class="price-arrow">→</span><span class="mono">${model.pricing.output}</span>{model.pricing.notes && <small title={model.pricing.notes}>Tier caveat</small>}</td>
+									<td><div class="source-list">{model.sources.slice(0, 2).map((source) => <a href={source.url} target="_blank" rel="noopener noreferrer" data-analytics="source_open" data-analytics-label={`${model.name}: ${source.label}`}>{source.label} ↗</a>)}</div></td>
+								</tr>;
+							})}
+						</tbody>
+					</table>
 				</div>
+				<div class="empty-state" id="empty-state" hidden><h3>No models match these filters.</h3><p>Reset the filters or broaden the workload.</p></div>
+			</section>
 
-				<div class="insight-strip">
-					<div class="insight-card">
-						<h2>Need the cheapest strong model?</h2>
-						<p>Start with DeepSeek V4 Pro, MiniMax M2.5, or Gemini 3.1 Flash-Lite if cost matters more than bragging rights.</p>
-						<a href="/compare#recommendations">See quick picks →</a>
-					</div>
-					<div class="insight-card">
-						<h2>Need self-hosted privacy?</h2>
-						<p>{openWeightModels.length} model{openWeightModels.length === 1 ? '' : 's'} in this leaderboard support open-weights / local-first workflows.</p>
-						<a href="/local-models">Explore local models →</a>
-					</div>
-					<div class="insight-card">
-						<h2>Want the full tradeoff?</h2>
-						<p>Compare open weights vs proprietary models before you commit to an API provider.</p>
-						<a href="/open-vs-proprietary">Read the guide →</a>
-					</div>
-				</div>
-
-				<div class="models-grid">
-					{VERIFIED_MODELS.map((model, index) => {
-						const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
-						const weightedTotal = (model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25).toFixed(2);
-						return (
-							<div class="model-card" data-provider={model.provider}>
-								<div class="model-header">
-									<div class:list={['model-rank', rankClass]}>
-										{index + 1}
-									</div>
-									<div class="model-info">
-										<div class="model-name">{model.name}</div>
-										<div class="model-provider">{model.provider} • {model.contextWindow} context</div>
-									</div>
-									<div class="model-color" style={`background: ${model.color};`}></div>
-								</div>
-
-								<div class="model-scores">
-									<div class="score-item">
-										<div class="score-value">{model.scores.coding}</div>
-										<div class="score-label">Coding</div>
-									</div>
-									<div class="score-item">
-										<div class="score-value">{model.scores.reasoning}</div>
-										<div class="score-label">Reasoning</div>
-									</div>
-									<div class="score-item">
-										<div class="score-value">{model.scores.toolUse}</div>
-										<div class="score-label">Tool Use</div>
-									</div>
-								</div>
-
-								<div class="model-details">
-									{model.bestFor.slice(0, 3).map(use => (
-										<span class="detail-tag">{use}</span>
-									))}
-								</div>
-
-								<div class="model-pricing">
-									<div class="price-item">
-										<div class="price-value">${model.pricing.input}</div>
-										<div class="price-label">Input $/M tokens</div>
-									</div>
-									<div class="price-item">
-										<div class="price-value">${model.pricing.output}</div>
-										<div class="price-label">Output $/M tokens</div>
-									</div>
-									<div class="price-item">
-										<div class="price-value">{weightedTotal}</div>
-										<div class="price-label">Weighted Score</div>
-									</div>
-								</div>
-
-								<div class="model-sources">
-									{model.sources.map(source => (
-										<a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}</a>
-									))}
-								</div>
-							</div>
-						);
-					})}
-				</div>
+			<section class="method-note container" id="methodology">
+				<div><span class="eyebrow">Score methodology</span><h2>Orientation, not manufactured certainty.</h2></div>
+				<div><p>The editorial fit score weights coding at 40%, reasoning at 35%, and tool use at 25%. It is a compact decision aid built from the dimensions tracked in this catalog—not a claim that one model is universally best.</p><p>Prices show input then output cost per one million tokens. Provider tiers, caching, batches, and hosts can change the actual bill. Open the evidence links and caveat labels before committing to a production choice.</p><a href="/model-data/">Inspect the source log and review policy →</a></div>
 			</section>
 		</main>
+		<div class="compare-tray" id="compare-tray" hidden><div><span id="compare-count">0 selected</span><div id="selected-models"></div></div><a id="compare-link" class="btn btn-primary" href="/compare/">Compare selected →</a></div>
 		<Footer />
-
-		<script>
-			const filterBtns = document.querySelectorAll('.filter-btn');
-			const modelCards = document.querySelectorAll('.model-card');
-
-			filterBtns.forEach(btn => {
-				btn.addEventListener('click', () => {
-					const filter = btn.getAttribute('data-filter');
-					
-					filterBtns.forEach(b => b.classList.remove('active'));
-					btn.classList.add('active');
-
-					modelCards.forEach(card => {
-						if (filter === 'all' || card.getAttribute('data-provider') === filter) {
-							card.style.display = 'block';
-						} else {
-							card.style.display = 'none';
-						}
+		<script is:inline>
+			(() => {
+				const rows = [...document.querySelectorAll('[data-model-row]')];
+				const search = document.getElementById('model-search');
+				const provider = document.getElementById('provider-filter');
+				const workload = document.getElementById('workload-filter');
+				const openOnly = document.getElementById('open-filter');
+				const sort = document.getElementById('sort-models');
+				const tbody = document.getElementById('model-rows');
+				const count = document.getElementById('result-count');
+				const empty = document.getElementById('empty-state');
+				const reset = document.getElementById('reset-filters');
+				const sorters = { 'fit-desc':['fit',-1], 'coding-desc':['coding',-1], 'reasoning-desc':['reasoning',-1], 'tools-desc':['tools',-1], 'input-asc':['input',1], 'output-asc':['output',1], 'context-desc':['context',-1] };
+				const apply = () => {
+					const q = search.value.trim().toLowerCase();
+					const visible = rows.filter((row) => {
+						const match = (!q || row.dataset.name.includes(q)) && (provider.value === 'all' || row.dataset.provider === provider.value) && (workload.value === 'all' || row.dataset.workloads.split(' ').includes(workload.value)) && (!openOnly.checked || row.dataset.open === 'true');
+						row.hidden = !match; return match;
 					});
-				});
-			});
+					const [key, direction] = sorters[sort.value];
+					rows.sort((a,b) => (Number(a.dataset[key]) - Number(b.dataset[key])) * direction).forEach((row) => tbody.append(row));
+					count.textContent = `Showing ${visible.length} model${visible.length === 1 ? '' : 's'}`;
+					empty.hidden = visible.length > 0;
+				};
+				[search, provider, workload, openOnly, sort].forEach((control) => control.addEventListener(control === search ? 'input' : 'change', apply));
+				reset.addEventListener('click', () => { search.value=''; provider.value='all'; workload.value='all'; openOnly.checked=false; sort.value='fit-desc'; apply(); });
+				const checks = [...document.querySelectorAll('.compare-check')];
+				const tray = document.getElementById('compare-tray');
+				const selectedBox = document.getElementById('selected-models');
+				const compareCount = document.getElementById('compare-count');
+				const compareLink = document.getElementById('compare-link');
+				const updateCompare = (changed) => {
+					let selected = checks.filter((box) => box.checked);
+					if (selected.length > 3 && changed) { changed.checked = false; selected = checks.filter((box) => box.checked); }
+					checks.forEach((box) => { box.disabled = selected.length >= 3 && !box.checked; });
+					tray.hidden = selected.length === 0;
+					compareCount.textContent = `${selected.length} selected`;
+					selectedBox.textContent = selected.map((box) => box.dataset.label).join(' · ');
+						compareLink.href = `/compare/?models=${selected.map((box) => box.value).join(',')}`;
+				};
+				checks.forEach((box) => box.addEventListener('change', () => { updateCompare(box); if (box.checked && window.gtag) window.gtag('event', 'compare_model_add', { model: box.dataset.label }); }));
+			})();
 		</script>
 	</body>
 </html>
+
+<style>
+	.models-page { width: 100%; max-width: none; padding: 0; }
+	.page-intro { padding-block: 5.5rem 4rem; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 5rem; align-items: end; border-bottom: 1px solid var(--line); }
+	.page-intro h1 { max-width: 760px; font-size: clamp(3.3rem, 6vw, 6rem); line-height: 0.95; }
+	.intro-copy > p { font-size: 1.08rem; }
+	.intro-meta { display: flex; gap: 0.45rem; flex-wrap: wrap; }
+	.catalog { padding-block: 4rem; }
+	.catalog-head { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 1.5rem; }
+	.catalog-head p { margin: 0; font-size: 0.82rem; }
+	.filter-bar { display: grid; grid-template-columns: minmax(230px, 1.5fr) repeat(3, minmax(150px, 0.8fr)) auto auto; gap: 0.65rem; align-items: end; padding: 1rem; border: 1px solid var(--line); border-bottom: 0; border-radius: var(--radius-lg) var(--radius-lg) 0 0; background: var(--surface); }
+	.filter-bar label { display: flex; flex-direction: column; gap: 0.28rem; color: var(--ink-faint); font-size: 0.7rem; font-weight: 680; letter-spacing: 0.04em; text-transform: uppercase; }
+	.filter-bar input[type='search'], .filter-bar select { width: 100%; min-height: 42px; padding: 0.55rem 0.65rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--canvas); color: var(--ink); font-size: 0.85rem; text-transform: none; }
+	.search-field { position: relative; }
+	.search-field svg { position: absolute; left: 0.7rem; bottom: 0.78rem; width: 16px; height: 16px; fill: none; stroke: var(--ink-faint); stroke-width: 1.8; }
+	.search-field input { padding-left: 2.2rem !important; }
+	.check-filter { min-height: 42px; flex-direction: row !important; align-items: center; gap: 0.45rem !important; padding: 0 0.25rem; color: var(--ink-muted) !important; white-space: nowrap; text-transform: none !important; }
+	.check-filter input { width: 17px; height: 17px; accent-color: var(--blue); }
+	#reset-filters { min-height: 42px; padding: 0.5rem 0.8rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: transparent; color: var(--ink-muted); cursor: pointer; font-size: 0.8rem; }
+	.table-wrap { overflow: auto; border: 1px solid var(--line); background: var(--surface); }
+	.model-table { min-width: 1180px; }
+	.model-table thead { position: sticky; top: 68px; z-index: 2; background: var(--surface); }
+	.model-table td { vertical-align: middle; font-size: 0.84rem; }
+	.model-table tr[hidden] { display: none; }
+	.select-col { width: 36px; padding-right: 0 !important; }
+	.select-col input { width: 16px; height: 16px; accent-color: var(--blue); }
+	.rank-cell { color: var(--ink-faint); font-size: 0.74rem !important; }
+	.model-cell { min-width: 230px; display: flex; align-items: center; gap: 0.7rem; }
+	.model-dot { width: 9px; height: 9px; flex: 0 0 auto; border-radius: 50%; background: var(--model-color); }
+	.model-cell div { display: flex; flex-direction: column; }
+	.model-cell span, .model-cell small, .cell-note, .price-cell small { color: var(--ink-faint); font-size: 0.68rem; }
+	.model-cell small { max-width: 220px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+	.fit-score { display: block; color: var(--blue); font-size: 1.05rem; }
+	.price-cell { min-width: 130px; }
+	.price-arrow { margin-inline: 0.35rem; color: var(--ink-faint); }
+	.price-cell small { display: block; color: var(--amber); }
+	.source-list { display: flex; flex-direction: column; min-width: 125px; }
+	.source-list a { font-size: 0.7rem; text-decoration: none; }
+	.empty-state { padding: 4rem 1rem; border: 1px solid var(--line); border-top: 0; text-align: center; }
+	.method-note { padding-block: 5rem; border-top: 1px solid var(--line); display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 5rem; }
+	.method-note > div:last-child { max-width: 720px; }
+	.compare-tray { position: fixed; z-index: 90; right: 1rem; bottom: 1rem; left: 1rem; max-width: 760px; margin: auto; padding: 0.8rem 0.9rem 0.8rem 1.1rem; border: 1px solid var(--line-strong); border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: space-between; gap: 1rem; background: var(--surface); box-shadow: var(--shadow-lg); }
+	.compare-tray[hidden] { display: none; }
+	.compare-tray > div { min-width: 0; }
+	#compare-count { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--green); }
+	#selected-models { overflow: hidden; color: var(--ink-muted); font-size: 0.8rem; text-overflow: ellipsis; white-space: nowrap; }
+	@media (max-width: 1050px) { .filter-bar { grid-template-columns: repeat(3, 1fr); } .search-field { grid-column: span 2; } }
+	@media (max-width: 720px) { .page-intro { padding-block: 4rem 3rem; grid-template-columns: 1fr; gap: 1.5rem; } .page-intro h1 { font-size: clamp(3.1rem, 14vw, 4.5rem); } .catalog { padding-block: 2.5rem; } .catalog-head { align-items: flex-start; flex-direction: column; gap: 0.5rem; } .filter-bar { grid-template-columns: 1fr 1fr; } .search-field { grid-column: 1 / -1; } .filter-bar label:nth-of-type(4) { grid-column: 1 / -1; } .method-note { grid-template-columns: 1fr; gap: 1.5rem; } .compare-tray { align-items: flex-start; } }
+</style>

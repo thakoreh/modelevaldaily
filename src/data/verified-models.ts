@@ -3,6 +3,26 @@ export const MODEL_DATA_VERIFIED_ON = '2026-07-06';
 // Last verification pass: 2026-07-06
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, and source URL availability.
 
+export const MODEL_SCORE_METHODOLOGY = {
+	label: 'Editorial fit score',
+	description: 'A directional decision aid derived from the catalog’s normalized coding, reasoning, and tool-use dimensions. It is not a universal benchmark result.',
+	weights: { coding: 0.4, reasoning: 0.35, toolUse: 0.25 },
+	verifiedOn: MODEL_DATA_VERIFIED_ON,
+} as const;
+
+export type ModelLifecycleStatus = 'available' | 'preview' | 'legacy';
+
+export function getModelSlug(name: string) {
+	return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+export function getModelStatus(model: Pick<VerifiedModel, 'name' | 'strengths'>): ModelLifecycleStatus {
+	const text = `${model.name} ${model.strengths.join(' ')}`.toLowerCase();
+	if (text.includes('preview')) return 'preview';
+	if (text.includes('legacy') || text.includes('deprecated')) return 'legacy';
+	return 'available';
+}
+
 export interface VerifiedModel {
 	name: string;
 	provider: string;

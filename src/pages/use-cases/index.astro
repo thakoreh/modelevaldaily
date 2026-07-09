@@ -1,0 +1,49 @@
+---
+import BaseHead from '../../components/BaseHead.astro';
+import Footer from '../../components/Footer.astro';
+import Header from '../../components/Header.astro';
+import { SITE_TITLE } from '../../consts';
+
+const useCases = [
+	{ index: '01', label: 'Coding & agents', title: 'Build and maintain software', description: 'Choose models for planning, editing, review, tool use, and long-context repository work.', href: '/use-cases/coding/', detail: 'Coding · Tool use · Context' },
+	{ index: '02', label: 'Reasoning', title: 'Solve constrained, high-stakes work', description: 'Compare reasoning depth, consistency, speed, and the cost of more deliberate inference.', href: '/use-cases/reasoning/', detail: 'Reasoning · Reliability · Latency' },
+	{ index: '03', label: 'Cost optimization', title: 'Operate at production volume', description: 'Set a quality floor, model your token mix, and route work without paying frontier prices for every request.', href: '/use-cases/cost-optimization/', detail: 'Price · Volume · Routing' },
+	{ index: '04', label: 'Private deployment', title: 'Run models on your own terms', description: 'Evaluate open weights, local hardware, privacy boundaries, and self-hosting overhead.', href: '/local-models/', detail: 'Privacy · Hardware · Control' },
+];
+---
+<!doctype html>
+<html lang="en">
+	<head><BaseHead title={`AI Model Use Cases | ${SITE_TITLE}`} description="Choose an AI model by workload: coding and agents, reasoning, production cost, or private local deployment." /></head>
+	<body>
+		<Header />
+		<main class="use-cases-page">
+			<section class="hero container"><span class="eyebrow">Use-case guides</span><h1>Start with the work. Then choose the model.</h1><p>Model rankings become useful only after you define the task, the failure cost, and the constraint that cannot move.</p></section>
+			<section class="guide-grid container">{useCases.map((item) => <a href={item.href}><span class="mono index">{item.index}</span><span class="label">{item.label}</span><h2>{item.title}</h2><p>{item.description}</p><div><span>{item.detail}</span><b>Open guide →</b></div></a>)}</section>
+			<section class="decision-note container"><div><span class="eyebrow">A practical sequence</span><h2>Three questions before the leaderboard.</h2></div><ol><li><span class="mono">01</span><p><strong>What must the model do reliably?</strong> Define a quality floor using your own representative tasks.</p></li><li><span class="mono">02</span><p><strong>What cannot change?</strong> Name the budget, latency, privacy, context, or provider constraint.</p></li><li><span class="mono">03</span><p><strong>What evidence would change the choice?</strong> Compare the relevant metric and verify it against current sources.</p></li></ol></section>
+		</main>
+		<Footer />
+	</body>
+</html>
+<style>
+	.use-cases-page { width: 100%; max-width: none; padding: 0; }
+	.hero { padding-block: 6rem 5rem; }
+	.hero h1 { max-width: 1050px; font-size: clamp(3.6rem, 7.5vw, 7.5rem); line-height: 0.92; }
+	.hero p { max-width: 680px; margin-top: 1.5rem; font-size: 1.15rem; }
+	.guide-grid { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
+	.guide-grid > a { min-height: 360px; padding: 1.8rem; display: flex; flex-direction: column; color: var(--ink); text-decoration: none; background: var(--surface); }
+	.guide-grid > a:nth-child(odd) { border-right: 1px solid var(--line); }
+	.guide-grid > a:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+	.guide-grid > a:hover { background: var(--blue-soft); }
+	.index { color: var(--ink-faint); font-size: 0.74rem; }
+	.label { margin-top: auto; color: var(--green); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+	.guide-grid h2 { max-width: 480px; margin-top: 0.5rem; font-size: 2rem; }
+	.guide-grid p { max-width: 520px; }
+	.guide-grid a > div { display: flex; justify-content: space-between; gap: 1rem; padding-top: 1rem; border-top: 1px solid var(--line); color: var(--ink-faint); font-size: 0.76rem; }
+	.guide-grid b { color: var(--blue); }
+	.decision-note { padding-block: 6rem; display: grid; grid-template-columns: 0.75fr 1.25fr; gap: 5rem; }
+	.decision-note ol { margin: 0; padding: 0; border-top: 1px solid var(--line-strong); list-style: none; }
+	.decision-note li { padding: 1.25rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 40px 1fr; gap: 1rem; }
+	.decision-note li span { color: var(--ink-faint); font-size: 0.72rem; }
+	.decision-note p { margin: 0; }
+	@media(max-width:720px){.hero{padding-block:4rem}.hero h1{font-size:clamp(3.2rem,15vw,4.7rem)}.guide-grid{grid-template-columns:1fr}.guide-grid>a{min-height:300px;border-right:0!important;border-bottom:1px solid var(--line)}.decision-note{grid-template-columns:1fr;gap:2rem}}
+</style>
