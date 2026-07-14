@@ -13,18 +13,19 @@ const year = new Date().getFullYear();
 		<div><h2>Explore</h2><a href="/coding-agents/">Coding agents</a><a href="/local-models/">Local models</a><a href="/best-open-weight-models/">Open weights</a><a href="/blog/">Research</a></div>
 		<div><h2>Evidence</h2><a href="/model-data/">Methodology & data</a><a href="/scorecards/">Scorecards</a><a href="/faq/">FAQ</a><a href="/about/">About</a></div>
 	</div>
-	<div class="footer-bottom"><span>© {year} AI Model Benchmarks</span><span>Rankings are decision aids, not universal truths.</span></div>
+	<div class="footer-bottom"><span>&copy; {year} AI Model Benchmarks</span><span>Rankings are decision aids, not universal truths.</span></div>
 </footer>
 <style>
-	.site-footer { margin-top: 5rem; border-top: 1px solid var(--line); background: var(--surface); }
-	.footer-grid { width: min(var(--container-xl), calc(100% - 3rem)); margin: 0 auto; padding: 3.5rem 0; display: grid; grid-template-columns: 1.7fr repeat(3, 1fr); gap: 3rem; }
+	.site-footer { margin-top: 5rem; border-top: 1px solid var(--line); background: #11131a; color: #fff; }
+	.footer-grid { width: min(var(--container-xl), calc(100% - 3rem)); margin: 0 auto; padding: 3.4rem 0; display: grid; grid-template-columns: 1.7fr repeat(3, 1fr); gap: 3rem; }
 	.footer-intro p { max-width: 420px; margin: 0.9rem 0 1.25rem; font-size: 0.94rem; }
-	.footer-brand { color: var(--ink); font-family: var(--font-serif); font-size: 1.35rem; font-weight: 680; text-decoration: none; }
+	.footer-brand { color: #fff; font-size: 1.24rem; font-weight: 760; text-decoration: none; }
 	.verification { display: inline-flex; padding: 0.25rem 0.55rem; border-radius: 999px; background: var(--green-soft); color: var(--green); font-size: 0.76rem; font-weight: 650; }
-	.footer-grid h2 { margin-bottom: 1rem; font: 700 0.72rem var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; }
+	.footer-grid p { color: color-mix(in srgb, #fff 70%, var(--ink-muted)); }
+	.footer-grid h2 { margin-bottom: 1rem; color: #fff; font: 700 0.72rem var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; }
 	.footer-grid > div:not(.footer-intro) { display: flex; flex-direction: column; align-items: flex-start; gap: 0.55rem; }
-	.footer-grid a:not(.footer-brand) { color: var(--ink-muted); font-size: 0.88rem; text-decoration: none; }
-	.footer-grid a:hover { color: var(--blue); }
-	.footer-bottom { width: min(var(--container-xl), calc(100% - 3rem)); margin: 0 auto; padding: 1rem 0 1.5rem; border-top: 1px solid var(--line); display: flex; justify-content: space-between; color: var(--ink-faint); font-size: 0.75rem; }
+	.footer-grid a:not(.footer-brand) { color: color-mix(in srgb, #fff 68%, var(--ink-muted)); font-size: 0.88rem; text-decoration: none; }
+	.footer-grid a:hover { color: #fff; }
+	.footer-bottom { width: min(var(--container-xl), calc(100% - 3rem)); margin: 0 auto; padding: 1rem 0 1.5rem; border-top: 1px solid rgba(255,255,255,0.12); display: flex; justify-content: space-between; color: color-mix(in srgb, #fff 58%, var(--ink-muted)); font-size: 0.75rem; }
 	@media (max-width: 760px) { .footer-grid { width: calc(100% - 1.25rem); grid-template-columns: 1fr 1fr; gap: 2rem 1rem; } .footer-intro { grid-column: 1 / -1; } .footer-bottom { width: calc(100% - 1.25rem); flex-direction: column; gap: 0.35rem; } }
 </style>

@@ -29,21 +29,21 @@ const decisions = [
 			<section class="hero container">
 				<div class="hero-copy">
 					<span class="eyebrow">Independent model decision guide</span>
-					<h1>Choose the right AI model for the work—not the hype.</h1>
+					<h1>AI Model Benchmarks</h1>
 					<p>Compare capability, cost, context, and deployment tradeoffs with source-aware guidance built for people shipping real AI systems.</p>
 					<div class="hero-actions">
-						<a class="btn btn-primary" href="/tools/model-picker/" data-analytics="model_picker_start" data-analytics-label="Homepage hero">Find my model <span aria-hidden="true">→</span></a>
+						<a class="btn btn-primary" href="/tools/model-picker/" data-analytics="model_picker_start" data-analytics-label="Homepage hero">Find my model <span aria-hidden="true">-&gt;</span></a>
 						<a class="btn btn-secondary" href="/compare/">Compare models</a>
 					</div>
 				</div>
 				<aside class="briefing" aria-label="Current model briefing">
-					<div class="briefing-head"><div><span class="kicker">Today’s short list</span><h2>Frontier model briefing</h2></div><span class="status"><i></i> Reviewed {MODEL_DATA_VERIFIED_ON}</span></div>
+					<div class="briefing-head"><div><span class="kicker">Today's short list</span><h2>Frontier model briefing</h2></div><span class="status"><i></i> Reviewed {MODEL_DATA_VERIFIED_ON}</span></div>
 					<ol>
 						{leaders.slice(0, 4).map((model, index) => (
-							<li><span class="rank mono">{String(index + 1).padStart(2, '0')}</span><div><strong>{model.name}</strong><span>{model.bestFor.slice(0, 2).join(' · ')}</span></div><b class="mono">{score(model).toFixed(1)}</b></li>
+							<li><span class="rank mono">{String(index + 1).padStart(2, '0')}</span><div><strong>{model.name}</strong><span>{model.bestFor.slice(0, 2).join(' / ')}</span></div><b class="mono">{score(model).toFixed(1)}</b></li>
 						))}
 					</ol>
-					<div class="briefing-foot"><span>Editorial fit score: coding 40% · reasoning 35% · tool use 25%</span><a href="/models/">Open rankings →</a></div>
+					<div class="briefing-foot"><span>Editorial fit score: coding 40% / reasoning 35% / tool use 25%</span><a href="/models/">Open rankings -&gt;</a></div>
 				</aside>
 			</section>
 
@@ -52,14 +52,14 @@ const decisions = [
 					<div><span class="mono">{VERIFIED_MODELS.length}</span><p>models tracked</p></div>
 					<div><span class="mono">{new Set(VERIFIED_MODELS.map((model) => model.provider)).size}</span><p>providers reviewed</p></div>
 					<div><span class="mono">{MODEL_DATA_VERIFIED_ON}</span><p>latest source review</p></div>
-					<a href="/model-data/"><span>Methodology</span><p>See sources and caveats →</p></a>
+					<a href="/model-data/"><span>Methodology</span><p>See sources and caveats -&gt;</p></a>
 				</div>
 			</section>
 
 			<section class="section container">
 				<div class="section-intro"><div><span class="eyebrow">Start with the workload</span><h2>What are you trying to do?</h2></div><p>A benchmark only matters when it resembles your constraints. Choose a decision path before choosing a winner.</p></div>
 				<div class="decision-grid">
-					{decisions.map((item) => <a class="decision" href={item.href}><span class="decision-code mono">{item.code}</span><span class="decision-label">{item.label}</span><h3>{item.title}</h3><p>{item.detail}</p><b>Explore the guide <span aria-hidden="true">→</span></b></a>)}
+					{decisions.map((item) => <a class="decision" href={item.href}><span class="decision-code mono">{item.code}</span><span class="decision-label">{item.label}</span><h3>{item.title}</h3><p>{item.detail}</p><b>Explore the guide <span aria-hidden="true">-&gt;</span></b></a>)}
 				</div>
 			</section>
 
@@ -72,16 +72,16 @@ const decisions = [
 							<tbody>{leaders.map((model, index) => <tr><td class="mono faint">{String(index + 1).padStart(2, '0')}</td><td><strong>{model.name}</strong><span>{model.provider}</span></td><td><b class="score mono">{score(model).toFixed(1)}</b></td><td class="mono">{model.scores.coding.toFixed(1)}</td><td class="mono">{model.scores.reasoning.toFixed(1)}</td><td class="mono">{model.scores.toolUse.toFixed(1)}</td><td class="mono price">${model.pricing.input} / ${model.pricing.output}</td></tr>)}</tbody>
 						</table>
 					</div>
-					<div class="ranking-actions"><p>Scores are editorial decision aids, not universal benchmark claims.</p><a class="btn btn-secondary" href="/models/">View all models →</a></div>
+					<div class="ranking-actions"><p>Scores are editorial decision aids, not universal benchmark claims.</p><a class="btn btn-secondary" href="/models/">View all models -&gt;</a></div>
 				</div>
 			</section>
 
 			<section class="section container methodology">
-				<div class="method-copy"><span class="eyebrow">How to read the data</span><h2>Evidence before verdicts.</h2><p>Model choice is multidimensional. We separate source-backed specifications from editorial interpretation, date every review, and show caveats where provider tiers or deployment choices change the answer.</p><a href="/model-data/">Read the methodology →</a></div>
+				<div class="method-copy"><span class="eyebrow">How to read the data</span><h2>Evidence before verdicts.</h2><p>Model choice is multidimensional. We separate source-backed specifications from editorial interpretation, date every review, and show caveats where provider tiers or deployment choices change the answer.</p><a href="/model-data/">Read the methodology -&gt;</a></div>
 				<div class="method-list"><div><span class="mono">01</span><h3>Verify the facts</h3><p>Pricing, context, availability, and release details link back to provider or benchmark sources.</p></div><div><span class="mono">02</span><h3>Expose the weights</h3><p>Composite scores state what they reward so you can decide whether the ranking fits your job.</p></div><div><span class="mono">03</span><h3>Name the tradeoffs</h3><p>Every recommendation should include a reason to choose it and a reason not to.</p></div></div>
 			</section>
 
-			{articles.length > 0 && <section class="section research-section"><div class="container"><div class="section-intro"><div><span class="eyebrow">Research notes</span><h2>Recent evaluations</h2></div><a href="/blog/">Browse all research →</a></div><div class="article-grid">{articles.map((post) => <a href={`/blog/${post.id}/`}><span class="meta">{post.data.pubDate.toISOString().slice(0, 10)}</span><h3>{post.data.title}</h3><p>{post.data.description}</p><b>Read analysis →</b></a>)}</div></div></section>}
+			{articles.length > 0 && <section class="section research-section"><div class="container"><div class="section-intro"><div><span class="eyebrow">Research notes</span><h2>Recent evaluations</h2></div><a href="/blog/">Browse all research -&gt;</a></div><div class="article-grid">{articles.map((post) => <a href={`/blog/${post.id}/`}><span class="meta">{post.data.pubDate.toISOString().slice(0, 10)}</span><h3>{post.data.title}</h3><p>{post.data.description}</p><b>Read analysis -&gt;</b></a>)}</div></div></section>}
 		</main>
 		<Footer />
 	</body>
@@ -89,45 +89,46 @@ const decisions = [
 
 <style>
 	.home { width: 100%; max-width: none; padding: 0; }
-	.hero { min-height: 650px; padding-block: 6.2rem 5rem; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr); gap: clamp(3rem, 7vw, 7rem); align-items: center; }
-	.hero-copy h1 { max-width: 760px; font-size: clamp(3.4rem, 6.4vw, 6.5rem); line-height: 0.94; }
-	.hero-copy > p { max-width: 650px; margin: 1.8rem 0 2rem; font-size: 1.2rem; line-height: 1.58; }
+	.hero { min-height: 560px; padding-block: 5rem 3.5rem; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(460px, 1.1fr); gap: clamp(2.5rem, 6vw, 6rem); align-items: center; }
+	.hero-copy h1 { max-width: 720px; font-size: clamp(3rem, 6vw, 5.6rem); line-height: 0.98; }
+	.hero-copy > p { max-width: 610px; margin: 1.35rem 0 1.65rem; font-size: 1.08rem; line-height: 1.58; }
 	.hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
 	.briefing { border: 1px solid var(--line-strong); border-radius: var(--radius-xl); background: var(--surface); box-shadow: var(--shadow-lg); overflow: hidden; }
-	.briefing-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.35rem 1.45rem; border-bottom: 1px solid var(--line); }
-	.briefing-head h2 { margin: 0.2rem 0 0; font: 660 1.28rem var(--font-sans); }
+	.briefing-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.25rem; border-bottom: 1px solid var(--line); background: var(--ink); color: #fff; }
+	.briefing-head h2 { margin: 0.2rem 0 0; color: #fff; font: 720 1.1rem var(--font-sans); }
 	.kicker { color: var(--ink-faint); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; }
+	.briefing-head .kicker { color: rgba(255,255,255,0.62); }
 	.status { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--green); font-size: 0.72rem; white-space: nowrap; }
 	.status i { width: 7px; height: 7px; border-radius: 50%; background: var(--green); }
 	.briefing ol { list-style: none; margin: 0; padding: 0; }
-	.briefing li { display: grid; grid-template-columns: 34px 1fr auto; gap: 0.8rem; align-items: center; padding: 1rem 1.45rem; border-bottom: 1px solid var(--line); }
+	.briefing li { display: grid; grid-template-columns: 34px 1fr auto; gap: 0.8rem; align-items: center; padding: 0.88rem 1.25rem; border-bottom: 1px solid var(--line); }
 	.briefing li div { min-width: 0; display: flex; flex-direction: column; }
 	.briefing li div span { overflow: hidden; color: var(--ink-faint); font-size: 0.78rem; text-overflow: ellipsis; white-space: nowrap; }
 	.rank { color: var(--ink-faint); font-size: 0.76rem; }
 	.briefing li > b { font-size: 1.05rem; }
-	.briefing-foot { padding: 1rem 1.45rem; display: flex; justify-content: space-between; gap: 1rem; color: var(--ink-faint); font-size: 0.72rem; }
+	.briefing-foot { padding: 0.9rem 1.25rem; display: flex; justify-content: space-between; gap: 1rem; color: var(--ink-faint); font-size: 0.72rem; background: var(--surface-subtle); }
 	.briefing-foot a { white-space: nowrap; }
 	.trust-strip { border-block: 1px solid var(--line); background: var(--surface); }
 	.trust-grid { display: grid; grid-template-columns: repeat(4, 1fr); }
-	.trust-grid > * { min-height: 110px; padding: 1.5rem; border-right: 1px solid var(--line); text-decoration: none; }
+	.trust-grid > * { min-height: 102px; padding: 1.35rem; border-right: 1px solid var(--line); text-decoration: none; }
 	.trust-grid > *:last-child { border: 0; }
 	.trust-grid span { display: block; color: var(--ink); font-size: 1.2rem; font-weight: 650; }
 	.trust-grid p { margin: 0.25rem 0 0; font-size: 0.8rem; }
-	.section { padding-block: 6rem; }
+	.section { padding-block: 5rem; }
 	.section-intro { margin-bottom: 2.5rem; display: grid; grid-template-columns: 1fr minmax(300px, 0.7fr); gap: 3rem; align-items: end; }
 	.section-intro h2 { margin: 0; }
 	.section-intro > p { margin: 0; }
-	.decision-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; }
-	.decision { min-height: 310px; padding: 1.6rem; border-right: 1px solid var(--line); display: flex; flex-direction: column; color: var(--ink); text-decoration: none; background: var(--surface); transition: background var(--transition-base); }
+	.decision-grid { display: grid; grid-template-columns: repeat(4, 1fr); border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+	.decision { min-height: 285px; padding: 1.45rem; border-right: 1px solid var(--line); display: flex; flex-direction: column; color: var(--ink); text-decoration: none; background: var(--surface); transition: background var(--transition-base), transform var(--transition-fast); }
 	.decision:last-child { border: 0; }
-	.decision:hover { background: var(--blue-soft); }
+	.decision:hover { background: var(--blue-soft); transform: translateY(-1px); }
 	.decision-code { color: var(--ink-faint); font-size: 0.72rem; }
 	.decision-label { margin-top: auto; color: var(--green); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
 	.decision h3 { margin-top: 0.45rem; font-size: 1.25rem; }
 	.decision p { font-size: 0.88rem; }
 	.decision b { margin-top: 0.7rem; color: var(--blue); font-size: 0.84rem; }
 	.ranking-section { border-block: 1px solid var(--line); background: var(--surface-subtle); }
-	.table-shell { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); }
+	.table-shell { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius-lg); background: var(--surface); box-shadow: var(--shadow-md); }
 	.table-shell table { min-width: 880px; }
 	.table-shell td strong, .table-shell td span { display: block; }
 	.table-shell td span { color: var(--ink-faint); font-size: 0.74rem; }
@@ -136,7 +137,7 @@ const decisions = [
 	.price { white-space: nowrap; }
 	.ranking-actions { margin-top: 1rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; }
 	.ranking-actions p { margin: 0; font-size: 0.78rem; }
-	.methodology { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 6rem; }
+	.methodology { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 5rem; }
 	.method-copy { position: sticky; top: 7rem; align-self: start; }
 	.method-copy p { margin-top: 1.4rem; }
 	.method-list { border-top: 1px solid var(--line-strong); }
@@ -146,10 +147,10 @@ const decisions = [
 	.method-list p { margin: 0; font-size: 0.88rem; }
 	.research-section { border-top: 1px solid var(--line); }
 	.article-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-	.article-grid > a { min-height: 250px; padding: 1.5rem; border: 1px solid var(--line); border-radius: var(--radius-lg); display: flex; flex-direction: column; color: var(--ink); text-decoration: none; background: var(--surface); }
-	.article-grid h3 { margin-top: 1rem; font: 650 1.35rem var(--font-serif); }
+	.article-grid > a { min-height: 235px; padding: 1.4rem; border: 1px solid var(--line); border-radius: var(--radius-lg); display: flex; flex-direction: column; color: var(--ink); text-decoration: none; background: var(--surface); }
+	.article-grid h3 { margin-top: 1rem; font: 680 1.2rem var(--font-sans); }
 	.article-grid p { font-size: 0.86rem; }
 	.article-grid b { margin-top: auto; color: var(--blue); font-size: 0.82rem; }
 	@media (max-width: 1000px) { .hero { grid-template-columns: 1fr; } .briefing { max-width: 720px; } .decision-grid { grid-template-columns: 1fr 1fr; } .decision:nth-child(2) { border-right: 0; } .decision:nth-child(-n+2) { border-bottom: 1px solid var(--line); } .methodology { gap: 3rem; } }
-	@media (max-width: 720px) { .hero { min-height: auto; padding-block: 4rem 3rem; } .hero-copy h1 { font-size: clamp(3rem, 15vw, 4.5rem); } .hero-copy > p { font-size: 1.05rem; } .briefing-head, .briefing-foot { align-items: flex-start; flex-direction: column; } .trust-grid { grid-template-columns: 1fr 1fr; } .trust-grid > * { border-bottom: 1px solid var(--line); } .trust-grid > *:nth-child(2) { border-right: 0; } .section { padding-block: 4rem; } .section-intro { grid-template-columns: 1fr; gap: 1rem; } .decision-grid, .article-grid, .methodology { grid-template-columns: 1fr; } .decision { min-height: 240px; border-right: 0; border-bottom: 1px solid var(--line); } .decision:last-child { border-bottom: 0; } .method-copy { position: static; } .method-list > div { grid-template-columns: 36px 1fr; } .method-list p { grid-column: 2; } .ranking-actions { align-items: flex-start; flex-direction: column; } }
+	@media (max-width: 720px) { .hero { min-height: auto; padding-block: 3rem 2.5rem; } .hero-copy h1 { font-size: clamp(2.8rem, 13vw, 4rem); } .hero-copy > p { font-size: 1rem; } .briefing-head, .briefing-foot { align-items: flex-start; flex-direction: column; } .trust-grid { grid-template-columns: 1fr 1fr; } .trust-grid > * { border-bottom: 1px solid var(--line); } .trust-grid > *:nth-child(2) { border-right: 0; } .section { padding-block: 3.5rem; } .section-intro { grid-template-columns: 1fr; gap: 1rem; } .decision-grid, .article-grid, .methodology { grid-template-columns: 1fr; } .decision { min-height: 220px; border-right: 0; border-bottom: 1px solid var(--line); } .decision:last-child { border-bottom: 0; } .method-copy { position: static; } .method-list > div { grid-template-columns: 36px 1fr; } .method-list p { grid-column: 2; } .ranking-actions { align-items: flex-start; flex-direction: column; } }
 </style>
