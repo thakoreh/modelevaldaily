@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: July 6, 2026
+// Last Updated: July 21, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -179,6 +179,32 @@ export const googleModels: ModelPricing[] = [
     sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
     lastVerified: '2026-06-03',
     notes: 'Preview model; standard tier pricing for prompts <= 200k tokens'
+  },
+  {
+    provider: 'Google',
+    model: 'Gemini 3.6 Flash',
+    releaseDate: '2026-07-21',
+    inputCost: 1.50,
+    outputCost: 7.50,
+    contextWindow: 1048576,
+    maxOutput: 65536,
+    source: 'Google AI Official Pricing',
+    sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
+    lastVerified: '2026-07-21',
+    notes: 'Stable model for agentic and multimodal tasks; Batch and Flex tiers are lower.'
+  },
+  {
+    provider: 'Google',
+    model: 'Gemini 3.5 Flash-Lite',
+    releaseDate: '2026-07-21',
+    inputCost: 0.30,
+    outputCost: 2.50,
+    contextWindow: 1048576,
+    maxOutput: 65536,
+    source: 'Google AI Official Pricing',
+    sourceUrl: 'https://ai.google.dev/gemini-api/docs/pricing',
+    lastVerified: '2026-07-21',
+    notes: 'Stable low-latency model for high-volume automation; Batch and Flex tiers are lower.'
   },
   {
     provider: 'Google',

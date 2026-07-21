@@ -6,7 +6,7 @@ import { SITE_TITLE } from '../../consts';
 
 const reasoningModels = [
 	{ rank: 1, name: 'Claude Opus 4.8', provider: 'Anthropic', score: 9.4, color: 'var(--claude)', pricing: { input: 5, output: 25 }, context: '1M', highlights: ['Best at nuanced analysis', 'Excellent tradeoff evaluation', 'Strong strategic thinking'] },
-	{ rank: 2, name: 'Kimi K2.5', provider: 'Moonshot', score: 9.2, color: '#e040fb', pricing: { input: 2, output: 10 }, context: '200K', highlights: ['Top logical reasoning', 'Great value', 'Handles complex chains'] },
+	{ rank: 2, name: 'Kimi K3', provider: 'Moonshot', score: 9.2, color: '#e040fb', pricing: { input: 3, output: 15 }, context: '1M', highlights: ['Configurable reasoning effort', 'Native visual understanding', '1M context'] },
 	{ rank: 3, name: 'GLM-5', provider: 'Zhipu AI', score: 8.6, color: '#f43f5e', pricing: { input: 0.5, output: 0.5 }, context: '128K', highlights: ['Strong analysis', 'Ultra-low cost', 'Enterprise ready'] },
 	{ rank: 4, name: 'GPT-5.5', provider: 'OpenAI', score: 8.5, color: 'var(--openai)', pricing: { input: 5, output: 30 }, context: '1M', highlights: ['Good general reasoning', 'Fast responses', 'Strong ecosystem'] },
 	{ rank: 5, name: 'Gemini 3.1 Pro Preview', provider: 'Google', score: 8.4, color: '#4285f4', pricing: { input: 2, output: 12 }, context: '1M', highlights: ['Massive context', 'Research synthesis', 'Good multimodal'] },
@@ -25,13 +25,13 @@ const benchmarks = [
 const decisionGuide = [
 	{ scenario: 'Executive decision support', pick: 'Claude Opus 4.8', reason: 'Best at nuanced analysis and presenting tradeoffs clearly. Excels at "it depends" scenarios.' },
 	{ scenario: 'Technical architecture decisions', pick: 'Claude Opus 4.8', reason: 'Deep understanding of system design tradeoffs and can articulate long-term implications.' },
-	{ scenario: 'High-volume analysis tasks', pick: 'Kimi K2.5', reason: 'Excellent reasoning at a fraction of the cost. Strong logical chains for complex analysis.' },
+	{ scenario: 'Long-context analysis tasks', pick: 'Kimi K3', reason: 'Kimi K3 supports configurable reasoning effort and a 1M-token context window.' },
 	{ scenario: 'Budget-constrained projects', pick: 'GLM-5', reason: 'Solid reasoning capability at $0.50/$0.50 per million tokens. Best value for analysis tasks.' },
 	{ scenario: 'Research synthesis', pick: 'Gemini 3.1 Pro Preview', reason: '1M context window lets you include extensive background material for comprehensive analysis.' },
 ];
 
 const faqs = [
-	{ q: 'What is the best AI model for reasoning in 2026?', a: 'Claude Opus 4.8 currently leads our reasoning benchmarks with a 9.4/10 score, excelling at tradeoff analysis, strategic planning, and nuanced decision support. Kimi K2.5 is a close second at 9.2/10 with better value.' },
+	{ q: 'What is the best AI model for reasoning in 2026?', a: 'The right choice depends on your task, evaluation setup, cost ceiling, and deployment constraints. Our displayed scores are editorial fit scores, not universal benchmark results; compare source-backed specifications and test finalists on representative work.' },
 	{ q: 'What tasks count as "reasoning" in your benchmarks?', a: 'We test: tradeoff analysis (comparing options), root cause analysis (diagnosing problems), strategic planning (multi-step plans), logical deduction (following chains), risk assessment, and comparative analysis against criteria.' },
 	{ q: 'Why does Claude excel at reasoning?', a: 'Claude tends to acknowledge uncertainty, present multiple perspectives, and avoid overconfident assertions. It excels at "it depends" scenarios where context matters more than binary answers.' },
 	{ q: 'Is reasoning capability worth paying more for?', a: 'For critical decisions, yes. Better reasoning means fewer costly mistakes and more thorough analysis. For routine tasks, models like Kimi or GLM offer strong reasoning at lower cost.' },

@@ -1,7 +1,7 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-07-06';
+export const MODEL_DATA_VERIFIED_ON = '2026-07-21';
 
-// Last verification pass: 2026-07-06
-// Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, and source URL availability.
+// Last verification pass: 2026-07-21
+// Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
 	label: 'Editorial fit score',
@@ -135,11 +135,25 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		scores: { coding: 9.4, reasoning: 9.4, toolUse: 9.4 },
 		strengths: ['Current stable Gemini flagship for speed', 'Strong search and grounding', '1M-token context'],
 		sources: [
-			{ label: 'Gemini Models', url: 'https://ai.google.dev/gemini-api/docs/models' },
-			{ label: 'Gemini Pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' },
+		{ label: 'Gemini Models', url: 'https://ai.google.dev/gemini-api/docs/models' },
+		{ label: 'Gemini Pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' },
 		],
-	},
-	{
+		},
+		{
+		name: 'Gemini 3.6 Flash', provider: 'Google', color: '#34a853', releaseDate: '2026-07-21',
+		pricing: { input: 1.50, output: 7.50, notes: 'Standard paid tier; Batch and Flex tiers are lower.' }, contextWindow: '1M',
+		bestFor: ['Agentic coding', 'Multimodal tasks', 'Search grounding'], scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.5 },
+		strengths: ['Stable Gemini model for agentic and multimodal tasks', '1M-token input and 65,536-token output limits', 'Search grounding and tool capabilities'],
+		sources: [{ label: 'Gemini 3.6 Flash model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash' }, { label: 'Gemini Pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }],
+		},
+		{
+		name: 'Gemini 3.5 Flash-Lite', provider: 'Google', color: '#4285f4', releaseDate: '2026-07-21',
+		pricing: { input: 0.30, output: 2.50, notes: 'Standard paid tier; Batch and Flex tiers are lower.' }, contextWindow: '1M',
+		bestFor: ['High-volume automation', 'Subagents', 'Document parsing'], scores: { coding: 8.8, reasoning: 8.7, toolUse: 8.9 },
+		strengths: ['Stable low-latency Gemini model', '1M-token input and 65,536-token output limits', 'Optimized for high-throughput agentic workflows'],
+		sources: [{ label: 'Gemini 3.5 Flash-Lite model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash-lite' }, { label: 'Gemini Pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }],
+		},
+		{
 		name: 'Claude Sonnet 5',
 		provider: 'Anthropic',
 		color: '#ea580c',
@@ -260,18 +274,18 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
-		name: 'Kimi K2.5',
+		name: 'Kimi K3',
 		provider: 'Moonshot AI',
 		color: '#00d4aa',
-		releaseDate: '2026-02-11',
-		pricing: { input: 0.60, output: 2.50 },
-		contextWindow: '256K',
-		bestFor: ['Visual coding', 'Long context', 'Agent workflows'],
+		releaseDate: '2026-07-16',
+		pricing: { input: 3.00, output: 15.00, notes: 'Kimi lists $0.30/MTok cached input, $3/MTok input, and $15/MTok output.' },
+		contextWindow: '1M',
+		bestFor: ['Long-horizon coding', 'Knowledge work', 'Agent workflows'],
 		scores: { coding: 9.4, reasoning: 9.3, toolUse: 9.2 },
-		strengths: ['MoE architecture (1T params, 32B active)', 'Competitive pricing', 'Multimodal capabilities'],
+		strengths: ['Flagship model with configurable reasoning effort', 'Native visual understanding', '1M-token context'],
 		sources: [
-			{ label: 'OpenRouter', url: 'https://openrouter.ai/moonshotai/kimi-k2.5' },
-			{ label: 'Moonshot Platform', url: 'https://platform.moonshot.ai/' },
+			{ label: 'Kimi K3 announcement', url: 'https://www.kimi.com/blog/kimi-k3' },
+			{ label: 'Kimi K3 pricing', url: 'https://platform.kimi.ai/docs/pricing/chat-k3' },
 		],
 	},
 	{
