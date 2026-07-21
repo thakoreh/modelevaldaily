@@ -20,11 +20,44 @@ const pickerModels = VERIFIED_MODELS.map((model) => ({
   strengths: model.strengths,
   color: model.color,
 }));
+
+const faqs = [
+  {
+    question: 'How does the AI Model Picker choose a recommendation?',
+    answer: 'The picker weights normalized coding, reasoning, tool-use, context-window, and price signals against the workflow and constraints you select. It is a directional decision aid, not a substitute for evaluating models on your own production tasks.',
+  },
+  {
+    question: 'Which AI model is best for coding or agent workflows?',
+    answer: 'The best choice depends on the coding task, tool-calling requirements, context size, budget, and deployment constraints. Select Coding or Agent workflows in the picker to see a ranked shortlist based on those priorities, then validate the finalists with representative tasks.',
+  },
+  {
+    question: 'How should I compare AI model costs?',
+    answer: 'Compare both input and output token prices using your expected traffic and response lengths. The picker shows listed per-million-token pricing, and the cost calculator can estimate a workload before you commit to a model.',
+  },
+  {
+    question: 'Can I use the picker for local or private AI deployment?',
+    answer: 'Yes. Choose Local / private deployment or Prefer local / open weights to prioritize models suited to self-hosted workflows. Confirm hardware, licensing, throughput, and security requirements before deployment.',
+  },
+];
+
+const faqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((faq) => ({
+    '@type': 'Question',
+    name: faq.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: faq.answer,
+    },
+  })),
+};
 ---
 
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} type="website" />
+    <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
   </head>
   <body>
     <Header />
@@ -117,6 +150,19 @@ const pickerModels = VERIFIED_MODELS.map((model) => ({
       <section class="container section">
         <h2>Shortlist</h2>
         <div id="shortlist" class="shortlist"></div>
+      </section>
+
+      <section class="container section faq-section" aria-labelledby="picker-faq-heading">
+        <p class="eyebrow">Before you decide</p>
+        <h2 id="picker-faq-heading">AI model picker FAQ</h2>
+        <div class="faq-list">
+          {faqs.map((faq) => (
+            <details>
+              <summary>{faq.question}</summary>
+              <p>{faq.answer}</p>
+            </details>
+          ))}
+        </div>
       </section>
     </main>
     <Footer />
@@ -234,6 +280,11 @@ const pickerModels = VERIFIED_MODELS.map((model) => ({
   .section { padding-top: 2rem; }
   .shortlist { display: grid; grid-template-columns: repeat(5,1fr); gap: .75rem; }
   .short-card p { color: var(--text-secondary); min-height: 3rem; }
+  .faq-section { max-width: 900px; padding-bottom: 2rem; }
+  .faq-list { display: grid; gap: .75rem; margin-top: 1rem; }
+  details { border: 1px solid var(--border-primary); border-radius: 14px; background: var(--bg-card); padding: .85rem 1rem; }
+  summary { cursor: pointer; color: var(--text-primary); font-weight: 800; }
+  details p { color: var(--text-secondary); line-height: 1.65; margin: .8rem 0 .15rem; }
   @media (max-width: 960px) { .app-grid { grid-template-columns: 1fr; } .shortlist { grid-template-columns: repeat(2,1fr); } }
   @media (max-width: 640px) { .shortlist { grid-template-columns: 1fr; } }
 </style>
