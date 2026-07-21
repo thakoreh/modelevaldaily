@@ -14,6 +14,7 @@ export async function GET() {
 		{ path: '/compare/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/cost-calculator/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/tools/model-picker/', priority: '0.92', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/coding-agents/', priority: '0.88', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/blog/', priority: '0.85', changefreq: 'daily', lastmod: defaultLastmod },
 		{ path: '/model-data/', priority: '0.8', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/ai-model-benchmarking/', priority: '0.9', changefreq: 'weekly', lastmod: defaultLastmod },
