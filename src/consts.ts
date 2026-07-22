@@ -5,4 +5,5 @@ export const SITE_TITLE = 'AI Model Benchmarks';
 export const SITE_DESCRIPTION = 'Source-aware AI model rankings, comparisons, and decision guides for capability, cost, context, and production deployment.';
 export const SITE_URL = 'https://aimodelbenchmarks.com';
 export const SITE_LOCALE = 'en_US';
-export const SITE_UPDATED = '2026-07-06';
+// Keep sitewide freshness signals aligned with the most recent verified model-data review.
+export const SITE_UPDATED = '2026-07-22';
