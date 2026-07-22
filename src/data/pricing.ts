@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: July 21, 2026
+// Last Updated: July 22, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -20,6 +20,45 @@ export interface ModelPricing {
 export const openaiModels: ModelPricing[] = [
   {
     provider: 'OpenAI',
+    model: 'GPT-5.6 Sol',
+    releaseDate: '2026-07-09',
+    inputCost: 5.00,
+    outputCost: 30.00,
+    contextWindow: 1050000,
+    maxOutput: 128000,
+    source: 'OpenAI Official Pricing',
+    sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.6-sol',
+    lastVerified: '2026-07-22',
+    notes: 'Frontier model in the GPT-5.6 family; the gpt-5.6 alias routes to GPT-5.6 Sol.'
+  },
+  {
+    provider: 'OpenAI',
+    model: 'GPT-5.6 Terra',
+    releaseDate: '2026-07-09',
+    inputCost: 2.50,
+    outputCost: 15.00,
+    contextWindow: 1050000,
+    maxOutput: 128000,
+    source: 'OpenAI Official Pricing',
+    sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.6-terra',
+    lastVerified: '2026-07-22',
+    notes: 'GPT-5.6 balance of intelligence and cost.'
+  },
+  {
+    provider: 'OpenAI',
+    model: 'GPT-5.6 Luna',
+    releaseDate: '2026-07-09',
+    inputCost: 1.00,
+    outputCost: 6.00,
+    contextWindow: 1050000,
+    maxOutput: 128000,
+    source: 'OpenAI Official Pricing',
+    sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.6-luna',
+    lastVerified: '2026-07-22',
+    notes: 'GPT-5.6 model for efficient, high-volume workloads.'
+  },
+  {
+    provider: 'OpenAI',
     model: 'GPT-5.5',
     releaseDate: '2026-05-01',
     inputCost: 5.00,
@@ -29,7 +68,7 @@ export const openaiModels: ModelPricing[] = [
     source: 'OpenAI Official Models',
     sourceUrl: 'https://platform.openai.com/docs/models',
     lastVerified: '2026-06-03',
-    notes: 'Current OpenAI flagship for complex reasoning and coding'
+    notes: 'Prior OpenAI flagship for complex reasoning and coding'
   },
   {
     provider: 'OpenAI',

@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-07-21';
+export const MODEL_DATA_VERIFIED_ON = '2026-07-22';
 
-// Last verification pass: 2026-07-21
+// Last verification pass: 2026-07-22
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -50,6 +50,54 @@ export interface VerifiedModel {
 // Current frontier models - model names/pricing verified against provider docs.
 export const VERIFIED_MODELS: VerifiedModel[] = [
 	{
+		name: 'GPT-5.6 Sol',
+		provider: 'OpenAI',
+		color: '#10b981',
+		releaseDate: '2026-07-09',
+		pricing: { input: 5.00, output: 30.00 },
+		contextWindow: '1.05M',
+		bestFor: ['Complex production workflows', 'Coding', 'Multi-agent orchestration'],
+		scores: { coding: 9.9, reasoning: 9.9, toolUse: 9.9 },
+		strengths: ['OpenAI frontier model', 'Programmatic tool calling and persisted reasoning', '128K max output'],
+		sources: [
+			{ label: 'OpenAI GPT-5.6 Sol model card', url: 'https://developers.openai.com/api/docs/models/gpt-5.6-sol' },
+			{ label: 'OpenAI GPT-5.6 release notes', url: 'https://developers.openai.com/api/docs/changelog' },
+			{ label: 'OpenAI Pricing', url: 'https://developers.openai.com/api/docs/pricing' },
+		],
+	},
+	{
+		name: 'GPT-5.6 Terra',
+		provider: 'OpenAI',
+		color: '#059669',
+		releaseDate: '2026-07-09',
+		pricing: { input: 2.50, output: 15.00 },
+		contextWindow: '1.05M',
+		bestFor: ['Production agents', 'Coding', 'Cost-balanced workflows'],
+		scores: { coding: 9.6, reasoning: 9.6, toolUse: 9.7 },
+		strengths: ['GPT-5.6 balance of intelligence and cost', 'Programmatic tool calling and persisted reasoning', '128K max output'],
+		sources: [
+			{ label: 'OpenAI GPT-5.6 Terra model card', url: 'https://developers.openai.com/api/docs/models/gpt-5.6-terra' },
+			{ label: 'OpenAI GPT-5.6 release notes', url: 'https://developers.openai.com/api/docs/changelog' },
+			{ label: 'OpenAI Pricing', url: 'https://developers.openai.com/api/docs/pricing' },
+		],
+	},
+	{
+		name: 'GPT-5.6 Luna',
+		provider: 'OpenAI',
+		color: '#047857',
+		releaseDate: '2026-07-09',
+		pricing: { input: 1.00, output: 6.00 },
+		contextWindow: '1.05M',
+		bestFor: ['High-volume workflows', 'Subagents', 'Cost-sensitive automation'],
+		scores: { coding: 9.1, reasoning: 9.1, toolUse: 9.3 },
+		strengths: ['GPT-5.6 model for efficient high-volume workloads', 'Programmatic tool calling and persisted reasoning', '128K max output'],
+		sources: [
+			{ label: 'OpenAI GPT-5.6 Luna model card', url: 'https://developers.openai.com/api/docs/models/gpt-5.6-luna' },
+			{ label: 'OpenAI GPT-5.6 release notes', url: 'https://developers.openai.com/api/docs/changelog' },
+			{ label: 'OpenAI Pricing', url: 'https://developers.openai.com/api/docs/pricing' },
+		],
+	},
+	{
 		name: 'GPT-5.5',
 		provider: 'OpenAI',
 		color: '#10b981',
@@ -58,7 +106,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		contextWindow: '1M',
 		bestFor: ['Complex reasoning', 'Coding', 'Professional workflows'],
 		scores: { coding: 9.8, reasoning: 9.8, toolUse: 9.7 },
-		strengths: ['OpenAI flagship', 'Strong coding and reasoning', 'Built-in tool support'],
+		strengths: ['Prior OpenAI flagship', 'Strong coding and reasoning', 'Built-in tool support'],
 		sources: [
 			{ label: 'OpenAI Models', url: 'https://platform.openai.com/docs/models' },
 			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
