@@ -178,13 +178,13 @@ const jsonLd = {
 {isArticle && modifiedDate && <meta property="article:modified_time" content={modifiedDate.toISOString()} />}
 
 <!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={canonicalURL} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
-<meta property="twitter:image" content={imageUrl} />
-<meta property="twitter:site" content="@aimodelbench" />
-<meta property="twitter:creator" content="@aimodelbench" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={canonicalURL} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={imageUrl} />
+<meta name="twitter:site" content="@aimodelbench" />
+<meta name="twitter:creator" content="@aimodelbench" />
 
 <!-- JSON-LD Structured Data -->
 <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
