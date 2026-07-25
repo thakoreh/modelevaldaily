@@ -23,15 +23,24 @@ if (fs.existsSync(sitemapPath)) {
   const sitemap = fs.readFileSync(sitemapPath, 'utf8');
   const requiredUrls = [
     'https://aimodelbenchmarks.com/tools/model-picker/',
-    'https://aimodelbenchmarks.com/model-picker/',
     'https://aimodelbenchmarks.com/compare/claude-vs-gemini/',
     'https://aimodelbenchmarks.com/compare/gpt-vs-gemini/',
     'https://aimodelbenchmarks.com/compare/openai-vs-anthropic-api/',
+    'https://aimodelbenchmarks.com/use-cases/',
   ];
   for (const url of requiredUrls) {
     const present = sitemap.includes(url);
     console.log(`${present ? 'PASS' : 'FAIL'} sitemap ${url}`);
     if (!present) failed = true;
+  }
+
+  const excludedUrls = [
+    'https://aimodelbenchmarks.com/model-picker/',
+  ];
+  for (const url of excludedUrls) {
+    const present = sitemap.includes(url);
+    console.log(`${!present ? 'PASS' : 'FAIL'} sitemap excludes legacy ${url}`);
+    if (present) failed = true;
   }
 } else {
   console.log('SKIP dist/sitemap.xml missing; run npm run build first');

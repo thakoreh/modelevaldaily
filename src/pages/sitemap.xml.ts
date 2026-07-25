@@ -42,6 +42,7 @@ export async function GET() {
 		{ path: '/benchmarks/swe-bench/', priority: '0.82', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/benchmarks/mmlu/', priority: '0.78', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/benchmarks/chatbot-arena/', priority: '0.78', changefreq: 'weekly', lastmod: defaultLastmod },
+		{ path: '/use-cases/', priority: '0.84', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/use-cases/coding/', priority: '0.82', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/use-cases/cost-optimization/', priority: '0.82', changefreq: 'weekly', lastmod: defaultLastmod },
 		{ path: '/use-cases/reasoning/', priority: '0.78', changefreq: 'weekly', lastmod: defaultLastmod },
