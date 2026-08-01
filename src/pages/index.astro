@@ -35,6 +35,7 @@ const decisions = [
 						<a class="btn btn-primary" href="/tools/model-picker/" data-analytics="model_picker_start" data-analytics-label="Homepage hero">Find my model <span aria-hidden="true">-&gt;</span></a>
 						<a class="btn btn-secondary" href="/compare/">Compare models</a>
 					</div>
+					<a class="hero-cost-link" href="/cost-calculator/" data-analytics="cost_calculator_start" data-analytics-label="Homepage hero">Estimate monthly API costs <span aria-hidden="true">-&gt;</span></a>
 				</div>
 				<aside class="briefing" aria-label="Current model briefing">
 					<div class="briefing-head"><div><span class="kicker">Today's short list</span><h2>Frontier model briefing</h2></div><span class="status"><i></i> Reviewed {MODEL_DATA_VERIFIED_ON}</span></div>
@@ -93,6 +94,8 @@ const decisions = [
 	.hero-copy h1 { max-width: 720px; font-size: clamp(3rem, 6vw, 5.6rem); line-height: 0.98; }
 	.hero-copy > p { max-width: 610px; margin: 1.35rem 0 1.65rem; font-size: 1.08rem; line-height: 1.58; }
 	.hero-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+	.hero-cost-link { display: inline-flex; margin-top: 0.85rem; color: var(--blue); font-size: 0.86rem; font-weight: 680; text-decoration: none; }
+	.hero-cost-link:hover { color: var(--blue-dark); text-decoration: underline; text-underline-offset: 0.18em; }
 	.briefing { border: 1px solid var(--line-strong); border-radius: var(--radius-xl); background: var(--surface); box-shadow: var(--shadow-lg); overflow: hidden; }
 	.briefing-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.25rem; border-bottom: 1px solid var(--line); background: var(--ink); color: #fff; }
 	.briefing-head h2 { margin: 0.2rem 0 0; color: #fff; font: 720 1.1rem var(--font-sans); }
