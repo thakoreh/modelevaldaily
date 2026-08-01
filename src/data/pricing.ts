@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: July 22, 2026
+// Last Updated: August 1, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -35,27 +35,27 @@ export const openaiModels: ModelPricing[] = [
     provider: 'OpenAI',
     model: 'GPT-5.6 Terra',
     releaseDate: '2026-07-09',
-    inputCost: 2.50,
-    outputCost: 15.00,
+    inputCost: 2.00,
+    outputCost: 12.00,
     contextWindow: 1050000,
     maxOutput: 128000,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.6-terra',
-    lastVerified: '2026-07-22',
-    notes: 'GPT-5.6 balance of intelligence and cost.'
+    lastVerified: '2026-08-01',
+    notes: 'GPT-5.6 balance of intelligence and cost. OpenAI reduced pricing by 20% on July 30, 2026.'
   },
   {
     provider: 'OpenAI',
     model: 'GPT-5.6 Luna',
     releaseDate: '2026-07-09',
-    inputCost: 1.00,
-    outputCost: 6.00,
+    inputCost: 0.20,
+    outputCost: 1.20,
     contextWindow: 1050000,
     maxOutput: 128000,
     source: 'OpenAI Official Pricing',
     sourceUrl: 'https://developers.openai.com/api/docs/models/gpt-5.6-luna',
-    lastVerified: '2026-07-22',
-    notes: 'GPT-5.6 model for efficient, high-volume workloads.'
+    lastVerified: '2026-08-01',
+    notes: 'GPT-5.6 model for efficient, high-volume workflows. OpenAI reduced pricing by 80% on July 30, 2026.'
   },
   {
     provider: 'OpenAI',

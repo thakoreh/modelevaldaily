@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-07-22';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-01';
 
-// Last verification pass: 2026-07-22
+// Last verification pass: 2026-08-01
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -70,7 +70,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#059669',
 		releaseDate: '2026-07-09',
-		pricing: { input: 2.50, output: 15.00 },
+		pricing: { input: 2.00, output: 12.00, notes: 'OpenAI reduced pricing by 20% on July 30, 2026.' },
 		contextWindow: '1.05M',
 		bestFor: ['Production agents', 'Coding', 'Cost-balanced workflows'],
 		scores: { coding: 9.6, reasoning: 9.6, toolUse: 9.7 },
@@ -86,7 +86,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#047857',
 		releaseDate: '2026-07-09',
-		pricing: { input: 1.00, output: 6.00 },
+		pricing: { input: 0.20, output: 1.20, notes: 'OpenAI reduced pricing by 80% on July 30, 2026.' },
 		contextWindow: '1.05M',
 		bestFor: ['High-volume workflows', 'Subagents', 'Cost-sensitive automation'],
 		scores: { coding: 9.1, reasoning: 9.1, toolUse: 9.3 },
