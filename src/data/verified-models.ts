@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-01';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-03';
 
-// Last verification pass: 2026-08-01
+// Last verification pass: 2026-08-03
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -289,6 +289,21 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'DeepSeek API Docs', url: 'https://api-docs.deepseek.com/' },
 			{ label: 'DeepSeek Pricing', url: 'https://api-docs.deepseek.com/quick_start/pricing' },
+		],
+	},
+	{
+		name: 'DeepSeek V4 Flash',
+		provider: 'DeepSeek',
+		color: '#0891b2',
+		releaseDate: '2026-07-31',
+		pricing: { input: 0.14, output: 0.28, notes: 'Public beta. Cache-hit input is $0.0028 per million tokens; DeepSeek says peak-hour pricing will be 2× when introduced.' },
+		contextWindow: '1M',
+		bestFor: ['Low-cost agent experiments', 'Responses API', 'Codex-compatible workflows'],
+		scores: { coding: 8.9, reasoning: 8.9, toolUse: 8.9 },
+		strengths: ['Public beta — not a general-availability recommendation', 'DeepSeek-V4-Flash-0731 re-post-training update', '384K maximum output and Responses API support'],
+		sources: [
+			{ label: 'DeepSeek V4 Flash July 31 update', url: 'https://api-docs.deepseek.com/updates/' },
+			{ label: 'DeepSeek Models & Pricing', url: 'https://api-docs.deepseek.com/quick_start/pricing' },
 		],
 	},
 	{

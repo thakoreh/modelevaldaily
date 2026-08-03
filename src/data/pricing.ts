@@ -1,5 +1,5 @@
 // AI Model Pricing Data - Verified from Official Sources
-// Last Updated: August 1, 2026
+// Last Updated: August 3, 2026
 // NO API DEPENDENCIES - Update manually via web search
 
 export interface ModelPricing {
@@ -273,6 +273,23 @@ export const googleModels: ModelPricing[] = [
   }
 ];
 
+// Verified from: https://api-docs.deepseek.com/quick_start/pricing
+export const deepseekModels: ModelPricing[] = [
+  {
+    provider: 'DeepSeek',
+    model: 'DeepSeek V4 Flash',
+    releaseDate: '2026-07-31',
+    inputCost: 0.14,
+    outputCost: 0.28,
+    contextWindow: 1000000,
+    maxOutput: 384000,
+    source: 'DeepSeek Official Models & Pricing',
+    sourceUrl: 'https://api-docs.deepseek.com/quick_start/pricing',
+    lastVerified: '2026-08-03',
+    notes: 'Public beta; model ID deepseek-v4-flash (DeepSeek-V4-Flash-0731). Cache-hit input is $0.0028/MTok. DeepSeek has announced future 2× peak-hour pricing but no effective date.'
+  }
+];
+
 // Verified from: https://open.bigmodel.cn/pricing (translated)
 export const zhipuModels: ModelPricing[] = [
   {
@@ -338,6 +355,7 @@ export const allModels: ModelPricing[] = [
   ...openaiModels,
   ...anthropicModels,
   ...googleModels,
+  ...deepseekModels,
   ...zhipuModels,
   ...metaModels
 ].sort((a, b) => a.inputCost - b.inputCost);
