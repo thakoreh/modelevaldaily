@@ -6,4 +6,4 @@ export const SITE_DESCRIPTION = 'Source-aware AI model rankings, comparisons, an
 export const SITE_URL = 'https://aimodelbenchmarks.com';
 export const SITE_LOCALE = 'en_US';
 // Keep sitewide freshness signals aligned with the most recent verified model-data review.
-export const SITE_UPDATED = '2026-07-22';
+export const SITE_UPDATED = '2026-08-01';

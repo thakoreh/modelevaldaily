@@ -172,6 +172,6 @@ Latency varies by:
 - Prompt length (longer prompts = slower TTFT)
 - Output length (streaming helps perceived speed)
 
-We're releasing our benchmark script: [agent-speed-bench.py](/data/agent-speed-bench.py)
+Use these factors to benchmark latency from your own production region and traffic pattern before setting a model default.
 
 **Related:** See our [hallucination test results](/blog/2026-02-12-hallucination-test/) for accuracy benchmarks.
