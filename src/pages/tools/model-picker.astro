@@ -21,6 +21,42 @@ const pickerModels = VERIFIED_MODELS.map((model) => ({
   color: model.color,
 }));
 
+// The static HTML mirrors the picker defaults. Client-side controls continue to update
+// shareable query URLs after interaction; this keeps no-JavaScript crawlers accurate for
+// the canonical picker page without claiming query-specific server rendering.
+const pickerOptions = {
+  task: 'coding',
+  budget: 'medium',
+  context: 'normal',
+  tools: 'medium',
+  deployment: 'api',
+};
+const taskWeights = {
+  coding: { coding: 0.52, reasoning: 0.18, toolUse: 0.22, context: 0.04, cost: 0.04 },
+  agents: { coding: 0.22, reasoning: 0.20, toolUse: 0.42, context: 0.08, cost: 0.08 },
+  rag: { coding: 0.08, reasoning: 0.26, toolUse: 0.16, context: 0.34, cost: 0.16 },
+  reasoning: { coding: 0.08, reasoning: 0.58, toolUse: 0.12, context: 0.12, cost: 0.10 },
+  extraction: { coding: 0.06, reasoning: 0.20, toolUse: 0.26, context: 0.16, cost: 0.32 },
+  local: { coding: 0.22, reasoning: 0.22, toolUse: 0.16, context: 0.10, cost: 0.30 },
+};
+const contextScore = (label: string) => /2M|1\.05M|1M/.test(label) ? 10 : /256K|205K|200K|196K/.test(label) ? 8 : /128K/.test(label) ? 6 : 5;
+const costScore = (model: (typeof pickerModels)[number]) => Math.max(1, 10 - ((model.input * 0.7) + (model.output * 0.3)) / 2);
+const isLocal = (model: (typeof pickerModels)[number]) => /Llama|OSS|open|self-host/i.test([model.name, model.provider, ...model.bestFor, ...model.strengths].join(' '));
+const scoreModel = (model: (typeof pickerModels)[number]) => {
+  const w = taskWeights[pickerOptions.task as keyof typeof taskWeights];
+  let score = model.coding * w.coding + model.reasoning * w.reasoning + model.toolUse * w.toolUse + contextScore(model.contextWindow) * w.context + costScore(model) * w.cost;
+  if (pickerOptions.budget === 'high') score += costScore(model) * 0.35;
+  if (pickerOptions.budget === 'low') score += ((model.coding + model.reasoning + model.toolUse) / 3) * 0.18;
+  if (pickerOptions.context === 'large') score += contextScore(model.contextWindow) * 0.18;
+  if (pickerOptions.context === 'huge') score += contextScore(model.contextWindow) * 0.35;
+  if (pickerOptions.tools === 'high') score += model.toolUse * 0.28;
+  if (pickerOptions.deployment === 'local') score += isLocal(model) ? 2.2 : -1.4;
+  if (pickerOptions.task === 'local') score += isLocal(model) ? 2.6 : -1.2;
+  return score;
+};
+const rankedModels = pickerModels.map((model) => ({ ...model, fit: scoreModel(model) })).sort((a, b) => b.fit - a.fit).slice(0, 5);
+const winner = rankedModels[0];
+
 const faqs = [
   {
     question: 'How does the AI Model Picker choose a recommendation?',
@@ -52,12 +88,20 @@ const faqSchema = {
     },
   })),
 };
+const pickerSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebApplication', name: title, applicationCategory: 'DeveloperApplication', operatingSystem: 'Web', description },
+    { '@type': 'ItemList', name: `Model picker shortlist for ${pickerOptions.task}`, numberOfItems: rankedModels.length, itemListElement: rankedModels.map((model, index) => ({ '@type': 'ListItem', position: index + 1, name: model.name, description: `${model.provider} · ${model.contextWindow} context · $${model.input}/$${model.output} per 1M tokens.` })) },
+  ],
+};
 ---
 
 <html lang="en">
   <head>
     <BaseHead title={title} description={description} type="website" />
     <script type="application/ld+json" set:html={JSON.stringify(faqSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(pickerSchema)} />
   </head>
   <body>
     <Header />
@@ -81,48 +125,48 @@ const faqSchema = {
           <label>
             Primary workflow
             <select id="task">
-              <option value="coding">Coding / code review</option>
-              <option value="agents">Agent workflows / tool use</option>
-              <option value="rag">RAG / document Q&A</option>
-              <option value="reasoning">Reasoning / analysis</option>
-              <option value="extraction">Data extraction / structured output</option>
-              <option value="local">Local / private deployment</option>
+              <option value="coding" selected={pickerOptions.task === 'coding'}>Coding / code review</option>
+              <option value="agents" selected={pickerOptions.task === 'agents'}>Agent workflows / tool use</option>
+              <option value="rag" selected={pickerOptions.task === 'rag'}>RAG / document Q&A</option>
+              <option value="reasoning" selected={pickerOptions.task === 'reasoning'}>Reasoning / analysis</option>
+              <option value="extraction" selected={pickerOptions.task === 'extraction'}>Data extraction / structured output</option>
+              <option value="local" selected={pickerOptions.task === 'local'}>Local / private deployment</option>
             </select>
           </label>
 
           <label>
             Budget sensitivity
             <select id="budget">
-              <option value="low">Quality first</option>
-              <option value="medium" selected>Balanced</option>
-              <option value="high">Minimize cost</option>
+              <option value="low" selected={pickerOptions.budget === 'low'}>Quality first</option>
+              <option value="medium" selected={pickerOptions.budget === 'medium'}>Balanced</option>
+              <option value="high" selected={pickerOptions.budget === 'high'}>Minimize cost</option>
             </select>
           </label>
 
           <label>
             Context requirement
             <select id="context">
-              <option value="normal">Normal docs / small repos</option>
-              <option value="large">Large repo or long documents</option>
-              <option value="huge">Huge context required</option>
+              <option value="normal" selected={pickerOptions.context === 'normal'}>Normal docs / small repos</option>
+              <option value="large" selected={pickerOptions.context === 'large'}>Large repo or long documents</option>
+              <option value="huge" selected={pickerOptions.context === 'huge'}>Huge context required</option>
             </select>
           </label>
 
           <label>
             Tool calling importance
             <select id="tools">
-              <option value="low">Low</option>
-              <option value="medium" selected>Medium</option>
-              <option value="high">High / agentic workflow</option>
+              <option value="low" selected={pickerOptions.tools === 'low'}>Low</option>
+              <option value="medium" selected={pickerOptions.tools === 'medium'}>Medium</option>
+              <option value="high" selected={pickerOptions.tools === 'high'}>High / agentic workflow</option>
             </select>
           </label>
 
           <label>
             Deployment preference
             <select id="deployment">
-              <option value="api" selected>Hosted API is fine</option>
-              <option value="local">Prefer local / open weights</option>
-              <option value="any">No preference</option>
+              <option value="api" selected={pickerOptions.deployment === 'api'}>Hosted API is fine</option>
+              <option value="local" selected={pickerOptions.deployment === 'local'}>Prefer local / open weights</option>
+              <option value="any" selected={pickerOptions.deployment === 'any'}>No preference</option>
             </select>
           </label>
 
@@ -131,15 +175,15 @@ const faqSchema = {
 
         <aside class="panel result-panel" id="result-panel">
           <p class="eyebrow">Recommendation</p>
-          <h2 id="winner-name">GPT-5.4</h2>
-          <p id="winner-provider" class="muted">OpenAI</p>
+          <h2 id="winner-name">{winner.name}</h2>
+          <p id="winner-provider" class="muted">{winner.provider} • {winner.contextWindow} context</p>
           <div class="score-grid">
-            <div><span id="coding-score">9.8</span><small>Coding</small></div>
-            <div><span id="reasoning-score">9.5</span><small>Reasoning</small></div>
-            <div><span id="tool-score">9.7</span><small>Tool use</small></div>
-            <div><span id="price-score">$2.50</span><small>Input / 1M</small></div>
+            <div><span id="coding-score">{winner.coding.toFixed(1)}</span><small>Coding</small></div>
+            <div><span id="reasoning-score">{winner.reasoning.toFixed(1)}</span><small>Reasoning</small></div>
+            <div><span id="tool-score">{winner.toolUse.toFixed(1)}</span><small>Tool use</small></div>
+            <div><span id="price-score">${winner.input}</span><small>Input / 1M</small></div>
           </div>
-          <p id="reason-text">Best balanced pick for coding and agentic development.</p>
+          <p id="reason-text">{winner.name} is the best fit for {pickerOptions.task.replace('-', ' ')} with your budget/context settings. Main strengths: {winner.strengths.slice(0, 2).join(', ')}.</p>
           <div class="actions">
             <a href="/cost-calculator/">Estimate cost</a>
             <a href="/compare/">Compare models</a>
@@ -149,7 +193,7 @@ const faqSchema = {
 
       <section class="container section">
         <h2>Shortlist</h2>
-        <div id="shortlist" class="shortlist"></div>
+        <div id="shortlist" class="shortlist">{rankedModels.map((model, index) => <article class="short-card"><strong>#{index + 1} {model.name}</strong><span>{model.provider}</span><p>{model.bestFor.slice(0, 3).join(' • ')}</p><small>Fit score {model.fit.toFixed(1)} • ${model.input}/${model.output} per 1M</small></article>)}</div>
       </section>
 
       <section class="container section faq-section" aria-labelledby="picker-faq-heading">
