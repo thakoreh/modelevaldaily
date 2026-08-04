@@ -1,5 +1,5 @@
 import { getCollection } from 'astro:content';
-import { SITE_UPDATED } from '../consts';
+import { SITE_UPDATED, STALE_REVIEW_PATHS } from '../consts';
 import { isFactCheckedPost } from '../utils/fact-check';
 
 export async function GET() {
@@ -68,6 +68,7 @@ export async function GET() {
 		.join('\n');
 
 	const staticUrls = staticPages
+		.filter((page) => !STALE_REVIEW_PATHS.has(page.path))
 		.map((page) => `  <url>
     <loc>${base}${page.path}</loc>
     <lastmod>${page.lastmod ?? defaultLastmod}</lastmod>

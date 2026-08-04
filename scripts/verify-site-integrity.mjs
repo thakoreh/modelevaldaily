@@ -12,6 +12,7 @@ assert.doesNotMatch(calculator, /from '\.\.\/data\/pricing'/);
 const constants = read('src/consts.ts');
 assert.match(constants, /import \{ MODEL_DATA_VERIFIED_ON \} from '\.\/data\/verified-models';/);
 assert.match(constants, /SITE_UPDATED = MODEL_DATA_VERIFIED_ON/);
+assert.match(constants, /STALE_REVIEW_PATHS/);
 
 const verifiedModels = read('src/data/verified-models.ts');
 assert.doesNotMatch(verifiedModels, /https:\/\/openai\.com\/index\/introducing-gpt-oss\//);
