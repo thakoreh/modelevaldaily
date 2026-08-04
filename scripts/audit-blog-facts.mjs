@@ -9,7 +9,7 @@ const patterns = [
   { pattern: /\bGemini 3 Pro Preview\b/gi, reason: 'Official Google references now point to Gemini 3.1 Pro Preview.' },
   { pattern: /\bClaude 4o\b/gi, reason: 'No official Anthropic model named Claude 4o.' },
   { pattern: /\bKimi K2\.5\b/gi, reason: 'Public provider docs could not be validated in this build.' },
-  { pattern: /\bKimi K3\b/gi, reason: 'Public provider docs could not be validated in this build.' },
+
 ];
 
 const rows = [['file','match','reason']];

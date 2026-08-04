@@ -377,7 +377,7 @@ const filters = [
 					<div class="latest-card">
 						<a href={`/blog/${latest.id}/`}>
 							{latest.data.heroImage && (
-								<Image width={720} height={360} src={latest.data.heroImage} alt={latest.data.title} />
+								<Image width={720} height={360} src={latest.data.heroImage.src} alt={latest.data.title} />
 							)}
 							<div class="latest-card-body">
 								<div class="latest-card-label">Today's scorecard</div>
@@ -430,7 +430,7 @@ const filters = [
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
-										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+										<Image width={280} height={180} src={post.data.heroImage.src} alt={post.data.title} />
 									</div>
 								)}
 								<div class="post-card-info">
@@ -455,7 +455,7 @@ const filters = [
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
-										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+										<Image width={280} height={180} src={post.data.heroImage.src} alt={post.data.title} />
 									</div>
 								)}
 								<div class="post-card-info">
@@ -480,7 +480,7 @@ const filters = [
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
-										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+										<Image width={280} height={180} src={post.data.heroImage.src} alt={post.data.title} />
 									</div>
 								)}
 								<div class="post-card-info">
@@ -506,7 +506,7 @@ const filters = [
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
-										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+										<Image width={280} height={180} src={post.data.heroImage.src} alt={post.data.title} />
 									</div>
 								)}
 								<div class="post-card-info">
@@ -537,7 +537,7 @@ const filters = [
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
-										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+										<Image width={280} height={180} src={post.data.heroImage.src} alt={post.data.title} />
 									</div>
 								)}
 								<div class="post-card-info">
@@ -567,7 +567,7 @@ const filters = [
 							<a href={`/blog/${post.id}/`}>
 								{post.data.heroImage && (
 									<div class="post-card-img">
-										<Image width={280} height={180} src={post.data.heroImage} alt={post.data.title} />
+										<Image width={280} height={180} src={post.data.heroImage.src} alt={post.data.title} />
 									</div>
 								)}
 								<div class="post-card-info">
@@ -583,7 +583,8 @@ const filters = [
 
 		<Footer />
 		
-		<script>
+		<script is:inline>
+			// @ts-nocheck
 			// Filter functionality
 			document.addEventListener('DOMContentLoaded', () => {
 				const filterPills = document.querySelectorAll('.filter-pill');

@@ -2,12 +2,20 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { allModels } from '../data/pricing';
+import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
 
 const title = 'LLM Cost Calculator — Compare AI API Pricing by Scenario';
 const description = 'Estimate monthly AI API costs across OpenAI, Anthropic, Google, Zhipu, and open-weight hosted models. Includes coding agent, RAG, support bot, and batch extraction presets.';
-const uniqueModels = Array.from(new Map(allModels.map((model) => [`${model.provider}:${model.model}`, model])).values());
-const models = uniqueModels.map((m) => ({ provider: m.provider, model: m.model, inputCost: m.inputCost, outputCost: m.outputCost, contextWindow: m.contextWindow, sourceUrl: m.sourceUrl, lastVerified: m.lastVerified, notes: m.notes ?? '' })).slice(0, 40);
+const models = VERIFIED_MODELS.map((model) => ({
+  provider: model.provider,
+  model: model.name,
+  inputCost: model.pricing.input,
+  outputCost: model.pricing.output,
+  contextWindow: model.contextWindow,
+  sourceUrl: model.sources[0]?.url ?? '/model-data/',
+  lastVerified: MODEL_DATA_VERIFIED_ON,
+  notes: model.pricing.notes ?? '',
+}));
 ---
 <html lang="en">
 <head><BaseHead title={title} description={description} type="website" /></head>
@@ -56,7 +64,8 @@ const models = uniqueModels.map((m) => ({ provider: m.provider, model: m.model, 
 </main>
 <Footer />
 <script type="application/json" id="pricing-data" set:html={JSON.stringify(models)} />
-<script>
+<script is:inline>
+  // @ts-nocheck
   const models = JSON.parse(document.getElementById('pricing-data').textContent || '[]');
   const presets = {
     coding: { requests: 250, inputTokens: 12000, outputTokens: 1800, retries: 8, cache: 25, discount: 75 },

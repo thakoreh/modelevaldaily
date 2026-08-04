@@ -407,7 +407,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		scores: { coding: 9.3, reasoning: 9.2, toolUse: 9.0 },
 		strengths: ['Open weights from OpenAI', 'Runs on single 80GB GPU', 'vLLM/Ollama compatible'],
 		sources: [
-			{ label: 'OpenAI Blog', url: 'https://openai.com/index/introducing-gpt-oss/' },
+			{ label: 'OpenAI GPT-OSS model documentation', url: 'https://developers.openai.com/api/docs/models/gpt-oss-120b' },
 			{ label: 'HuggingFace', url: 'https://huggingface.co/openai' },
 		],
 	},

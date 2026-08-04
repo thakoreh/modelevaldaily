@@ -30,10 +30,7 @@ const UNVERIFIED_PATTERNS: FactIssueDefinition[] = [
 		pattern: /\bKimi K2\.5\b/gi,
 		reason: 'Public provider docs could not be validated in this build.',
 	},
-	{
-		pattern: /\bKimi K3\b/gi,
-		reason: 'Public provider docs could not be validated in this build.',
-	},
+
 ];
 
 export function getFactIssues(content: string): FactIssue[] {

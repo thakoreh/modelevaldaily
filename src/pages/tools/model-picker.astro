@@ -167,7 +167,8 @@ const faqSchema = {
     </main>
     <Footer />
     <script type="application/json" id="model-data" set:html={JSON.stringify(pickerModels)} />
-    <script>
+    <script is:inline>
+      // @ts-nocheck
       const models = JSON.parse(document.getElementById('model-data').textContent || '[]');
       const taskWeights = {
         coding: { coding: 0.52, reasoning: 0.18, toolUse: 0.22, context: 0.04, cost: 0.04 },

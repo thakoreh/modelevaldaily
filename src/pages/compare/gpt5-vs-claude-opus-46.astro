@@ -414,7 +414,7 @@ const verdict = {
 				</div>
 				
 				<!-- Claude Opus 4.8 Card -->
-				<div class={`model-card ${verdict.winner === 'reasoning' ? 'winner' : ''}`}>
+				<div class={`model-card ${verdict.recommendation.reasoning === 'claude48' ? 'winner' : ''}`}>
 					<h2 style={`color: ${comparison.claude48.color}`}>{comparison.claude48.name}</h2>
 					<p class="provider">by {comparison.claude48.provider}</p>
 					
