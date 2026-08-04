@@ -28,7 +28,9 @@ const {
 
 const isArticle = type === 'article';
 const titleForImage = title.toLowerCase();
-const defaultImage = isArticle
+const defaultImage = Astro.url.pathname === '/'
+	? '/og/benchmark.svg'
+	: isArticle
 	? '/og/research.svg'
 	: titleForImage.includes('compare') || titleForImage.includes(' vs ')
 		? '/og/compare.svg'
