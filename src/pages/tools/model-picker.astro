@@ -5,7 +5,7 @@ import Footer from '../../components/Footer.astro';
 import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../../data/verified-models';
 
 const title = 'AI Model Picker — Choose the Best LLM for Your Use Case';
-const description = 'Answer six questions and get a practical AI model recommendation for coding, agents, RAG, long-context, cost-sensitive, or local/private workflows.';
+const description = 'Answer five questions and get a practical AI model recommendation for coding, agents, RAG, long-context, cost-sensitive, or local/private workflows.';
 
 const pickerModels = VERIFIED_MODELS.map((model) => ({
   name: model.name,
@@ -193,7 +193,8 @@ const pickerSchema = {
 
       <section class="container section">
         <h2>Shortlist</h2>
-        <div id="shortlist" class="shortlist">{rankedModels.map((model, index) => <article class="short-card"><strong>#{index + 1} {model.name}</strong><span>{model.provider}</span><p>{model.bestFor.slice(0, 3).join(' • ')}</p><small>Fit score {model.fit.toFixed(1)} • ${model.input}/${model.output} per 1M</small></article>)}</div>
+        <p class="score-note">Decision scores are relative to your selections and rank this shortlist. They are not benchmark scores on a 10-point scale. <a href="/model-data/">Review sources and methodology</a>.</p>
+        <div id="shortlist" class="shortlist">{rankedModels.map((model, index) => <article class="short-card"><strong>#{index + 1} {model.name}</strong><span>{model.provider}</span><p>{model.bestFor.slice(0, 3).join(' • ')}</p><small>Decision score {model.fit.toFixed(1)} • ${model.input}/${model.output} per 1M</small></article>)}</div>
       </section>
 
       <section class="container section faq-section" aria-labelledby="picker-faq-heading">
@@ -277,7 +278,7 @@ const pickerSchema = {
           const best = document.createElement('p');
           best.textContent = (m.bestFor || []).slice(0, 3).join(' • ');
           const meta = document.createElement('small');
-          meta.textContent = `Fit score ${m.fit.toFixed(1)} • $${m.input}/$${m.output} per 1M`;
+          meta.textContent = `Decision score ${m.fit.toFixed(1)} • $${m.input}/$${m.output} per 1M`;
           card.append(title, provider, best, meta);
           shortlist.appendChild(card);
         });
@@ -323,6 +324,8 @@ const pickerSchema = {
   .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1rem; }
   .actions a:nth-child(2) { background: var(--bg-tertiary); border: 1px solid var(--border-primary); }
   .section { padding-top: 2rem; }
+  .score-note { color: var(--text-secondary); margin: .25rem 0 1rem; line-height: 1.6; }
+  .score-note a { color: var(--accent-light); font-weight: 700; }
   .shortlist { display: grid; grid-template-columns: repeat(5,1fr); gap: .75rem; }
   .short-card p { color: var(--text-secondary); min-height: 3rem; }
   .faq-section { max-width: 900px; padding-bottom: 2rem; }

@@ -9,6 +9,11 @@ const calculator = read('src/pages/cost-calculator.astro');
 assert.match(calculator, /import \{ MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS \} from '\.\.\/data\/verified-models';/);
 assert.doesNotMatch(calculator, /from '\.\.\/data\/pricing'/);
 
+const picker = read('src/pages/tools/model-picker.astro');
+assert.match(picker, /Answer five questions/);
+assert.match(picker, /Decision scores are relative to your selections/);
+assert.doesNotMatch(picker, /Fit score/);
+
 const constants = read('src/consts.ts');
 assert.match(constants, /import \{ MODEL_DATA_VERIFIED_ON \} from '\.\/data\/verified-models';/);
 assert.match(constants, /SITE_UPDATED = MODEL_DATA_VERIFIED_ON/);
