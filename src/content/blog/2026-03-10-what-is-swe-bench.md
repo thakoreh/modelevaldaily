@@ -1,5 +1,5 @@
 ---
-title: 'What Is SWE-Bench? The AI Coding Benchmark Explained'
+title: 'How SWE-Bench Scores AI Coding Agents: Leaderboards and Limits'
 description: 'SWE-Bench tests AI models on real GitHub issues. Learn how scoring works, what the leaderboards mean, and where to find official results at swebench.com.'
 pubDate: '2026-03-10'
 heroImage: '../../assets/blog-placeholder-4.jpg'
