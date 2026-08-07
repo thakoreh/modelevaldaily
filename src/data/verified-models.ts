@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-03';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-07';
 
-// Last verification pass: 2026-08-03
+// Last verification pass: 2026-08-07
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -54,7 +54,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#10b981',
 		releaseDate: '2026-07-09',
-		pricing: { input: 5.00, output: 30.00 },
+		pricing: { input: 10.00, output: 45.00, notes: 'Standard long-context API tier (over 272K input tokens), per OpenAI pricing.' },
 		contextWindow: '1.05M',
 		bestFor: ['Complex production workflows', 'Coding', 'Multi-agent orchestration'],
 		scores: { coding: 9.9, reasoning: 9.9, toolUse: 9.9 },
@@ -70,7 +70,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#059669',
 		releaseDate: '2026-07-09',
-		pricing: { input: 2.00, output: 12.00, notes: 'OpenAI reduced pricing by 20% on July 30, 2026.' },
+		pricing: { input: 4.00, output: 18.00, notes: 'Standard long-context API tier (over 272K input tokens), per OpenAI pricing.' },
 		contextWindow: '1.05M',
 		bestFor: ['Production agents', 'Coding', 'Cost-balanced workflows'],
 		scores: { coding: 9.6, reasoning: 9.6, toolUse: 9.7 },
@@ -86,7 +86,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#047857',
 		releaseDate: '2026-07-09',
-		pricing: { input: 0.20, output: 1.20, notes: 'OpenAI reduced pricing by 80% on July 30, 2026.' },
+		pricing: { input: 0.40, output: 1.80, notes: 'Standard long-context API tier (over 272K input tokens), per OpenAI pricing.' },
 		contextWindow: '1.05M',
 		bestFor: ['High-volume workflows', 'Subagents', 'Cost-sensitive automation'],
 		scores: { coding: 9.1, reasoning: 9.1, toolUse: 9.3 },
@@ -125,6 +125,22 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'Anthropic Models', url: 'https://docs.anthropic.com/en/docs/about-claude/models' },
 			{ label: 'Anthropic Pricing', url: 'https://docs.anthropic.com/en/docs/about-claude/pricing' },
+		],
+	},
+	{
+		name: 'Claude Opus 5',
+		provider: 'Anthropic',
+		color: '#d97706',
+		releaseDate: '2026-07-24',
+		pricing: { input: 5.00, output: 25.00 },
+		contextWindow: '1M',
+		bestFor: ['Complex reasoning', 'Long-running agents', 'Agentic coding'],
+		scores: { coding: 9.9, reasoning: 9.9, toolUse: 9.8 },
+		strengths: ['Latest Opus model for complex agentic coding', 'Thinking enabled by default', '128K max output'],
+		sources: [
+			{ label: 'Anthropic Claude Opus 5 release notes', url: 'https://platform.claude.com/docs/en/release-notes/overview' },
+			{ label: 'Anthropic Models', url: 'https://platform.claude.com/docs/en/about-claude/models/overview' },
+			{ label: 'Anthropic Pricing', url: 'https://platform.claude.com/docs/en/about-claude/pricing' },
 		],
 	},
 	{
