@@ -120,6 +120,8 @@ const modelsJsonLd = {
 					empty.hidden = visible.length > 0;
 				};
 				[search, provider, workload, openOnly, sort].forEach((control) => control.addEventListener(control === search ? 'input' : 'change', apply));
+				search.value = new URLSearchParams(window.location.search).get('q') || '';
+				apply();
 				reset.addEventListener('click', () => { search.value=''; provider.value='all'; workload.value='all'; openOnly.checked=false; sort.value='fit-desc'; apply(); });
 				const checks = [...document.querySelectorAll('.compare-check')];
 				const tray = document.getElementById('compare-tray');

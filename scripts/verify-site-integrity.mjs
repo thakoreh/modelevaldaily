@@ -14,6 +14,10 @@ assert.match(picker, /Answer five questions/);
 assert.match(picker, /Decision scores are relative to your selections/);
 assert.doesNotMatch(picker, /Fit score/);
 
+const models = read('src/pages/models.astro');
+assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');
+assert.match(models, /search\.value = new URLSearchParams[\s\S]*?apply\(\);/, 'model search query must be applied on load');
+
 const constants = read('src/consts.ts');
 assert.match(constants, /import \{ MODEL_DATA_VERIFIED_ON \} from '\.\/data\/verified-models';/);
 assert.match(constants, /SITE_UPDATED = MODEL_DATA_VERIFIED_ON/);
