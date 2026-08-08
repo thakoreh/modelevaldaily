@@ -16,18 +16,13 @@ Canonical site: https://aimodelbenchmarks.com/
 - AI model comparison: https://aimodelbenchmarks.com/compare/
 - AI model picker: https://aimodelbenchmarks.com/tools/model-picker/
 - LLM cost calculator: https://aimodelbenchmarks.com/cost-calculator/
-- Best AI model for coding: https://aimodelbenchmarks.com/best-ai-model-for-coding/
-- Best AI model for agents: https://aimodelbenchmarks.com/best-ai-model-for-agents/
-- Cheapest AI models: https://aimodelbenchmarks.com/cheapest-ai-models/
-- Best long-context models: https://aimodelbenchmarks.com/best-long-context-models/
-- Best open-weight models: https://aimodelbenchmarks.com/best-open-weight-models/
 - Local models: https://aimodelbenchmarks.com/local-models/
 
-## Benchmark explainers
+## Current benchmark guidance
 
-- SWE-bench: https://aimodelbenchmarks.com/benchmarks/swe-bench/
-- MMLU: https://aimodelbenchmarks.com/benchmarks/mmlu/
-- Chatbot Arena: https://aimodelbenchmarks.com/benchmarks/chatbot-arena/
+- AI coding benchmarks: https://aimodelbenchmarks.com/ai-coding-benchmarks/
+- AI agent benchmarks: https://aimodelbenchmarks.com/ai-agent-benchmarks/
+- LLM benchmarks: https://aimodelbenchmarks.com/llm-benchmarks/
 
 ## Use-case guides
 
