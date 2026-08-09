@@ -17,6 +17,7 @@ assert.doesNotMatch(picker, /Fit score/);
 const models = read('src/pages/models.astro');
 assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');
 assert.match(models, /search\.value = new URLSearchParams[\s\S]*?apply\(\);/, 'model search query must be applied on load');
+assert.doesNotMatch(models, /priceValidUntil/, 'pricing evidence must not claim an arbitrary offer-expiration date');
 
 const constants = read('src/consts.ts');
 assert.match(constants, /import \{ MODEL_DATA_VERIFIED_ON \} from '\.\/data\/verified-models';/);
