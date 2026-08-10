@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-07';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-10';
 
-// Last verification pass: 2026-08-07
+// Last verification pass: 2026-08-10
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -246,6 +246,22 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'OpenAI Model Card', url: 'https://developers.openai.com/api/docs/models/gpt-5.2-codex' },
 			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
+		],
+	},
+	{
+		name: 'Grok 4.5',
+		provider: 'xAI',
+		color: '#111827',
+		releaseDate: '2026-07-08',
+		pricing: { input: 2.00, output: 6.00, notes: 'Standard context pricing. Prompts at or above 200K tokens use xAI’s higher long-context rates.' },
+		contextWindow: '500K',
+		bestFor: ['Agentic coding', 'Knowledge work', 'Tool-enabled workflows'],
+		scores: { coding: 9.7, reasoning: 9.7, toolUse: 9.6 },
+		strengths: ['xAI frontier model for code and agentic tool calling', 'Configurable reasoning effort', 'Supports function calling, web search, X search, and code execution'],
+		sources: [
+			{ label: 'xAI Grok 4.5 model overview', url: 'https://docs.x.ai/developers/grok-4-5' },
+			{ label: 'xAI release notes', url: 'https://docs.x.ai/developers/release-notes' },
+			{ label: 'xAI pricing', url: 'https://docs.x.ai/developers/pricing' },
 		],
 	},
 	{
