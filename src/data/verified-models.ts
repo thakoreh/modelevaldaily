@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-10';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-17';
 
-// Last verification pass: 2026-08-10
+// Last verification pass: 2026-08-17
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -197,6 +197,13 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [{ label: 'Gemini 3.6 Flash model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash' }, { label: 'Gemini Pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }],
 		},
 		{
+		name: 'Gemini 3.7 Flash', provider: 'Google', color: '#34a853', releaseDate: '2026-08-13',
+		pricing: { input: 0.75, output: 3.75, notes: 'Introductory paid-tier pricing per MTok through December 31, 2026; standard pricing becomes $1.50 input / $7.50 output on January 1, 2027.' }, contextWindow: '1.05M',
+		bestFor: ['Agentic coding', 'Multimodal reasoning', 'Long-context workflows'], scores: { coding: 9.6, reasoning: 9.5, toolUse: 9.6 },
+		strengths: ['Generally available Gemini Flash model', '1,048,576-token input and 65,536-token output limits', 'Supports search grounding, code execution, function calling, and thinking'],
+		sources: [{ label: 'Gemini 3.7 Flash model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.7-flash' }, { label: 'Gemini 3.7 Flash pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }, { label: 'Gemini API release notes', url: 'https://ai.google.dev/gemini-api/docs/changelog' }],
+		},
+		{
 		name: 'Gemini 3.5 Flash-Lite', provider: 'Google', color: '#4285f4', releaseDate: '2026-07-21',
 		pricing: { input: 0.30, output: 2.50, notes: 'Standard paid tier; Batch and Flex tiers are lower.' }, contextWindow: '1M',
 		bestFor: ['High-volume automation', 'Subagents', 'Document parsing'], scores: { coding: 8.8, reasoning: 8.7, toolUse: 8.9 },
@@ -208,7 +215,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'Anthropic',
 		color: '#ea580c',
 		releaseDate: '2026-06-09',
-		pricing: { input: 3.00, output: 15.00, notes: 'Anthropic lists introductory pricing of $2 input / $10 output per MTok through August 31, 2026.' },
+		pricing: { input: 2.00, output: 10.00, notes: 'Standard list price per MTok. Anthropic cancelled the previously scheduled September 1, 2026 increase.' },
 		contextWindow: '1M',
 		bestFor: ['Balanced performance', 'Production workloads', 'Cost-efficient'],
 		scores: { coding: 9.6, reasoning: 9.5, toolUse: 9.3 },
@@ -265,6 +272,22 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
+		name: 'Grok 4.6',
+		provider: 'xAI',
+		color: '#111827',
+		releaseDate: '2026-08-12',
+		pricing: { input: 2.00, output: 6.00, notes: 'Per MTok below 200K prompt tokens; cached input is $0.50/MTok. Prompts at or above 200K use $4 input / $1 cached input / $12 output per MTok.' },
+		contextWindow: '500K',
+		bestFor: ['Agentic coding', 'Knowledge work', 'Long-context workflows'],
+		scores: { coding: 9.8, reasoning: 9.8, toolUse: 9.7 },
+		strengths: ['xAI frontier model for coding and agentic tasks', 'Text and image inputs with text output', 'Reasoning effort from low through xhigh'],
+		sources: [
+			{ label: 'xAI Grok 4.6 release notes', url: 'https://docs.x.ai/developers/release-notes' },
+			{ label: 'xAI Grok 4.6 model overview', url: 'https://docs.x.ai/developers/models/grok-4-6' },
+			{ label: 'xAI pricing', url: 'https://docs.x.ai/developers/pricing' },
+		],
+	},
+	{
 		name: 'GLM-5',
 		provider: 'Zhipu AI',
 		color: '#f43f5e',
@@ -284,13 +307,14 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		name: 'DeepSeek V4 Pro',
 		provider: 'DeepSeek',
 		color: '#06b6d4',
-		releaseDate: '2026-04-26',
-		pricing: { input: 0.435, output: 0.87, notes: 'Promotional pricing listed by DeepSeek; nominal price may be higher after discounts end.' },
+		releaseDate: '2026-08-13',
+		pricing: { input: 0.44, output: 1.32, notes: 'Peak price per MTok. Off-peak is $0.22 input / $0.66 output; cache-hit input is $0.044 peak or $0.022 off-peak.' },
 		contextWindow: '1M',
 		bestFor: ['Budget coding', 'High-volume', 'Cost-sensitive'],
 		scores: { coding: 9.1, reasoning: 9.2, toolUse: 8.9 },
-		strengths: ['Excellent value', 'Hybrid thinking/non-thinking modes', 'Large context window'],
+		strengths: ['Generally available DeepSeek V4 Pro API release', 'Responses API support and configurable thinking effort', 'Large context window'],
 		sources: [
+			{ label: 'DeepSeek V4 Pro GA update', url: 'https://api-docs.deepseek.com/updates/' },
 			{ label: 'DeepSeek API Docs', url: 'https://api-docs.deepseek.com/' },
 			{ label: 'DeepSeek Pricing', url: 'https://api-docs.deepseek.com/quick_start/pricing' },
 		],

@@ -11,7 +11,7 @@ const faqs = [
 	},
 	{
 		question: 'What does a good SWE-bench score look like?',
-		answer: 'SWE-bench is intentionally difficult. As of early 2026, the best models score around 50-65% on SWE-bench Verified (a cleaner subset). Scores above 40% are considered strong. The full SWE-bench dataset is even harder, with top models typically scoring 30-45%. Any score above 50% represents genuinely useful software engineering capability.',
+		answer: 'There is no universal “good” score. Results depend on the benchmark split, agent scaffold, tools, inference budget, and evaluation harness. Compare runs on the same SWE-bench split and setup, then validate finalists on representative issues from your own repositories. For current reproducible results and evaluation guidance, use the official SWE-bench repository and leaderboard rather than a static ranking.',
 	},
 	{
 		question: 'How is SWE-bench different from other coding benchmarks?',
@@ -54,7 +54,7 @@ const articleSchema = {
 		name: 'AI Model Benchmarks',
 	},
 	datePublished: '2026-02-13',
-	dateModified: '2026-02-13',
+	dateModified: '2026-07-21',
 };
 ---
 
@@ -495,8 +495,9 @@ const articleSchema = {
 								Key Insight
 							</div>
 							<p>
-								SWE-bench is intentionally difficult. Even the best AI models in 2026 struggle to solve more than 
-								half of the tasks. This isn't a flaw—it reflects the genuine complexity of software engineering.
+								SWE-bench is intentionally difficult. Reported results depend on the split, agent scaffold,
+								tools, inference budget, and evaluation harness. That variability is a reason to inspect
+								the setup before using a result to make a model-selection decision.
 							</p>
 						</div>
 
@@ -517,57 +518,15 @@ const articleSchema = {
 							<li><strong>SWE-bench Verified:</strong> 500 tasks manually reviewed to ensure reliability. This is now the preferred subset for fair comparisons.</li>
 						</ul>
 
-						<h2>Current SWE-bench Leaderboard (2026)</h2>
+						<h2>Where to Find Current SWE-bench Results</h2>
 						<p>
-							Here are representative scores from leading models on SWE-bench Verified. Note that rankings change 
-							frequently as models are updated—check our <a href="/scorecards">daily scorecards</a> for current standings.
+							A static leaderboard ages quickly and can hide important differences in the agent scaffold and evaluation setup.
+							For current, reproducible results, consult the <a href="https://github.com/SWE-bench/SWE-bench" rel="noopener noreferrer">official SWE-bench repository</a>
+							and its evaluation guidance. Before comparing models, confirm the split, tool access, inference budget, and harness are equivalent.
 						</p>
-						
-						<table class="leaderboard-table">
-							<thead>
-								<tr>
-									<th>Rank</th>
-									<th>Model</th>
-									<th>SWE-bench Verified</th>
-									<th>Notes</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td class="rank-1">1</td>
-									<td class="rank-1">Claude Opus 4.6</td>
-									<td class="rank-1">~65%</td>
-									<td>Strong at understanding context</td>
-								</tr>
-								<tr>
-									<td class="rank-2">2</td>
-									<td class="rank-2">5.3-Codex-Spark</td>
-									<td class="rank-2">~60%</td>
-									<td>Excellent at code generation</td>
-								</tr>
-								<tr>
-									<td class="rank-3">3</td>
-									<td class="rank-3">Gemini 3.1 Pro Preview</td>
-									<td class="rank-3">~55%</td>
-									<td>Good reasoning capabilities</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td>GLM-5</td>
-									<td>~48%</td>
-									<td>Competitive at lower cost</td>
-								</tr>
-								<tr>
-									<td>5</td>
-									<td>Kimi K2.5</td>
-									<td>~45%</td>
-									<td>Strong value proposition</td>
-								</tr>
-							</tbody>
-						</table>
-
 						<p>
-							<em>Percentages are approximate and based on publicly available benchmarks. Actual performance varies by evaluation method.</em>
+							Use public results to form a shortlist, then run the same candidates against representative issues from your own codebase.
+							That separates a strong benchmark run from a dependable fit for your engineering workflow.
 						</p>
 
 						<h2>Limitations and Criticisms</h2>

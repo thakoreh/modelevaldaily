@@ -10,7 +10,7 @@ const deepseekModel = {
 	name: 'DeepSeek V4 Pro',
 	provider: 'DeepSeek',
 	color: '#8b5cf6',
-	pricing: { input: 0.435, output: 0.87 },
+	pricing: { input: 0.44, output: 1.32 },
 	contextWindow: '1M',
 	scores: { coding: 9.0, reasoning: 9.2, toolUse: 8.9, speed: 9.0 },
 };
@@ -45,18 +45,18 @@ const codingCategories = [
 ];
 
 const pricingComparison = [
-	{ name: 'Input Cost (per 1M tokens)', deepseek: '$0.435', claude: '$5', ratio: '11.5x cheaper' },
-	{ name: 'Output Cost (per 1M tokens)', deepseek: '$0.87', claude: '$25', ratio: '28.7x cheaper' },
-	{ name: 'Typical Small Task (~5K tokens)', deepseek: '$0.004', claude: '$0.075', ratio: '18.8x cheaper' },
-	{ name: 'Typical Medium Task (~50K tokens)', deepseek: '$0.04', claude: '$0.75', ratio: '18.8x cheaper' },
-	{ name: 'Large Codebase Analysis (~200K)', deepseek: '$0.16', claude: '$3.00', ratio: '18.8x cheaper' },
-	{ name: 'Monthly High Volume (100M tokens)', deepseek: '$65', claude: '$1,500', ratio: '23x cheaper' },
+	{ name: 'Input Cost (per 1M tokens)', deepseek: '$0.44 peak / $0.22 off-peak', claude: '$5', ratio: 'Peak rate: ~11.4x lower' },
+	{ name: 'Output Cost (per 1M tokens)', deepseek: '$1.32 peak / $0.66 off-peak', claude: '$25', ratio: 'Peak rate: ~18.9x lower' },
+	{ name: 'Typical Small Task (~5K tokens)', deepseek: 'Varies by input/output mix and rate period', claude: 'Varies by input/output mix', ratio: 'Calculate from actual token logs' },
+	{ name: 'Typical Medium Task (~50K tokens)', deepseek: 'Varies by input/output mix and rate period', claude: 'Varies by input/output mix', ratio: 'Calculate from actual token logs' },
+	{ name: 'Large Codebase Analysis (~200K)', deepseek: 'Varies by input/output mix and rate period', claude: 'Varies by input/output mix', ratio: 'Calculate from actual token logs' },
+	{ name: 'Monthly High Volume (100M tokens)', deepseek: 'Estimate from peak/off-peak rates and token mix', claude: 'Estimate from actual token mix', ratio: 'Use the cost calculator' },
 ];
 
 const useCases = [
-	{ title: 'Startup on a Budget', pick: 'DeepSeek', reason: 'At $0.435/$0.87 per million tokens, DeepSeek offers strong value for cost-conscious startups', alt: 'Claude for investor-facing quality' },
+	{ title: 'Startup on a Budget', pick: 'DeepSeek', reason: 'At $0.44/$1.32 per million tokens at peak, and half those rates off-peak, DeepSeek can offer strong value for cost-conscious startups', alt: 'Claude for investor-facing quality' },
 	{ title: 'Enterprise Production', pick: 'Claude', reason: 'Higher reliability scores and enterprise support make Claude safer for production workloads', alt: 'DeepSeek for non-critical paths' },
-	{ title: 'High-Volume Processing', pick: 'DeepSeek', reason: 'Process 100M balanced input/output tokens for about $65 vs $1,500 with Claude — ideal for data pipelines and batch jobs', alt: 'Claude when quality is critical' },
+	{ title: 'High-Volume Processing', pick: 'DeepSeek', reason: 'Use the published peak/off-peak rates and your actual input/output mix to estimate batch costs; cache-hit rates can materially change the result', alt: 'Claude when quality is critical' },
 	{ title: 'Complex Architecture', pick: 'Claude', reason: 'Higher reliability and stronger refactoring scores make Claude the safer pick for large-scale system design', alt: 'DeepSeek for cost-sensitive modules' },
 	{ title: 'CI/CD Automation', pick: 'DeepSeek', reason: 'Fast responses and low cost make DeepSeek ideal for automated code generation in pipelines', alt: 'Claude for critical deployments' },
 	{ title: 'Research & Analysis', pick: 'Claude', reason: 'Superior reasoning and reliability for comprehensive research tasks', alt: 'DeepSeek for initial exploration' },
@@ -64,7 +64,7 @@ const useCases = [
 
 const faqs = [
 	{ q: 'Is DeepSeek as good as Claude for coding?', a: 'DeepSeek V4 Pro achieves a 9.0 coding score vs Claude Opus 4.8 at 9.8 in our current table, making it competitive for many tasks. Claude excels at complex refactoring and architecture, while DeepSeek is excellent for rapid prototyping and high-volume code generation at a fraction of the cost.' },
-	{ q: 'How much cheaper is DeepSeek than Claude?', a: 'DeepSeek V4 Pro is approximately 11.5x cheaper on input and 28.7x cheaper on output than Claude Opus 4.8 at current listed pricing. This makes DeepSeek a cost-effective option for high-volume applications.' },
+	{ q: 'How much cheaper is DeepSeek than Claude?', a: 'At the displayed peak rates, DeepSeek V4 Pro input is about 11.4x lower and output about 18.9x lower than the Claude listing on this page. DeepSeek off-peak rates are half its peak rates. Your effective cost depends on input/output mix, cache hits, and time of use.' },
 	{ q: 'Does DeepSeek support the same context length as Claude?', a: 'Yes. Current DeepSeek V4 Pro and Claude Opus 4.8 listings both support 1M-token context windows, though reliability on very large inputs still depends on the task, prompt, and retrieval setup.' },
 	{ q: 'Is DeepSeek faster than Claude?', a: 'Yes, DeepSeek V4 Pro scores 9.0 for speed vs Claude\'s 7.5. For latency-sensitive applications or high-throughput scenarios, DeepSeek provides faster response times.' },
 	{ q: 'Can DeepSeek replace Claude for production use?', a: 'It depends on your requirements. DeepSeek is suitable for cost-sensitive workloads, high-volume processing, and prototyping. For enterprise production systems requiring maximum reliability, Claude\'s higher scores in tool-use and reasoning may be worth the premium.' },
@@ -741,7 +741,7 @@ const faqs = [
 
 				<div class="savings-box">
 					<h3>Cost Savings Summary</h3>
-					<p>DeepSeek V4 Pro costs <strong>$0.435 per million input tokens</strong> vs Claude's <strong>$5</strong> — a <strong>substantial reduction</strong>. For a startup processing 50 million balanced input/output tokens monthly, that's about <strong>$33 with DeepSeek vs $750 with Claude</strong>. The quality gap (9.0 vs 9.8 coding score) may be acceptable for many use cases.</p>
+					<p>DeepSeek V4 Pro lists <strong>$0.44 per million input tokens at peak</strong> versus Claude's <strong>$5</strong>; DeepSeek's off-peak input rate is $0.22. Prices and cache use are only one part of the decision, so verify the official price pages and trial both models on representative work before committing production traffic.</p>
 				</div>
 			</section>
 
@@ -757,7 +757,7 @@ const faqs = [
 							<div class="model-dot" style={`background: ${deepseekModel.color}`}></div>
 							<span class="name">DeepSeek V4 Pro</span>
 						</div>
-						<div class="price" style="color: #8b5cf6;">$0.27 / $1.10</div>
+						<div class="price" style="color: #8b5cf6;">Peak: $0.44 / $1.32</div>
 						<div style="font-size: var(--font-xs); color: var(--text-tertiary); margin-top: 0.25rem;">per 1M tokens (in/out)</div>
 					</div>
 					<div class="mini-card">
