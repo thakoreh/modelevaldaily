@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-17';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-19';
 
-// Last verification pass: 2026-08-17
+// Last verification pass: 2026-08-19
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -288,18 +288,34 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
+		name: 'GLM-5.3',
+		provider: 'Z.ai',
+		color: '#f43f5e',
+		releaseDate: '2026-08-14',
+		pricing: { input: 1.40, output: 4.40, notes: 'Standard Z.ai API pricing per MTok; cached-input pricing is $0.26/MTok.' },
+		contextWindow: '1M',
+		bestFor: ['Complex software engineering', 'Long-context analysis', 'Tool-enabled agents'],
+		scores: { coding: 9.3, reasoning: 9.3, toolUse: 9.2 },
+		strengths: ['Z.ai’s current flagship language model', 'Text-only input with 128K maximum output', 'Reasoning is always enabled with low, high, and max effort levels'],
+		sources: [
+			{ label: 'Z.ai GLM-5.3 release', url: 'https://z.ai/blog/glm-5.3' },
+			{ label: 'Z.ai GLM-5.3 API documentation', url: 'https://docs.z.ai/guides/llm/glm-5.3' },
+			{ label: 'Z.ai pricing', url: 'https://docs.z.ai/guides/overview/pricing' },
+		],
+	},
+	{
 		name: 'GLM-5',
 		provider: 'Zhipu AI',
 		color: '#f43f5e',
 		releaseDate: '2026-02-20',
-		pricing: { input: 0.50, output: 2.00 },
-		contextWindow: '205K',
+		pricing: { input: 1.00, output: 3.20 },
+		contextWindow: '200K',
 		bestFor: ['Bilingual (CN/EN)', 'Value-focused', 'Enterprise'],
 		scores: { coding: 9.2, reasoning: 9.3, toolUse: 9.0 },
 		strengths: ['Near-frontier at low cost', 'Strong bilingual', 'Good performance/price'],
 		sources: [
-			{ label: 'GLM-5 Docs', url: 'https://docs.bigmodel.cn/cn/guide/models/text/glm-5' },
-			{ label: 'Zhipu Pricing', url: 'https://open.bigmodel.cn/pricing' },
+			{ label: 'Z.ai GLM-5 documentation', url: 'https://docs.z.ai/guides/llm/glm-5' },
+			{ label: 'Z.ai pricing', url: 'https://docs.z.ai/guides/overview/pricing' },
 		],
 	},
 
