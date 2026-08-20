@@ -44,8 +44,8 @@ const models = VERIFIED_MODELS.map((model) => ({
       <div class="two"><label>Requests/day<input id="requests" type="number" min="1" value="250" /></label><label>Retry rate %<input id="retries" type="number" min="0" max="100" value="8" /></label></div>
       <div class="two"><label>Input tokens/request<input id="inputTokens" type="number" min="1" value="12000" /></label><label>Output tokens/request<input id="outputTokens" type="number" min="1" value="1800" /></label></div>
       <div class="two"><label>Cache hit %<input id="cache" type="number" min="0" max="95" value="25" /></label><label>Cached input discount %<input id="discount" type="number" min="0" max="95" value="75" /></label></div>
-      <button type="button" id="calculate">Calculate monthly cost</button>
-      <button type="button" id="copy-url" class="secondary-button">Copy shareable URL</button>
+      <button type="button" id="calculate" data-analytics="cost_calculator_calculate" data-analytics-label="Cost calculator">Calculate monthly cost</button>
+      <button type="button" id="copy-url" class="secondary-button" data-analytics="cost_calculator_share" data-analytics-label="Cost calculator">Copy shareable URL</button>
     </form>
     <aside class="panel summary">
       <p class="eyebrow">Usage estimate</p>

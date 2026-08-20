@@ -170,7 +170,7 @@ const pickerSchema = {
             </select>
           </label>
 
-          <button type="button" id="run-picker">Pick my model</button>
+          <button type="button" id="run-picker" data-analytics="model_picker_run" data-analytics-label="Model picker">Pick my model</button>
         </form>
 
         <aside class="panel result-panel" id="result-panel">
@@ -185,8 +185,8 @@ const pickerSchema = {
           </div>
           <p id="reason-text">{winner.name} is the best fit for {pickerOptions.task.replace('-', ' ')} with your budget/context settings. Main strengths: {winner.strengths.slice(0, 2).join(', ')}.</p>
           <div class="actions">
-            <a href="/cost-calculator/">Estimate cost</a>
-            <a href="/compare/">Compare models</a>
+            <a href="/cost-calculator/" data-analytics="model_picker_cost_estimate" data-analytics-label="Model picker recommendation">Estimate cost</a>
+            <a href="/compare/" data-analytics="model_picker_compare" data-analytics-label="Model picker recommendation">Compare models</a>
           </div>
         </aside>
       </section>

@@ -13,6 +13,12 @@ const picker = read('src/pages/tools/model-picker.astro');
 assert.match(picker, /Answer five questions/);
 assert.match(picker, /Decision scores are relative to your selections/);
 assert.doesNotMatch(picker, /Fit score/);
+assert.match(picker, /data-analytics="model_picker_run"/, 'picker submit intent must be tracked');
+assert.match(picker, /data-analytics="model_picker_cost_estimate"/, 'picker-to-cost-calculator conversion must be tracked');
+assert.match(picker, /data-analytics="model_picker_compare"/, 'picker-to-comparison conversion must be tracked');
+
+assert.match(calculator, /data-analytics="cost_calculator_calculate"/, 'cost-calculator calculation intent must be tracked');
+assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calculator share intent must be tracked');
 
 const models = read('src/pages/models.astro');
 assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');
