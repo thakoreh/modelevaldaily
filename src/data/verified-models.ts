@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-19';
+export const MODEL_DATA_VERIFIED_ON = '2026-08-30';
 
-// Last verification pass: 2026-08-19
+// Last verification pass: 2026-08-30
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -54,7 +54,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#10b981',
 		releaseDate: '2026-07-09',
-		pricing: { input: 10.00, output: 45.00, notes: 'Standard long-context API tier (over 272K input tokens), per OpenAI pricing.' },
+		pricing: { input: 4.00, output: 20.00, notes: 'Promotional API pricing per MTok, available at least through November 21, 2026, per OpenAI.' },
 		contextWindow: '1.05M',
 		bestFor: ['Complex production workflows', 'Coding', 'Multi-agent orchestration'],
 		scores: { coding: 9.9, reasoning: 9.9, toolUse: 9.9 },
