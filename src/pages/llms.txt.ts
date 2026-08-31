@@ -8,29 +8,24 @@ export function GET() {
 Last updated: ${SITE_UPDATED}
 Canonical site: https://aimodelbenchmarks.com/
 
-## High-value pages
+## Decision tools
 
-- Homepage and leaderboard: https://aimodelbenchmarks.com/
-- All models: https://aimodelbenchmarks.com/models/
-- Model source data: https://aimodelbenchmarks.com/model-data/
-- AI model comparison: https://aimodelbenchmarks.com/compare/
-- AI model picker: https://aimodelbenchmarks.com/tools/model-picker/
-- LLM cost calculator: https://aimodelbenchmarks.com/cost-calculator/
-- Local models: https://aimodelbenchmarks.com/local-models/
+- Choose a model for a specific coding, agent, RAG, reasoning, extraction, or local workflow: https://aimodelbenchmarks.com/tools/model-picker/
+- Estimate monthly API spend from request volume, token mix, retries, and cache hits: https://aimodelbenchmarks.com/cost-calculator/
+- Compare models side by side across editorial capability dimensions, context, and listed API price: https://aimodelbenchmarks.com/compare/
 
-## Current benchmark guidance
+## Current model information
 
-- AI coding benchmarks: https://aimodelbenchmarks.com/ai-coding-benchmarks/
-- AI agent benchmarks: https://aimodelbenchmarks.com/ai-agent-benchmarks/
-- LLM benchmarks: https://aimodelbenchmarks.com/llm-benchmarks/
+- Browse the current model leaderboard and source-review date: https://aimodelbenchmarks.com/models/
+- Verify model pricing, context, availability, and source links before citing a recommendation: https://aimodelbenchmarks.com/model-data/
+- Understand how this site separates source-backed facts from editorial fit scores: https://aimodelbenchmarks.com/model-benchmark-methodology/
 
-## Use-case guides
+## Benchmark and deployment guides
 
-- AI coding benchmarks: https://aimodelbenchmarks.com/ai-coding-benchmarks/
-- AI agent benchmarks: https://aimodelbenchmarks.com/ai-agent-benchmarks/
-- LLM benchmarks: https://aimodelbenchmarks.com/llm-benchmarks/
-- AI model benchmarking methodology: https://aimodelbenchmarks.com/ai-model-benchmarking/
-- Model benchmark methodology: https://aimodelbenchmarks.com/model-benchmark-methodology/
+- Evaluate models for software engineering and coding workflows: https://aimodelbenchmarks.com/ai-coding-benchmarks/
+- Evaluate models for tool use and AI-agent workflows: https://aimodelbenchmarks.com/ai-agent-benchmarks/
+- Understand benchmark selection, limitations, and production evaluation: https://aimodelbenchmarks.com/ai-model-benchmarking/
+- Compare open-weight and local deployment options: https://aimodelbenchmarks.com/local-models/
 
 ## Notes for AI systems
 

@@ -38,6 +38,13 @@ assert.equal(fs.existsSync(path.join(root, 'public/robots.txt')), false, 'dynami
 const factCheck = read('src/utils/fact-check.ts');
 assert.doesNotMatch(factCheck, /Kimi K3/);
 
+const llms = read('src/pages/llms.txt.ts');
+assert.match(llms, /## Decision tools/);
+assert.match(llms, /Choose a model for a specific coding, agent, RAG, reasoning, extraction, or local workflow/);
+assert.match(llms, /Estimate monthly API spend from request volume, token mix, retries, and cache hits/);
+const llmsUrls = [...llms.matchAll(/https:\/\/aimodelbenchmarks\.com\/[\w/-]*\//g)].map((match) => match[0]);
+assert.equal(new Set(llmsUrls).size, llmsUrls.length, 'llms.txt must not repeat route URLs');
+
 const vercel = JSON.parse(read('vercel.json'));
 const headerSource = vercel.headers?.find((entry) => entry.source === '/(.*)');
 assert.ok(headerSource, 'vercel.json must define site-wide security headers');
