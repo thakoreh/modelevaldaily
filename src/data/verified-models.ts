@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-08-30';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-06';
 
-// Last verification pass: 2026-08-30
+// Last verification pass: 2026-09-06
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -50,6 +50,22 @@ export interface VerifiedModel {
 // Current frontier models - model names/pricing verified against provider docs.
 export const VERIFIED_MODELS: VerifiedModel[] = [
 	{
+		name: 'GPT-6 Astra',
+		provider: 'OpenAI',
+		color: '#10b981',
+		releaseDate: '2026-09-03',
+		pricing: { input: 10.00, output: 50.00, notes: 'Standard API pricing per MTok below 272K input tokens. Requests above that threshold are $20 input / $75 output per MTok.' },
+		contextWindow: '1.05M',
+		bestFor: ['Hard end-to-end agent work', 'Computer use', 'Complex coding and research'],
+		scores: { coding: 10.0, reasoning: 10.0, toolUse: 10.0 },
+		strengths: ['OpenAI’s current flagship for complex end-to-end work', 'Text and image inputs with 128K max output', 'Supports web search, file search, hosted shell, computer use, MCP, and function calling'],
+		sources: [
+			{ label: 'OpenAI GPT-6 Astra model card', url: 'https://developers.openai.com/api/docs/models/gpt-6-astra' },
+			{ label: 'OpenAI GPT-6 Astra release', url: 'https://openai.com/index/gpt-6-astra/' },
+			{ label: 'OpenAI pricing', url: 'https://developers.openai.com/api/docs/pricing' },
+		],
+	},
+	{
 		name: 'GPT-5.6 Sol',
 		provider: 'OpenAI',
 		color: '#10b981',
@@ -70,7 +86,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#059669',
 		releaseDate: '2026-07-09',
-		pricing: { input: 4.00, output: 18.00, notes: 'Standard long-context API tier (over 272K input tokens), per OpenAI pricing.' },
+		pricing: { input: 2.00, output: 12.00, notes: 'Standard API price per MTok below 272K input tokens. Above that threshold, pricing is $4 input / $18 output per MTok.' },
 		contextWindow: '1.05M',
 		bestFor: ['Production agents', 'Coding', 'Cost-balanced workflows'],
 		scores: { coding: 9.6, reasoning: 9.6, toolUse: 9.7 },
@@ -86,7 +102,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'OpenAI',
 		color: '#047857',
 		releaseDate: '2026-07-09',
-		pricing: { input: 0.40, output: 1.80, notes: 'Standard long-context API tier (over 272K input tokens), per OpenAI pricing.' },
+		pricing: { input: 0.20, output: 1.20, notes: 'Standard API price per MTok below 272K input tokens. Above that threshold, pricing is $0.40 input / $1.80 output per MTok.' },
 		contextWindow: '1.05M',
 		bestFor: ['High-volume workflows', 'Subagents', 'Cost-sensitive automation'],
 		scores: { coding: 9.1, reasoning: 9.1, toolUse: 9.3 },
@@ -110,6 +126,22 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'OpenAI Models', url: 'https://platform.openai.com/docs/models' },
 			{ label: 'OpenAI Pricing', url: 'https://platform.openai.com/docs/pricing/' },
+		],
+	},
+	{
+		name: 'Claude Fable 5.1',
+		provider: 'Anthropic',
+		color: '#7c3aed',
+		releaseDate: '2026-09-01',
+		pricing: { input: 10.00, output: 50.00, notes: 'Standard API list price per MTok; prompt-cache reads are $0.25/MTok.' },
+		contextWindow: '1M',
+		bestFor: ['Demanding reasoning', 'Long-horizon agents', 'Complex coding and knowledge work'],
+		scores: { coding: 9.9, reasoning: 10.0, toolUse: 9.9 },
+		strengths: ['Anthropic’s current model for demanding reasoning and long-horizon agentic work', 'Adaptive thinking is always on with high default effort', 'Text and image input with 128K max output'],
+		sources: [
+			{ label: 'Claude Fable 5.1 model overview', url: 'https://platform.claude.com/docs/en/models/fable-5-1/overview' },
+			{ label: 'Anthropic Fable 5.1 announcement', url: 'https://www.anthropic.com/claude-fable-and-mythos-5-1' },
+			{ label: 'Anthropic pricing', url: 'https://platform.claude.com/docs/en/about-claude/pricing' },
 		],
 	},
 	{
