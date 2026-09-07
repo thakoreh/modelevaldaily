@@ -46,6 +46,17 @@ const llmsUrls = [...llms.matchAll(/https:\/\/aimodelbenchmarks\.com\/[\w/-]*\//
 assert.equal(new Set(llmsUrls).size, llmsUrls.length, 'llms.txt must not repeat route URLs');
 
 const vercel = JSON.parse(read('vercel.json'));
+const expectedRedirects = new Map([
+  ['/model-picker', '/tools/model-picker/'],
+  ['/model-picker/', '/tools/model-picker/'],
+  ['/tools/cost-calculator', '/cost-calculator/'],
+  ['/tools/cost-calculator/', '/cost-calculator/'],
+]);
+assert.equal(vercel.redirects?.length, expectedRedirects.size, 'vercel.json must retain the legacy-tool redirect set');
+for (const [source, destination] of expectedRedirects) {
+  const redirect = vercel.redirects.find((entry) => entry.source === source);
+  assert.deepEqual(redirect, { source, destination, permanent: true }, `missing permanent redirect for ${source}`);
+}
 const headerSource = vercel.headers?.find((entry) => entry.source === '/(.*)');
 assert.ok(headerSource, 'vercel.json must define site-wide security headers');
 for (const headerName of ['Content-Security-Policy', 'X-Content-Type-Options', 'Referrer-Policy', 'Permissions-Policy']) {

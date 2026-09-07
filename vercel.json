@@ -1,4 +1,26 @@
 {
+  "redirects": [
+    {
+      "source": "/model-picker",
+      "destination": "/tools/model-picker/",
+      "permanent": true
+    },
+    {
+      "source": "/model-picker/",
+      "destination": "/tools/model-picker/",
+      "permanent": true
+    },
+    {
+      "source": "/tools/cost-calculator",
+      "destination": "/cost-calculator/",
+      "permanent": true
+    },
+    {
+      "source": "/tools/cost-calculator/",
+      "destination": "/cost-calculator/",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
