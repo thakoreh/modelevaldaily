@@ -2,58 +2,62 @@
 import BaseHead from '../components/BaseHead.astro';
 import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
-import { SITE_TITLE, SITE_URL } from '../consts';
+import { SITE_TITLE } from '../consts';
+import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models';
+
+const apiModels = VERIFIED_MODELS.filter((model) => model.pricing.input > 0 || model.pricing.output > 0);
+const lowestInputApiModel = apiModels.reduce((lowest, model) => model.pricing.input < lowest.pricing.input ? model : lowest);
 
 const faqs = [
 	{
 		id: 'what-is-benchmarking',
 		question: 'What is AI model benchmarking?',
-		answer: `AI model benchmarking is the systematic evaluation of language models across standardized tasks. At AI Model Benchmarks, we test models on real engineering work: coding tasks, reasoning challenges, and tool-use workflows. Unlike synthetic benchmarks that test isolated capabilities, our approach measures how models perform on actual work that developers and operators do. We score models on correctness, speed-to-usable-output, and clarity, then aggregate results into source-reviewed scorecards that account for cost and latency.`,
+		answer: `AI model benchmarking is the systematic evaluation of language models on defined tasks, using a repeatable prompt set, scoring rule, and evaluation environment. Useful comparisons separate benchmark results from production fit: a model can score well on a narrow test yet be a poor choice for your cost, latency, tool-use, privacy, or context constraints. AI Model Benchmarks records source-reviewed specifications and clearly labeled editorial fit scores; treat them as a shortlist, then validate finalists on representative production tasks.`,
 	},
 	{
 		id: 'best-coding-model-2026',
 		question: 'Which AI model is best for coding in 2026?',
-		answer: `The answer depends on your workflow, but our current source-reviewed guide favors frontier models such as GPT-5.5, Claude Opus 4.8, GPT-5.2-Codex, and strong cost-efficient alternatives depending on whether you need tool use, deep reasoning, context length, or low cost. Rankings shift as providers ship updates, so we recommend checking current scorecards before committing.`,
+		answer: `There is no universal best coding model. Start with the kind of coding work you need to ship: repository-scale changes and tool calling, difficult debugging, long-context code review, or high-volume automation. Compare coding, reasoning, tool-use, context, price, and provider constraints, then run a small evaluation on representative issues before standardizing. The catalog was source-reviewed on ${MODEL_DATA_VERIFIED_ON}; use the model picker to produce a workload-specific shortlist.`,
 	},
 	{
 		id: 'cheapest-api',
 		question: 'What is the cheapest AI model API?',
-		answer: `Cost varies by use case, but among models we currently fact-check, DeepSeek-R1 and GLM-5 are usually the lowest priced APIs. The real answer still depends on success rate: a cheaper model that needs retries can cost more than a premium model that succeeds on the first run. We track cost-per-task, not just token price, and keep a public source log on our Model Data page so pricing claims are auditable.`,
+		answer: `The lowest listed input price in our source-reviewed API catalog on ${MODEL_DATA_VERIFIED_ON} is ${lowestInputApiModel.name} at $${lowestInputApiModel.pricing.input} per million input tokens, with listed output pricing of $${lowestInputApiModel.pricing.output} per million tokens. That is not automatically the lowest-cost production choice: output length, cache hits, batch tiers, retries, quality, and long-context pricing can materially change the bill. Estimate a representative workload before choosing solely on token price.`,
 	},
 	{
 		id: 'benchmark-accuracy',
 		question: 'How accurate are AI model benchmarks?',
-		answer: `Benchmark accuracy depends entirely on methodology. Many benchmarks suffer from contamination (test data leaking into training data), narrow task selection, or subjective scoring. At AI Model Benchmarks, we prioritize reproducibility: every eval includes the exact prompt, scoring rubric, and failure cases. We use blind scoring to eliminate bias. No benchmark is perfect, but transparent methodologies let you audit results and understand limitations. We recommend using multiple benchmarks and, critically, testing models on your own actual workloads before committing.`,
+		answer: `A benchmark is only as useful as its methodology and match to your workload. Common limitations include training-data contamination, narrow task selection, version drift, tool-access differences, and subjective judging. Check the task definition, model version, prompt setup, scoring method, and evaluation date before relying on a result. Use several relevant signals and validate finalists on your own representative tasks rather than treating a leaderboard as a production guarantee.`,
 	},
 	{
 		id: 'swe-bench',
 		question: 'What is SWE-bench?',
-		answer: `SWE-bench is a benchmark dataset that tests AI models on real GitHub issues from popular Python repositories. Models must understand bug reports, navigate codebases, and generate patches that pass test suites. It's one of the most rigorous evaluations of software engineering capability because it uses authentic problems, not synthetic exercises. SWE-bench scores are widely cited, but they only capture one dimension of model capability. Our scorecards complement SWE-bench by testing a broader range of tasks including reasoning, tool use, and documentation-driven workflows.`,
+		answer: `SWE-bench is a software-engineering benchmark built from real GitHub issues in Python repositories. A system must understand the issue and repository, generate a patch, and satisfy the benchmark's test setup. It is a useful signal for repository-level bug fixing, but it does not settle whether a model is best for your stack, tool loop, latency target, security requirements, or cost. Use it alongside task-specific evaluation and operational constraints.`,
 	},
 	{
 		id: 'claude-vs-gpt',
 		question: 'How do I choose between Claude and GPT?',
-		answer: `Claude (Anthropic) and GPT (OpenAI) are both excellent, with different strengths. Claude tends to excel at nuanced reasoning, following complex instructions, and producing well-structured output with fewer hallucinations. GPT models often have strong tool integration, large context windows in current variants, and extensive ecosystem support. For coding specifically, both are competitive; check our source-reviewed scorecards for current rankings. Consider: your existing toolchain, data residency requirements, cost sensitivity, and which model performs better on tasks similar to yours. The best approach is often to test both on your actual workload.`,
+		answer: `Choose between Claude and GPT by testing the exact workflow rather than relying on provider-level stereotypes. Compare the currently available models on tool calling, repository or document context, output quality, latency, pricing tiers, data handling, regional availability, and the SDKs already in your stack. Build a small fixed evaluation set with acceptance tests and measure cost per successful task. The model picker can create a source-reviewed shortlist before that evaluation.`,
 	},
 	{
 		id: 'best-reasoning-model',
 		question: 'What is the best AI model for reasoning?',
-		answer: `Based on our current scorecards, Claude Opus 4.8, GPT-5.5, GPT-5.4, and Gemini 3.1 Pro Preview are all strong reasoning candidates, with different cost, latency, and context tradeoffs. Reasoning quality varies by task type: some models do better on strict constraint solving, others on ambiguous tradeoff analysis. Our scorecards break reasoning into categories so you can map strengths to your own decision workflows.`,
+		answer: `The best reasoning model depends on the kind of reasoning: constrained analysis, long-context synthesis, planning with tools, or high-volume classification. Shortlist models with strong reasoning signals, then test them against representative cases with explicit acceptance criteria. Account for context limits, thinking or reasoning modes, latency, and cost because those can change the production tradeoff more than a small leaderboard difference. Review the current catalog, last source-reviewed on ${MODEL_DATA_VERIFIED_ON}, before selecting finalists.`,
 	},
 	{
 		id: 'open-vs-closed',
 		question: 'Can open-source models compete with closed models?',
-		answer: `The gap is closing rapidly. Open-source models like Llama, Mistral, and DeepSeek now approach or match closed models on many benchmarks. The tradeoffs: closed models (Claude, GPT, Gemini) still generally lead on cutting-edge capabilities, complex reasoning, and reliability guarantees. Open-source models offer data privacy, deployment flexibility, no vendor lock-in, and often lower cost at scale. For many production workloads, top open-source models are now viable alternatives. We're adding more open-source models as they reach production readiness.`,
+		answer: `Open-weight models can be a strong fit when deployment control, data residency, customization, or predictable high-volume cost matters. Proprietary APIs can reduce infrastructure work and may provide managed tools, support, and rapid access to new capability. Compare the actual model and hosting option, not only the label: include quality on your tasks, hardware and operations cost, licensing, throughput, security, latency, and fallback requirements.`,
 	},
 	{
 		id: 'prompt-caching',
 		question: 'What is prompt caching and how does it save money?',
-		answer: `Prompt caching allows API providers to store and reuse processed prompt prefixes, avoiding redundant computation on repeated contexts. If your requests include long system prompts, documentation, or codebases that don't change between calls, prompt caching can reduce costs by 50-90% and improve latency. Claude and Gemini currently offer prompt caching. The key is structuring prompts so the cacheable portion (static context) comes before the dynamic portion (your specific query). Our scorecards note when caching significantly impacts cost-per-task for common workflows.`,
+		answer: `Prompt caching lets an API reuse a stable prompt prefix, such as system instructions, documentation, or a repository snapshot, instead of processing it from scratch on every request. It can reduce cost and latency when the provider supports it and the repeated prefix meets that provider's caching rules. Put stable content before per-request input, measure the actual cache-hit rate, and verify the provider's current eligibility, retention, and pricing terms before modelling savings.`,
 	},
 	{
 		id: 're-evaluate-frequency',
 		question: 'How often should I re-evaluate my AI model choice?',
-		answer: `At minimum, quarterly. The AI landscape changes fast: new model versions release often, pricing shifts frequently, and capabilities evolve rapidly. If you're running production workloads, we recommend checking monthly scorecards to spot significant changes. Red flags that warrant immediate re-evaluation: your model's performance degrading, a competitor releasing a major update, your costs increasing unexpectedly, or your use case expanding to new task types. Follow source-reviewed scorecards to stay informed without constant manual checking.`,
+		answer: `Re-evaluate when a provider changes a model, price, context limit, tool capability, or lifecycle status, and whenever your workload, cost, quality, or reliability signal materially changes. For a stable production workflow, schedule a lightweight recurring check and run a fuller evaluation before a major renewal or architecture decision. Keep a fixed representative task set so results remain comparable over time.`,
 	},
 ];
 

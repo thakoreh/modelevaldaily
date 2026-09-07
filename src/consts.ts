@@ -21,7 +21,7 @@ export const STALE_REVIEW_PATHS = new Set([
 	'/coding-agents/',
 	'/compare/claude-vs-gemini/',
 	'/compare/gpt-vs-gemini/',
-	'/faq/',
+
 	'/openclaw/',
 	'/use-cases/coding/',
 	'/use-cases/cost-optimization/',

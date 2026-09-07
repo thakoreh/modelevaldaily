@@ -38,6 +38,14 @@ assert.equal(fs.existsSync(path.join(root, 'public/robots.txt')), false, 'dynami
 const factCheck = read('src/utils/fact-check.ts');
 assert.doesNotMatch(factCheck, /Kimi K3/);
 
+const faq = read('src/pages/faq.astro');
+assert.match(faq, /MODEL_DATA_VERIFIED_ON/, 'FAQ current-model claims must expose the catalog review date');
+assert.match(faq, /source-reviewed API catalog/, 'FAQ pricing answer must identify its evidence boundary');
+assert.doesNotMatch(faq, /DeepSeek-R1/, 'FAQ must not retain superseded API pricing guidance');
+assert.doesNotMatch(faq, /We use blind scoring/, 'FAQ must not claim an unimplemented evaluation process');
+
+assert.doesNotMatch(constants, /'\/faq\/'/, 'refreshed FAQ should be indexable and eligible for the sitemap');
+
 const llms = read('src/pages/llms.txt.ts');
 assert.match(llms, /## Decision tools/);
 assert.match(llms, /Choose a model for a specific coding, agent, RAG, reasoning, extraction, or local workflow/);
