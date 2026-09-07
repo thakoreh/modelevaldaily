@@ -409,7 +409,7 @@ const filters = [
 							<h3>{item.title}</h3>
 							<p>{item.description}</p>
 							{item.winner && item.count > 0 && (
-								<span class="taxonomy-winner">Current leader: {item.winner}</span>
+								<span class="taxonomy-winner">Editorial catalog leader: {item.winner}</span>
 							)}
 							<span class:list={['taxonomy-count', { empty: item.count === 0 }]}>{item.count > 0 ? `${item.count} evals` : 'Coming soon'}</span>
 						</a>
