@@ -8,7 +8,7 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 const title = `Best AI Models for Coding Agents | ${SITE_TITLE}`;
 const description = 'Choose the right AI model for coding agents, code review, repo-scale refactors, tool use, long context, and cost-aware production routing.';
 
-const names = ['GPT-5.5', 'GPT-5.4', 'Claude Opus 4.8', 'GPT-5.2-Codex', 'Claude Sonnet 5', 'Gemini 3.1 Pro Preview', 'DeepSeek V4 Pro', 'Llama 4 Maverick'];
+const names = ['GPT-5.5', 'GPT-5.4', 'Claude Opus 4.8', 'GPT-5.2-Codex', 'Claude Sonnet 5', 'Gemini 3.8 Flash', 'DeepSeek V4 Pro', 'Llama 4 Maverick'];
 const agentModels = names
 	.map((name) => VERIFIED_MODELS.find((model) => model.name === name))
 	.filter(Boolean);
@@ -40,7 +40,7 @@ const workflows = [
 	{ task: 'Large refactor', primary: 'Claude Opus 4.8', fallback: 'GPT-5.4', note: 'Prioritize context, careful planning, and review quality.' },
 	{ task: 'Autonomous feature build', primary: 'GPT-5.5', fallback: 'GPT-5.4', note: 'Keep planning and execution separate for cleaner diffs.' },
 	{ task: 'Bug fix from failing tests', primary: 'GPT-5.2-Codex', fallback: 'GPT-5.4', note: 'Give the model test output, touched files, and reproduction steps.' },
-	{ task: 'Repo Q&A / codebase search', primary: 'Gemini 3.1 Pro Preview', fallback: 'Claude Sonnet 5', note: 'Long context helps, but still pair it with retrieval.' },
+	{ task: 'Repo Q&A / codebase search', primary: 'Gemini 3.8 Flash', fallback: 'Claude Sonnet 5', note: 'Its 1,048,576-token input limit helps, but still pair it with retrieval.' },
 	{ task: 'High-volume code review', primary: 'Claude Sonnet 5', fallback: 'DeepSeek V4 Pro', note: 'Use cheaper models for first-pass comments, then escalate risky files.' },
 	{ task: 'Private codebase', primary: 'Llama 4 Maverick', fallback: 'GPT-OSS-120B', note: 'Prefer open or local deployment when source cannot leave your environment.' },
 ];

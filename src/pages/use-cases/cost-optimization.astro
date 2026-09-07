@@ -9,7 +9,7 @@ const costModels = [
 	{ rank: 2, name: 'DeepSeek V4 Pro', provider: 'DeepSeek', inputPrice: 0.44, outputPrice: 1.32, overall: 9.0, color: '#8b5cf6', context: '1M', costPer1MTasks: 'Peak: ~$1.30', highlights: ['Peak/off-peak pricing', 'Hybrid thinking', '1M context'] },
 	{ rank: 3, name: 'MiniMax M2.5', provider: 'MiniMax', inputPrice: 0.5, outputPrice: 2, overall: 8.3, color: '#00bcd4', context: '245K', costPer1MTasks: '~$1.50', highlights: ['Low cost', 'Multimodal support', 'Fast inference'] },
 	{ rank: 4, name: 'Kimi K3', provider: 'Moonshot', inputPrice: 3, outputPrice: 15, overall: 8.9, color: '#e040fb', context: '1M', costPer1MTasks: '~$7.50', highlights: ['Configurable reasoning', 'Native visual understanding', '1M context'] },
-	{ rank: 5, name: 'Gemini 3.1 Pro Preview', provider: 'Google', inputPrice: 2, outputPrice: 12, overall: 8.4, color: '#4285f4', context: '1M', costPer1MTasks: '~$7.00', highlights: ['Prompt caching', 'Massive context', 'Good value'] },
+	{ rank: 5, name: 'Gemini 3.8 Flash', provider: 'Google', inputPrice: 0.75, outputPrice: 3.75, overall: 9.1, color: '#4285f4', context: '1.05M', costPer1MTasks: '~$2.25', highlights: ['Prompt caching', '1,048,576-token context', 'Introductory pricing through Dec. 31, 2026'] },
 	{ rank: 6, name: 'Claude Opus 4.8', provider: 'Anthropic', inputPrice: 5, outputPrice: 25, overall: 9.4, color: 'var(--claude)', context: '1M', costPer1MTasks: '~$15.00', highlights: ['Best quality', 'Prompt caching', 'Complex tasks'] },
 ];
 
@@ -24,7 +24,7 @@ const decisionGuide = [
 	{ scenario: 'High-volume production API', pick: 'DeepSeek V4 Pro', reason: 'Strong balance of cost, 1M context, and agent features. Peak pricing is $0.44/$1.32 per MTok; off-peak pricing is half.' },
 	{ scenario: 'Enterprise on a budget', pick: 'GLM-5', reason: 'Lowest pricing at $0.50/$0.50 with solid 8.5/10 performance. Enterprise features included.' },
 	{ scenario: 'Need 1M context with configurable reasoning effort', pick: 'Kimi K3', reason: 'Kimi lists a 1M-token context window and $3/$15 per million input/output pricing.' },
-	{ scenario: 'Long context + caching', pick: 'Gemini 3.1 Pro Preview', reason: 'Prompt caching can reduce costs 50-90% on repeated contexts. 1M context for large documents.' },
+	{ scenario: 'Long context + caching', pick: 'Gemini 3.8 Flash', reason: 'It supports caching and a 1,048,576-token input limit; standard pricing is $0.75/$3.75 per MTok through December 31, 2026.' },
 	{ scenario: 'Quality matters more than cost', pick: 'Claude Opus 4.8', reason: 'Best quality at 9.4/10. Use for critical tasks where accuracy justifies the premium.' },
 ];
 

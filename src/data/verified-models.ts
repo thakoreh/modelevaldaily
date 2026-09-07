@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-06';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-07';
 
-// Last verification pass: 2026-09-06
+// Last verification pass: 2026-09-07
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -227,6 +227,13 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		bestFor: ['Agentic coding', 'Multimodal tasks', 'Search grounding'], scores: { coding: 9.5, reasoning: 9.4, toolUse: 9.5 },
 		strengths: ['Stable Gemini model for agentic and multimodal tasks', '1M-token input and 65,536-token output limits', 'Search grounding and tool capabilities'],
 		sources: [{ label: 'Gemini 3.6 Flash model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.6-flash' }, { label: 'Gemini Pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }],
+		},
+		{
+		name: 'Gemini 3.8 Flash', provider: 'Google', color: '#34a853', releaseDate: '2026-09-02',
+		pricing: { input: 0.75, output: 3.75, notes: 'Introductory paid-tier pricing per MTok through December 31, 2026; standard pricing becomes $1.50 input / $7.50 output on January 1, 2027.' }, contextWindow: '1.05M',
+		bestFor: ['Long-horizon software engineering', 'Autonomous agents', 'Complex enterprise workflows'], scores: { coding: 9.7, reasoning: 9.6, toolUse: 9.7 },
+		strengths: ['Generally available Gemini Flash model', '1,048,576-token input and 65,536-token output limits', 'Supports caching, code execution, computer use (preview), file search, function calling, Google Search and Maps grounding, structured outputs, thinking, and URL context'],
+		sources: [{ label: 'Gemini 3.8 Flash model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash' }, { label: 'Gemini 3.8 Flash pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }, { label: 'Gemini API release notes', url: 'https://ai.google.dev/gemini-api/docs/changelog' }],
 		},
 		{
 		name: 'Gemini 3.7 Flash', provider: 'Google', color: '#34a853', releaseDate: '2026-08-13',

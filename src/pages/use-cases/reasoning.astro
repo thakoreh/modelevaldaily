@@ -9,7 +9,7 @@ const reasoningModels = [
 	{ rank: 2, name: 'Kimi K3', provider: 'Moonshot', score: 9.2, color: '#e040fb', pricing: { input: 3, output: 15 }, context: '1M', highlights: ['Configurable reasoning effort', 'Native visual understanding', '1M context'] },
 	{ rank: 3, name: 'GLM-5', provider: 'Zhipu AI', score: 8.6, color: '#f43f5e', pricing: { input: 0.5, output: 0.5 }, context: '128K', highlights: ['Strong analysis', 'Ultra-low cost', 'Enterprise ready'] },
 	{ rank: 4, name: 'GPT-5.5', provider: 'OpenAI', score: 8.5, color: 'var(--openai)', pricing: { input: 5, output: 30 }, context: '1M', highlights: ['Good general reasoning', 'Fast responses', 'Strong ecosystem'] },
-	{ rank: 5, name: 'Gemini 3.1 Pro Preview', provider: 'Google', score: 8.4, color: '#4285f4', pricing: { input: 2, output: 12 }, context: '1M', highlights: ['Massive context', 'Research synthesis', 'Good multimodal'] },
+	{ rank: 5, name: 'Gemini 3.8 Flash', provider: 'Google', score: 9.1, color: '#4285f4', pricing: { input: 0.75, output: 3.75 }, context: '1.05M', highlights: ['1,048,576-token context', 'Research synthesis', 'Multimodal'] },
 	{ rank: 6, name: 'MiniMax M2.5', provider: 'MiniMax', score: 8.3, color: '#00bcd4', pricing: { input: 0.5, output: 2 }, context: '245K', highlights: ['Budget option', 'Fast inference', 'Good for scale'] },
 ];
 
@@ -27,7 +27,7 @@ const decisionGuide = [
 	{ scenario: 'Technical architecture decisions', pick: 'Claude Opus 4.8', reason: 'Deep understanding of system design tradeoffs and can articulate long-term implications.' },
 	{ scenario: 'Long-context analysis tasks', pick: 'Kimi K3', reason: 'Kimi K3 supports configurable reasoning effort and a 1M-token context window.' },
 	{ scenario: 'Budget-constrained projects', pick: 'GLM-5', reason: 'Solid reasoning capability at $0.50/$0.50 per million tokens. Best value for analysis tasks.' },
-	{ scenario: 'Research synthesis', pick: 'Gemini 3.1 Pro Preview', reason: '1M context window lets you include extensive background material for comprehensive analysis.' },
+	{ scenario: 'Research synthesis', pick: 'Gemini 3.8 Flash', reason: 'Its 1,048,576-token input limit lets you include extensive background material for comprehensive analysis.' },
 ];
 
 const faqs = [
