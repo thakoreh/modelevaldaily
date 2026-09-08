@@ -45,6 +45,29 @@ assert.doesNotMatch(faq, /DeepSeek-R1/, 'FAQ must not retain superseded API pric
 assert.doesNotMatch(faq, /We use blind scoring/, 'FAQ must not claim an unimplemented evaluation process');
 
 assert.doesNotMatch(constants, /'\/faq\/'/, 'refreshed FAQ should be indexable and eligible for the sitemap');
+const expectedStaleReviewPaths = [
+  '/benchmarks/chatbot-arena/',
+  '/benchmarks/mmlu/',
+  '/benchmarks/swe-bench/',
+  '/best-ai-model-for-agents/',
+  '/best-ai-model-for-coding/',
+  '/best-long-context-models/',
+  '/best-open-weight-models/',
+  '/cheapest-ai-models/',
+  '/coding-agents/',
+  '/compare/claude-vs-gemini/',
+  '/compare/gpt-vs-gemini/',
+  '/openclaw/',
+  '/use-cases/coding/',
+  '/use-cases/cost-optimization/',
+  '/use-cases/reasoning/',
+];
+for (const stalePath of expectedStaleReviewPaths) {
+  assert.match(constants, new RegExp(`'${stalePath}'`), `${stalePath} must remain protected from indexing until refreshed`);
+}
+assert.match(read('src/components/BaseHead.astro'), /const shouldNoindex = noindex \|\| STALE_REVIEW_PATHS\.has\(Astro\.url\.pathname\);/, 'stale review paths must receive a noindex directive');
+const sitemap = read('src/pages/sitemap.xml.ts');
+assert.match(sitemap, /\.filter\(\(page\) => !STALE_REVIEW_PATHS\.has\(page\.path\)\)/, 'stale review paths must stay out of the sitemap');
 
 const llms = read('src/pages/llms.txt.ts');
 assert.match(llms, /## Decision tools/);
