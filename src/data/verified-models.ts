@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-07';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-08';
 
-// Last verification pass: 2026-09-07
+// Last verification pass: 2026-09-08
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -324,6 +324,23 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 			{ label: 'xAI Grok 4.6 release notes', url: 'https://docs.x.ai/developers/release-notes' },
 			{ label: 'xAI Grok 4.6 model overview', url: 'https://docs.x.ai/developers/models/grok-4-6' },
 			{ label: 'xAI pricing', url: 'https://docs.x.ai/developers/pricing' },
+		],
+	},
+	{
+		name: 'GLM-5.3-Flash',
+		provider: 'Z.ai',
+		color: '#fb7185',
+		releaseDate: '2026-08-26',
+		pricing: { input: 0.075, output: 0.25, notes: 'Introductory 50% discount per MTok through September 9, 2026 at 24:00 Singapore time (UTC+8); list price is $0.15 input / $0.50 output.' },
+		contextWindow: '1M',
+		bestFor: ['Cost-sensitive multimodal coding', 'Long-context agents', 'Document and office workflows'],
+		scores: { coding: 9.2, reasoning: 9.1, toolUse: 9.1 },
+		strengths: ['Publicly available native multimodal GLM-5 model', 'Text, image, video, and file input with 128K maximum output', 'Supports 1M-token context and tool-enabled coding workflows'],
+		sources: [
+			{ label: 'Z.ai GLM-5.3-Flash release', url: 'https://z.ai/blog/glm-5.3-flash' },
+			{ label: 'Z.ai GLM-5.3-Flash documentation', url: 'https://docs.z.ai/guides/llm/glm-5.3-flash' },
+			{ label: 'Z.ai pricing', url: 'https://docs.z.ai/guides/overview/pricing' },
+			{ label: 'Z.ai GLM-5.3-Flash availability campaign', url: 'https://docs.z.ai/devpack/notice/event-glm-5.3-flash' },
 		],
 	},
 	{
