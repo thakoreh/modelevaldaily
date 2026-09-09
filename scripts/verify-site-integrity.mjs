@@ -22,6 +22,10 @@ assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calcula
 
 const models = read('src/pages/models.astro');
 assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');
+
+const blogPostLayout = read('src/layouts/BlogPost.astro');
+assert.match(blogPostLayout, /heroImage,/, 'blog post layout must retain each post hero image for social metadata');
+assert.match(blogPostLayout, /<BaseHead title=\{pageTitle\} description=\{description\} image=\{heroImage\}/, 'blog post Open Graph metadata must use the post-specific hero image');
 assert.match(models, /search\.value = new URLSearchParams[\s\S]*?apply\(\);/, 'model search query must be applied on load');
 assert.doesNotMatch(models, /priceValidUntil/, 'pricing evidence must not claim an arbitrary offer-expiration date');
 
