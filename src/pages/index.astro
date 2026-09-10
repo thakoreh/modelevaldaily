@@ -14,10 +14,10 @@ const articles = (await getCollection('blog'))
 	.slice(0, 3);
 
 const decisions = [
-	{ label: 'Coding & agents', title: 'Ship reliable code changes', detail: 'Prioritize coding quality, tool use, and long-context repo work.', href: '/use-cases/coding/', code: '01' },
-	{ label: 'Reasoning', title: 'Solve difficult, constrained work', detail: 'Compare reasoning depth without hiding latency and price tradeoffs.', href: '/use-cases/reasoning/', code: '02' },
-	{ label: 'High volume', title: 'Control inference cost', detail: 'Find the quality floor that meets your workload at production scale.', href: '/use-cases/cost-optimization/', code: '03' },
-	{ label: 'Private deployment', title: 'Run open weights locally', detail: 'Balance privacy, hardware requirements, and operational overhead.', href: '/local-models/', code: '04' },
+	{ label: 'Coding & agents', title: 'Ship reliable code changes', detail: 'Prioritize coding quality, tool use, and long-context repo work.', href: '/tools/model-picker/?task=coding&budget=medium&context=large&tools=high&deployment=api', code: '01' },
+	{ label: 'Reasoning', title: 'Solve difficult, constrained work', detail: 'Compare reasoning depth without hiding latency and price tradeoffs.', href: '/tools/model-picker/?task=reasoning&budget=medium&context=normal&tools=medium&deployment=api', code: '02' },
+	{ label: 'High volume', title: 'Control inference cost', detail: 'Find the quality floor that meets your workload at production scale.', href: '/tools/model-picker/?task=extraction&budget=high&context=normal&tools=low&deployment=api', code: '03' },
+	{ label: 'Private deployment', title: 'Run open weights locally', detail: 'Balance privacy, hardware requirements, and operational overhead.', href: '/tools/model-picker/?task=local&budget=medium&context=large&tools=low&deployment=local', code: '04' },
 ];
 ---
 <!doctype html>

@@ -30,10 +30,10 @@ import Header from '../components/Header.astro';
 				<div class="panel">
 					<h2>Benchmark signals to use</h2>
 					<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Signal</th><th>Next page</th></tr></thead><tbody>
-						<tr><td><strong>Coding agents</strong></td><td>SWE-bench, repo patch tests, tool-call success</td><td><a href="/best-ai-model-for-coding/">Best AI model for coding</a></td></tr>
-						<tr><td><strong>Reasoning</strong></td><td>MMLU, GPQA-style tasks, internal evals</td><td><a href="/use-cases/reasoning/">Best reasoning model</a></td></tr>
-						<tr><td><strong>Cost control</strong></td><td>Input/output price, cache support, retry rate</td><td><a href="/cheapest-ai-models/">Cheapest AI models</a></td></tr>
-						<tr><td><strong>Long context</strong></td><td>Context window, retrieval discipline, recall quality</td><td><a href="/best-long-context-models/">Best long-context models</a></td></tr>
+						<tr><td><strong>Coding agents</strong></td><td>SWE-bench, repo patch tests, tool-call success</td><td><a href="/tools/model-picker/?task=coding&budget=medium&context=large&tools=high&deployment=api">Pick a coding model</a></td></tr>
+						<tr><td><strong>Reasoning</strong></td><td>MMLU, GPQA-style tasks, internal evals</td><td><a href="/tools/model-picker/?task=reasoning&budget=medium&context=normal&tools=medium&deployment=api">Pick a reasoning model</a></td></tr>
+						<tr><td><strong>Cost control</strong></td><td>Input/output price, cache support, retry rate</td><td><a href="/cost-calculator/">Estimate workload cost</a></td></tr>
+						<tr><td><strong>Long context</strong></td><td>Context window, retrieval discipline, recall quality</td><td><a href="/tools/model-picker/?task=rag&budget=medium&context=huge&tools=medium&deployment=api">Pick a long-context model</a></td></tr>
 					</tbody></table></div>
 				</div>
 			</section>

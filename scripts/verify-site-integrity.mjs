@@ -73,6 +73,23 @@ assert.match(read('src/components/BaseHead.astro'), /const shouldNoindex = noind
 const sitemap = read('src/pages/sitemap.xml.ts');
 assert.match(sitemap, /\.filter\(\(page\) => !STALE_REVIEW_PATHS\.has\(page\.path\)\)/, 'stale review paths must stay out of the sitemap');
 
+const currentEntryPoints = [
+  'src/pages/index.astro',
+  'src/pages/cost-calculator.astro',
+  'src/pages/ai-coding-benchmarks.astro',
+  'src/pages/ai-agent-benchmarks.astro',
+  'src/pages/ai-model-benchmarking.astro',
+  'src/pages/llm-benchmarks.astro',
+  'src/pages/model-benchmark-methodology.astro',
+  'src/components/Footer.astro',
+];
+for (const entryPoint of currentEntryPoints) {
+  const source = read(entryPoint);
+  for (const stalePath of expectedStaleReviewPaths) {
+    assert.doesNotMatch(source, new RegExp(`href=["']${stalePath.replaceAll('/', '\\/')}["']`), `${entryPoint} must not send users to stale noindex guidance: ${stalePath}`);
+  }
+}
+
 const llms = read('src/pages/llms.txt.ts');
 assert.match(llms, /## Decision tools/);
 assert.match(llms, /Choose a model for a specific coding, agent, RAG, reasoning, extraction, or local workflow/);
