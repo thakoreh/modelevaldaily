@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-08';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-10';
 
-// Last verification pass: 2026-09-08
+// Last verification pass: 2026-09-10
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -331,7 +331,7 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'Z.ai',
 		color: '#fb7185',
 		releaseDate: '2026-08-26',
-		pricing: { input: 0.075, output: 0.25, notes: 'Introductory 50% discount per MTok through September 9, 2026 at 24:00 Singapore time (UTC+8); list price is $0.15 input / $0.50 output.' },
+		pricing: { input: 0.15, output: 0.50, notes: 'Standard Z.ai API list pricing per MTok; cached input is $0.03/MTok.' },
 		contextWindow: '1M',
 		bestFor: ['Cost-sensitive multimodal coding', 'Long-context agents', 'Document and office workflows'],
 		scores: { coding: 9.2, reasoning: 9.1, toolUse: 9.1 },
