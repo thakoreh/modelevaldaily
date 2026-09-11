@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-10';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-11';
 
-// Last verification pass: 2026-09-10
+// Last verification pass: 2026-09-11
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -305,7 +305,6 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		scores: { coding: 9.7, reasoning: 9.7, toolUse: 9.6 },
 		strengths: ['xAI frontier model for code and agentic tool calling', 'Configurable reasoning effort', 'Supports function calling, web search, X search, and code execution'],
 		sources: [
-			{ label: 'xAI Grok 4.5 model overview', url: 'https://docs.x.ai/developers/grok-4-5' },
 			{ label: 'xAI release notes', url: 'https://docs.x.ai/developers/release-notes' },
 			{ label: 'xAI pricing', url: 'https://docs.x.ai/developers/pricing' },
 		],
