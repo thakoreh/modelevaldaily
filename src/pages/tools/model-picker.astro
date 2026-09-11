@@ -187,7 +187,9 @@ const pickerSchema = {
           <div class="actions">
             <a href="/cost-calculator/" data-analytics="model_picker_cost_estimate" data-analytics-label="Model picker recommendation">Estimate cost</a>
             <a href="/compare/" data-analytics="model_picker_compare" data-analytics-label="Model picker recommendation">Compare models</a>
+            <button type="button" id="copy-picker-link" class="share-button" data-analytics="model_picker_share" data-analytics-label="Model picker recommendation">Copy recommendation link</button>
           </div>
+          <p id="picker-share-status" class="share-status" role="status" aria-live="polite"></p>
         </aside>
       </section>
 
@@ -295,6 +297,15 @@ const pickerSchema = {
       loadParams();
       document.getElementById('run-picker').addEventListener('click', pick);
       document.querySelectorAll('#picker-form select').forEach((select) => select.addEventListener('change', pick));
+      document.getElementById('copy-picker-link')?.addEventListener('click', async () => {
+        const status = document.getElementById('picker-share-status');
+        try {
+          await navigator.clipboard.writeText(location.href);
+          status.textContent = 'Recommendation link copied.';
+        } catch {
+          status.textContent = 'Copy the URL from your browser to share this recommendation.';
+        }
+      });
       pick();
     </script>
   </body>
@@ -323,6 +334,8 @@ const pickerSchema = {
   .score-grid small, .short-card span, .short-card small { color: var(--text-tertiary); }
   .actions { display: flex; gap: .7rem; flex-wrap: wrap; margin-top: 1rem; }
   .actions a:nth-child(2) { background: var(--bg-tertiary); border: 1px solid var(--border-primary); }
+  .share-button { background: var(--bg-tertiary); border: 1px solid var(--border-primary); color: var(--text-primary); }
+  .share-status { min-height: 1.35rem; margin: .65rem 0 0; color: var(--text-tertiary); font-size: .82rem; }
   .section { padding-top: 2rem; }
   .score-note { color: var(--text-secondary); margin: .25rem 0 1rem; line-height: 1.6; }
   .score-note a { color: var(--accent-light); font-weight: 700; }

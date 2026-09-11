@@ -16,6 +16,8 @@ assert.doesNotMatch(picker, /Fit score/);
 assert.match(picker, /data-analytics="model_picker_run"/, 'picker submit intent must be tracked');
 assert.match(picker, /data-analytics="model_picker_cost_estimate"/, 'picker-to-cost-calculator conversion must be tracked');
 assert.match(picker, /data-analytics="model_picker_compare"/, 'picker-to-comparison conversion must be tracked');
+assert.match(picker, /data-analytics="model_picker_share"/, 'picker recommendation sharing must be tracked');
+assert.match(picker, /id="picker-share-status" class="share-status" role="status" aria-live="polite"/, 'picker sharing must announce copy feedback accessibly');
 
 assert.match(calculator, /data-analytics="cost_calculator_calculate"/, 'cost-calculator calculation intent must be tracked');
 assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calculator share intent must be tracked');
