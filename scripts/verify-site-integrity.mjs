@@ -21,6 +21,8 @@ assert.match(picker, /id="picker-share-status" class="share-status" role="status
 
 assert.match(calculator, /data-analytics="cost_calculator_calculate"/, 'cost-calculator calculation intent must be tracked');
 assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calculator share intent must be tracked');
+assert.match(calculator, /<th[^>]*>Annual estimate<\/th>/, 'cost calculator must show a yearly run-rate alongside monthly spend');
+assert.match(calculator, /money\(m\.cost \* 12\)/, 'annual cost estimate must derive from the displayed monthly estimate');
 
 const models = read('src/pages/models.astro');
 assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');
