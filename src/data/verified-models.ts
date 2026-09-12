@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-11';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-12';
 
-// Last verification pass: 2026-09-11
+// Last verification pass: 2026-09-12
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -29,8 +29,8 @@ export interface VerifiedModel {
 	color: string;
 	releaseDate: string;
 	pricing: {
-		input: number;
-		output: number;
+		input: number | null;
+		output: number | null;
 		notes?: string;
 	};
 	bestFor: string[];
@@ -451,6 +451,22 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 	},
 
 	{
+		name: 'North Small Translate',
+		provider: 'Cohere',
+		color: '#39594d',
+		releaseDate: '2026-09-10',
+		pricing: { input: null, output: null, notes: 'No North-specific production token rate is published. Free-tier Chat V2 access is rate-limited and not for production or commercial use; open weights are CC BY-NC 4.0. Commercial deployment requires a Model Vault license.' },
+		contextWindow: '16K',
+		bestFor: ['Machine translation', 'Private translation deployments', 'Multilingual document workflows'],
+		scores: { coding: 1.0, reasoning: 1.0, toolUse: 1.0 },
+		strengths: ['Purpose-built mixture-of-experts translation model', '218B total parameters with 25B active parameters', 'Text input and output across 50+ languages and locale variants', 'Open weights for research/non-commercial use under CC BY-NC 4.0'],
+		sources: [
+			{ label: 'Cohere North Small Translate documentation', url: 'https://docs.cohere.com/docs/north-small-translate-1.0' },
+			{ label: 'Cohere North Small Translate announcement', url: 'https://cohere.com/blog/north-small-translate' },
+			{ label: 'Cohere pricing', url: 'https://cohere.com/pricing' },
+		],
+	},
+	{
 		name: 'GPT-OSS-120B',
 		provider: 'OpenAI',
 		color: '#059669',
@@ -473,7 +489,7 @@ export const getModelsByProvider = (provider: string): VerifiedModel[] =>
 	VERIFIED_MODELS.filter(m => m.provider === provider);
 
 export const getBudgetModels = (maxInputPrice: number = 0.5): VerifiedModel[] => 
-	VERIFIED_MODELS.filter(m => m.pricing.input <= maxInputPrice);
+	VERIFIED_MODELS.filter(m => m.pricing.input !== null && m.pricing.input <= maxInputPrice);
 
 export const getHighContextModels = (minContext: string = '1M'): VerifiedModel[] => 
 	VERIFIED_MODELS.filter(m => {

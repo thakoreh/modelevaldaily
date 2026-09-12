@@ -30,12 +30,12 @@ const modelsJsonLd = {
 			name: model.name,
 			brand: { '@type': 'Brand', name: model.provider },
 			description: `${model.name} by ${model.provider}. Best for: ${model.bestFor.join(', ')}.`,
-			offers: {
+			...(model.pricing.input !== null && model.pricing.output !== null ? { offers: {
 				'@type': 'AggregateOffer',
 				priceCurrency: 'USD',
 				lowPrice: model.pricing.input,
 				highPrice: model.pricing.output,
-			},
+			} } : {}),
 		},
 	})),
 };
@@ -70,14 +70,15 @@ const modelsJsonLd = {
 								const slug = slugify(model.name);
 								const haystack = `${model.name} ${model.provider} ${model.bestFor.join(' ')} ${model.strengths.join(' ')}`.toLowerCase();
 								const workloads = [haystack.includes('coding') || haystack.includes('agent') ? 'coding' : '', haystack.includes('reason') ? 'reasoning' : '', haystack.includes('budget') || haystack.includes('cost') || haystack.includes('value') || haystack.includes('volume') ? 'budget' : '', haystack.includes('long context') || contextNumber(model.contextWindow) >= 1_000_000 ? 'context' : ''].filter(Boolean).join(' ');
-								return <tr data-model-row data-name={haystack} data-provider={model.provider.toLowerCase()} data-workloads={workloads} data-open={String(isOpen(model))} data-fit={fit(model)} data-coding={model.scores.coding} data-reasoning={model.scores.reasoning} data-tools={model.scores.toolUse} data-input={model.pricing.input} data-output={model.pricing.output} data-context={contextNumber(model.contextWindow)}>
+								const availability = haystack.includes('research/non-commercial') ? 'Research/non-commercial' : model.name.toLowerCase().includes('preview') ? 'Preview' : 'Available';
+								return <tr data-model-row data-name={haystack} data-provider={model.provider.toLowerCase()} data-workloads={workloads} data-open={String(isOpen(model))} data-fit={fit(model)} data-coding={model.scores.coding} data-reasoning={model.scores.reasoning} data-tools={model.scores.toolUse} data-input={model.pricing.input ?? Number.MAX_SAFE_INTEGER} data-output={model.pricing.output ?? Number.MAX_SAFE_INTEGER} data-context={contextNumber(model.contextWindow)}>
 									<td class="select-col"><label><input class="compare-check" type="checkbox" value={slug} data-label={model.name} /><span class="sr-only">Add {model.name} to comparison</span></label></td>
 									<td class="mono rank-cell">{String(index + 1).padStart(2, '0')}</td>
-									<td class="model-cell"><span class="model-dot" style={`--model-color:${model.color}`}></span><div><strong>{model.name}</strong><span>{model.provider} · {model.name.toLowerCase().includes('preview') ? 'Preview' : 'Available'}</span><small>{model.bestFor.slice(0, 2).join(' · ')}</small></div></td>
+									<td class="model-cell"><span class="model-dot" style={`--model-color:${model.color}`}></span><div><strong>{model.name}</strong><span>{model.provider} · {availability}</span><small>{model.bestFor.slice(0, 2).join(' · ')}</small></div></td>
 									<td><b class="fit-score mono">{fit(model).toFixed(1)}</b><span class="cell-note">editorial</span></td>
 									<td class="mono">{model.scores.coding.toFixed(1)}</td><td class="mono">{model.scores.reasoning.toFixed(1)}</td><td class="mono">{model.scores.toolUse.toFixed(1)}</td>
 									<td><span class="mono">{model.contextWindow}</span></td>
-									<td class="price-cell"><span class="mono">${model.pricing.input}</span><span class="price-arrow">→</span><span class="mono">${model.pricing.output}</span>{model.pricing.notes && <small title={model.pricing.notes}>Tier caveat</small>}</td>
+									<td class="price-cell">{model.pricing.input === null || model.pricing.output === null ? <span class="mono">N/A</span> : <><span class="mono">${model.pricing.input}</span><span class="price-arrow">→</span><span class="mono">${model.pricing.output}</span></>}{model.pricing.notes && <small title={model.pricing.notes}>Tier caveat</small>}</td>
 									<td><div class="source-list">{model.sources.slice(0, 2).map((source) => <a href={source.url} target="_blank" rel="noopener noreferrer" data-analytics="source_open" data-analytics-label={`${model.name}: ${source.label}`}>{source.label} ↗</a>)}</div></td>
 								</tr>;
 							})}

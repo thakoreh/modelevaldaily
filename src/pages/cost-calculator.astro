@@ -6,7 +6,7 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 
 const title = 'LLM Cost Calculator — Compare AI API Pricing by Scenario';
 const description = 'Estimate monthly and annual AI API costs across OpenAI, Anthropic, Google, Zhipu, and open-weight hosted models. Includes coding agent, RAG, support bot, and batch extraction presets.';
-const models = VERIFIED_MODELS.map((model) => ({
+const models = VERIFIED_MODELS.filter((model) => model.pricing.input !== null && model.pricing.output !== null).map((model) => ({
   provider: model.provider,
   model: model.name,
   inputCost: model.pricing.input,
