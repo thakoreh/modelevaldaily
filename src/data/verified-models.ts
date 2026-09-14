@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-12';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-14';
 
-// Last verification pass: 2026-09-12
+// Last verification pass: 2026-09-14
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -379,11 +379,11 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'DeepSeek',
 		color: '#06b6d4',
 		releaseDate: '2026-08-13',
-		pricing: { input: 0.44, output: 1.32, notes: 'Peak price per MTok. Off-peak is $0.22 input / $0.66 output; cache-hit input is $0.044 peak or $0.022 off-peak.' },
+		pricing: { input: 0.15, output: 0.60, notes: 'Legacy API identifier. DeepSeek states that deepseek-v4-pro routes to V4.1 Flash at the Flash off-peak rate; peak rates are $0.30 input / $1.20 output and cache-hit input is $0.003 off-peak or $0.006 peak.' },
 		contextWindow: '1M',
-		bestFor: ['Budget coding', 'High-volume', 'Cost-sensitive'],
+		bestFor: ['Legacy integration migration', 'DeepSeek API compatibility'],
 		scores: { coding: 9.1, reasoning: 9.2, toolUse: 8.9 },
-		strengths: ['Generally available DeepSeek V4 Pro API release', 'Responses API support and configurable thinking effort', 'Large context window'],
+		strengths: ['Legacy API ID that DeepSeek routes to V4.1 Flash', 'Migrate new requests to deepseek-flash', 'Retains 1M-token context compatibility'],
 		sources: [
 			{ label: 'DeepSeek V4 Pro GA update', url: 'https://api-docs.deepseek.com/updates/' },
 			{ label: 'DeepSeek API Docs', url: 'https://api-docs.deepseek.com/' },
@@ -391,17 +391,17 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
-		name: 'DeepSeek V4 Flash',
+		name: 'DeepSeek V4.1 Flash',
 		provider: 'DeepSeek',
 		color: '#0891b2',
-		releaseDate: '2026-07-31',
-		pricing: { input: 0.14, output: 0.28, notes: 'Public beta. Cache-hit input is $0.0028 per million tokens; DeepSeek says peak-hour pricing will be 2× when introduced.' },
+		releaseDate: '2026-09-10',
+		pricing: { input: 0.15, output: 0.60, notes: 'Off-peak list price per MTok. Peak rates are $0.30 input / $1.20 output; cache-hit input is $0.003 off-peak or $0.006 peak. Peak hours are 01:00–04:00 and 06:00–10:00 UTC on weekdays.' },
 		contextWindow: '1M',
-		bestFor: ['Low-cost agent experiments', 'Responses API', 'Codex-compatible workflows'],
-		scores: { coding: 8.9, reasoning: 8.9, toolUse: 8.9 },
-		strengths: ['Public beta — not a general-availability recommendation', 'DeepSeek-V4-Flash-0731 re-post-training update', '384K maximum output and Responses API support'],
+		bestFor: ['Low-cost multimodal agents', 'High-throughput coding', 'Long-context workflows'],
+		scores: { coding: 9.2, reasoning: 9.1, toolUse: 9.1 },
+		strengths: ['Public DeepSeek API release with native multimodal visual understanding', 'Use API model ID deepseek-flash; text and image inputs with 384K maximum output', 'Supports thinking and non-thinking modes; legacy V4 Flash IDs temporarily route here'],
 		sources: [
-			{ label: 'DeepSeek V4 Flash July 31 update', url: 'https://api-docs.deepseek.com/updates/' },
+			{ label: 'DeepSeek V4.1 Flash release notes', url: 'https://api-docs.deepseek.com/updates/' },
 			{ label: 'DeepSeek Models & Pricing', url: 'https://api-docs.deepseek.com/quick_start/pricing' },
 		],
 	},
