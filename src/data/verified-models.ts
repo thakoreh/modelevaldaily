@@ -66,6 +66,22 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		],
 	},
 	{
+		name: 'GPT-Live-1',
+		provider: 'OpenAI',
+		color: '#10b981',
+		releaseDate: '2026-09-10',
+		pricing: { input: null, output: null, notes: 'Voice sessions cost $0.05 per minute, billed per second. Backend model and tool usage are billed separately.' },
+		contextWindow: 'Not stated',
+		bestFor: ['Full-duplex voice agents', 'Telephony', 'Real-time conversational interfaces'],
+		scores: { coding: 1.0, reasoning: 1.0, toolUse: 1.0 },
+		strengths: ['Public API model for natural full-duplex voice conversations', 'Audio and text input with audio and text output', 'Delegates reasoning and tool calls to a backend agent; editorial coding, reasoning, and tool-use scores are not applicable'],
+		sources: [
+			{ label: 'OpenAI GPT-Live-1 announcement', url: 'https://openai.com/index/introducing-gpt-live-1-in-the-api/' },
+			{ label: 'OpenAI GPT-Live-1 model documentation', url: 'https://developers.openai.com/api/docs/models/gpt-live-1' },
+			{ label: 'OpenAI pricing', url: 'https://developers.openai.com/api/docs/pricing' },
+		],
+	},
+	{
 		name: 'GPT-5.6 Sol',
 		provider: 'OpenAI',
 		color: '#10b981',
