@@ -24,6 +24,11 @@ assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calcula
 assert.match(calculator, /<th[^>]*>Annual estimate<\/th>/, 'cost calculator must show a yearly run-rate alongside monthly spend');
 assert.match(calculator, /money\(m\.cost \* 12\)/, 'annual cost estimate must derive from the displayed monthly estimate');
 
+const homepage = read('src/pages/index.astro');
+assert.match(homepage, /Get my shortlist/, 'homepage must make the picker outcome explicit');
+assert.match(homepage, /Five quick questions\. No account required\./, 'homepage must set accurate effort and signup expectations for the picker');
+assert.match(homepage, /data-analytics="model_picker_start"/, 'homepage model-picker CTA intent must remain tracked');
+
 const models = read('src/pages/models.astro');
 assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');
 
