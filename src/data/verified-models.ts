@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-14';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-15';
 
-// Last verification pass: 2026-09-14
+// Last verification pass: 2026-09-15
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -395,11 +395,11 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		provider: 'DeepSeek',
 		color: '#06b6d4',
 		releaseDate: '2026-08-13',
-		pricing: { input: 0.15, output: 0.60, notes: 'Legacy API identifier. DeepSeek states that deepseek-v4-pro routes to V4.1 Flash at the Flash off-peak rate; peak rates are $0.30 input / $1.20 output and cache-hit input is $0.003 off-peak or $0.006 peak.' },
+		pricing: { input: 0.66, output: 1.98, notes: 'Off-peak list price per MTok. DeepSeek continued the dedicated V4 Pro API after September 14; peak rates are $1.32 input / $3.96 output and cache-hit input is $0.022 off-peak or $0.044 peak. Peak hours are 01:00–04:00 and 06:00–10:00 UTC on weekdays.' },
 		contextWindow: '1M',
-		bestFor: ['Legacy integration migration', 'DeepSeek API compatibility'],
+		bestFor: ['DeepSeek agent workloads', 'Long-context text workflows', 'DeepSeek API compatibility'],
 		scores: { coding: 9.1, reasoning: 9.2, toolUse: 8.9 },
-		strengths: ['Legacy API ID that DeepSeek routes to V4.1 Flash', 'Migrate new requests to deepseek-flash', 'Retains 1M-token context compatibility'],
+		strengths: ['Public dedicated DeepSeek-V4-Pro-0813 API model', 'Supports thinking and non-thinking modes, tool calls, Responses API, and the Anthropic API', 'Text-only input with 1M context and 384K maximum output'],
 		sources: [
 			{ label: 'DeepSeek V4 Pro GA update', url: 'https://api-docs.deepseek.com/updates/' },
 			{ label: 'DeepSeek API Docs', url: 'https://api-docs.deepseek.com/' },
