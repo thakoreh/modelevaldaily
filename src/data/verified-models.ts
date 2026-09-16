@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-15';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-16';
 
-// Last verification pass: 2026-09-15
+// Last verification pass: 2026-09-16
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -463,6 +463,36 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'Kimi K3 announcement', url: 'https://www.kimi.com/blog/kimi-k3' },
 			{ label: 'Kimi K3 pricing', url: 'https://platform.kimi.ai/docs/pricing/chat-k3' },
+		],
+	},
+	{
+		name: 'Qwen3.8-Flash-Next',
+		provider: 'Alibaba / Qwen',
+		color: '#7c3aed',
+		releaseDate: '2026-08-26',
+		pricing: { input: null, output: null, notes: 'Open weights for self-hosting; infrastructure costs apply. The separately hosted Qwen3.8-Flash model has its own QwenCloud token pricing.' },
+		contextWindow: '256K',
+		bestFor: ['Self-hosted multimodal agents', 'Cost-efficient long-context inference', 'Coding and office workflows'],
+		scores: { coding: 8.9, reasoning: 8.8, toolUse: 8.9 },
+		strengths: ['Open-weight multimodal MoE model with 125B main parameters, 51B N-gram embeddings, and 6B active parameters per token', 'Native 262,144-token context, extensible to 1M tokens with YaRN', 'Qwen documents text and vision support plus a separately hosted QwenCloud production model'],
+		sources: [
+			{ label: 'Qwen3.8-Flash-Next official release', url: 'https://qwen.ai/blog?id=qwen3.8-flash-next' },
+			{ label: 'Qwen3.8-Flash-Next official repository', url: 'https://github.com/QwenLM/Qwen3.8-Flash-Next' },
+		],
+	},
+	{
+		name: 'Qwen3.8-Flash',
+		provider: 'Alibaba / Qwen',
+		color: '#7c3aed',
+		releaseDate: '2026-08-26',
+		pricing: { input: 0.15, output: 0.47, notes: 'QwenCloud list prices per MTok; implicit cache reads are $0.016/MTok.' },
+		contextWindow: '1M',
+		bestFor: ['High-volume multimodal agents', 'Long-context coding', 'Tool-enabled production workflows'],
+		scores: { coding: 9.0, reasoning: 8.9, toolUse: 9.0 },
+		strengths: ['Hosted QwenCloud production model distinct from the Qwen3.8-Flash-Next open-weight checkpoint', 'Text and vision inputs with 1M context and 131K maximum output', 'Supports OpenAI- and Anthropic-compatible APIs, function calling, structured outputs, caching, batches, web search, and built-in tools'],
+		sources: [
+			{ label: 'Qwen3.8-Flash official QwenCloud model page', url: 'https://www.qwencloud.com/models/qwen3.8-flash' },
+			{ label: 'Qwen3.8-Flash and Flash-Next release details', url: 'https://qwen.ai/blog?id=qwen3.8-flash-next' },
 		],
 	},
 
