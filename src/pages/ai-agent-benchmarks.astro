@@ -16,7 +16,7 @@ import Header from '../components/Header.astro';
 					<p class="eyebrow">Agent benchmark guide</p>
 					<h1>AI Agent Benchmarks for Real Workflows</h1>
 					<p class="subtitle">Agent benchmarks should measure completed work, not isolated answers. The right model can plan, call tools, recover from errors, and keep costs under control.</p>
-					<div class="link-row"><a href="/models/">View model leaderboard →</a><a href="/compare/">Compare models →</a><a href="/model-data/">Check source data →</a></div>
+					<div class="link-row"><a href="/tools/model-picker/?task=agents&budget=medium&context=normal&tools=high&deployment=api">Find an agent model →</a><a href="/compare/">Compare models →</a><a href="/model-data/">Check source data →</a></div>
 				</div>
 			</section>
 			<section class="container section">
@@ -31,9 +31,9 @@ import Header from '../components/Header.astro';
 					<h2>Benchmark signals to use</h2>
 					<div class="table-wrap"><table><thead><tr><th>Decision</th><th>Signal</th><th>Next page</th></tr></thead><tbody>
 						<tr><td><strong>Planning</strong></td><td>Task decomposition, constraint tracking</td><td><a href="/tools/model-picker/?task=agents&budget=medium&context=normal&tools=high&deployment=api">Pick an agent model</a></td></tr>
-						<tr><td><strong>Tool use</strong></td><td>Function calls, browser actions, shell reliability</td><td><a href="/models/">/models/</a></td></tr>
+						<tr><td><strong>Tool use</strong></td><td>Function calls, browser actions, shell reliability</td><td><a href="/tools/model-picker/?task=agents&budget=medium&context=normal&tools=high&deployment=api">Find an agent model</a></td></tr>
 						<tr><td><strong>Coding</strong></td><td>Patch quality, test pass rate</td><td><a href="/tools/model-picker/?task=coding&budget=medium&context=large&tools=high&deployment=api">Pick a coding model</a></td></tr>
-						<tr><td><strong>Cost</strong></td><td>Tokens per completed task</td><td><a href="/cost-calculator/">/cost-calculator/</a></td></tr>
+						<tr><td><strong>Cost</strong></td><td>Tokens per completed task</td><td><a href="/cost-calculator/">Estimate agent cost</a></td></tr>
 					</tbody></table></div>
 				</div>
 			</section>

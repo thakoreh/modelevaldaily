@@ -99,6 +99,10 @@ for (const entryPoint of currentEntryPoints) {
   }
 }
 
+const agentBenchmarks = read('src/pages/ai-agent-benchmarks.astro');
+assert.match(agentBenchmarks, /href="\/tools\/model-picker\/\?task=agents&budget=medium&context=normal&tools=high&deployment=api">Find an agent model/, 'agent benchmark guide must route agent-intent visitors to a preconfigured picker');
+assert.match(agentBenchmarks, /href="\/cost-calculator\/">Estimate agent cost/, 'agent benchmark guide must provide a descriptive cost-calculator path');
+
 const llms = read('src/pages/llms.txt.ts');
 assert.match(llms, /## Decision tools/);
 assert.match(llms, /Choose a model for a specific coding, agent, RAG, reasoning, extraction, or local workflow/);
