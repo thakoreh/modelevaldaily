@@ -23,6 +23,9 @@ assert.match(calculator, /data-analytics="cost_calculator_calculate"/, 'cost-cal
 assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calculator share intent must be tracked');
 assert.match(calculator, /<th[^>]*>Annual estimate<\/th>/, 'cost calculator must show a yearly run-rate alongside monthly spend');
 assert.match(calculator, /money\(m\.cost \* 12\)/, 'annual cost estimate must derive from the displayed monthly estimate');
+assert.match(calculator, /const defaultCostScenario =/, 'cost calculator must provide a source-rendered default scenario before JavaScript runs');
+assert.match(calculator, /const defaultCostRows = models/, 'cost calculator must provide source-rendered comparison rows before JavaScript runs');
+assert.match(calculator, /Default estimates below use the Coding agent preset\./, 'cost calculator must identify the source-rendered comparison assumptions');
 
 const homepage = read('src/pages/index.astro');
 assert.match(homepage, /Get my shortlist/, 'homepage must make the picker outcome explicit');

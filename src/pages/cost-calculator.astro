@@ -16,6 +16,16 @@ const models = VERIFIED_MODELS.filter((model) => model.pricing.input !== null &&
   lastVerified: MODEL_DATA_VERIFIED_ON,
   notes: model.pricing.notes ?? '',
 }));
+const defaultCostScenario = { requests: 250, inputTokens: 12000, outputTokens: 1800, retries: 8, cache: 25, discount: 75 };
+const monthlyRequests = defaultCostScenario.requests * 30;
+const retryMultiplier = 1 + defaultCostScenario.retries / 100;
+const paidInputTokens = monthlyRequests * defaultCostScenario.inputTokens * retryMultiplier * (1 - (defaultCostScenario.cache / 100) * (defaultCostScenario.discount / 100));
+const outputTokens = monthlyRequests * defaultCostScenario.outputTokens * retryMultiplier;
+const defaultCostRows = models
+  .map((model) => ({ ...model, cost: (paidInputTokens / 1e6) * model.inputCost + (outputTokens / 1e6) * model.outputCost }))
+  .sort((a, b) => a.cost - b.cost)
+  .slice(0, 30);
+const formatMoney = (amount: number) => amount < 100 ? `$${amount.toFixed(2)}` : `$${Math.round(amount).toLocaleString()}`;
 ---
 <html lang="en">
 <head><BaseHead title={title} description={description} type="website" /></head>
@@ -59,7 +69,8 @@ const models = VERIFIED_MODELS.filter((model) => model.pricing.input !== null &&
 
   <section class="container section">
     <h2>Model cost comparison</h2>
-    <div class="table-wrap"><table><thead><tr><th>Model</th><th>Provider</th><th>Input</th><th>Output</th><th>Monthly estimate</th><th>Annual estimate</th><th>Source</th></tr></thead><tbody id="results"></tbody></table></div>
+    <p class="comparison-note">Default estimates below use the Coding agent preset. Change the scenario above for your own traffic and token mix.</p>
+    <div class="table-wrap"><table><thead><tr><th>Model</th><th>Provider</th><th>Input</th><th>Output</th><th>Monthly estimate</th><th>Annual estimate</th><th>Source</th></tr></thead><tbody id="results">{defaultCostRows.map((model, index) => <tr><td><strong>{index + 1}. {model.model}</strong>{model.notes && <><br /><span>{model.notes}</span></>}</td><td>{model.provider}</td><td>${model.inputCost}/M</td><td>${model.outputCost}/M</td><td><strong>{formatMoney(model.cost)}</strong></td><td><strong>{formatMoney(model.cost * 12)}</strong></td><td><a href={model.sourceUrl} target="_blank" rel="noopener">Source</a><br /><small>{model.lastVerified}</small></td></tr>)}</tbody></table></div>
   </section>
 </main>
 <Footer />
@@ -142,5 +153,5 @@ const models = VERIFIED_MODELS.filter((model) => model.pricing.input !== null &&
 </script>
 </body></html>
 <style>
-.page{padding-bottom:4rem}.container{max-width:1120px;margin:0 auto;padding:0 1.5rem}.hero{padding:4rem 0 2.5rem;background:var(--gradient-hero)}.eyebrow{color:var(--accent-light);text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:800}h1{font-size:clamp(2.3rem,5vw,4rem);margin:.4rem 0 1rem}.subtitle{color:var(--text-secondary);max-width:780px;font-size:1.08rem;line-height:1.7}.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.2rem}.btn,button{display:inline-flex;justify-content:center;padding:.85rem 1rem;border-radius:12px;border:0;font-weight:800;text-decoration:none;cursor:pointer}.primary,button{background:var(--gradient-primary);color:#fff}.secondary,.secondary-button{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-primary)}.calc-grid{display:grid;grid-template-columns:minmax(0,1fr)380px;gap:1rem;padding-top:2rem}.panel{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:18px;padding:1.25rem}label{display:grid;gap:.4rem;color:var(--text-secondary);font-weight:700;margin-top:1rem}input,select{background:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-primary);border-radius:12px;padding:.8rem}.two{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.metric{display:flex;justify-content:space-between;border-bottom:1px solid var(--border-secondary);padding:.8rem 0}.metric span,.muted,td span,small{color:var(--text-tertiary)}.section{padding-top:2rem}.table-wrap{overflow-x:auto;background:var(--bg-card);border:1px solid var(--border-primary);border-radius:18px}table{width:100%;border-collapse:collapse}th,td{padding:.9rem 1rem;border-bottom:1px solid var(--border-secondary);text-align:left}th{color:var(--text-secondary)}a{color:var(--accent-light);font-weight:700}@media(max-width:900px){.calc-grid{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
+.page{padding-bottom:4rem}.container{max-width:1120px;margin:0 auto;padding:0 1.5rem}.hero{padding:4rem 0 2.5rem;background:var(--gradient-hero)}.eyebrow{color:var(--accent-light);text-transform:uppercase;letter-spacing:.08em;font-size:.78rem;font-weight:800}h1{font-size:clamp(2.3rem,5vw,4rem);margin:.4rem 0 1rem}.subtitle{color:var(--text-secondary);max-width:780px;font-size:1.08rem;line-height:1.7}.hero-actions{display:flex;gap:.75rem;flex-wrap:wrap;margin-top:1.2rem}.btn,button{display:inline-flex;justify-content:center;padding:.85rem 1rem;border-radius:12px;border:0;font-weight:800;text-decoration:none;cursor:pointer}.primary,button{background:var(--gradient-primary);color:#fff}.secondary,.secondary-button{background:var(--bg-tertiary);color:var(--text-primary);border:1px solid var(--border-primary)}.calc-grid{display:grid;grid-template-columns:minmax(0,1fr)380px;gap:1rem;padding-top:2rem}.panel{background:var(--bg-card);border:1px solid var(--border-primary);border-radius:18px;padding:1.25rem}label{display:grid;gap:.4rem;color:var(--text-secondary);font-weight:700;margin-top:1rem}input,select{background:var(--bg-secondary);color:var(--text-primary);border:1px solid var(--border-primary);border-radius:12px;padding:.8rem}.two{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.metric{display:flex;justify-content:space-between;border-bottom:1px solid var(--border-secondary);padding:.8rem 0}.metric span,.muted,td span,small{color:var(--text-tertiary)}.section{padding-top:2rem}.comparison-note{color:var(--text-secondary);margin:.5rem 0 1rem}.table-wrap{overflow-x:auto;background:var(--bg-card);border:1px solid var(--border-primary);border-radius:18px}table{width:100%;border-collapse:collapse}th,td{padding:.9rem 1rem;border-bottom:1px solid var(--border-secondary);text-align:left}th{color:var(--text-secondary)}a{color:var(--accent-light);font-weight:700}@media(max-width:900px){.calc-grid{grid-template-columns:1fr}.two{grid-template-columns:1fr}}
 </style>
