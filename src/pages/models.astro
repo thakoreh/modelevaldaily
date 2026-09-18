@@ -7,6 +7,7 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 
 const slugify = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 const fit = (model: (typeof VERIFIED_MODELS)[number]) => model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25;
+const hasEditorialScore = (model: (typeof VERIFIED_MODELS)[number]) => model.editorialScoreApplicable !== false;
 const contextNumber = (value: string) => {
 	const number = Number.parseFloat(value);
 	return value.toUpperCase().includes('M') ? number * 1_000_000 : number * 1_000;
@@ -14,7 +15,7 @@ const contextNumber = (value: string) => {
 const providers = [...new Set(VERIFIED_MODELS.map((model) => model.provider))].sort();
 const openTerms = ['open weights', 'open-weight', 'self-hosted', 'self hosted', 'privacy', 'customization'];
 const isOpen = (model: (typeof VERIFIED_MODELS)[number]) => [...model.bestFor, ...model.strengths].some((item) => openTerms.some((term) => item.toLowerCase().includes(term)));
-const ranked = VERIFIED_MODELS.slice().sort((a, b) => fit(b) - fit(a));
+const ranked = VERIFIED_MODELS.slice().sort((a, b) => Number(hasEditorialScore(b)) - Number(hasEditorialScore(a)) || fit(b) - fit(a));
 const leaderboardLabel = `Top ${VERIFIED_MODELS.length} AI Models`;
 const modelsJsonLd = {
 	'@context': 'https://schema.org',
@@ -71,12 +72,12 @@ const modelsJsonLd = {
 								const haystack = `${model.name} ${model.provider} ${model.bestFor.join(' ')} ${model.strengths.join(' ')}`.toLowerCase();
 								const workloads = [haystack.includes('coding') || haystack.includes('agent') ? 'coding' : '', haystack.includes('reason') ? 'reasoning' : '', haystack.includes('budget') || haystack.includes('cost') || haystack.includes('value') || haystack.includes('volume') ? 'budget' : '', haystack.includes('long context') || contextNumber(model.contextWindow) >= 1_000_000 ? 'context' : ''].filter(Boolean).join(' ');
 								const availability = haystack.includes('research/non-commercial') ? 'Research/non-commercial' : model.name.toLowerCase().includes('preview') ? 'Preview' : 'Available';
-								return <tr data-model-row data-name={haystack} data-provider={model.provider.toLowerCase()} data-workloads={workloads} data-open={String(isOpen(model))} data-fit={fit(model)} data-coding={model.scores.coding} data-reasoning={model.scores.reasoning} data-tools={model.scores.toolUse} data-input={model.pricing.input ?? Number.MAX_SAFE_INTEGER} data-output={model.pricing.output ?? Number.MAX_SAFE_INTEGER} data-context={contextNumber(model.contextWindow)}>
+								return <tr data-model-row data-name={haystack} data-provider={model.provider.toLowerCase()} data-workloads={workloads} data-open={String(isOpen(model))} data-fit={hasEditorialScore(model) ? fit(model) : -1} data-coding={hasEditorialScore(model) ? model.scores.coding : -1} data-reasoning={hasEditorialScore(model) ? model.scores.reasoning : -1} data-tools={hasEditorialScore(model) ? model.scores.toolUse : -1} data-input={model.pricing.input ?? Number.MAX_SAFE_INTEGER} data-output={model.pricing.output ?? Number.MAX_SAFE_INTEGER} data-context={contextNumber(model.contextWindow)}>
 									<td class="select-col"><label><input class="compare-check" type="checkbox" value={slug} data-label={model.name} /><span class="sr-only">Add {model.name} to comparison</span></label></td>
-									<td class="mono rank-cell">{String(index + 1).padStart(2, '0')}</td>
+									<td class="mono rank-cell">{hasEditorialScore(model) ? String(index + 1).padStart(2, '0') : '—'}</td>
 									<td class="model-cell"><span class="model-dot" style={`--model-color:${model.color}`}></span><div><strong>{model.name}</strong><span>{model.provider} · {availability}</span><small>{model.bestFor.slice(0, 2).join(' · ')}</small></div></td>
-									<td><b class="fit-score mono">{fit(model).toFixed(1)}</b><span class="cell-note">editorial</span></td>
-									<td class="mono">{model.scores.coding.toFixed(1)}</td><td class="mono">{model.scores.reasoning.toFixed(1)}</td><td class="mono">{model.scores.toolUse.toFixed(1)}</td>
+									<td>{hasEditorialScore(model) ? <><b class="fit-score mono">{fit(model).toFixed(1)}</b><span class="cell-note">editorial</span></> : <span class="mono">N/A</span>}</td>
+									<td class="mono">{hasEditorialScore(model) ? model.scores.coding.toFixed(1) : 'N/A'}</td><td class="mono">{hasEditorialScore(model) ? model.scores.reasoning.toFixed(1) : 'N/A'}</td><td class="mono">{hasEditorialScore(model) ? model.scores.toolUse.toFixed(1) : 'N/A'}</td>
 									<td><span class="mono">{model.contextWindow}</span></td>
 									<td class="price-cell">{model.pricing.input === null || model.pricing.output === null ? <span class="mono">N/A</span> : <><span class="mono">${model.pricing.input}</span><span class="price-arrow">→</span><span class="mono">${model.pricing.output}</span></>}{model.pricing.notes && <small title={model.pricing.notes}>Tier caveat</small>}</td>
 									<td><div class="source-list">{model.sources.slice(0, 2).map((source) => <a href={source.url} target="_blank" rel="noopener noreferrer" data-analytics="source_open" data-analytics-label={`${model.name}: ${source.label}`}>{source.label} ↗</a>)}</div></td>
@@ -90,7 +91,7 @@ const modelsJsonLd = {
 
 			<section class="method-note container" id="methodology">
 				<div><span class="eyebrow">Score methodology</span><h2>Orientation, not manufactured certainty.</h2></div>
-				<div><p>The editorial fit score weights coding at 40%, reasoning at 35%, and tool use at 25%. It is a compact decision aid built from the dimensions tracked in this catalog—not a claim that one model is universally best.</p><p>Prices show input then output cost per one million tokens. Provider tiers, caching, batches, and hosts can change the actual bill. Open the evidence links and caveat labels before committing to a production choice.</p><a href="/model-data/">Inspect the source log and review policy →</a></div>
+				<div><p>The editorial fit score weights coding at 40%, reasoning at 35%, and tool use at 25%. It is a compact decision aid built from the dimensions tracked in this catalog—not a claim that one model is universally best. Specialized models that do not map to those dimensions are listed but marked N/A and excluded from editorial ranking.</p><p>Prices show input then output cost per one million tokens. Provider tiers, caching, batches, and hosts can change the actual bill. Open the evidence links and caveat labels before committing to a production choice.</p><a href="/model-data/">Inspect the source log and review policy →</a></div>
 			</section>
 		</main>
 		<div class="compare-tray" id="compare-tray" hidden><div><span id="compare-count">0 selected</span><div id="selected-models"></div></div><a id="compare-link" class="btn btn-primary" href="/compare/">Compare selected →</a></div>

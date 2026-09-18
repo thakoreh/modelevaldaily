@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-16';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-18';
 
-// Last verification pass: 2026-09-16
+// Last verification pass: 2026-09-18
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -28,6 +28,7 @@ export interface VerifiedModel {
 	provider: string;
 	color: string;
 	releaseDate: string;
+	editorialScoreApplicable?: boolean;
 	pricing: {
 		input: number | null;
 		output: number | null;
@@ -251,7 +252,23 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		strengths: ['Generally available Gemini Flash model', '1,048,576-token input and 65,536-token output limits', 'Supports caching, code execution, computer use (preview), file search, function calling, Google Search and Maps grounding, structured outputs, thinking, and URL context'],
 		sources: [{ label: 'Gemini 3.8 Flash model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.8-flash' }, { label: 'Gemini 3.8 Flash pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing' }, { label: 'Gemini API release notes', url: 'https://ai.google.dev/gemini-api/docs/changelog' }],
 		},
-		{
+	{
+		name: 'Gemini 3.8 Live', provider: 'Google', color: '#34a853', releaseDate: '2026-09-15',
+		editorialScoreApplicable: false,
+		pricing: { input: 0.75, output: 4.50, notes: 'Published text rates per MTok. Audio input is $3/MTok (about $0.005/min) and audio output is $12/MTok (about $0.018/min); image/video input is $1/MTok (about $0.002/min).' }, contextWindow: '131K',
+		bestFor: ['Low-latency voice agents', 'Real-time dialogue', 'Voice interfaces with tools'], scores: { coding: 1.0, reasoning: 1.0, toolUse: 1.0 },
+		strengths: ['Generally available audio-to-audio Live API model', 'Text, image, audio, and video input with text and audio output; 131,072-token input and 65,536-token output limits', 'Supports interleaved reasoning, Search grounding, and synchronous or asynchronous function calling; excluded from the catalog’s code-first editorial score'],
+		sources: [{ label: 'Gemini 3.8 Live model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live' }, { label: 'Gemini Live API pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing#gemini-3.8-live' }, { label: 'Gemini API release notes', url: 'https://ai.google.dev/gemini-api/docs/changelog' }],
+	},
+	{
+		name: 'Gemini 3.8 Live Extended Thinking', provider: 'Google', color: '#34a853', releaseDate: '2026-09-15',
+		editorialScoreApplicable: false,
+		pricing: { input: 0.75, output: 4.50, notes: 'Published text rates per MTok. Audio input is $3/MTok (about $0.005/min) and audio output is $12/MTok (about $0.018/min); image/video input is $1/MTok (about $0.002/min).' }, contextWindow: '131K',
+		bestFor: ['Complex voice agents', 'Multi-step voice workflows', 'Voice agents with slow tools'], scores: { coding: 1.0, reasoning: 1.0, toolUse: 1.0 },
+		strengths: ['Generally available audio-to-audio Live API model with background reasoning', 'Text, image, audio, and video input with text and audio output; 131,072-token input and 65,536-token output limits', 'Uses asynchronous function calling and interaction-status events while it reasons or runs tools in the background; excluded from the catalog’s code-first editorial score'],
+		sources: [{ label: 'Gemini 3.8 Live Extended Thinking model card', url: 'https://ai.google.dev/gemini-api/docs/models/gemini-3.8-live-extended-thinking' }, { label: 'Gemini Live API thinking guide', url: 'https://ai.google.dev/gemini-api/docs/live-api/thinking' }, { label: 'Gemini Live API pricing', url: 'https://ai.google.dev/gemini-api/docs/pricing#gemini-3.8-live' }, { label: 'Gemini API release notes', url: 'https://ai.google.dev/gemini-api/docs/changelog' }],
+	},
+	{
 		name: 'Gemini 3.7 Flash', provider: 'Google', color: '#34a853', releaseDate: '2026-08-13',
 		pricing: { input: 0.75, output: 3.75, notes: 'Introductory paid-tier pricing per MTok through December 31, 2026; standard pricing becomes $1.50 input / $7.50 output on January 1, 2027.' }, contextWindow: '1.05M',
 		bestFor: ['Agentic coding', 'Multimodal reasoning', 'Long-context workflows'], scores: { coding: 9.6, reasoning: 9.5, toolUse: 9.6 },
