@@ -512,6 +512,21 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 			{ label: 'Qwen3.8-Flash and Flash-Next release details', url: 'https://qwen.ai/blog?id=qwen3.8-flash-next' },
 		],
 	},
+	{
+		name: 'Qwen3.8-Max',
+		provider: 'Alibaba / Qwen',
+		color: '#7c3aed',
+		releaseDate: '2026-08-02',
+		pricing: { input: null, output: null, notes: 'No current public international list price was verified in this pass; check Model Studio before production use.' },
+		contextWindow: '1M',
+		bestFor: ['Long-horizon coding', 'Complex multimodal agents', 'Professional knowledge work'],
+		scores: { coding: 9.5, reasoning: 9.5, toolUse: 9.5 },
+		strengths: ['Public Model Studio flagship with 2.4T total MoE parameters', 'Text and image inputs with a 1M-token context window and 65,536 maximum output tokens', 'Supports thinking mode and Qwen’s tool ecosystem; scores are editorial decision aids, not provider benchmark results'],
+		sources: [
+			{ label: 'Qwen3.8-Max official release', url: 'https://qwen.ai/blog?id=qwen3.8' },
+			{ label: 'Alibaba Model Studio release log', url: 'https://help.aliyun.com/en/model-studio/newly-released-models' },
+		],
+	},
 
 	{
 		name: 'North Small Translate',
