@@ -186,7 +186,7 @@ const pickerSchema = {
           <p id="reason-text">{winner.name} is the best fit for {pickerOptions.task.replace('-', ' ')} with your budget/context settings. Main strengths: {winner.strengths.slice(0, 2).join(', ')}.</p>
           <div class="actions">
             <a href="/cost-calculator/" data-analytics="model_picker_cost_estimate" data-analytics-label="Model picker recommendation">Estimate cost</a>
-            <a href="/compare/" data-analytics="model_picker_compare" data-analytics-label="Model picker recommendation">Compare models</a>
+            <a id="compare-models" href="/compare/" data-analytics="model_picker_compare" data-analytics-label="Model picker recommendation">Compare this shortlist</a>
             <button type="button" id="copy-picker-link" class="share-button" data-analytics="model_picker_share" data-analytics-label="Model picker recommendation">Copy recommendation link</button>
           </div>
           <p id="picker-share-status" class="share-status" role="status" aria-live="polite"></p>
@@ -284,6 +284,11 @@ const pickerSchema = {
           card.append(title, provider, best, meta);
           shortlist.appendChild(card);
         });
+        const compareLink = document.getElementById('compare-models');
+        if (compareLink) {
+          const shortlistSlugs = ranked.slice(0, 3).map((model) => model.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')).join(',');
+          compareLink.href = `/compare/?models=${encodeURIComponent(shortlistSlugs)}`;
+        }
         const params = new URLSearchParams(options);
         history.replaceState(null, '', `${location.pathname}?${params.toString()}`);
       }

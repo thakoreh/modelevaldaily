@@ -16,6 +16,8 @@ assert.doesNotMatch(picker, /Fit score/);
 assert.match(picker, /data-analytics="model_picker_run"/, 'picker submit intent must be tracked');
 assert.match(picker, /data-analytics="model_picker_cost_estimate"/, 'picker-to-cost-calculator conversion must be tracked');
 assert.match(picker, /data-analytics="model_picker_compare"/, 'picker-to-comparison conversion must be tracked');
+assert.match(picker, /id="compare-models"/, 'picker comparison CTA must be addressable for the recommended shortlist');
+assert.match(picker, /ranked\.slice\(0, 3\).*compareLink\.href/s, 'picker comparison CTA must carry the top three recommendations into the comparison workspace');
 assert.match(picker, /data-analytics="model_picker_share"/, 'picker recommendation sharing must be tracked');
 assert.match(picker, /id="picker-share-status" class="share-status" role="status" aria-live="polite"/, 'picker sharing must announce copy feedback accessibly');
 
