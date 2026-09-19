@@ -28,11 +28,21 @@ assert.match(calculator, /money\(m\.cost \* 12\)/, 'annual cost estimate must de
 assert.match(calculator, /const defaultCostScenario =/, 'cost calculator must provide a source-rendered default scenario before JavaScript runs');
 assert.match(calculator, /const defaultCostRows = models/, 'cost calculator must provide source-rendered comparison rows before JavaScript runs');
 assert.match(calculator, /Default estimates below use the Coding agent preset\./, 'cost calculator must identify the source-rendered comparison assumptions');
+assert.match(calculator, /id="selection-note" class="selection-note" hidden/, 'cost calculator must disclose a carried model selection');
+assert.match(calculator, /filter\(\(slug\) => models\.some\(\(model\) => model\.slug === slug\)\)/, 'cost calculator must safely validate model selections carried from another decision tool');
+assert.match(calculator, /const visibleModels = selectedModelSlugs\.length \? models\.filter/, 'cost calculator must constrain client-rendered rows to valid carried selections');
+assert.match(calculator, /cost-comparison-heading.*Cost for selected models/s, 'cost calculator must label a carried selection clearly');
+assert.match(calculator, /selectedModelSlugs\.length\) q\.set\('models', selectedModelSlugs\.join\(','\)\)/, 'cost calculator must preserve a carried selection when scenario inputs update');
 
 const homepage = read('src/pages/index.astro');
 assert.match(homepage, /Get my shortlist/, 'homepage must make the picker outcome explicit');
 assert.match(homepage, /Five quick questions\. No account required\./, 'homepage must set accurate effort and signup expectations for the picker');
 assert.match(homepage, /data-analytics="model_picker_start"/, 'homepage model-picker CTA intent must remain tracked');
+
+const comparison = read('src/pages/compare.astro');
+assert.match(comparison, /id="compare-costs" class="cost-link"/, 'comparison must offer a visible next step to estimate selected model costs');
+assert.match(comparison, /data-analytics="comparison_cost_estimate"/, 'comparison-to-cost-calculator conversion must be tracked');
+assert.match(comparison, /costLink\.href = `\/cost-calculator\/\?models=\$\{encodeURIComponent\(chosen\.map\(\(model\) => model\.slug\)\.join\(','\)\)\}`/, 'comparison cost CTA must preserve the selected models after client-side comparison updates');
 
 const models = read('src/pages/models.astro');
 assert.match(models, /search\.value = new URLSearchParams\(window\.location\.search\)\.get\('q'\) \|\| '';/, 'model search must honor the SearchAction q parameter');

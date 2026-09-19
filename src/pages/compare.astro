@@ -11,6 +11,7 @@ const requested = (Astro.url.searchParams.get('models') ?? '').split(',').filter
 const validRequested = requested.filter((slug, index) => models.some((model) => model.slug === slug) && requested.indexOf(slug) === index).slice(0, 3);
 const selectedSlugs = validRequested.length >= 2 ? validRequested : models.slice(0, 2).map((model) => model.slug);
 const selected = selectedSlugs.map((slug) => models.find((model) => model.slug === slug)!).filter(Boolean);
+const costCalculatorUrl = `/cost-calculator/?models=${encodeURIComponent(selectedSlugs.join(','))}`;
 const fit = (model: (typeof models)[number]) => model.scores.coding * 0.4 + model.scores.reasoning * 0.35 + model.scores.toolUse * 0.25;
 const contextNumber = (value: string) => Number.parseFloat(value) * (value.toUpperCase().includes('M') ? 1_000_000 : 1_000);
 const maxOf = (getter: (model: (typeof selected)[number]) => number) => Math.max(...selected.map(getter));
@@ -45,7 +46,7 @@ const metricRows = [
 			</section>
 
 			<section class="comparison container" aria-labelledby="comparison-heading">
-				<div class="comparison-head"><div><span class="eyebrow">Decision summary</span><h2 id="comparison-heading"><span id="comparison-title">{selected.map((model) => model.name).join(' vs ')}</span></h2></div><div class="share-note"><span class="badge badge-success">Reviewed {MODEL_DATA_VERIFIED_ON}</span><button id="copy-link" type="button">Copy comparison link</button></div></div>
+				<div class="comparison-head"><div><span class="eyebrow">Decision summary</span><h2 id="comparison-heading"><span id="comparison-title">{selected.map((model) => model.name).join(' vs ')}</span></h2></div><div class="share-note"><span class="badge badge-success">Reviewed {MODEL_DATA_VERIFIED_ON}</span><a id="compare-costs" class="cost-link" href={costCalculatorUrl} data-analytics="comparison_cost_estimate" data-analytics-label="Model comparison">Estimate selected costs</a><button id="copy-link" type="button">Copy comparison link</button></div></div>
 
 				<div id="model-summaries" class:list={['model-summaries', `columns-${selected.length}`]}>
 					{selected.map((model) => <article class="model-summary" style={`--model-color:${model.color}`}><div class="model-title"><span class="model-swatch"></span><div><span class="meta">{model.provider}</span><h3>{model.name}</h3></div></div><div class="headline-score"><strong class="mono">{fit(model).toFixed(1)}</strong><span>editorial fit</span></div><p>{model.strengths.slice(0, 2).join('. ')}.</p><div class="tag-list">{model.bestFor.slice(0, 3).map((item) => <span>{item}</span>)}</div>{model.pricing.notes && <div class="caveat"><strong>Pricing caveat</strong><p>{model.pricing.notes}</p></div>}</article>)}
@@ -87,6 +88,8 @@ const metricRows = [
 					selects.forEach((select, index) => { select.value = chosen[index]?.slug || ''; });
 					document.getElementById('comparison-title').textContent = chosen.map((model) => model.name).join(' vs ');
 					const summaries = document.getElementById('model-summaries');
+					const costLink = document.getElementById('compare-costs');
+					if (costLink) costLink.href = `/cost-calculator/?models=${encodeURIComponent(chosen.map((model) => model.slug).join(','))}`;
 					summaries.className = `model-summaries columns-${chosen.length}`;
 					summaries.replaceChildren(...chosen.map((model) => {
 						const article = el('article', 'model-summary'); article.style.setProperty('--model-color', model.color);
@@ -144,6 +147,8 @@ const metricRows = [
 	.comparison { padding-block: 4.5rem 6rem; }
 	.comparison-head { margin-bottom: 2rem; display: flex; align-items: end; justify-content: space-between; gap: 2rem; }
 	.share-note { display: flex; align-items: center; gap: 0.65rem; }
+	.cost-link { min-height: 36px; display: inline-flex; align-items: center; padding: 0.4rem 0.65rem; border: 1px solid var(--blue); border-radius: var(--radius-md); background: var(--blue); color: #fff; font-size: 0.75rem; font-weight: 680; text-decoration: none; }
+	.cost-link:hover { background: var(--blue-dark); color: #fff; }
 	#copy-link { min-height: 36px; padding: 0.4rem 0.65rem; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); color: var(--ink-muted); cursor: pointer; font-size: 0.75rem; }
 	.model-summaries { display: grid; gap: 1px; padding: 1px; border-radius: var(--radius-lg); background: var(--line); overflow: hidden; }
 	.columns-2 { grid-template-columns: repeat(2, 1fr); }
