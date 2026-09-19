@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-18';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-19';
 
-// Last verification pass: 2026-09-18
+// Last verification pass: 2026-09-19
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -510,6 +510,23 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'Qwen3.8-Flash official QwenCloud model page', url: 'https://www.qwencloud.com/models/qwen3.8-flash' },
 			{ label: 'Qwen3.8-Flash and Flash-Next release details', url: 'https://qwen.ai/blog?id=qwen3.8-flash-next' },
+		],
+	},
+	{
+		name: 'Qwen3.8-Omni-Flash',
+		provider: 'Alibaba / Qwen',
+		color: '#7c3aed',
+		releaseDate: '2026-09-17',
+		editorialScoreApplicable: false,
+		pricing: { input: null, output: null, notes: 'The model card directs users to Model Studio pricing; a comparable USD per-token rate was not verified in this pass.' },
+		contextWindow: '1M',
+		bestFor: ['Audio and video understanding', 'Multimodal content analysis', 'Tool-enabled long-context agents'],
+		scores: { coding: 1.0, reasoning: 1.0, toolUse: 1.0 },
+		strengths: ['Public Model Studio model with text, image, audio, and video input; text output only', '1M-token context window with up to 131,072 output tokens', 'Supports adjustable reasoning effort, custom tool calling, web search, and implicit/session context caching', 'Editorial coding, reasoning, and tool-use scores are not applicable to this specialized multimodal model'],
+		sources: [
+			{ label: 'Alibaba Qwen3.8-Omni-Flash model card', url: 'https://help.aliyun.com/en/model-studio/qwen3-8-omni-flash' },
+			{ label: 'Alibaba Model Studio release log', url: 'https://help.aliyun.com/en/model-studio/newly-released-models' },
+			{ label: 'Alibaba Model Studio pricing', url: 'https://help.aliyun.com/en/model-studio/model-pricing' },
 		],
 	},
 	{

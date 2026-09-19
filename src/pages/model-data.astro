@@ -125,7 +125,7 @@ import { MODEL_DATA_VERIFIED_ON, VERIFIED_MODELS } from '../data/verified-models
 										</div>
 									</td>
 									<td>
-										{model.pricing.input === null || model.pricing.output === null ? 'No published production API rate' : `$${model.pricing.input} / $${model.pricing.output}`}
+										{model.pricing.input === null || model.pricing.output === null ? 'See pricing notes' : `$${model.pricing.input} / $${model.pricing.output}`}
 									</td>
 									<td>{model.pricing.notes ?? 'Standard published rate.'}</td>
 									<td>

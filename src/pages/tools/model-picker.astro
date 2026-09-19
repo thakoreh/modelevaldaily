@@ -7,7 +7,7 @@ import { VERIFIED_MODELS, MODEL_DATA_VERIFIED_ON } from '../../data/verified-mod
 const title = 'AI Model Picker — Choose the Best LLM for Your Use Case';
 const description = 'Answer five questions and get a practical AI model recommendation for coding, agents, RAG, long-context, cost-sensitive, or local/private workflows.';
 
-const pickerModels = VERIFIED_MODELS.map((model) => ({
+const pickerModels = VERIFIED_MODELS.filter((model) => model.editorialScoreApplicable !== false).map((model) => ({
   name: model.name,
   provider: model.provider,
   coding: model.scores.coding,
