@@ -23,6 +23,9 @@ assert.match(picker, /id="picker-share-status" class="share-status" role="status
 
 assert.match(calculator, /data-analytics="cost_calculator_calculate"/, 'cost-calculator calculation intent must be tracked');
 assert.match(calculator, /data-analytics="cost_calculator_share"/, 'cost-calculator share intent must be tracked');
+assert.match(calculator, /id="cost-calculator-share-status" class="share-status" role="status" aria-live="polite"/, 'cost calculator sharing must announce feedback accessibly');
+assert.match(calculator, /Shareable link copied\./, 'cost calculator must confirm a successful shared-link copy');
+assert.match(calculator, /Could not copy the link\. Copy the address from your browser instead\./, 'cost calculator must provide a recovery path if shared-link copy is unavailable');
 assert.match(calculator, /<th[^>]*>Annual estimate<\/th>/, 'cost calculator must show a yearly run-rate alongside monthly spend');
 assert.match(calculator, /money\(m\.cost \* 12\)/, 'annual cost estimate must derive from the displayed monthly estimate');
 assert.match(calculator, /const defaultCostScenario =/, 'cost calculator must provide a source-rendered default scenario before JavaScript runs');
