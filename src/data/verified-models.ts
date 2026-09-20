@@ -1,6 +1,6 @@
-export const MODEL_DATA_VERIFIED_ON = '2026-09-19';
+export const MODEL_DATA_VERIFIED_ON = '2026-09-20';
 
-// Last verification pass: 2026-09-19
+// Last verification pass: 2026-09-20
 // Official docs checked for OpenAI, Anthropic, Google, xAI, DeepSeek, Meta, Mistral, Alibaba/Qwen, Z.ai, Moonshot, MiniMax, Cohere, and source URL availability.
 
 export const MODEL_SCORE_METHODOLOGY = {
@@ -480,6 +480,23 @@ export const VERIFIED_MODELS: VerifiedModel[] = [
 		sources: [
 			{ label: 'Kimi K3 announcement', url: 'https://www.kimi.com/blog/kimi-k3' },
 			{ label: 'Kimi K3 pricing', url: 'https://platform.kimi.ai/docs/pricing/chat-k3' },
+		],
+	},
+	{
+		name: 'Kimi K2.7 Code',
+		provider: 'Moonshot AI',
+		color: '#00d4aa',
+		releaseDate: '2026-06-12',
+		pricing: { input: 0.95, output: 4.00, notes: 'Standard Kimi API cache-miss price per MTok; cache-hit input is $0.19/MTok. The higher-throughput variant is $0.38 cached input / $1.90 cache-miss input / $8 output per MTok.' },
+		contextWindow: '262K',
+		bestFor: ['Long-horizon software engineering', 'Coding agents', 'Cost-conscious API coding workflows'],
+		scores: { coding: 9.2, reasoning: 9.0, toolUse: 9.2 },
+		strengths: ['Public open-weight, coding-focused agentic model', '262,144-token context with native vision encoder', 'Released in Kimi For Coding and available as the kimi-k2.7-code API model; editorial scores are decision aids, not vendor benchmark results'],
+		sources: [
+			{ label: 'Kimi K2.7 Code release notes', url: 'https://www.kimi.com/code/docs/en/kimi-code/whats-new.html' },
+			{ label: 'Kimi K2.7 Code overview', url: 'https://www.kimi.ai/resources/kimi-k2-7-code' },
+			{ label: 'Kimi K2.7 Code API quickstart', url: 'https://platform.kimi.ai/docs/guide/kimi-k2-7-code-quickstart' },
+			{ label: 'Kimi API pricing', url: 'https://platform.kimi.ai/docs/pricing/chat-k27-code' },
 		],
 	},
 	{
